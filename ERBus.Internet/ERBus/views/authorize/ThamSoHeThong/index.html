@@ -1,0 +1,112 @@
+﻿<div class="section__content section__content--p30 customize">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="mr-2 fa fa-align-justify"></i>
+                        <strong class="card-title" v-if="headerText">{{title();}}</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <input class="au-input au-input--xl customize" type="text" name="search" placeholder="Tìm kiếm thông tin trong {{title();}}" ng-model="filtered.summary" ng-enter="doSearch()" />
+                            <button class="au-btn--submit" type="submit" ng-click="doSearch()">
+                                <i class="zmdi zmdi-search"></i>
+                            </button>
+                            <!-- Button function -->
+                            <button type="button" prevent-default class="btn btn-outline-info customize" ng-click="refresh();"><i class="fa fa-retweet"></i>&ensp;{{config.label.btnRefresh}}</button>
+                            <button type="button" prevent-default class="btn btn-outline-info customize" ng-click="goHome();"><i class="fa fa-undo"></i>&ensp;{{config.label.btnBack}}</button>
+                            <!-- Form data -->
+                        </div>
+                        <br />
+                        <div class="row">
+                            <table class="table table-borderless table-striped table-earning">
+                                <thead>
+                                    <tr>
+                                        <th class="thead-catalog-ordernumber">
+                                            <a class="title" href="" ng-click="sortType = 'SOTHUTU'; sortReverse = !sortReverse">
+                                                Thứ tự
+                                                <span ng-show="sortType == 'SOTHUTU' && !sortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'SOTHUTU' && sortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th class="thead-catalog-code">
+                                            <a class="title" href="" ng-click="sortType = 'MA_THAMSO'; sortReverse = !sortReverse">
+                                                Mã tham số
+                                                <span ng-show="sortType == 'MA_THAMSO' && !sortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'MA_THAMSO' && sortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th class="thead-catalog-name">
+                                            <a class="title" href="" ng-click="sortType = 'TEN_THAMSO'; sortReverse = !sortReverse">
+                                                Tên tham số
+                                                <span ng-show="sortType == 'TEN_THAMSO' && !sortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'TEN_THAMSO' && sortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th class="text-center">
+                                            <a class="title" href="" ng-click="sortType = 'UNITCODE'; sortReverse = !sortReverse">
+                                                Giá trị cài đặt(theo mã)
+                                                <span ng-show="sortType == 'UNITCODE' && !sortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'UNITCODE' && sortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th class="thead-catalog-status">
+                                            <a class="title" href="" ng-click="sortType = 'TRANGTHAI'; sortReverse = !sortReverse">
+                                                Trạng thái
+                                                <span ng-show="sortType == 'TRANGTHAI' && !sortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'TRANGTHAI' && sortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th class="thead-action-crud">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-show="data == NULL || data.length <= 0">
+                                        <td colspan="5">
+                                            <p>Không có dữ liệu</p>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="isLoading">
+                                        <td colspan="5"><my-loading></my-loading></td>
+                                    </tr>
+                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse" ng-dblclick="detail(item)">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{item.MA_THAMSO}}</td>
+                                        <td>{{item.TEN_THAMSO}}</td>
+                                        <td><input type="text" id="_giaTriChu" name="_giaTriChu" ng-model="item.GIATRI_CHU" placeholder="{{item.PLACEHOLDER}}" class="form-control" ng-disabled="item.ISDIABLED_GIATRI_CHU"></td>
+                                        <td ng-if="item.TRANGTHAI === 10">
+                                            <button type="button" class="btn btn-success">
+                                                Sử dụng&nbsp;
+                                                <span class="badge badge-light"><i class="fa fa-check"></i></span>
+                                            </button>
+                                        </td>
+                                        <td ng-if="item.TRANGTHAI === 0">
+                                            <button type="button" class="btn btn-danger">
+                                                Không sử dụng &nbsp;
+                                                <span class="badge badge-light"><i class="fa fa-times"></i></span>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <label class="switch">
+                                                <input type="checkbox" ng-model="item.GIATRI_SO" ng-true-value="10" ng-false-value="0" ng-change="changeGiaTriThamSo(item);" /><span class="slider round"></span>
+                                            </label>
+                                            <label class="switch" style="font-size: 22px;margin-left: 10px;">
+                                                <span style="color:green;" ng-if="item.GIATRI_SO == 10">ON</span>
+                                                <span style="color:black;" ng-if="item.GIATRI_SO == 0">OFF</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <ul uib-pagination total-items="paged.TotalItems" ng-model="paged.CurrentPage" ng-change="pageChanged();" max-size="paged.MaxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></ul>
+                        <pre>Tổng số: {{paged.CurrentPage}} / {{paged.TotalPages}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

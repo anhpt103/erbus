@@ -1,0 +1,6 @@
+﻿1. Tham số chưa khóa sổ kỳ kế toán tính đến kỳ của ngày hiện tại
+ResponseMessage: HAVENOT_CLOSINGOUT_PERIOD
+2. Tham số khóa sổ nhiều kỳ kế toán
+ResponseMessage:CLOSING_ALLPERIOD_SUCCESS : khóa tất cả thành công
+ResponseMessage:CLOSING_ALLPERIOD_NOTSUCCESS : khóa tất cả không thành công
+ResponseMessage:CLOSING_ALLPERIOD_ERROR : khóa tất cả xảy ra lỗi

@@ -1,0 +1,70 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Kỳ kế toán</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_ky" name="_ky" ng-model="target.KY" required placeholder="Nhập mã kỳ" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._ky.$dirty && _form._maNhom.$invalid">
+                        <span ng-show="_form._ky.$error.required">Kỳ kế toán không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên kỳ</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenKy" name="_tenKy" ng-model="target.TENKY" required placeholder="Nhập tên kỳ" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._tenKy.$dirty && _form._tenKy.$invalid">
+                        <span ng-show="_form._tenKy.$error.required">Tên kỳ không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Ngày</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="date" id="_tuNgay" name="_tuNgay" ng-model="target.TUNGAY" required placeholder="Ngày kế toán" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._tuNgay.$dirty && _form._tuNgay.$invalid">
+                        <span ng-show="_form._tuNgay.$error.required">Ngày không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Năm</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="number" id="_nam" name="_nam" ng-model="target.NAM" required placeholder="Nhập số lượng / 1 kỳ" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._nam.$dirty && _form._tuNgay.$invalid">
+                        <span ng-show="_form._nam.$error.required">Năm không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="select" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_trangThai" name="_trangThai" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('statusClosingOut')" class="form-control" disabled></select>
+                    <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
+                        <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

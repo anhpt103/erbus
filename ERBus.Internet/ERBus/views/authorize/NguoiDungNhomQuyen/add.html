@@ -1,0 +1,54 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-6">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr ng-repeat="item in lstNhomQuyen | orderBy: 'MANHOMQUYEN' track by item.MANHOMQUYEN" ng-dblclick="selectNhomQuyen(item)">
+                                <td>{{item.MANHOMQUYEN}}--{{item.TENNHOMQUYEN}}&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-circle-right" aria-hidden="true" ng-click="selectNhomQuyen(item)"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-md-6">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Thêm mới</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in lstAdd | orderBy: 'MANHOMQUYEN' track by item.MANHOMQUYEN" ng-dblclick="deSelectNhomQuyenAdd(item)">
+                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" ng-click="deSelectNhomQuyenAdd(item)"></i>&nbsp;&nbsp;&nbsp;{{item.MANHOMQUYEN}}--{{item.TENNHOMQUYEN}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/><br />
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Chỉnh sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in data | orderBy: 'MANHOMQUYEN' track by item.MANHOMQUYEN" ng-dblclick="deSelectNhomQuyen(item)">
+                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" ng-click="deSelectNhomQuyen(item)"></i>&nbsp;&nbsp;&nbsp;{{item.MANHOMQUYEN}}--{{item.TENNHOMQUYEN}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

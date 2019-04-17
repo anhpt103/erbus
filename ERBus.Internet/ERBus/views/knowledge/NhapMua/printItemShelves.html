@@ -1,0 +1,143 @@
+﻿<style>
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    .table td, .table th {
+        padding: 0;
+    }
+
+    .title-order {
+        width: 3%;
+        text-align: center;
+    }
+
+    .title-name {
+        text-align: center;
+    }
+
+    .title-lai {
+        width: 4%;
+        text-align: center;
+    }
+
+    .title-text {
+        text-align: center;
+    }
+
+    .title-gia {
+        width: 7%;
+        text-align: center;
+        word-wrap: break-word;
+    }
+</style>
+<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="title-order">
+                                    <a>STT</a>
+                                </th>
+                                <th class="title-name">
+                                    <a>Mã hàng</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Tên hàng</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Barcode</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Giá bán buôn VAT</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Giá bán lẻ VAT</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Mã nhà cung cấp</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Số lượng</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in data | orderBy:sortType:sortReverse">
+                                <td>
+                                    <div class="form-group">
+                                        <input enter type="text" id="_stt" name="_stt" ng-value="$index + 1" class="form-control">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input enter type="text" id="_maHang" name="_maHang" ng-model="item.MAHANG" placeholder="Nhập mã hàng" class="form-control">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_tenHang" name="_tenHang" ng-model="item.TENHANG" placeholder="Nhập tên hàng" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_barCode" name="_barCode" ng-model="item.BARCODE" placeholder="Nhập barcode" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_giaBanBuonVat" name="_giaBanBuonVat" ng-model="item.GIABANBUON_VAT" placeholder="Nhập giá bán buôn VAT" class="form-control" awnum="number">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_giaBanLeVat" name="_giaBanLeVat" ng-model="item.GIABANLE_VAT" placeholder="Nhập giá bán lẻ VAT" class="form-control" awnum="number">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_nhaCungCap" name="_nhaCungCap" ng-model="item.MANHACUNGCAP" placeholder="Nhập mã nhà cung cấp" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_soLuong" name="_soLuong" ng-model="item.SOLUONG" placeholder="Nhập số lượng" class="form-control" awnum="number">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="exportToExcel();"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnExportExcel}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

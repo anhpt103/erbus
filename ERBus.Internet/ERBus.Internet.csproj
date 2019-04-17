@@ -1,0 +1,1018 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8ED0F7B8-265A-49EF-BD00-3AF4B4584CB6}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ERBus.Internet</RootNamespace>
+    <AssemblyName>ERBus.Internet</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="ERBus\controllers\authorize\nguoiDungNhomQuyenController.js" />
+    <Content Include="ERBus\controllers\authorize\nguoiDungQuyenController.js" />
+    <Content Include="ERBus\controllers\authorize\cuaHangController.js" />
+    <Content Include="ERBus\controllers\authorize\nhomQuyenController.js" />
+    <Content Include="ERBus\controllers\authorize\kyKeToanController.js" />
+    <Content Include="ERBus\controllers\authorize\thamSoHeThongController.js" />
+    <Content Include="ERBus\controllers\authorize\menuController.js" />
+    <Content Include="ERBus\controllers\authorize\nguoiDungController.js" />
+    <Content Include="ERBus\controllers\authorize\authController.js" />
+    <Content Include="ERBus\controllers\catalog\matHangController.js" />
+    <Content Include="ERBus\controllers\catalog\nhaCungCapController.js" />
+    <Content Include="ERBus\controllers\catalog\khachHangController.js" />
+    <Content Include="ERBus\controllers\catalog\khoHangController.js" />
+    <Content Include="ERBus\controllers\catalog\thueController.js" />
+    <Content Include="ERBus\controllers\catalog\hangKhachHangController.js" />
+    <Content Include="ERBus\controllers\catalog\keHangController.js" />
+    <Content Include="ERBus\controllers\catalog\donViTinhController.js" />
+    <Content Include="ERBus\controllers\catalog\boHangController.js" />
+    <Content Include="ERBus\controllers\catalog\baoBiController.js" />
+    <Content Include="ERBus\controllers\catalog\nhomHangController.js" />
+    <Content Include="ERBus\controllers\catalog\loaiHangController.js" />
+    <Content Include="ERBus\controllers\knowledge\xuatBanController.js" />
+    <Content Include="ERBus\controllers\knowledge\nhapMuaController.js" />
+    <Content Include="ERBus\controllers\layouts\header-controller.js" />
+    <Content Include="ERBus\controllers\layouts\home-controller.js" />
+    <Content Include="ERBus\controllers\layouts\layout-controller.js" />
+    <Content Include="ERBus\controllers\promotion\giamGiaNhaCungCapController.js" />
+    <Content Include="ERBus\controllers\promotion\giamGiaNhomHangController.js" />
+    <Content Include="ERBus\controllers\promotion\giamGiaLoaiHangController.js" />
+    <Content Include="ERBus\controllers\promotion\tienTyLeController.js" />
+    <Content Include="ERBus\controllers\report\nhapMuaReportController.js" />
+    <Content Include="ERBus\controllers\report\xuatBanLeReportController.js" />
+    <Content Include="ERBus\controllers\report\tonKhoReportController.js" />
+    <Content Include="ERBus\css\angular-material.css" />
+    <Content Include="ERBus\css\bootstrap-glyphicons.min.css" />
+    <Content Include="ERBus\css\ng-bs-animated-button.css" />
+    <Content Include="ERBus\css\font-face.css" />
+    <Content Include="ERBus\css\fonts\glyphs\KendoUIGlyphs.svg" />
+    <Content Include="ERBus\css\fonts\glyphs\WebComponentsIcons.svg" />
+    <Content Include="ERBus\css\kendo.blueopal.min.css" />
+    <Content Include="ERBus\css\kendo.common.min.css" />
+    <Content Include="ERBus\css\loading-bar.css" />
+    <Content Include="ERBus\css\ng-tags-input.min.css" />
+    <Content Include="ERBus\css\theme.css" />
+    <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-italic.svg" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.svg" />
+    <Content Include="ERBus\img\bg-title-01.jpg" />
+    <Content Include="ERBus\img\bg-title-02.jpg" />
+    <Content Include="ERBus\img\icon\avatar-01.jpg" />
+    <Content Include="ERBus\img\icon\avatar-02.jpg" />
+    <Content Include="ERBus\img\icon\avatar-03.jpg" />
+    <Content Include="ERBus\img\icon\avatar-04.jpg" />
+    <Content Include="ERBus\img\icon\avatar-05.jpg" />
+    <Content Include="ERBus\img\icon\avatar-06.jpg" />
+    <Content Include="ERBus\img\icon\avatar-big-01.jpg" />
+    <Content Include="ERBus\img\icon\favicon.ico" />
+    <Content Include="ERBus\img\icon\logo-blue.png" />
+    <Content Include="ERBus\img\icon\logo-mini.png" />
+    <Content Include="ERBus\img\icon\logo-white.png" />
+    <Content Include="ERBus\img\icon\logo.png" />
+    <Content Include="ERBus\img\icon\Untitled-1.jpg" />
+    <Content Include="ERBus\js\moment\moment.js" />
+    <Content Include="ERBus\js\ng-bs-animated-button\ng-bs-animated-button.js" />
+    <Content Include="ERBus\js\ngTagInput\ng-tags-input.min.js" />
+    <Content Include="ERBus\js\notifications\Lobibox.js" />
+    <Content Include="ERBus\js\notifications\Lobibox.min.css" />
+    <Content Include="ERBus\js\notifications\notification-active.js" />
+    <Content Include="ERBus\js\notifications\notifications.css" />
+    <Content Include="ERBus\js\xlsx\FileSaver.js" />
+    <Content Include="ERBus\js\xlsx\jszip.js" />
+    <Content Include="ERBus\js\xlsx\xlsx.full.min.js" />
+    <Content Include="ERBus\js\xlsx\xlsx.js" />
+    <Content Include="ERBus\lib\angular-aria.min.js" />
+    <Content Include="ERBus\lib\angular-material.min.js" />
+    <Content Include="ERBus\lib\jquery-3.3.1.slim.js" />
+    <Content Include="ERBus\lib\jquery-3.3.1.min.js" />
+    <Content Include="ERBus\lib\jquery-ui.min.js" />
+    <Content Include="ERBus\lib\jquery.min.js" />
+    <Content Include="ERBus\lib\ui-bootstrap-tpls.js" />
+    <Content Include="ERBus\states\promotion.js" />
+    <Content Include="ERBus\states\knowledge.js" />
+    <Content Include="ERBus\utils\telerik\js\kendo.all.min.js" />
+    <Content Include="ERBus\vendor\bootstrap\bootstrap-confirmation.min.js" />
+    <Content Include="ERBus\vendor\bootstrap\bootstrap.bundle.min.js" />
+    <Content Include="ERBus\vendor\bootstrap\bootstrap.min.css" />
+    <Content Include="ERBus\vendor\bootstrap\bootstrap.min.js" />
+    <Content Include="ERBus\vendor\bootstrap\popper.min.js" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\css\font-awesome.css" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\css\font-awesome.min.css" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\fonts\fontawesome-webfont.svg" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\HELP-US-OUT.txt" />
+    <Content Include="ERBus\vendor\font-awesome-5\css\fontawesome-all.min.css" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-brands-400.svg" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-regular-400.svg" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-solid-900.svg" />
+    <Content Include="ERBus\js\common_all.js" />
+    <Content Include="ERBus\vendor\mdi-font\css\material-design-iconic-font.css" />
+    <Content Include="ERBus\vendor\mdi-font\css\material-design-iconic-font.min.css" />
+    <Content Include="ERBus\vendor\mdi-font\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="ERBus\views\authorize\CuaHang\create.html" />
+    <Content Include="ERBus\views\authorize\CuaHang\delete.html" />
+    <Content Include="ERBus\views\authorize\CuaHang\detail.html" />
+    <Content Include="ERBus\views\authorize\CuaHang\edit.html" />
+    <Content Include="ERBus\views\authorize\CuaHang\index.html" />
+    <Content Include="ERBus\views\authorize\KyKeToan\create.html" />
+    <Content Include="ERBus\views\authorize\KyKeToan\delete.html" />
+    <Content Include="ERBus\views\authorize\KyKeToan\detail.html" />
+    <Content Include="ERBus\views\authorize\KyKeToan\edit.html" />
+    <Content Include="ERBus\views\authorize\KyKeToan\index.html" />
+    <Content Include="ERBus\views\authorize\NguoiDungNhomQuyen\add.html" />
+    <Content Include="ERBus\views\authorize\NguoiDungQuyen\add.html" />
+    <Content Include="ERBus\views\authorize\NguoiDung\create.html" />
+    <Content Include="ERBus\views\authorize\NguoiDung\delete.html" />
+    <Content Include="ERBus\views\authorize\NguoiDung\detail.html" />
+    <Content Include="ERBus\views\authorize\NguoiDung\edit.html" />
+    <Content Include="ERBus\views\authorize\NguoiDung\index.html" />
+    <Content Include="ERBus\views\authorize\NhomQuyen\create.html" />
+    <Content Include="ERBus\views\authorize\NhomQuyen\delete.html" />
+    <Content Include="ERBus\views\authorize\NhomQuyen\detail.html" />
+    <Content Include="ERBus\views\authorize\NhomQuyen\edit.html" />
+    <Content Include="ERBus\views\authorize\NhomQuyen\index.html" />
+    <Content Include="ERBus\views\authorize\ThamSoHeThong\index.html" />
+    <Content Include="ERBus\views\catalog\KhoHang\search.html" />
+    <Content Include="ERBus\views\catalog\LoaiHang\search.html" />
+    <Content Include="ERBus\views\catalog\MatHang\checkDataImport.html" />
+    <Content Include="ERBus\views\catalog\MatHang\search.html" />
+    <Content Include="ERBus\views\catalog\NhaCungCap\create.html" />
+    <Content Include="ERBus\views\catalog\NhaCungCap\delete.html" />
+    <Content Include="ERBus\views\catalog\NhaCungCap\detail.html" />
+    <Content Include="ERBus\views\catalog\NhaCungCap\edit.html" />
+    <Content Include="ERBus\views\catalog\NhaCungCap\index.html" />
+    <Content Include="ERBus\views\catalog\KhachHang\create.html" />
+    <Content Include="ERBus\views\catalog\KhachHang\delete.html" />
+    <Content Include="ERBus\views\catalog\KhachHang\detail.html" />
+    <Content Include="ERBus\views\catalog\KhachHang\edit.html" />
+    <Content Include="ERBus\views\catalog\KhachHang\index.html" />
+    <Content Include="ERBus\views\catalog\MatHang\create.html" />
+    <Content Include="ERBus\views\catalog\MatHang\delete.html" />
+    <Content Include="ERBus\views\catalog\MatHang\detail.html" />
+    <Content Include="ERBus\views\catalog\MatHang\edit.html" />
+    <Content Include="ERBus\views\catalog\MatHang\index.html" />
+    <Content Include="ERBus\views\catalog\NhaCungCap\search.html" />
+    <Content Include="ERBus\views\catalog\NhomHang\search.html" />
+    <Content Include="ERBus\views\catalog\Thue\create.html" />
+    <Content Include="ERBus\views\catalog\Thue\delete.html" />
+    <Content Include="ERBus\views\catalog\Thue\detail.html" />
+    <Content Include="ERBus\views\catalog\Thue\edit.html" />
+    <Content Include="ERBus\views\catalog\Thue\index.html" />
+    <Content Include="ERBus\views\catalog\KhoHang\create.html" />
+    <Content Include="ERBus\views\catalog\KhoHang\delete.html" />
+    <Content Include="ERBus\views\catalog\KhoHang\detail.html" />
+    <Content Include="ERBus\views\catalog\KhoHang\edit.html" />
+    <Content Include="ERBus\views\catalog\KhoHang\index.html" />
+    <Content Include="ERBus\views\catalog\BoHang\create.html" />
+    <Content Include="ERBus\views\catalog\BoHang\delete.html" />
+    <Content Include="ERBus\views\catalog\BoHang\detail.html" />
+    <Content Include="ERBus\views\catalog\BoHang\edit.html" />
+    <Content Include="ERBus\views\catalog\BoHang\index.html" />
+    <Content Include="ERBus\views\catalog\HangKhachHang\create.html" />
+    <Content Include="ERBus\views\catalog\HangKhachHang\delete.html" />
+    <Content Include="ERBus\views\catalog\HangKhachHang\detail.html" />
+    <Content Include="ERBus\views\catalog\HangKhachHang\edit.html" />
+    <Content Include="ERBus\views\catalog\HangKhachHang\index.html" />
+    <Content Include="ERBus\views\catalog\KeHang\create.html" />
+    <Content Include="ERBus\views\catalog\KeHang\delete.html" />
+    <Content Include="ERBus\views\catalog\KeHang\detail.html" />
+    <Content Include="ERBus\views\catalog\KeHang\edit.html" />
+    <Content Include="ERBus\views\catalog\KeHang\index.html" />
+    <Content Include="ERBus\views\catalog\DonViTinh\create.html" />
+    <Content Include="ERBus\views\catalog\DonViTinh\delete.html" />
+    <Content Include="ERBus\views\catalog\DonViTinh\detail.html" />
+    <Content Include="ERBus\views\catalog\DonViTinh\edit.html" />
+    <Content Include="ERBus\views\catalog\DonViTinh\index.html" />
+    <Content Include="ERBus\views\catalog\BaoBi\create.html" />
+    <Content Include="ERBus\views\catalog\BaoBi\delete.html" />
+    <Content Include="ERBus\views\catalog\BaoBi\detail.html" />
+    <Content Include="ERBus\views\catalog\BaoBi\edit.html" />
+    <Content Include="ERBus\views\catalog\BaoBi\index.html" />
+    <Content Include="ERBus\views\catalog\NhomHang\create.html" />
+    <Content Include="ERBus\views\catalog\NhomHang\delete.html" />
+    <Content Include="ERBus\views\catalog\NhomHang\detail.html" />
+    <Content Include="ERBus\views\catalog\NhomHang\edit.html" />
+    <Content Include="ERBus\views\catalog\NhomHang\index.html" />
+    <Content Include="ERBus\views\catalog\LoaiHang\delete.html" />
+    <Content Include="ERBus\views\catalog\LoaiHang\detail.html" />
+    <Content Include="ERBus\views\catalog\LoaiHang\edit.html" />
+    <Content Include="ERBus\views\catalog\LoaiHang\create.html" />
+    <Content Include="ERBus\views\catalog\LoaiHang\index.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\approval.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\printItemShelves.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\printItem.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\create.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\delete.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\detail.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\edit.html" />
+    <Content Include="ERBus\views\knowledge\NhapMua\index.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\approval.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\create.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\delete.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\detail.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\edit.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\index.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhaCungCap\create.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhaCungCap\delete.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhaCungCap\detail.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhaCungCap\edit.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhaCungCap\index.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaLoaiHang\create.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaLoaiHang\delete.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaLoaiHang\detail.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaLoaiHang\edit.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaLoaiHang\index.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhomHang\create.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhomHang\delete.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhomHang\detail.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhomHang\edit.html" />
+    <Content Include="ERBus\views\promotion\GiamGiaNhomHang\index.html" />
+    <Content Include="ERBus\views\promotion\TienTyLe\create.html" />
+    <Content Include="ERBus\views\promotion\TienTyLe\delete.html" />
+    <Content Include="ERBus\views\promotion\TienTyLe\detail.html" />
+    <Content Include="ERBus\views\promotion\TienTyLe\edit.html" />
+    <Content Include="ERBus\views\promotion\TienTyLe\index.html" />
+    <Content Include="ERBus\views\report\Template\reports.template.html" />
+    <Content Include="ERBus\views\report\NhapMua\index.html" />
+    <Content Include="ERBus\views\report\XuatBanLe\index.html" />
+    <Content Include="ERBus\views\report\TonKho\index.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ERBus\app.js" />
+    <Content Include="ERBus\config\config.js" />
+    <Content Include="ERBus\filters\common.js" />
+    <Content Include="ERBus\lib\angular-animate.min.js" />
+    <Content Include="ERBus\lib\angular-cache.min.js" />
+    <Content Include="ERBus\lib\angular-file-upload.min.js" />
+    <Content Include="ERBus\lib\angular-filter.min.js" />
+    <Content Include="ERBus\lib\angular-local-storage.min.js" />
+    <Content Include="ERBus\lib\angular-resource.min.js" />
+    <Content Include="ERBus\lib\angular-sanitize.min.js" />
+    <Content Include="ERBus\lib\angular-ui-router.min.js" />
+    <Content Include="ERBus\lib\angular-ui-tree.js" />
+    <Content Include="ERBus\lib\angular-ui-tree.min.js" />
+    <Content Include="ERBus\lib\angular.min.js" />
+    <Content Include="ERBus\lib\ocLazyLoad.require.js" />
+    <Content Include="ERBus\lib\require.js" />
+    <Content Include="ERBus\main.js" />
+    <Content Include="ERBus\services\configService.js" />
+    <Content Include="ERBus\services\interceptorService.js" />
+    <Content Include="ERBus\services\tempDataService.js" />
+    <Content Include="ERBus\states\authorize.js" />
+    <Content Include="ERBus\states\report.js" />
+    <Content Include="ERBus\states\catalog.js" />
+    <Content Include="ERBus\utils\adapt-strap\adapt-strap.css" />
+    <Content Include="ERBus\utils\adapt-strap\adapt-strap.js" />
+    <Content Include="ERBus\utils\adapt-strap\adapt-strap.tpl.js" />
+    <Content Include="ERBus\utils\angular-chart\angular-chart.min.js" />
+    <Content Include="ERBus\utils\angular-chart\Chart.min.js" />
+    <Content Include="ERBus\utils\ckeditor\adapters\jquery.js" />
+    <Content Include="ERBus\utils\ckeditor\build-config.js" />
+    <Content Include="ERBus\utils\ckeditor\ckeditor.js" />
+    <Content Include="ERBus\utils\ckeditor\config.js" />
+    <Content Include="ERBus\utils\ckeditor\contents.css" />
+    <Content Include="ERBus\utils\ckeditor\lang\en.js" />
+    <Content Include="ERBus\utils\ckeditor\lang\vi.js" />
+    <Content Include="ERBus\utils\ckeditor\ng-ckeditor.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\az.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\de-ch.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\es-mx.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\eu.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\fo.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\oc.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
+    <Content Include="ERBus\utils\ckeditor\plugins\about\dialogs\about.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\about\dialogs\hidpi\logo_ckeditor.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\colordialog\dialogs\colordialog.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\colordialog\dialogs\colordialog.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\copyformatting\cursors\cursor-disabled.svg" />
+    <Content Include="ERBus\utils\ckeditor\plugins\copyformatting\cursors\cursor.svg" />
+    <Content Include="ERBus\utils\ckeditor\plugins\copyformatting\styles\copyformatting.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\div\dialogs\div.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\find\dialogs\find.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\flash\dialogs\flash.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\flash\images\placeholder.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\button.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\checkbox.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\form.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\hiddenfield.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\radio.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\select.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\textarea.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\dialogs\textfield.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\forms\images\hiddenfield.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\html5video\dialogs\html5video.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\icons.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\iframe\dialogs\iframe.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\iframe\images\placeholder.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\image\dialogs\image.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\image\images\noimage.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\link\dialogs\anchor.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\link\dialogs\link.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\link\images\anchor.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\link\images\hidpi\anchor.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\liststyle\dialogs\liststyle.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\magicline\images\hidpi\icon.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\magicline\images\icon-rtl.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\magicline\images\icon.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\pagebreak\images\pagebreak.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\pastefromword\filter\default.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\preview\preview.html" />
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\dialogs\dialog.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\dialogs\options.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\skins\moono-lisa\scayt.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_address.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_blockquote.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_div.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_h1.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_h2.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_h3.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_h4.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_h5.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_h6.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_p.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\showblocks\images\block_pre.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\dialogs\smiley.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\angel_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\angel_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\angry_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\angry_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\broken_heart.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\broken_heart.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\confused_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\confused_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\cry_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\cry_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\devil_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\devil_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\embaressed_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\embarrassed_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\embarrassed_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\envelope.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\envelope.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\heart.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\heart.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\kiss.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\kiss.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\lightbulb.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\lightbulb.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\omg_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\omg_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\regular_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\regular_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\sad_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\sad_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\shades_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\shades_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\teeth_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\teeth_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\thumbs_down.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\thumbs_down.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\thumbs_up.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\thumbs_up.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\tongue_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\tongue_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\tounge_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\whatchutalkingabout_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\whatchutalkingabout_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\wink_smile.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\smiley\images\wink_smile.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\az.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\de-ch.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\en-au.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\en-ca.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\es-mx.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\eu.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ko.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\oc.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
+    <Content Include="ERBus\utils\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\tableselection\styles\tableselection.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\table\dialogs\table.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\templates\dialogs\templates.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\templates\dialogs\templates.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\templates\templates\default.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\templates\templates\images\template1.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\templates\templates\images\template2.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\templates\templates\images\template3.gif" />
+    <Content Include="ERBus\utils\ckeditor\plugins\widget\images\handle.png" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\dialogs\ciframe.html" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\dialogs\tmpFrameset.html" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\dialogs\wsc.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\skins\moono-lisa\wsc.css" />
+    <Content Include="ERBus\utils\ckeditor\plugins\youtube\images\icon.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\css\samples.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\img\github-top.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\img\header-bg.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\img\header-separator.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\img\logo.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\img\navigation-tip.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\index.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\js\sample.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\js\sf.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\ajax.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\api.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\appendto.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\assets\inlineall\logo.png" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\assets\outputxhtml\outputxhtml.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\assets\sample.jpg" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\assets\uilanguages\languages.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\datafiltering.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\dialog\assets\my_dialog.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\dialog\dialog.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\divreplace.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\enterkey\enterkey.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.swf" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\htmlwriter\assets\outputforflash\swfobject.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\htmlwriter\outputforflash.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\htmlwriter\outputhtml.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\index.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\inlineall.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\inlinebycode.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\inlinetextarea.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\jquery.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\magicline\magicline.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\readonly.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\replacebyclass.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\replacebycode.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\sample.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\sample.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\tabindex.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\toolbar\toolbar.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\uicolor.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\uilanguages.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\wysiwygarea\fullpage.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\xhtmlstyle.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\css\fontello.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\font\fontello.svg" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\font\LICENSE.txt" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\index.html" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\js\abstracttoolbarmodifier.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\js\fulltoolbareditor.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\js\toolbarmodifier.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\js\toolbartextmodifier.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\javascript.js" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\neo.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.css" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.js" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\dialog.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\dialog_ie.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\dialog_ie8.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\dialog_iequirks.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\editor.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\editor_gecko.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\editor_ie.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\editor_ie8.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\editor_iequirks.css" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\icons.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\icons_hidpi.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\arrow.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\close.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\hidpi\close.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\hidpi\lock-open.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\hidpi\lock.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\hidpi\refresh.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\lock-open.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\lock.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\refresh.png" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\images\spinner.gif" />
+    <Content Include="ERBus\utils\ckeditor\styles.js" />
+    <Content Include="ERBus\utils\dynamic-number.min.js" />
+    <Content Include="ERBus\utils\keycode\keycode.js" />
+    <Content Include="ERBus\utils\loading-bar\loading-bar.min.css" />
+    <Content Include="ERBus\utils\loading-bar\loading-bar.min.js" />
+    <Content Include="ERBus\utils\ng-file-upload-all.min.js" />
+    <Content Include="ERBus\utils\ng-table.min.js" />
+    <Content Include="ERBus\utils\smart-table.min.js" />
+    <Content Include="ERBus\utils\telerik\js\telerikReportViewer-11.0.17.118.min.js" />
+    <Content Include="ERBus\utils\telerik\js\telerikReportViewer.kendo-11.0.17.118.min.js" />
+    <Content Include="ERBus\utils\telerik\styles\blueopal\loading.gif" />
+    <Content Include="ERBus\utils\telerik\styles\blueopal\sprite.png" />
+    <Content Include="ERBus\utils\telerik\styles\kendo.blueopal.min.css" />
+    <Content Include="ERBus\utils\telerik\styles\kendo.common.min.css" />
+    <Content Include="ERBus\utils\tree\template-li.html" />
+    <Content Include="ERBus\utils\tree\template-ul.html" />
+    <Content Include="ERBus\utils\ui-grid\ui-grid.min.css" />
+    <Content Include="ERBus\utils\ui-grid\ui-grid.min.js" />
+    <Content Include="ERBus\utils\ui-grid\ui-grid.svg" />
+    <Content Include="ERBus\views\layouts\error.html" />
+    <Content Include="ERBus\views\layouts\footer.html" />
+    <Content Include="ERBus\views\layouts\header.html" />
+    <Content Include="ERBus\views\layouts\home.html" />
+    <Content Include="ERBus\views\layouts\layout.html" />
+    <Content Include="ERBus\views\layouts\loading.html" />
+    <Content Include="ERBus\views\layouts\login.html" />
+    <Content Include="ERBus\views\layouts\noticeAlert.html" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\CHANGELOG.md" />
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\LICENSE.md" />
+    <Content Include="ERBus\utils\ckeditor\plugins\scayt\README.md" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\LICENSE.md" />
+    <Content Include="ERBus\utils\ckeditor\plugins\wsc\README.md" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\assets\posteddata.php" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\htmlwriter\assets\outputforflash\outputforflash.fla" />
+    <Content Include="ERBus\utils\ckeditor\samples\old\sample_posteddata.php" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\font\config.json" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\font\fontello.eot" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\font\fontello.ttf" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
+    <Content Include="ERBus\utils\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
+    <Content Include="ERBus\utils\ckeditor\skins\moono-lisa\readme.md" />
+    <Content Include="ERBus\utils\ui-grid\ui-grid.eot" />
+    <Content Include="ERBus\utils\ui-grid\ui-grid.ttf" />
+    <Content Include="ERBus\utils\ui-grid\ui-grid.woff" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\fonts\fontawesome-webfont.eot" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\fonts\fontawesome-webfont.ttf" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\fonts\fontawesome-webfont.woff" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\fonts\fontawesome-webfont.woff2" />
+    <Content Include="ERBus\vendor\font-awesome-4.7\fonts\FontAwesome.otf" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-brands-400.eot" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-brands-400.ttf" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-brands-400.woff" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-brands-400.woff2" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-regular-400.eot" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-regular-400.ttf" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-regular-400.woff" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-regular-400.woff2" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-solid-900.eot" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-solid-900.ttf" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-solid-900.woff" />
+    <Content Include="ERBus\vendor\font-awesome-5\webfonts\fa-solid-900.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-100italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-200italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-300italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-500italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-600italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-700italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-800italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-italic.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-italic.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-italic.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-italic.woff2" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.eot" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.ttf" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.woff" />
+    <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.woff2" />
+    <Content Include="ERBus\vendor\mdi-font\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="ERBus\vendor\mdi-font\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="ERBus\vendor\mdi-font\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="ERBus\vendor\mdi-font\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="ERBus\css\fonts\glyphs\KendoUIGlyphs.ttf" />
+    <Content Include="ERBus\css\fonts\glyphs\WebComponentsIcons.woff" />
+    <Content Include="ERBus\css\fonts\glyphs\KendoUIGlyphs.woff" />
+    <Content Include="ERBus\css\fonts\glyphs\WebComponentsIcons.eot" />
+    <Content Include="ERBus\css\fonts\glyphs\WebComponentsIcons.ttf" />
+    <Content Include="ERBus\css\fonts\glyphs\KendoUIGlyphs.eot" />
+    <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.eot" />
+    <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.ttf" />
+    <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.woff" />
+    <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.woff2" />
+    <None Include="Project_Readme.html" />
+    <None Include="Properties\PublishProfiles\ERBusInternet.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56189</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:56189/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

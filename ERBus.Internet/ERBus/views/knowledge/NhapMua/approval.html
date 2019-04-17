@@ -1,0 +1,96 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <button type="button" prevent-default class="btn btn-info" ng-disabled="!target.MA_CHUNGTU || target.DataDetails.length <= 0" ng-click="accept(target.ID);"><i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;{{config.label.btnApproval}}</button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="col-lg-12">
+            <!-- TOP CAMPAIGN-->
+            <div class="top-campaign printItem">
+                <div class="table-responsive">
+                    <table class="table table-top-campaign">
+                        <tbody>
+                            <tr>
+                                <td class="header" colspan="7">Cửa hàng: {{cuaHang[0].DESCRIPTION}}</td>
+                                <td class="header right" colspan="2">Ngày in: {{createDay | date:('dd-MM-yyyy')}}</td>
+                            </tr>
+                            <tr>
+                                <td class="header" colspan="7">Địa chỉ: {{cuaHang[0].EXTEND_VALUE}}</td>
+                                <td class="header right" colspan="2">Người in: {{currentUser.fullName}}</td>
+                            </tr>
+                            <tr>
+                                <td class="title" colspan="3"></td>
+                                <td class="title" colspan="3">PHIẾU NHẬP MUA</td>
+                                <td class="title" colspan="3"></td>
+                            </tr>
+                            <tr>
+                                <td class="header" colspan="7">Tên nhà cung cấp: {{thongTinNhaCungCap.DESCRIPTION}}</td>
+                                <td class="header right" colspan="2">Số chứng từ nhập: {{target.MA_CHUNGTU}}</td>
+                            </tr>
+                            <tr>
+                                <td class="header" colspan="7">Số điện thoại: {{thongTinNhaCungCap.PARENT}}</td>
+                                <td class="header right" colspan="2">Ngày giao dịch: {{target.NGAY_CHUNGTU | date:('dd-MM-yyyy')}}</td>
+                            </tr>
+                            <tr>
+                                <td class="header" colspan="7">Địa chỉ: {{thongTinNhaCungCap.EXTEND_VALUE}}</td>
+                                <td class="header right" colspan="2">Mã kho nhập: {{target.MAKHO_NHAP}}</td>
+                            </tr>
+                            <tr>
+                                <td class="header" colspan="7">Ghi chú: {{target.DIENGIAI}}</td>
+                                <td class="header right" colspan="2">Tên kho: {{convertCodeToName(target.MAKHO_NHAP,'khoHang');}}</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <td class="detail-title number">STT</td>
+                                <td class="detail-title code">Mã hàng</td>
+                                <td class="detail-title" colspan="2">Tên hàng</td>
+                                <td class="detail-title code">ĐVT</td>
+                                <td class="detail-title soLuong">Số lượng</td>
+                                <td class="detail-title donGia">Đơn giá</td>
+                                <td class="detail-title giamGia">Giảm giá</td>
+                                <td class="detail-title giatri">Thành tiền</td>
+                            </tr>
+                            <tr ng-repeat="item in target.DataDetails | orderBy:'INDEX':true track by $index">
+                                <td class="numberStt">{{$index + 1}}</td>
+                                <td class="textCode">{{item.MAHANG}}</td>
+                                <td class="textName" colspan="2">{{item.TENHANG}}</td>
+                                <td class="textCode">{{convertCodeToName(item.MADONVITINH,'donViTinh');}}</td>
+                                <td class="numberGiaTri">{{item.SOLUONG | number}}</td>
+                                <td class="numberGiaTri">{{item.GIAMUA | number}}</td>
+                                <td class="numberGiaTri">{{item.TIEN_GIAMGIA | number}}</td>
+                                <td class="numberGiaTri">{{item.THANHTIEN | number}}</td>
+                            </tr>
+                            <tr>
+                                <td class="footer" colspan="8">Tổng số lượng</td>
+                                <td colspan="1" class="numberGiaTri">{{target.TONG_SOLUONG | number}}</td>
+                            </tr>
+                            <tr>
+                                <td class="footer" colspan="8">Tổng tiền hàng</td>
+                                <td colspan="1" class="numberGiaTri">{{target.TONGTIEN_TRUOCTHUE | number}}</td>
+                            </tr>
+                            <tr>
+                                <td class="footer" colspan="8">Tổng chiết khấu</td>
+                                <td colspan="1" class="numberGiaTri">{{target.TIEN_CHIETKHAU | number}}</td>
+                            </tr>
+                            <tr>
+                                <td class="footer" colspan="8">Tổng tiền thuế GTGT</td>
+                                <td colspan="1" class="numberGiaTri">{{target.TONG_TIENTHUE | number}}</td>
+                            </tr>
+                            <tr>
+                                <td class="footer" colspan="8">Tổng thanh toán</td>
+                                <td colspan="1" class="numberGiaTri">{{target.TONGTIEN_SAUTHUE | number}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--  END TOP CAMPAIGN-->
+        </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>

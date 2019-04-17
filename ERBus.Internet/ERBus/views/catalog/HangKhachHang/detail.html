@@ -1,0 +1,119 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã hạng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maHang" name="_maHang" ng-model="target.MAHANG" required placeholder="Nhập mã hạng khách hàng" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._maHang.$dirty && _form._maHang.$invalid">
+                        <span ng-show="_form._maHang.$error.required">Mã hạng khách hàng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên hạng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenHang" name="_tenHang" ng-model="target.TENHANG" required placeholder="Nhập tên hạng khách hàng" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._tenHang.$dirty && _form._tenHang.$invalid">
+                        <span ng-show="_form._tenHang.$error.required">Tên hạng khách hàng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Số tiền lên hạng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_soTienLenHang" name="_soTienLenHang" ng-model="target.SOTIEN_LENHANG" required placeholder="Nhập số tiền lên hạng" class="form-control" awnum="number" disabled>
+                    <small class="form-text text-muted" ng-show="_form._soTienLenHang.$dirty && _form._soTienLenHang.$invalid">
+                        <span ng-show="_form._soTienLenHang.$error.required">Số tiền lên hạng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tỷ lệ giảm giá sinh nhật</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tyLeSinhNhat" name="_tyLeSinhNhat" ng-model="target.TYLE_SINHNHAT" required placeholder="Nhập tỷ lệ giảm giá sinh nhật" min="0" max="100" class="form-control" awnum="number" disabled>
+                    <small class="form-text text-muted" ng-show="_form._tyLeSinhNhat.$dirty && _form._tyLeSinhNhat.$invalid">
+                        <span ng-show="_form._tyLeSinhNhat.$error.required">Tỷ lệ sinh nhật không được để trống</span>
+                        <span ng-show="_form._tyLeSinhNhat.$invalid">Phần trăm nhập từ: 0 đến 100</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tỷ lệ giảm giá đặc biệt</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tyLeDacBiet" name="_tyLeDacBiet" ng-model="target.TYLE_DACBIET" required placeholder="Nhập tỷ lệ giảm giá đặc biệt" min="0" max="100" class="form-control" awnum="number" disabled>
+                    <small class="form-text text-muted" ng-show="_form._tyLeDacBiet.$dirty && _form._tyLeDacBiet.$invalid">
+                        <span ng-show="_form._tyLeDacBiet.$error.required">Tỷ lệ đặc biệt không được để trống</span>
+                        <span ng-show="_form._tyLeDacBiet.$invalid">Phần trăm nhập từ: 0 đến 100</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Quy đổi tiền thành điểm</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-5">
+                    <input type="text" id="_quyDoiTienThanhDiem" name="_quyDoiTienThanhDiem" ng-model="target.QUYDOITIEN_THANH_DIEM" required placeholder="Nhập quy đổi tiền thành điểm" class="form-control" awnum="number" disabled>
+                    <small class="form-text text-muted" ng-show="_form._quyDoiTienThanhDiem.$dirty && _form._quyDoiTienThanhDiem.$invalid">
+                        <span ng-show="_form._quyDoiTienThanhDiem.$error.required">Quy đổi tiền thành điểm không được để trống</span>
+                    </small>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label>Số tiền VNĐ = 1 Điểm tích lũy</label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Quy đổi điểm thành tiền</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-5">
+                    <input type="text" id="_quyDoiDiemThanhTien" name="_quyDoiDiemThanhTien" ng-model="target.QUYDOIDIEM_THANH_TIEN" required placeholder="Nhập quy đổi điểm thành tiền" class="form-control" awnum="number" disabled>
+                    <small class="form-text text-muted" ng-show="_form._quyDoiDiemThanhTien.$dirty && _form._quyDoiDiemThanhTien.$invalid">
+                        <span ng-show="_form._quyDoiDiemThanhTien.$error.required">Quy đổi điểm thành tiền không được để trống</span>
+                    </small>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label>1 Điểm tích lũy = Tiền VNĐ</label>
+                </div>
+            </div>
+            <div class="row form-group" ng-if="!IS_HANG_KHOIDAU">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Đánh dấu hạng khách hàng khởi điểm</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="checkbox" ng-model="target.HANG_KHOIDAU" ng-true-value="1" ng-false-value="0" disabled/>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="select" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_trangThai" name="_trangThai" ng-init="target.TRANGTHAI = 10" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('status')" class="form-control" disabled></select>
+                    <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
+                        <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã nhóm quyền</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maNhomQuyen" name="_maNhomQuyen" ng-model="target.MANHOMQUYEN" required placeholder="Nhập mã nhóm quyền" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._maNhomQuyen.$dirty && _form._maNhomQuyen.$invalid">
+                        <span ng-show="_form._maNhomQuyen.$error.required">Mã nhóm quyền không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên nhóm quyền</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenNhomQuyen" name="_tenNhomQuyen" autofocus ng-model="target.TENNHOMQUYEN" required placeholder="Nhập tên nhóm quyền" class="form-control">
+                    <small class="form-text text-muted" ng-show="_form._tenNhomQuyen.$dirty && _form._tenNhomQuyen.$invalid">
+                        <span ng-show="_form._tenNhomQuyen.$error.required">Tên nhóm quyền không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Diễn giải</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <textarea id="textarea-input" name="textarea-input" rows="4" ng-model="target.DIENGIAI" placeholder="Bổ sung thông tin (tối đa 300 ký tự)" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

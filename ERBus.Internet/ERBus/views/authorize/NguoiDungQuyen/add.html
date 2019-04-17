@@ -1,0 +1,102 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr ng-repeat="item in listMenu | orderBy:'SAPXEP' track by item.MA_MENU" ng-dblclick="selectChucNang(item)">
+                                <td>{{item.TIEUDE}}<i class="fa fa-arrow-circle-right" aria-hidden="true" style="float: right; font-size: 15px;" ng-click="selectChucNang(item)"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-md-9">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Thêm mới</th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','XEM',addAll.XEM)" ng-model="addAll.XEM"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','THEM',addAll.THEM)" ng-model="addAll.THEM"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','SUA',addAll.SUA)" ng-model="addAll.SUA"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','XOA',addAll.XOA)" ng-model="addAll.XOA"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','DUYET',addAll.DUYET)" ng-model="addAll.DUYET"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','GIAMUA',addAll.GIAMUA)" ng-model="addAll.GIAMUA"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','GIABAN',addAll.GIABAN)" ng-model="addAll.GIABAN"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','GIAVON',addAll.GIAVON)" ng-model="addAll.GIAVON"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','TYLELAI',addAll.TYLELAI)" ng-model="addAll.TYLELAI"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','BANCHIETKHAU',addAll.BANCHIETKHAU)" ng-model="addAll.BANCHIETKHAU"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','BANBUON',addAll.BANBUON)" ng-model="addAll.BANBUON"/></th>
+                                <th><input type="checkbox" ng-disabled="lstAdd.length == 0" ng-change="checkAll('lstAdd','BANTRALAI',addAll.BANTRALAI)" ng-model="addAll.BANTRALAI"/></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in lstAdd | orderBy:'SAPXEP' track by item.MA_MENU" ng-dblclick="deSelectChucNangAdd(item)">
+                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 15px;" ng-click="deSelectChucNangAdd(item)"></i>&nbsp;&nbsp;&nbsp;{{item.TIEUDE}}</td>
+                                <td><input type="checkbox" ng-model="item.XEM" />Xem</td>
+                                <td><input type="checkbox" ng-model="item.THEM" />Thêm</td>
+                                <td><input type="checkbox" ng-model="item.SUA" />Sửa</td>
+                                <td><input type="checkbox" ng-model="item.XOA" />Xóa</td>
+                                <td><input type="checkbox" ng-model="item.DUYET" />Duyệt</td>
+                                <td><input type="checkbox" ng-model="item.GIAMUA" />&nbsp;&nbsp;Giá Mua</td>
+                                <td><input type="checkbox" ng-model="item.GIABAN" />&nbsp;&nbsp;Giá Bán</td>
+                                <td><input type="checkbox" ng-model="item.GIAVON" />&nbsp;&nbsp;Giá Vốn</td>
+                                <td><input type="checkbox" ng-model="item.TYLELAI" />&nbsp;&nbsp;Tỷ Lệ Lãi</td>
+                                <td><input type="checkbox" ng-model="item.BANCHIETKHAU" />&nbsp;&nbsp;Bán Chiết khấu</td>
+                                <td><input type="checkbox" ng-model="item.BANBUON" />&nbsp;&nbsp;Bán Buôn</td>
+                                <td><input type="checkbox" ng-model="item.BANTRALAI" />&nbsp;&nbsp;Bán Trả Lại</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br /><br />
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Chỉnh sửa</th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','XEM',editAll.XEM)" ng-model="editAll.XEM" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','THEM',editAll.THEM)" ng-model="editAll.THEM" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','SUA',editAll.SUA)" ng-model="editAll.SUA" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','XOA',editAll.XOA)" ng-model="editAll.XOA" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','DUYET',editAll.DUYET)" ng-model="editAll.DUYET" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','GIAMUA',editAll.GIAMUA)" ng-model="editAll.GIAMUA" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','GIABAN',editAll.GIABAN)" ng-model="editAll.GIABAN" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','GIAVON',editAll.GIAVON)" ng-model="editAll.GIAVON" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','TYLELAI',editAll.TYLELAI)" ng-model="editAll.TYLELAI" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','BANCHIETKHAU',editAll.BANCHIETKHAU)" ng-model="editAll.BANCHIETKHAU" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','BANBUON',editAll.BANBUON)" ng-model="editAll.BANBUON" /></th>
+                                <th><input type="checkbox" ng-disabled="data.length == 0" ng-change="checkAll('data','BANTRALAI',editAll.BANTRALAI)" ng-model="editAll.BANTRALAI" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in data | orderBy:'SAPXEP' track by item.MA_MENU" ng-dblclick="deSelectChucNang(item)">
+                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 15px;" ng-click="deSelectChucNang(item)"></i>&nbsp;&nbsp;&nbsp;{{item.TIEUDE}}</td>
+                                <td><input type="checkbox" ng-model="item.XEM" ng-change="modified(item)" />Xem</td>
+                                <td><input type="checkbox" ng-model="item.THEM" ng-change="modified(item)" />Thêm</td>
+                                <td><input type="checkbox" ng-model="item.SUA" ng-change="modified(item)" />Sửa</td>
+                                <td><input type="checkbox" ng-model="item.XOA" ng-change="modified(item)" />Xóa</td>
+                                <td><input type="checkbox" ng-model="item.DUYET" ng-change="modified(item)" />Duyệt</td>
+                                <td><input type="checkbox" ng-model="item.GIAMUA" ng-change="modified(item)" />&nbsp;&nbsp;Giá Mua</td>
+                                <td><input type="checkbox" ng-model="item.GIABAN" ng-change="modified(item)" />&nbsp;&nbsp;Giá Bán</td>
+                                <td><input type="checkbox" ng-model="item.GIAVON" ng-change="modified(item)" />&nbsp;&nbsp;Giá Vốn</td>
+                                <td><input type="checkbox" ng-model="item.TYLELAI" ng-change="modified(item)" />&nbsp;&nbsp;Tỷ Lệ Lãi</td>
+                                <td><input type="checkbox" ng-model="item.BANCHIETKHAU" ng-change="modified(item)" />&nbsp;&nbsp;Bán Chiết khấu</td>
+                                <td><input type="checkbox" ng-model="item.BANBUON" ng-change="modified(item)" />&nbsp;&nbsp;Bán Buôn</td>
+                                <td><input type="checkbox" ng-model="item.BANTRALAI" ng-change="modified(item)" />&nbsp;&nbsp;Bán Trả Lại</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

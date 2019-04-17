@@ -1,0 +1,256 @@
+﻿<style>
+    tags-input .host {
+        margin-top: 0px;
+    }
+</style>
+<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Mã loại</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                        <div class="input-group">
+                            <select enter id="_maLoai" name="_maLoai" ng-model="target.MALOAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('loaiHang')" ng-change="changeMaLoai(target.MALOAI);" class="form-control"></select>
+                        </div>
+                        <small class="form-text text-muted" ng-show="_form._maLoai.$dirty && _form._maLoai.$invalid">
+                            <span ng-show="_form._maLoai.$error.required">Mã loại không được để trống</span>
+                        </small>
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Mã nhóm</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                        <div class="input-group">
+                            <select enter id="_maNhom" name="_maNhom" ng-model="target.MANHOM" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('nhomHang')" class="form-control"></select>
+                        </div>
+                        <small class="form-text text-muted" ng-show="_form._maNhom.$dirty && _form._maLoai.$invalid">
+                            <span ng-show="_form._maNhom.$error.required">Mã nhóm không được để trống</span>
+                        </small>
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Mã hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                        <input enter type="text" id="_maHang" name="_maHang" ng-model="target.MAHANG" required placeholder="Nhập mã hàng" class="form-control">
+                        <small class="form-text text-muted" ng-show="_form._maHang.$dirty && _form._maHang.$invalid">
+                            <span ng-show="_form._maHang.$error.required">Mã hàng không được để trống</span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Tên hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                        <input enter type="text" id="_tenHang" name="_tenHang" ng-model="target.TENHANG" required placeholder="Nhập tên hàng" class="form-control">
+                        <small class="form-text text-muted" ng-show="_form._tenHang.$dirty && _form._tenHang.$invalid">
+                            <span ng-show="_form._tenHang.$error.required">Tên hàng không được để trống</span>
+                        </small>
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Nhà cung cấp</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                        <div class="input-group">
+                            <input enter type="text" id="_maNhaCungCap" name="_maNhaCungCap" ng-model="target.MANHACUNGCAP" required placeholder="Nhập mã nhà cung cấp" typeahead-editable="false"
+                                   uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('nhaCungCap') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                                   typeahead-input-formatter="convertCodeToName($model, 'nhaCungCap')" class="form-control">
+                        </div>
+                        <small class="form-text text-muted" ng-show="_form._maNhaCungCap.$dirty && _form._maNhaCungCap.$invalid">
+                            <span ng-show="_form._maNhaCungCap.$error.required">Nhà cung cấp không được để trống</span>
+                        </small>
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Đơn vị tính</label>
+                        <div class="input-group">
+                            <input enter type="text" id="_maDonViTinh" name="_maDonViTinh" ng-model="target.MADONVITINH" placeholder="Nhập mã đơn vị tính" typeahead-editable="false"
+                                   uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('donViTinh') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                                   typeahead-input-formatter="convertCodeToName($model, 'donViTinh')" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row form-group">
+                <!--phần bên trái md-8-->
+                <div class="col col-md-8">
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Kệ hàng</label>
+                                <div class="input-group">
+                                    <input enter type="text" id="_maKeHang" name="_maKeHang" ng-model="target.MAKEHANG" placeholder="Nhập mã kệ hàng" typeahead-editable="false"
+                                           uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('keHang') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                                           typeahead-input-formatter="convertCodeToName($model, 'keHang')" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                                <div class="input-group">
+                                    <select enter id="_trangThai" name="_trangThai" ng-init="target.TRANGTHAI = 10" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('status')" class="form-control" disabled></select>
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
+                                    <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Mã Barcode</label>
+                                <div class="input-group">
+                                    <tags-input enter ng-model="target.BARCODE_ADD" track-by-expr="$index" placeholder="Nhập mã barcode" replace-spaces-with-dashes="true" class="form-control" style="padding: 0 0;">
+                                    </tags-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Thuế vào</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                                <div class="input-group">
+                                    <select enter id="_maThueVao" name="_maThueVao" ng-model="target.MATHUE_VAO" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('thue')" ng-change="selectedThueVao(target.MATHUE_VAO);" class="form-control"></select>
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._maThueVao.$dirty && _form._maThueVao.$invalid">
+                                    <span ng-show="_form._maThueVao.$error.required">Mã thuế vào không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Thuế ra</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                                <div class="input-group">
+                                    <select enter id="_maThueRa" name="_maThueRa" ng-model="target.MATHUE_RA" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('thue')" ng-change="selectedThueRa(target.MATHUE_RA);" class="form-control"></select>
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._maThueRa.$dirty && _form._maThueRa.$invalid">
+                                    <span ng-show="_form._maThueRa.$error.required">Mã thuế ra không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Giá mua</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_giaMua" name="_giaMua" ng-model="target.GIAMUA" ng-change="changedGiaMua(target.GIAMUA);" placeholder="Nhập giá mua" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Giá mua có VAT</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_giaMuaCoVat" name="_giaMuaCoVat" ng-model="target.GIAMUA_VAT" ng-change="changedGiaMuaVat(target.GIAMUA_VAT);" placeholder="Nhập giá mua có VAT" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Tỷ lệ lãi lẻ</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_tyLeLaiLe" name="_tyLeLaiLe" ng-model="target.TYLE_LAILE" ng-change="changedTyLeLaiLe(target.TYLE_LAILE);" placeholder="Nhập tỷ lệ lãi lẻ" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Giá bán lẻ</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_giaBanLe" name="_giaBanLe" ng-model="target.GIABANLE" ng-change="changedGiaBanLe(target.GIABANLE);" placeholder="Nhập giá bán lẻ" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Tỷ lệ lãi buôn</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_tyLeLaiBuon" name="_tyLeLaiBuon" ng-model="target.TYLE_LAIBUON" ng-change="changedTyLeLaiBuon(target.TYLE_LAIBUON);" placeholder="Nhập tỷ lệ lãi buôn" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Giá bán buôn</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_giaBanBuon" name="_giaBanBuon" ng-model="target.GIABANBUON" ng-change="changedGiaBanBuon(target.GIABANBUON);" placeholder="Nhập giá bán buôn" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Giá bán lẻ có VAT</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_giaBanLeCoVat" name="_giaBanLeCoVat" ng-model="target.GIABANLE_VAT" ng-change="changedGiaBanLeVat(target.GIABANLE_VAT);" placeholder="Nhập giá bán lẻ VAT" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-6">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Giá bán buôn có VAT</label>
+                                <div class="input-group">
+                                    <input type="text" enter awnum="number" id="_giaBanBuonCoVat" name="_giaBanBuonCoVat" ng-model="target.GIABANBUON_VAT" ng-change="changedGiaBanBuonVat(target.GIABANBUON_VAT);" placeholder="Nhập giá bán buôn VAT" style="text-align: right;" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end phần bên trái md-8-->
+                <!--phần bên phải md-4-->
+                <div class="col col-md-4">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">Avatar</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-12">
+                            <div class="preview" ng-if="target.AVATAR">
+                                <div style="height: auto; overflow: hidden;">
+                                    <img ng-src="data:image/JPEG;base64,{{target.AVATAR}}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">File ảnh</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-12">
+                            <div class="preview-from-Db" ng-repeat="image in lstImagesSrcFromDb track by $index">
+                                <div style="height: auto; overflow: hidden;">
+                                    <img rel="popover" ng-src="{{target.DUONGDAN + image}}" class="list-image"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end phần bên phải md-4-->
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

@@ -1,0 +1,218 @@
+﻿<style>
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    .table td, .table th {
+        padding: 0;
+    }
+
+    .title-order {
+        width: 3%;
+        text-align: center;
+    }
+
+    .title-name {
+        text-align: center;
+    }
+
+    .title-lai {
+        width: 4%;
+        text-align: center;
+    }
+
+    .title-text {
+        text-align: center;
+    }
+
+    .title-gia {
+        width: 7%;
+        text-align: center;
+        word-wrap: break-word;
+    }
+</style>
+<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="title-order">
+                                    <a>STT</a>
+                                </th>
+                                <th class="title-name">
+                                    <a>Tên hàng</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Nhà cung cấp</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Loại</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Nhóm</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Thuế vào</a>
+                                </th>
+                                <th class="title-text">
+                                    <a>Thuế ra</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Giá mua</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Giá mua (VAT)</a>
+                                </th>
+                                <th class="title-lai">
+                                    <a>Lãi lẻ</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Giá bán lẻ</a>
+                                </th>
+                                <th class="title-lai">
+                                    <a>Lãi buôn</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Giá bán buôn</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Giá bán lẻ (VAT)</a>
+                                </th>
+                                <th class="title-gia">
+                                    <a>Giá bán buôn (VAT)</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in data | orderBy:sortType:sortReverse">
+                                <td>
+                                    <div class="form-group">
+                                        <input enter type="text" id="_stt" name="_stt" ng-value="$index + 1" class="form-control">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input enter type="text" id="_tenHang" name="_tenHang" ng-model="item.TENHANG" required placeholder="Nhập tên hàng" class="form-control">
+                                        <small class="form-text text-muted" ng-show="_form._tenHang.$dirty && _form._tenHang.$invalid">
+                                            <span ng-show="_form._tenHang.$error.required">Tên hàng không được để trống</span>
+                                        </small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input enter type="text" id="_maNhaCungCap" name="_maNhaCungCap" ng-model="item.MANHACUNGCAP" required placeholder="Nhập mã nhà cung cấp" typeahead-editable="false"
+                                                   uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('nhaCungCap') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                                                   typeahead-input-formatter="convertCodeToName($model, 'nhaCungCap')" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select enter id="_maLoai" name="_maLoai" ng-model="item.MALOAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('loaiHang')" ng-change="changeMaLoai(item);" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select enter id="_maNhom" name="_maNhom" ng-model="item.MANHOM" required ng-options="opt.VALUE as opt.TEXT for opt in item.LIST_MANHOM" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select enter id="_maThueVao" name="_maThueVao" ng-model="item.MATHUE_VAO" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('thue')" ng-change="selectedThueVao(item);" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select enter id="_maThueRa" name="_maThueRa" ng-model="item.MATHUE_RA" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('thue')" ng-change="selectedThueRa(item);" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_giaMua" name="_giaMua" ng-model="item.GIAMUA" ng-change="changedGiaMua(item);" placeholder="Nhập giá mua" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_giaMuaCoVat" name="_giaMuaCoVat" ng-model="item.GIAMUA_VAT" ng-change="changedGiaMuaVat(item);" placeholder="Nhập giá mua có VAT" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_tyLeLaiLe" name="_tyLeLaiLe" ng-model="item.TYLE_LAILE" ng-change="changedTyLeLaiLe(item);" placeholder="Nhập tỷ lệ lãi lẻ" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_giaBanLe" name="_giaBanLe" ng-model="item.GIABANLE" ng-change="changedGiaBanLe(item);" placeholder="Nhập giá bán lẻ" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_tyLeLaiBuon" name="_tyLeLaiBuon" ng-model="item.TYLE_LAIBUON" ng-change="changedTyLeLaiBuon(item);" placeholder="Nhập tỷ lệ lãi buôn" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_giaBanBuon" name="_giaBanBuon" ng-model="item.GIABANBUON" ng-change="changedGiaBanBuon(item);" placeholder="Nhập giá bán buôn" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_giaBanLeCoVat" name="_giaBanLeCoVat" ng-model="item.GIABANLE_VAT" ng-change="changedGiaBanLeVat(item);" placeholder="Nhập giá bán lẻ VAT" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" enter awnum="number" id="_giaBanBuonCoVat" name="_giaBanBuonCoVat" ng-model="item.GIABANBUON_VAT" ng-change="changedGiaBanBuonVat(item);" placeholder="Nhập giá bán buôn VAT" style="text-align: right;" class="form-control">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="insertExcelToDb();"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

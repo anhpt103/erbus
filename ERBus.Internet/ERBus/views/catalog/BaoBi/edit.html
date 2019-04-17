@@ -1,0 +1,60 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã bao bì</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maBaoBi" name="_maBaoBi" ng-model="target.MABAOBI" required placeholder="Nhập mã bao bì" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._maBaoBi.$dirty && _form._maBaoBi.$invalid">
+                        <span ng-show="_form._maBaoBi.$error.required">Mã bao bì không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên nhóm hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenBaoBi" name="_tenBaoBi" ng-model="target.TENBAOBI" required placeholder="Nhập tên bao bì" class="form-control">
+                    <small class="form-text text-muted" ng-show="_form._tenBaoBi.$dirty && _form._tenBaoBi.$invalid">
+                        <span ng-show="_form._tenBaoBi.$error.required">Tên nhóm không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Số lượng / 1 Bao</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="number" id="_soLuong" name="_soLuong" ng-model="target.SOLUONG" required placeholder="Nhập số lượng / 1 bao bì" class="form-control">
+                    <small class="form-text text-muted" ng-show="_form._soLuong.$dirty && _form._soLuong.$invalid">
+                        <span ng-show="_form._soLuong.$error.required">Số lượng sản phẩm / 1 bao không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="select" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_trangThai" name="_trangThai" ng-init="target.TRANGTHAI = 10" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('status')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
+                        <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

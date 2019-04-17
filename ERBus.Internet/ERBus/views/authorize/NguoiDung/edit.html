@@ -1,0 +1,84 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên đầy đủ</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_tenDayDu" name="_tenDayDu" ng-model="target.TENNHANVIEN" required placeholder="Nhập tên người dùng" class="form-control" autofocus>
+                    <small class="form-text text-muted" ng-show="_form._tenDayDu.$dirty && _form._tenDayDu.$invalid">
+                        <span ng-show="_form._tenDayDu.$error.required">Tên người dùng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Username</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_username" name="_username" ng-model="target.USERNAME" ng-blur="checkExistsUsername(target.USERNAME);" required placeholder="Nhập tài khoản" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._username.$dirty && _form._username.$invalid">
+                        <span ng-show="_form._username.$error.required">Username không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Điện thoại</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_dienthoai" name="_dienthoai" ng-model="target.SODIENTHOAI" placeholder="Nhập số điện thoại" class="form-control">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Căn cước</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_cancuoc" name="_cancuoc" ng-model="target.CHUNGMINHTHU" placeholder="Nhập số căn cước công dân" class="form-control">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label class="form-control-label">Giới tính</label>
+                </div>
+                <div class="col col-md-9">
+                    <div class="form-check">
+                        <div class="radio">
+                            <label for="radio1" class="form-check-label ">
+                                <input enter type="radio" id="_male" name="_male" ng-model="target.GIOITINH" value="1" class="form-check-input">Nam
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label for="radio2" class="form-check-label ">
+                                <input enter type="radio" id="_female" name="_female" ng-model="target.GIOITINH" value="0" class="form-check-input">Nữ
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="select" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_trangThai" name="_trangThai" ng-init="target.TRANGTHAI = 10" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('status')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
+                        <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

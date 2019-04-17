@@ -1,0 +1,248 @@
+﻿create or replace PROCEDURE "BANLE_TIMKIEM_BOHANG_MAHANG" 
+(
+  P_MADONVI IN VARCHAR2 ,
+  P_TUKHOA IN VARCHAR2,
+  P_SUDUNG_TIMKIEM_ALL IN NUMBER,
+  P_DIEUKIENCHON IN NUMBER,
+  CURSOR_RESULT OUT SYS_REFCURSOR
+) AS 
+  QUERY_SELECT VARCHAR2(3000);
+  T_LOAITIMKIEM VARCHAR2(20) := '';
+  TEXT_IS_NUMBER NUMBER(18,2) := 0;
+  IS_CONTAIN_UNITCODE VARCHAR2(2):='';
+BEGIN
+  SELECT IS_NUMBER(P_TUKHOA) INTO TEXT_IS_NUMBER FROM DUAL;
+  BEGIN 
+      SELECT * INTO IS_CONTAIN_UNITCODE FROM DUAL WHERE REGEXP_REPLACE(P_TUKHOA, '[^ -~]', '@') LIKE '%@%';
+      EXCEPTION WHEN NO_DATA_FOUND
+      THEN IS_CONTAIN_UNITCODE := '';
+  END;
+  IF P_SUDUNG_TIMKIEM_ALL = 1 THEN
+      IF LENGTH(P_TUKHOA) = 13 AND TEXT_IS_NUMBER = 1 AND (IS_CONTAIN_UNITCODE IS NULL OR IS_CONTAIN_UNITCODE = '') 
+        THEN T_LOAITIMKIEM := 'BARCODE';
+      END IF;
+      IF LENGTH(P_TUKHOA) = 7 AND SUBSTR(P_TUKHOA,0,2) <> 'BH' AND TEXT_IS_NUMBER = 0 AND (IS_CONTAIN_UNITCODE IS NULL OR IS_CONTAIN_UNITCODE = '') 
+        THEN T_LOAITIMKIEM := 'MAHANG';
+      END IF;
+      IF IS_CONTAIN_UNITCODE = 'X' 
+        THEN T_LOAITIMKIEM := 'TENHANG';
+      END IF; 
+      IF LENGTH(P_TUKHOA) = 4 AND TEXT_IS_NUMBER = 1 AND (IS_CONTAIN_UNITCODE IS NULL OR IS_CONTAIN_UNITCODE = '') 
+        THEN T_LOAITIMKIEM := 'MACANDIENTU';
+      END IF; 
+      IF SUBSTR(P_TUKHOA,0,2) = 'BH' 
+        THEN T_LOAITIMKIEM := 'BOHANG';
+      END IF;
+  ELSE
+      IF P_DIEUKIENCHON = 0
+        THEN T_LOAITIMKIEM := 'MAHANG';
+      END IF;
+      IF P_DIEUKIENCHON = 1
+        THEN T_LOAITIMKIEM := 'BARCODE';
+      END IF;
+      IF P_DIEUKIENCHON = 2
+        THEN T_LOAITIMKIEM := 'MACANDIENTU';
+      END IF; 
+      IF P_DIEUKIENCHON = 3
+        THEN T_LOAITIMKIEM := 'TENHANG';
+      END IF; 
+      IF P_DIEUKIENCHON = 4
+        THEN T_LOAITIMKIEM := 'BOHANG';
+      END IF; 
+      IF P_DIEUKIENCHON = 5
+        THEN T_LOAITIMKIEM := 'MAHANGTRONGBO';
+      END IF;
+      IF P_DIEUKIENCHON = 6
+        THEN T_LOAITIMKIEM := 'GIABANLE_VAT';
+      END IF; 
+  END IF;
+IF P_SUDUNG_TIMKIEM_ALL = 1 THEN
+    IF T_LOAITIMKIEM = 'BARCODE' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.BARCODE LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'MAHANG' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.MAHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'TENHANG' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND UPPER(a.TENHANG) LIKE N''%'||UPPER(P_TUKHOA)||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'MACANDIENTU' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.ITEMCODE = '''||P_TUKHOA||''' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'BOHANG' THEN
+        QUERY_SELECT := 'SELECT
+                        A.MABOHANG       AS MAHANG,
+                        B.MAHANG         AS MACON,
+                        C.TENHANG        AS TENHANG,
+                        C.MALOAI,
+                        C.MANHOM,
+                        ''Bó'' AS DONVITINH,
+                        C.MANHACUNGCAP   AS MANHACUNGCAP,
+                        E.TENNHACUNGCAP,
+                        D.GIABANLE_VAT,
+                        C.ITEMCODE,
+                        C.BARCODE
+                    FROM
+                        BOHANG A
+                        INNER JOIN BOHANG_CHITIET B ON A.MABOHANG = B.MABOHANG
+                        INNER JOIN MATHANG C ON B.MAHANG = C.MAHANG
+                        INNER JOIN MATHANG_GIA D ON B.MAHANG = C.MAHANG
+                        INNER JOIN NHACUNGCAP E ON C.MANHACUNGCAP = E.MANHACUNGCAP AND c.UNITCODE = '''||P_MADONVI||''' AND a.MABOHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'MAHANGTRONGBO' THEN
+        QUERY_SELECT := 'SELECT
+                        A.MABOHANG       AS MAHANG,
+                        B.MAHANG         AS MACON,
+                        C.TENHANG        AS TENHANG,
+                        C.MALOAI,
+                        C.MANHOM,
+                        ''Bó'' AS DONVITINH,
+                        C.MANHACUNGCAP   AS MANHACUNGCAP,
+                        E.TENNHACUNGCAP,
+                        D.GIABANLE_VAT,
+                        C.ITEMCODE,
+                        C.BARCODE
+                    FROM
+                        BOHANG A
+                        INNER JOIN BOHANG_CHITIET B ON A.MABOHANG = B.MABOHANG
+                        INNER JOIN MATHANG C ON B.MAHANG = C.MAHANG
+                        INNER JOIN MATHANG_GIA D ON B.MAHANG = C.MAHANG
+                        INNER JOIN NHACUNGCAP E ON C.MANHACUNGCAP = E.MANHACUNGCAP 
+                        AND c.UNITCODE = '''||P_MADONVI||''' AND b.MAHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'GIABANLE_VAT' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND b.GIABANLE_VAT = '||P_TUKHOA||' AND ROWNUM < 201';
+        ELSE 
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.MAHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+    END IF;
+ELSE
+    IF T_LOAITIMKIEM = 'BARCODE' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.BARCODE LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'MAHANG' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.MAHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'TENHANG' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND UPPER(a.TENHANG) LIKE N''%'||UPPER(P_TUKHOA)||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'MACANDIENTU' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.ITEMCODE = '''||P_TUKHOA||''' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'BOHANG' THEN
+        QUERY_SELECT := 'SELECT
+                        A.MABOHANG       AS MAHANG,
+                        B.MAHANG         AS MACON,
+                        C.TENHANG        AS TENHANG,
+                        C.MALOAI,
+                        C.MANHOM,
+                        ''Bó'' AS DONVITINH,
+                        C.MANHACUNGCAP   AS MANHACUNGCAP,
+                        E.TENNHACUNGCAP,
+                        D.GIABANLE_VAT,
+                        C.ITEMCODE,
+                        C.BARCODE
+                    FROM
+                        BOHANG A
+                        INNER JOIN BOHANG_CHITIET B ON A.MABOHANG = B.MABOHANG
+                        INNER JOIN MATHANG C ON B.MAHANG = C.MAHANG
+                        INNER JOIN MATHANG_GIA D ON B.MAHANG = C.MAHANG
+                        INNER JOIN NHACUNGCAP E ON C.MANHACUNGCAP = E.MANHACUNGCAP AND c.UNITCODE = '''||P_MADONVI||''' AND a.MABOHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'MAHANGTRONGBO' THEN
+        QUERY_SELECT := 'SELECT
+                        A.MABOHANG       AS MAHANG,
+                        B.MAHANG         AS MACON,
+                        C.TENHANG        AS TENHANG,
+                        C.MALOAI,
+                        C.MANHOM,
+                        ''Bó'' AS DONVITINH,
+                        C.MANHACUNGCAP   AS MANHACUNGCAP,
+                        E.TENNHACUNGCAP,
+                        D.GIABANLE_VAT,
+                        C.ITEMCODE,
+                        C.BARCODE
+                    FROM
+                        BOHANG A
+                        INNER JOIN BOHANG_CHITIET B ON A.MABOHANG = B.MABOHANG
+                        INNER JOIN MATHANG C ON B.MAHANG = C.MAHANG
+                        INNER JOIN MATHANG_GIA D ON B.MAHANG = C.MAHANG
+                        INNER JOIN NHACUNGCAP E ON C.MANHACUNGCAP = E.MANHACUNGCAP 
+                        AND c.UNITCODE = '''||P_MADONVI||''' AND b.MAHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+        ELSIF T_LOAITIMKIEM = 'GIABANLE_VAT' THEN
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND b.GIABANLE_VAT = '||P_TUKHOA||' AND ROWNUM < 201';
+        ELSE 
+        QUERY_SELECT := 'SELECT a.MAHANG,a.MAHANG AS MACON,a.TENHANG,a.MALOAI,a.MANHOM,
+                        d.TENDONVITINH AS DONVITINH,a.MANHACUNGCAP,c.TENNHACUNGCAP,
+                        b.GIABANLE_VAT,a.ITEMCODE,a.BARCODE
+                        FROM MATHANG a INNER JOIN MATHANG_GIA b ON a.MAHANG = b.MAHANG
+                        INNER JOIN NHACUNGCAP c ON a.MANHACUNGCAP = c.MANHACUNGCAP
+                        INNER JOIN DONVITINH d ON a.MADONVITINH = d.MADONVITINH
+                        WHERE a.UNITCODE = '''||P_MADONVI||''' AND a.MAHANG LIKE ''%'||P_TUKHOA||'%'' AND ROWNUM < 201';
+    END IF;
+END IF;
+    DBMS_OUTPUT.PUT_LINE('QUERY_SELECT:'||QUERY_SELECT);
+  BEGIN
+  OPEN CURSOR_RESULT FOR QUERY_SELECT;
+    EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+     DBMS_OUTPUT.put_line ('NO_DATA_FOUND');  
+       WHEN OTHERS THEN
+     DBMS_OUTPUT.put_line (SQLERRM);  
+  END;
+END BANLE_TIMKIEM_BOHANG_MAHANG;
+
