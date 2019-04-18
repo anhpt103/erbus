@@ -20,7 +20,6 @@
                                         <td class="text-title-report"></td>
                                         <td></td>
                                         <td>
-                                            <button type="button" prevent-default class="btn btn-info" ng-disabled="_form.$invalid" ng-click="reportInDay();"><i class="fa fa-save"></i>&nbsp;&nbsp;Báo cáo ngày</button>&nbsp;
                                             <button type="button" prevent-default class="btn btn-info" ng-disabled="_form.$invalid" ng-click="report();"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnReport}}</button>&nbsp;
                                             <button type="button" prevent-default class="btn btn-info" ng-disabled="_form.$invalid" ng-click="reportDetail();"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnDetailReport}}</button>&nbsp;
                                             <button type="button" prevent-default class="btn btn-danger" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>&nbsp;
@@ -74,26 +73,6 @@
                                         </td>
                                         <td class="button-title-report">
                                             <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedKhoHang();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Kho</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-title-report">Giao dịch</td>
-                                        <td>
-                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="GIAODICH">
-                                        </td>
-                                        <td>
-                                            <tags-input enter ng-model="target.MA_GIAODICH" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Mã giao dịch" replace-spaces-with-dashes="false">
-                                                <auto-complete source="loadGiaoDichTags($query)"
-                                                               min-length="0"
-                                                               load-on-focus="false"
-                                                               load-on-empty="false"
-                                                               max-results-to-show="20"
-                                                               template="common-custom-template">
-                                                </auto-complete>
-                                            </tags-input>
-                                        </td>
-                                        <td class="button-title-report">
-                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedMaGiaoDich();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Giao dịch</button>
                                         </td>
                                     </tr>
                                     <tr>

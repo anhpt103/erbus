@@ -3,7 +3,7 @@ using System.Web.Http;
 
 namespace ERBus.Api.Controllers.Report
 {
-    [RoutePrefix("api/Report/XuatBanLe")]
+    [RoutePrefix("api/Report/XuatBanLeReport")]
     [Route("{id?}")]
     [Authorize]
     public class XuatBanLeController : ApiController

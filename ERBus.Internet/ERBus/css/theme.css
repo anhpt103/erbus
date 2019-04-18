@@ -14887,6 +14887,12 @@ span.title {
     width: 900px;
 }
 
+.search-giaodich-window .modal-content {
+    left: 50%;
+    transform: translate(-50%, 10%);
+    width: 1050px;
+}
+
 .search-window-mathang .modal-content {
     left: 50%;
     transform: translate(-50%, 10%);

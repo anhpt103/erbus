@@ -1,0 +1,199 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-8">
+                    <div class="row form-group">
+                        <div class="col col-md-4">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Mã giao dịch</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                                <div class="input-group">
+                                    <input type="text" enter id="_maGiaoDich" name="_maGiaoDich" ng-model="target.MA_GIAODICH" required placeholder="Nhập mã giao dịch" class="form-control" disabled>
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._maGiaoDich.$dirty && _form._maLoai.$invalid">
+                                    <span ng-show="_form._maGiaoDich.$error.required">Mã giao dịch không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col col-md-4">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Ngày giao dịch</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" ng-model="target.NGAY_GIAODICH" placeholder="{{config.dateFormat}}" uib-datepicker-popup="{{config.dateFormat}}" is-open="_ngayct" datepicker-localdate disabled />
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._ngayGiaoDich.$dirty && _form._ngayGiaoDich.$invalid">
+                                    <span ng-show="_form._ngayGiaoDich.$error.required">Ngày giao dịch không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col col-md-4">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Khách hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                                <div class="input-group">
+                                    <select enter id="_maNhaCungCap" name="_maNhaCungCap" ng-model="target.MAKHACHHANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('khachHang')" class="form-control" disabled></select>
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._maKhachHang.$dirty && _form._maNhaCungCap.$invalid">
+                                    <span ng-show="_form._maKhachHang.$error.required">Mã khách hàng không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-4">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Mã kho xuất</label><span style="color: red" title="Bắt buộc phải nhập">(*)</span>
+                                <div class="input-group">
+                                    <select enter id="_maKho_Xuat" name="_maKho_Xuat" ng-model="target.MAKHO_XUAT" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('khoHang')" class="form-control" disabled></select>
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._maKho_Xuat.$dirty && _form._maKho_Nhap.$invalid">
+                                    <span ng-show="_form._maKho_Xuat.$error.required">Mã kho xuất không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col col-md-4">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Loại giao dịch</label><span style="color: red" title="Bắt buộc phải nhập">(*)</span>
+                                <div class="input-group">
+                                    <input type="text" enter id="_loaiGiaoDich" name="_loaiGiaoDich" ng-model="target.LOAI_GIAODICH" required class="form-control" disabled />
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._loaiGiaoDich.$dirty && _form._maKho_Nhap.$invalid">
+                                    <span ng-show="_form._loaiGiaoDich.$error.required">Loại giao dịch không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col col-md-4">
+                            <div class="form-group">
+                                <label for="text-input" class="form-control-label">Thời gian tạo</label><span style="color: red" title="Bắt buộc phải nhập">(*)</span>
+                                <div class="input-group">
+                                    <input type="text" enter id="_thoiGianTao" name="_thoiGianTao" ng-model="target.THOIGIAN_TAO" required class="form-control" disabled />
+                                </div>
+                                <small class="form-text text-muted" ng-show="_form._thoiGianTao.$dirty && _form._maKho_Nhap.$invalid">
+                                    <span ng-show="_form._thoiGianTao.$error.required">Thời gian tạo không được để trống</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="text-input" class="form-control-label">Diễn giải</label>
+                        <div class="input-group">
+                            <textarea id="textarea-input" name="textarea-input" rows="5" ng-model="target.DIENGIAI" placeholder="Bổ sung thông tin (tối đa 500 ký tự)" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <!-- DATA TABLE -->
+                    <div class="table-responsive table-responsive-data2">
+                        <table class="table table-data2">
+                            <thead>
+                                <tr>
+                                    <th class="th customize"><span class="title">Mã hàng</span></th>
+                                    <th class="th customize"><span class="title">Tên hàng</span></th>
+                                    <th class="th customize"><span class="title">Đơn vị</span></th>
+                                    <th class="th customize"><span class="title">Thuế</span></th>
+                                    <th class="th customize"><span class="title">Số lượng</span></th>
+                                    <th class="th customize"><span class="title">Giá bán lẻ VAT</span></th>
+                                    <th class="th customize"><span class="title">Tiền thẻ VIP</span></th>
+                                    <th class="th customize"><span class="title">Tiền chiết khấu</span></th>
+                                    <th class="th customize"><span class="title">Tiền khuyến mãi</span></th>
+                                    <th class="th customize"><span class="title">Thành tiền</span></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-form name="_formDetails">
+                                <tr class="spacer"></tr>
+                                <tr class="tr-shadow" ng-repeat="item in data | orderBy: 'SAPXEP' track by $index ">
+                                    <td class="text code">
+                                        <input enter type="text" id="_maHangDetail" name="_maHangDetail" onClick="this.select();" ng-model="item.MAHANG" title="Sản phẩm:{{item.MAHANG}} - Tên: {{item.TENHANG}} - Nhà cung cấp: {{convertCodeToName(item.MANHACUNGCAP,'nhaCungCap')}}" required class="form-control input-nhapMua code" readonly>
+                                    </td>
+                                    <td class="text desc">
+                                        <input type="text" id="_tenHangDetail" name="_tenHangDetail" onClick="this.select();" ng-model="item.TENHANG" title="{{item.TENHANG}}" required class="form-control input-nhapMua" readonly>
+                                    </td>
+                                    <td class="text donvitinh">
+                                        <input type="text" id="_maDonViTinhDetail" name="_maDonViTinhDetail" onClick="this.select();" ng-value="convertCodeToName(item.MADONVITINH,'donViTinh')" title="Mã đơn vị tính {{item.MADONVITINH}} - {{convertCodeToName(item.MADONVITINH,'donViTinh')}}" class="form-control input-nhapMua code" readonly>
+                                    </td>
+                                    <td class="text thue">
+                                        <input type="text" id="_maThueVaoDetail" name="_maThueVaoDetail" onClick="this.select();" ng-value="convertCodeToName(item.MATHUE_RA,'thue')" title="Mã thuế vào {{item.MATHUE_RA}} - {{convertCodeToName(item.MATHUE_RA,'thue')}}" class="form-control input-nhapMua code" readonly>
+                                    </td>
+                                    <td class="number soluong">
+                                        <input enter type="text" awnum="number" id="_soLuongDetail" name="_soLuongDetail" onClick="this.select();" ng-model="item.SOLUONG" title="Số lượng: {{item.SOLUONG}}" ng-change="changedSoLuong(item);" required class="form-control input-nhapMua number" readonly>
+                                    </td>
+                                    <td>
+                                        <input enter type="text" awnum="number" id="_giaBanLe_VAT" name="_giaBanLe_VAT" onClick="this.select();" ng-model="item.GIABANLE_VAT" title="Giá bán lẻ có VAT: {{item.GIABANLE_VAT}} VNĐ" required class="form-control input-nhapMua number" readonly>
+                                    </td>
+                                    <td>
+                                        <input enter type="text" awnum="number" id="_tienTheVip" name="_tienTheVip" onClick="this.select();" ng-model="item.TIENTHE_VIP"  ng-blur="changedTienTheVip(item);" ng-enter="changedTienTheVip(item);" title="Tiền thẻ VIP: {{item.TIENTHE_VIP}} VNĐ" required class="form-control input-nhapMua number">
+                                    </td>
+                                    <td class="number soluong">
+                                        <input enter type="text" awnum="number" id="_tienChietKhau" name="_tienChietKhau" onClick="this.select();" ng-model="item.TIEN_CHIETKHAU" ng-blur="changedTienChietKhau(item);"  ng-enter="changedTienChietKhau(item);" class="form-control input-nhapMua number">
+                                    </td>
+                                    <td>
+                                        <input type="text" awnum="number" id="_tienKhuyenMai" name="_tienKhuyenMai" onClick="this.select();" ng-model="item.TIEN_KHUYENMAI" ng-blur="changedTienKhuyenMai(item);" ng-enter="changedTienKhuyenMai(item);"  title="" required class="form-control input-nhapMua number">
+                                    </td>
+                                    <td>
+                                        <input type="text" awnum="number" id="_thanhTienDetail" name="_thanhTienDetail" onClick="this.select();" ng-model="item.THANHTIEN" title="Thành tiền = Số lượng x Giá bán lẻ - Tiền thẻ - Tiền chiết khấu - Tiền khuyến mãi" required class="form-control input-nhapMua number" readonly>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody ng-form name="_formTotal">
+                                <tr class="spacer"></tr>
+                                <tr class="tr-shadow">
+                                    <td colspan="7">
+                                        <ul style="float:left;" uib-pagination total-items="paged.TotalItems" ng-model="paged.CurrentPage" ng-change="pageChanged();" max-size="paged.MaxSize" class="pagination-sm cutomize" boundary-link-numbers="true" rotate="false"></ul>
+                                    </td>
+                                    <td colspan="2">Tổng tiền</td>
+                                    <td colspan="2">
+                                        <input type="text" awnum="number" id="_thanhTienTong" name="_thanhTienTong" onClick="this.select();" required ng-model="target.TONGTIEN" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="tr-shadow">
+                                    <td colspan="7">
+                                        <pre class="pre-cutomize">Tổng số: {{paged.CurrentPage}} / {{paged.TotalPages}}</pre>
+                                    </td>
+                                    <td colspan="2">Chiết khấu</td>
+                                    <td colspan="2">
+                                        <input type="text" awnum="number" id="_tienChietKhau" name="_tienChietKhau" onClick="this.select();" required ng-model="target.TONG_TIEN_CHIETKHAU" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="tr-shadow">
+                                    <td colspan="7"></td>
+                                    <td colspan="2">Thẻ VIP</td>
+                                    <td colspan="2">
+                                        <input type="text" awnum="number" id="_tienKhuyenMai" name="_tienKhuyenMai" onClick="this.select();" required ng-model="target.TONG_TIENTHE_VIP" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="tr-shadow">
+                                    <td colspan="7"></td>
+                                    <td colspan="2">Khuyến mãi</td>
+                                    <td colspan="2">
+                                        <input type="text" awnum="number" id="_tienKhuyenMai" name="_tienKhuyenMai" onClick="this.select();" required ng-model="target.TONG_TIEN_KHUYENMAI" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="tr-shadow">
+                                    <td colspan="7"></td>
+                                    <td colspan="2">Tiền phải thanh toán</td>
+                                    <td colspan="2">
+                                        <input type="text" awnum="number" id="_tongTienDaGiam" name="_tongTienDaGiam" onClick="this.select();" required ng-model="target.TONGTIEN_SAUGIAM" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE -->
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+       <!-- <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid || _formDetails.$invalid || _formTotal.$invalid || target.DataDetails.length <= 0 || !target.NGAY_CHUNGTU" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>-->
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div> 

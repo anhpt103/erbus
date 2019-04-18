@@ -25,6 +25,7 @@ using ERBus.Service.Catalog.ThamSoHeThong;
 using ERBus.Service.Catalog.Thue;
 using ERBus.Service.Knowledge.NhapMua;
 using ERBus.Service.Knowledge.XuatBan;
+using ERBus.Service.Knowledge.XuatBanLeThuNgan;
 using ERBus.Service.Promotion.GiamGiaLoaiHang;
 using ERBus.Service.Promotion.GiamGiaNhaCungCap;
 using ERBus.Service.Promotion.GiamGiaNhomHang;
@@ -114,6 +115,9 @@ namespace ERBus.Api.App_Start
             container.RegisterType<IRepository<CHUNGTU>, Repository<CHUNGTU>>(new HierarchicalLifetimeManager());
             container.RegisterType<INhapMuaService, NhapMuaService>(new HierarchicalLifetimeManager());
             container.RegisterType<IXuatBanService, XuatBanService>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IRepository<GIAODICH>, Repository<GIAODICH>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IXuatBanLeThuNganService, XuatBanLeThuNganService>(new HierarchicalLifetimeManager());
 
             //Promotion
             container.RegisterType<IRepository<KHUYENMAI>, Repository<KHUYENMAI>>(new HierarchicalLifetimeManager());

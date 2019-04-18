@@ -236,6 +236,7 @@
     <Compile Include="Controllers\Catalog\BaoBiController.cs" />
     <Compile Include="Controllers\Catalog\NhomHangController.cs" />
     <Compile Include="Controllers\Catalog\LoaiHangController.cs" />
+    <Compile Include="Controllers\Knowledge\XuatBanLeThuNganController.cs" />
     <Compile Include="Controllers\Knowledge\XuatBanController.cs" />
     <Compile Include="Controllers\Knowledge\NhapMuaController.cs" />
     <Compile Include="Controllers\Promotion\GiamGiaNhaCungCap.cs" />
@@ -292,6 +293,18 @@
     <Compile Include="Reports\XuatBanLe\XBANLE_TONGHOP.Designer.cs">
       <DependentUpon>XBANLE_TONGHOP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\XuatNhapTon\XUATNHAPTON_CHITIET.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XuatNhapTon\XUATNHAPTON_CHITIET.Designer.cs">
+      <DependentUpon>XUATNHAPTON_CHITIET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\XuatNhapTon\XUATNHAPTON_TONGHOP.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XuatNhapTon\XUATNHAPTON_TONGHOP.Designer.cs">
+      <DependentUpon>XUATNHAPTON_TONGHOP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\UnityResolver.cs" />
     <Compile Include="Utils\Utils.cs" />
@@ -329,6 +342,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XuatBanLe\XBANLE_TONGHOP.resx">
       <DependentUpon>XBANLE_TONGHOP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XuatNhapTon\XUATNHAPTON_CHITIET.resx">
+      <DependentUpon>XUATNHAPTON_CHITIET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XuatNhapTon\XUATNHAPTON_TONGHOP.resx">
+      <DependentUpon>XUATNHAPTON_TONGHOP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

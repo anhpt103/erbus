@@ -23,6 +23,7 @@ using ERBus.Service.Catalog.NhomHang;
 using ERBus.Service.Catalog.Thue;
 using ERBus.Service.Knowledge.NhapMua;
 using ERBus.Service.Knowledge.XuatBan;
+using ERBus.Service.Knowledge.XuatBanLeThuNgan;
 using ERBus.Service.Promotion.GiamGiaLoaiHang;
 using ERBus.Service.Promotion.GiamGiaNhaCungCap;
 using ERBus.Service.Promotion.GiamGiaNhomHang;
@@ -106,12 +107,17 @@ namespace ERBus.Service
                 cfg.CreateMap<CHUNGTU_CHITIET, NhapMuaViewModel.DtoDetails>();
                 cfg.CreateMap<NhapMuaViewModel.DtoDetails, CHUNGTU_CHITIET>();
 
-
                 cfg.CreateMap<CHUNGTU, XuatBanViewModel.Dto>();
                 cfg.CreateMap<XuatBanViewModel.Dto, CHUNGTU>();
 
                 cfg.CreateMap<CHUNGTU_CHITIET, XuatBanViewModel.DtoDetails>();
                 cfg.CreateMap<XuatBanViewModel.DtoDetails, CHUNGTU_CHITIET>();
+
+                cfg.CreateMap<GIAODICH, XuatBanLeThuNganViewModel.Dto>();
+                cfg.CreateMap<XuatBanLeThuNganViewModel.Dto, GIAODICH>();
+
+                cfg.CreateMap<GIAODICH_CHITIET, XuatBanLeThuNganViewModel.DtoDetails>();
+                cfg.CreateMap<XuatBanLeThuNganViewModel.DtoDetails, GIAODICH_CHITIET>();
 
                 //Promotion
 

@@ -45,6 +45,19 @@
                 }
             },
             moduleUrl: controlUrl + "nhapMuaReportController.js"
+        },
+        {
+            name: 'BaoCaoXuatNhapTon',
+            url: '/inputOutput',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "XuatNhapTon/index.html",
+                    controller: "BaoCaoXuatNhapTon_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "xuatNhapTonReportController.js"
         }
     ];
     return states;

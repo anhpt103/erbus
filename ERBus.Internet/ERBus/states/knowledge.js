@@ -32,6 +32,20 @@
                 }
             },
             moduleUrl: controlUrl + "xuatBanController.js"
+        },
+        // Knowledge Xuất bán lẻ thu ngân
+        {
+            name: 'XuatBanLeThuNgan',
+            url: '/cashier',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "XuatBanLeThuNgan/index.html",
+                    controller: "XuatBanLeThuNgan_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "xuatBanLeThuNganController.js"
         }
     ];
     return states;

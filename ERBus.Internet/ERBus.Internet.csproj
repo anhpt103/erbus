@@ -227,6 +227,7 @@
     <Content Include="ERBus\controllers\catalog\baoBiController.js" />
     <Content Include="ERBus\controllers\catalog\nhomHangController.js" />
     <Content Include="ERBus\controllers\catalog\loaiHangController.js" />
+    <Content Include="ERBus\controllers\knowledge\xuatBanLeThuNganController.js" />
     <Content Include="ERBus\controllers\knowledge\xuatBanController.js" />
     <Content Include="ERBus\controllers\knowledge\nhapMuaController.js" />
     <Content Include="ERBus\controllers\layouts\header-controller.js" />
@@ -237,6 +238,7 @@
     <Content Include="ERBus\controllers\promotion\giamGiaLoaiHangController.js" />
     <Content Include="ERBus\controllers\promotion\tienTyLeController.js" />
     <Content Include="ERBus\controllers\report\nhapMuaReportController.js" />
+    <Content Include="ERBus\controllers\report\xuatNhapTonReportController.js" />
     <Content Include="ERBus\controllers\report\xuatBanLeReportController.js" />
     <Content Include="ERBus\controllers\report\tonKhoReportController.js" />
     <Content Include="ERBus\css\angular-material.css" />
@@ -411,6 +413,9 @@
     <Content Include="ERBus\views\catalog\LoaiHang\edit.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\create.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\index.html" />
+    <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\detail.html" />
+    <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\edit.html" />
+    <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\index.html" />
     <Content Include="ERBus\views\knowledge\NhapMua\approval.html" />
     <Content Include="ERBus\views\knowledge\NhapMua\printItemShelves.html" />
     <Content Include="ERBus\views\knowledge\NhapMua\printItem.html" />
@@ -419,6 +424,7 @@
     <Content Include="ERBus\views\knowledge\NhapMua\detail.html" />
     <Content Include="ERBus\views\knowledge\NhapMua\edit.html" />
     <Content Include="ERBus\views\knowledge\NhapMua\index.html" />
+    <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\search.html" />
     <Content Include="ERBus\views\knowledge\XuatBan\approval.html" />
     <Content Include="ERBus\views\knowledge\XuatBan\create.html" />
     <Content Include="ERBus\views\knowledge\XuatBan\delete.html" />
@@ -445,6 +451,7 @@
     <Content Include="ERBus\views\promotion\TienTyLe\detail.html" />
     <Content Include="ERBus\views\promotion\TienTyLe\edit.html" />
     <Content Include="ERBus\views\promotion\TienTyLe\index.html" />
+    <Content Include="ERBus\views\report\XuatNhapTon\index.html" />
     <Content Include="ERBus\views\report\Template\reports.template.html" />
     <Content Include="ERBus\views\report\NhapMua\index.html" />
     <Content Include="ERBus\views\report\XuatBanLe\index.html" />

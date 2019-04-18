@@ -585,8 +585,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         OracleCommand cmd = new OracleCommand();
                         cmd.Connection = connection;
                         cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.LOAI_KHUYENMAI,A.TUNGAY,A.DENNGAY,A.TUGIO,A.DENGIO,A.DIENGIAI,B.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
-                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI 
-                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND UNITCODE = '" + Session.Session.CurrentUnitCode + "' ");
+                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP 
+                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND D.MAHANG = '"+ MaHang + "' ");
                         OracleDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {

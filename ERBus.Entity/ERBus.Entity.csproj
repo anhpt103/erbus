@@ -161,6 +161,8 @@
   <ItemGroup>
     <Content Include="Desciption\KeywordUsed.txt" />
     <Content Include="Script\BAOCAO_XBANLE_CHITIET.sql" />
+    <Content Include="Script\XUATNHAPTON_TONGHOP.sql" />
+    <Content Include="Script\XUATNHAPTON_CHITIET.sql" />
     <Content Include="Script\BAOCAO_XBANLE_TONGHOP.sql" />
     <Content Include="Script\KhoaSoNhieuKy.sql" />
     <Content Include="Script\NHAPMUA_CHITIET.sql" />
