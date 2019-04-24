@@ -2,6 +2,7 @@
 using ERBus.Entity;
 using ERBus.Entity.Database.Knowledge;
 using ERBus.Service;
+using ERBus.Service.Authorize.KyKeToan;
 using ERBus.Service.Authorize.Utils;
 using ERBus.Service.BuildQuery;
 using ERBus.Service.BuildQuery.Query.Types;
@@ -28,7 +29,7 @@ namespace ERBus.Api.Controllers.Knowledge
         {
             _service = service;
         }
-        
+
 
         [Route("PostQuery")]
         [HttpPost]
@@ -62,7 +63,7 @@ namespace ERBus.Api.Controllers.Knowledge
 
         [ResponseType(typeof(CHUNGTU))]
         [CustomAuthorize(Method = "THEM", State = "XuatBan")]
-        public async Task<IHttpActionResult> Post (Dto instance)
+        public async Task<IHttpActionResult> Post(Dto instance)
         {
             var result = new TransferObj<CHUNGTU>();
             var curentUnitCode = _service.GetCurrentUnitCode();
@@ -104,20 +105,28 @@ namespace ERBus.Api.Controllers.Knowledge
             {
                 result.Status = false;
                 result.Message = e.Message;
-                
+
             }
             return Ok(result);
         }
 
-        [Route("GetDetails/{ID}")]
+        [Route("GetDetails/{ID}/{TABLE_NAME}")]
         [HttpGet]
-        public IHttpActionResult GetDetails(string ID)
+        public IHttpActionResult GetDetails(string ID, string TABLE_NAME)
         {
             var result = new TransferObj<Dto>();
             Dto dto = new Dto();
             if (string.IsNullOrEmpty(ID))
             {
-                return BadRequest("ID không chính xác");
+                result.Data = null;
+                result.Message = "NOTEXISTS_ID";
+                result.Status = false;
+            }
+            else if (string.IsNullOrEmpty(TABLE_NAME))
+            {
+                result.Data = null;
+                result.Message = "NOTEXISTS_TABLE_NAME";
+                result.Status = false;
             }
             else
             {
@@ -125,32 +134,10 @@ namespace ERBus.Api.Controllers.Knowledge
                 var chungTu = _service.Repository.DbSet.FirstOrDefault(x => x.UNITCODE.Equals(unitCode) && x.ID.Equals(ID));
                 if (chungTu != null)
                 {
-                    string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
                     dto = Mapper.Map<CHUNGTU, Dto>(chungTu);
-                    var chungTuChiTiet = _service.UnitOfWork.Repository<CHUNGTU_CHITIET>().DbSet.Where(x => x.MA_CHUNGTU.Equals(chungTu.MA_CHUNGTU)).ToList();
-                    dto.DataDetails = Mapper.Map<List<CHUNGTU_CHITIET>, List<DtoDetails>>(chungTuChiTiet);
-                    if(dto.DataDetails.Count > 0)
-                    {
-                        string listMatHang = "";
-                        foreach(var matHang in dto.DataDetails)
-                        {
-                            listMatHang += matHang.MAHANG + ",";
-                        }
-                        listMatHang = listMatHang.Substring(0, listMatHang.Length - 1);
-                        var MatHangViewModel = _service.GetDataMatHang(_service.ConvertConditionStringToArray(listMatHang), unitCode, connectString);
-                        foreach (var row in dto.DataDetails)
-                        {
-                            var hang = MatHangViewModel.FirstOrDefault(x => x.MAHANG.Equals(row.MAHANG));
-                            if(hang != null)
-                            {
-                                row.TENHANG = hang.TENHANG;
-                                row.MADONVITINH = hang.MADONVITINH;
-                                row.TYLE_LAILE = hang.TYLE_LAILE;
-                            }
-                        }
-                    }
+                    dto.DataDetails = _service.GetDataDetails(chungTu.MA_CHUNGTU, _service.GetConnectionString(), TABLE_NAME, chungTu.MAKHO_XUAT);
                 }
-                if (dto != null && !string.IsNullOrEmpty(dto.MA_CHUNGTU))
+                if (dto != null && !string.IsNullOrEmpty(dto.MA_CHUNGTU) && dto.DataDetails.Count > 0)
                 {
                     result.Data = dto;
                     result.Status = true;
@@ -168,7 +155,7 @@ namespace ERBus.Api.Controllers.Knowledge
 
         [ResponseType(typeof(void))]
         [CustomAuthorize(Method = "SUA", State = "XuatBan")]
-        public async Task<IHttpActionResult> Put (string id, Dto instance)
+        public async Task<IHttpActionResult> Put(string id, Dto instance)
         {
             if (!ModelState.IsValid)
             {
@@ -227,7 +214,7 @@ namespace ERBus.Api.Controllers.Knowledge
             {
                 var refund = _service.DeleteChungTu(instance.ID);
                 int del = await _service.UnitOfWork.SaveAsync();
-                if(del > 1)
+                if (del > 1)
                 {
                     result.Data = true;
                     result.Status = true;
@@ -254,28 +241,45 @@ namespace ERBus.Api.Controllers.Knowledge
         public async Task<IHttpActionResult> PostApproval(ParamApproval instance)
         {
             var result = new TransferObj();
-            if (!string.IsNullOrEmpty(instance.ID))
+
+            string unitCode = _service.GetCurrentUnitCode();
+            string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
+            List<KyKeToanViewModel.ViewModel> listChuaKhoa = _service.KyKeToanChuaKhoa(unitCode, connectString);
+            if (listChuaKhoa != null && listChuaKhoa.Count > 0)
             {
-                string unitCode = _service.GetCurrentUnitCode();
-                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                CHUNGTU chungTu = _service.FindById(instance.ID);
-                if (chungTu == null || chungTu.TRANGTHAI == (int)TypeState.APPROVAL)
+                result.Status = false;
+                result.Data = listChuaKhoa;
+                result.Message = "HAVENOT_CLOSINGOUT_PERIOD";
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(instance.ID))
                 {
-                    result.Status = false;
-                    result.Data = "ISAPROVAL";
-                    result.Message = "Không thể duyệt! Phiếu này đã được duyệt rồi";
-                }
-                else
-                {
-                    if (_service.Approval(chungTu.ID, connectString, chungTu, unitCode) != null)
+                    CHUNGTU chungTu = _service.FindById(instance.ID);
+                    if (chungTu == null || chungTu.TRANGTHAI == (int)TypeState.APPROVAL)
                     {
-                        //tính lại giá hàng hóa
-                        int appro = await _service.UnitOfWork.SaveAsync();
-                        if (appro > 0)
+                        result.Status = false;
+                        result.Data = "ISAPROVAL";
+                        result.Message = "Không thể duyệt! Phiếu này đã được duyệt rồi";
+                    }
+                    else
+                    {
+                        if (_service.Approval(chungTu.ID, connectString, chungTu, unitCode) != null)
                         {
-                            result.Data = chungTu;
-                            result.Status = true;
-                            result.Message = "Duyệt phiếu [" + chungTu.MA_CHUNGTU + "] thành công";
+                            //tính lại giá hàng hóa
+                            int appro = await _service.UnitOfWork.SaveAsync();
+                            if (appro > 0)
+                            {
+                                result.Data = chungTu;
+                                result.Status = true;
+                                result.Message = "Duyệt phiếu [" + chungTu.MA_CHUNGTU + "] thành công";
+                            }
+                            else
+                            {
+                                result.Data = null;
+                                result.Status = false;
+                                result.Message = "Duyệt không thành công";
+                            }
                         }
                         else
                         {
@@ -284,19 +288,13 @@ namespace ERBus.Api.Controllers.Knowledge
                             result.Message = "Duyệt không thành công";
                         }
                     }
-                    else
-                    {
-                        result.Data = null;
-                        result.Status = false;
-                        result.Message = "Duyệt không thành công";
-                    }
                 }
-            }
-            else
-            {
-                result.Data = null;
-                result.Status = false;
-                result.Message = "ID không tìm thấy";
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                    result.Message = "ID không tìm thấy";
+                }
             }
             return Ok(result);
         }

@@ -46,6 +46,20 @@
                 }
             },
             moduleUrl: controlUrl + "xuatBanLeThuNganController.js"
+        },
+        // in phiếu chứng từ
+        {
+            name: 'printPhieuXuatBan',
+            url: '/printPhieuXuatBan?{postParam:configParams}',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "XuatBan/print.html",
+                    controller: "XuatBanPrint_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "xuatBanController.js"
         }
     ];
     return states;

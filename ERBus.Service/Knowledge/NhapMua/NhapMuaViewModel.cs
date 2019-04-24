@@ -100,6 +100,8 @@ namespace ERBus.Service.Knowledge.NhapMua
             public decimal SOLUONG { get; set; }
             public decimal GIAMUA { get; set; }
             public decimal GIAMUA_VAT { get; set; }
+            public decimal GIABANLE { get; set; }
+            public decimal GIABANLE_VAT { get; set; }
             public decimal? TIEN_GIAMGIA { get; set; }
             public decimal THANHTIEN { get; set; }
             public int? INDEX { get; set; }

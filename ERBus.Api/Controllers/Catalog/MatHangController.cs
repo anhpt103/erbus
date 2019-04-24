@@ -90,6 +90,31 @@ namespace ERBus.Api.Controllers.Catalog
             }
         }
 
+        [Route("PostQueryInventory")]
+        [HttpPost]
+        [CustomAuthorize(Method = "XEM", State = "MatHang")]
+        public IHttpActionResult PostQueryInventory(JObject jsonData)
+        {
+            TransferObj<PagedObj<MatHangViewModel.VIEW_MODEL>> result = new TransferObj<PagedObj<MatHangViewModel.VIEW_MODEL>>();
+            var postData = ((dynamic)jsonData);
+            var filtered = ((JObject)postData.filtered).ToObject<FilterObj<MatHangViewModel.Search>>();
+            var paged = ((JObject)postData.paged).ToObject<PagedObj<MatHangViewModel.VIEW_MODEL>>();
+            var unitCode = _service.GetCurrentUnitCode();
+            try
+            {
+                string TableName = filtered.AdvanceData.TABLE_NAME;
+                string MaKho = filtered.AdvanceData.MAKHO;
+                PagedObj<MatHangViewModel.VIEW_MODEL> tempData = _service.QueryPageMatHangInventory(_service.GetConnectionString(), paged, filtered.Summary, unitCode, TableName, MaKho);
+                result.Data = tempData;
+                result.Status = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError();
+            }
+        }
+
         [Route("BuildNewCode/{maLoaiSelected}")]
         [HttpGet]
         public string BuildNewCode(string maLoaiSelected)
@@ -160,6 +185,52 @@ namespace ERBus.Api.Controllers.Catalog
                 var unitCode = _service.GetCurrentUnitCode();
                 string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
                 var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.MAHANG, unitCode, connectString);
+                if (listSearched != null && listSearched.Count == 1)
+                {
+                    result.Data = listSearched[0];
+                    result.Status = true;
+                    result.Message = "Oke";
+                }
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                    result.Message = "NotFound";
+                }
+            }
+            return Ok(result);
+        }
+
+
+        [Route("GetMatHangXuatBanTheoMaKho")]
+        [HttpPost]
+        public IHttpActionResult GetMatHangXuatBanTheoMaKho(MatHangViewModel.PARAM_NHAPMUA_OBJ param)
+        {
+            var result = new TransferObj<MatHangViewModel.VIEW_MODEL>();
+            var viewModel = new MatHangViewModel.VIEW_MODEL();
+            if (string.IsNullOrEmpty(param.MAHANG))
+            {
+                result.Data = null;
+                result.Message = "NOTEXISTS_MAHANG";
+                result.Status = false;
+            }
+            else if (string.IsNullOrEmpty(param.MAKHO_XUAT))
+            {
+                result.Data = null;
+                result.Message = "NOTEXISTS_MAKHO_XUAT";
+                result.Status = false;
+            }
+            else if (string.IsNullOrEmpty(param.TABLE_NAME))
+            {
+                result.Data = null;
+                result.Message = "NOTEXISTS_TABLE_NAME";
+                result.Status = false;
+            }
+            else
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
+                var listSearched = _service.TimKiemMatHang_TonKho_NhieuDieuKien(param.MAHANG, unitCode, connectString, param.TABLE_NAME, param.MAKHO_XUAT);
                 if (listSearched != null && listSearched.Count == 1)
                 {
                     result.Data = listSearched[0];

@@ -11,6 +11,9 @@
             getKyKeToan: function () {
                 return $http.get(serviceUrl + '/GetKyKeToan');
             },
+            getKyKeToanTheoNgay: function (objDate) {
+                return $http.post(serviceUrl + '/GetKyKeToanTheoNgay', objDate);
+            },
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
             },

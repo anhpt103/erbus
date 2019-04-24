@@ -321,6 +321,56 @@ namespace ERBus.Service.Service
             return result;
         }
 
+
+        public virtual bool XuatNhapTon_GiamPhieu(string TableName, int Nam, int Ky, string Id, string StringConnect)
+        {
+            bool result = false;
+            using (OracleConnection connection = new OracleConnection(StringConnect))
+            {
+                try
+                {
+                    connection.Open();
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        OracleTransaction transaction;
+                        OracleCommand command = new OracleCommand();
+                        command.Connection = connection;
+                        // Start a local transaction
+                        transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                        // Assign transaction object for a pending local transaction
+                        command.Transaction = transaction;
+                        try
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.CommandText = "ERBUS.XUATNHAPTON.XNT_GIAM_PHIEU";
+                            command.Parameters.Add("P_TABLENAME", OracleDbType.Varchar2, 50, TableName, ParameterDirection.Input);
+                            command.Parameters.Add("P_NAM", OracleDbType.Int32, Nam, ParameterDirection.Input);
+                            command.Parameters.Add("P_KY", OracleDbType.Int32, Ky, ParameterDirection.Input);
+                            command.Parameters.Add("P_ID", OracleDbType.Varchar2, 50, Id, ParameterDirection.Input);
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                            result = true;
+                        }
+                        catch
+                        {
+                            transaction.Rollback();
+                            result = false;
+                        }
+                    }
+                }
+                catch
+                {
+                    result = false;
+                }
+                finally
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
+            }
+            return result;
+        }
+
         public virtual bool KhoaSoNhieuKyKeToan(List<KyKeToanViewModel.ViewModel> listPeriod, string UnitCode, string StringConnect)
         {
             bool result = false;

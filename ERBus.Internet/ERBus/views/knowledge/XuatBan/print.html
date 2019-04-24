@@ -1,11 +1,19 @@
-﻿<div role="document">
+﻿<style>
+    #main-common{
+        transform: translate(17%, 0.3%);
+        width: 1048px;
+        border: 1px solid #eee;
+    }
+</style>
+<div role="document" id="main-common">
     <div class="modal-header">
-        <button type="button" prevent-default class="btn btn-info" ng-disabled="!target.MA_CHUNGTU || target.DataDetails.length <= 0" ng-click="accept(target.ID);"><i class="fa fa-thumbs-up"></i>&nbsp;&nbsp;{{config.label.btnApproval}}</button>
+        <button type="button" prevent-default class="btn btn-info" ng-disabled="!target.MA_CHUNGTU || target.DataDetails.length <= 0" ng-click="print();"><i class="fab fa-accusoft"></i>&nbsp;&nbsp;{{config.label.btnActionPrint}}</button>&nbsp;&nbsp;&nbsp;
+        <button type="button" prevent-default class="btn btn-info" ng-disabled="!target.MA_CHUNGTU || target.DataDetails.length <= 0" ng-click="printExcel();"><i class="fab fa-adn"></i>&nbsp;&nbsp;{{config.label.btnExportExcel}}</button>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
             <span aria-hidden="true">x</span>
         </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" id="main_report">
         <div class="col-lg-12">
             <!-- TOP CAMPAIGN-->
             <div class="top-campaign printItem">
@@ -27,7 +35,7 @@
                             </tr>
                             <tr>
                                 <td class="header" colspan="7">Tên khách hàng: {{thongTinKhachHang.DESCRIPTION}}</td>
-                                <td class="header right" colspan="2">Số chứng từ nhập: {{target.MA_CHUNGTU}}</td>
+                                <td class="header right" colspan="2">Số chứng từ xuất: {{target.MA_CHUNGTU}}</td>
                             </tr>
                             <tr>
                                 <td class="header" colspan="7">Số điện thoại: {{thongTinKhachHang.PARENT}}</td>
@@ -35,7 +43,7 @@
                             </tr>
                             <tr>
                                 <td class="header" colspan="7">Địa chỉ: {{thongTinKhachHang.EXTEND_VALUE}}</td>
-                                <td class="header right" colspan="2">Mã kho nhập: {{target.MAKHO_XUAT}}</td>
+                                <td class="header right" colspan="2">Mã kho xuất: {{target.MAKHO_XUAT}}</td>
                             </tr>
                             <tr>
                                 <td class="header" colspan="7">Ghi chú: {{target.DIENGIAI}}</td>
@@ -91,6 +99,6 @@
             <!--  END TOP CAMPAIGN-->
         </div>
     </div>
-    <div class="modal-footer">
-    </div>
+    <!--<div class="modal-footer">
+    </div>-->
 </div>

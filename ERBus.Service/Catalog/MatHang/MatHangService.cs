@@ -22,10 +22,12 @@ namespace ERBus.Service.Catalog.MatHang
         MATHANG InsertDto(MatHangViewModel.Dto instance);
         MATHANG UpdateDto(MatHangViewModel.Dto instance);
         List<MatHangViewModel.VIEW_MODEL> TimKiemMatHang_NhieuDieuKien(string strKey, string unitCode, string stringConnect);
+        List<MatHangViewModel.VIEW_MODEL> TimKiemMatHang_TonKho_NhieuDieuKien(string strKey, string unitCode, string stringConnect, string TABLE_NAME, string MaKho);
         string FindExistsBarCode(string barcodeText, string stringConnect);
         bool InsertDataExcel(List<MatHangViewModel.Dto> listExcelData, string unitCode, string stringConnect);
         int KiemTraBarcodeExcelFile(string barcode, string unitCode, string stringConnect);
         PagedObj<MatHangViewModel.VIEW_MODEL> QueryPageMatHang(string stringConnect, PagedObj<MatHangViewModel.VIEW_MODEL> page, string strKey, string maDonVi);
+        PagedObj<MatHangViewModel.VIEW_MODEL> QueryPageMatHangInventory(string stringConnect, PagedObj<MatHangViewModel.VIEW_MODEL> page, string strKey, string maDonVi, string TABLE_NAME, string maKho);
     }
     public class MatHangService : DataInfoServiceBase<MATHANG>, IMatHangService
     {
@@ -210,6 +212,166 @@ namespace ERBus.Service.Catalog.MatHang
             }
             return page;
         }
+
+
+        public PagedObj<MatHangViewModel.VIEW_MODEL> QueryPageMatHangInventory(string stringConnect, PagedObj<MatHangViewModel.VIEW_MODEL> page, string strKey, string maDonVi, string TABLE_NAME, string maKho)
+        {
+            var TotalItem = 0;
+            List<MatHangViewModel.VIEW_MODEL> ListMatHang = new List<MatHangViewModel.VIEW_MODEL>();
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(stringConnect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            OracleCommand command = new OracleCommand();
+                            command.Connection = connection;
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.CommandText = @"MATHANG_TONKHO_PAGINATION";
+                            command.Parameters.Add(@"P_TABLE_NAME", OracleDbType.NVarchar2, 50).Value = TABLE_NAME;
+                            command.Parameters.Add(@"P_MAKHO", OracleDbType.NVarchar2, 50).Value = maKho;
+                            command.Parameters.Add(@"P_MADONVI", OracleDbType.NVarchar2, 50).Value = maDonVi;
+                            command.Parameters.Add(@"P_TUKHOA", OracleDbType.NVarchar2, 500).Value = strKey.ToString().ToUpper().Trim();
+                            command.Parameters.Add(@"P_PAGENUMBER", OracleDbType.Int32).Value = page.CurrentPage;
+                            command.Parameters.Add(@"P_PAGESIZE", OracleDbType.Int32).Value = page.ItemsPerPage;
+                            command.Parameters.Add(@"P_TOTALITEM", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                            command.Parameters.Add(@"CURSOR_RESULT", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                            OracleDataReader dataReader = command.ExecuteReader();
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    if (dataReader["TOTAL_ITEM"] != null)
+                                    {
+                                        int.TryParse(dataReader["TOTAL_ITEM"].ToString(), out TotalItem);
+                                    }
+                                }
+
+                                if (dataReader.NextResult())
+                                {
+                                    if (dataReader.HasRows)
+                                    {
+                                        while (dataReader.Read())
+                                        {
+                                            MatHangViewModel.VIEW_MODEL MatHang = new MatHangViewModel.VIEW_MODEL();
+                                            if (dataReader["ID"] != null)
+                                            {
+                                                MatHang.ID = dataReader["ID"].ToString();
+                                            }
+                                            if (dataReader["MAHANG"] != null)
+                                            {
+                                                MatHang.MAHANG = dataReader["MAHANG"].ToString();
+                                            }
+                                            if (dataReader["TENHANG"] != null)
+                                            {
+                                                MatHang.TENHANG = dataReader["TENHANG"].ToString();
+                                            }
+                                            if (dataReader["MALOAI"] != null)
+                                            {
+                                                MatHang.MALOAI = dataReader["MALOAI"].ToString();
+                                            }
+                                            if (dataReader["MANHOM"] != null)
+                                            {
+                                                MatHang.MANHOM = dataReader["MANHOM"].ToString();
+                                            }
+                                            if (dataReader["MADONVITINH"] != null)
+                                            {
+                                                MatHang.MADONVITINH = dataReader["MADONVITINH"].ToString();
+                                            }
+                                            if (dataReader["MANHACUNGCAP"] != null)
+                                            {
+                                                MatHang.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
+                                            }
+                                            if (dataReader["MATHUE_VAO"] != null)
+                                            {
+                                                MatHang.MATHUE_VAO = dataReader["MATHUE_VAO"].ToString();
+                                            }
+                                            if (dataReader["MATHUE_RA"] != null)
+                                            {
+                                                MatHang.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
+                                            }
+                                            if (dataReader["BARCODE"] != null)
+                                            {
+                                                MatHang.BARCODE = dataReader["BARCODE"].ToString();
+                                            }
+                                            if (dataReader["TRANGTHAI"] != DBNull.Value)
+                                            {
+                                                MatHang.TRANGTHAI = int.Parse(dataReader["TRANGTHAI"].ToString());
+                                            }
+
+                                            decimal GIABANLE = 0;
+                                            if (dataReader["GIABANLE"] != DBNull.Value)
+                                            {
+                                                decimal.TryParse(dataReader["GIABANLE"].ToString(), out GIABANLE);
+                                            }
+                                            MatHang.GIABANLE = GIABANLE;
+
+                                            decimal GIABANLE_VAT = 0;
+                                            if (dataReader["GIABANLE_VAT"] != DBNull.Value)
+                                            {
+                                                decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
+                                            }
+                                            MatHang.GIABANLE_VAT = GIABANLE_VAT;
+
+                                            decimal TYLE_LAILE = 0;
+                                            if (dataReader["TYLE_LAILE"] != DBNull.Value)
+                                            {
+                                                decimal.TryParse(dataReader["TYLE_LAILE"].ToString(), out TYLE_LAILE);
+                                            }
+                                            MatHang.TYLE_LAILE = TYLE_LAILE;
+
+                                            decimal TYLE_LAIBUON = 0;
+                                            if (dataReader["TYLE_LAIBUON"] != DBNull.Value)
+                                            {
+                                                decimal.TryParse(dataReader["TYLE_LAIBUON"].ToString(), out TYLE_LAIBUON);
+                                            }
+                                            MatHang.TYLE_LAIBUON = TYLE_LAIBUON;
+
+                                            decimal GIAVON = 0;
+                                            if (dataReader["GIAVON"] != DBNull.Value)
+                                            {
+                                                decimal.TryParse(dataReader["GIAVON"].ToString(), out GIAVON);
+                                            }
+                                            MatHang.GIAVON = GIAVON;
+
+                                            decimal TONCUOIKYSL = 0;
+                                            if (dataReader["TONCUOIKYSL"] != DBNull.Value)
+                                            {
+                                                decimal.TryParse(dataReader["TONCUOIKYSL"].ToString(), out TONCUOIKYSL);
+                                            }
+                                            MatHang.TONCUOIKYSL = TONCUOIKYSL;
+
+                                            ListMatHang.Add(MatHang);
+                                        }
+                                    }
+                                }
+                            }
+                            dataReader.Close();
+                            page.Data = ListMatHang;
+                            page.TotalItems = TotalItem;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("Lỗi không thể truy xuất hàng hóa");
+            }
+            return page;
+        }
+
+
         public MatHangViewModel.InfoUpload UploadImage(bool isAvatar)
         {
             MatHangViewModel.InfoUpload result = new MatHangViewModel.InfoUpload();
@@ -483,6 +645,160 @@ namespace ERBus.Service.Catalog.MatHang
             }
             return ListViewModel;
         }
+
+
+        public List<MatHangViewModel.VIEW_MODEL> TimKiemMatHang_TonKho_NhieuDieuKien(string strKey, string unitCode, string stringConnect, string TABLE_NAME, string MaKho)
+        {
+            List<MatHangViewModel.VIEW_MODEL> ListViewModel = new List<MatHangViewModel.VIEW_MODEL>();
+            if (!string.IsNullOrEmpty(strKey))
+            {
+                using (OracleConnection connection = new OracleConnection(stringConnect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            OracleCommand command = new OracleCommand();
+                            command.Connection = connection;
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.CommandText = @"TIMKIEM_MATHANG_TONKHO";
+                            command.Parameters.Add(@"P_TABLE_NAME", OracleDbType.NVarchar2, 50).Value = TABLE_NAME;
+                            command.Parameters.Add(@"P_MAKHO", OracleDbType.NVarchar2, 50).Value = MaKho;
+                            command.Parameters.Add(@"P_MADONVI", OracleDbType.NVarchar2, 50).Value = unitCode;
+                            command.Parameters.Add(@"P_TUKHOA", OracleDbType.NVarchar2, 50).Value = strKey.ToString().ToUpper().Trim();
+                            command.Parameters.Add(@"CURSOR_RESULT", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                            OracleDataReader dataReader = command.ExecuteReader();
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    MatHangViewModel.VIEW_MODEL ViewModel = new MatHangViewModel.VIEW_MODEL();
+                                    if (dataReader["ID"] != null)
+                                    {
+                                        ViewModel.ID = dataReader["ID"].ToString();
+                                    }
+                                    if (dataReader["MAHANG"] != null)
+                                    {
+                                        ViewModel.MAHANG = dataReader["MAHANG"].ToString();
+                                    }
+                                    if (dataReader["TENHANG"] != null)
+                                    {
+                                        ViewModel.TENHANG = dataReader["TENHANG"].ToString();
+                                    }
+                                    if (dataReader["MALOAI"] != null)
+                                    {
+                                        ViewModel.MALOAI = dataReader["MALOAI"].ToString();
+                                    }
+                                    if (dataReader["MANHOM"] != null)
+                                    {
+                                        ViewModel.MANHOM = dataReader["MANHOM"].ToString();
+                                    }
+                                    if (dataReader["MADONVITINH"] != null)
+                                    {
+                                        ViewModel.MADONVITINH = dataReader["MADONVITINH"].ToString();
+                                    }
+                                    if (dataReader["MANHACUNGCAP"] != null)
+                                    {
+                                        ViewModel.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
+                                    }
+                                    if (dataReader["MATHUE_VAO"] != null)
+                                    {
+                                        ViewModel.MATHUE_VAO = dataReader["MATHUE_VAO"].ToString();
+                                    }
+                                    if (dataReader["MATHUE_RA"] != null)
+                                    {
+                                        ViewModel.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
+                                    }
+                                    if (dataReader["BARCODE"] != null)
+                                    {
+                                        ViewModel.BARCODE = dataReader["BARCODE"].ToString();
+                                    }
+                                    if (dataReader["TYLE_LAILE"] != DBNull.Value)
+                                    {
+                                        decimal TYLE_LAILE = 0;
+                                        decimal.TryParse(dataReader["TYLE_LAILE"].ToString(), out TYLE_LAILE);
+                                        ViewModel.TYLE_LAILE = TYLE_LAILE;
+                                    }
+                                    if (dataReader["TYLE_LAIBUON"] != DBNull.Value)
+                                    {
+                                        decimal TYLE_LAIBUON = 0;
+                                        decimal.TryParse(dataReader["TYLE_LAIBUON"].ToString(), out TYLE_LAIBUON);
+                                        ViewModel.TYLE_LAIBUON = TYLE_LAIBUON;
+                                    }
+                                    if (dataReader["GIAMUA"] != DBNull.Value)
+                                    {
+                                        decimal GIAMUA = 0;
+                                        decimal.TryParse(dataReader["GIAMUA"].ToString(), out GIAMUA);
+                                        ViewModel.GIAMUA = GIAMUA;
+                                    }
+                                    if (dataReader["GIAMUA_VAT"] != DBNull.Value)
+                                    {
+                                        decimal GIAMUA_VAT = 0;
+                                        decimal.TryParse(dataReader["GIAMUA_VAT"].ToString(), out GIAMUA_VAT);
+                                        ViewModel.GIAMUA_VAT = GIAMUA_VAT;
+                                    }
+                                    if (dataReader["GIABANLE"] != DBNull.Value)
+                                    {
+                                        decimal GIABANLE = 0;
+                                        decimal.TryParse(dataReader["GIABANLE"].ToString(), out GIABANLE);
+                                        ViewModel.GIABANLE = GIABANLE;
+                                    }
+                                    if (dataReader["GIABANLE_VAT"] != DBNull.Value)
+                                    {
+                                        decimal GIABANLE_VAT = 0;
+                                        decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
+                                        ViewModel.GIABANLE_VAT = GIABANLE_VAT;
+                                    }
+                                    if (dataReader["GIABANBUON"] != DBNull.Value)
+                                    {
+                                        decimal GIABANBUON = 0;
+                                        decimal.TryParse(dataReader["GIABANBUON"].ToString(), out GIABANBUON);
+                                        ViewModel.GIABANBUON = GIABANBUON;
+                                    }
+                                    if (dataReader["GIABANBUON_VAT"] != DBNull.Value)
+                                    {
+                                        decimal GIABANBUON_VAT = 0;
+                                        decimal.TryParse(dataReader["GIABANBUON_VAT"].ToString(), out GIABANBUON_VAT);
+                                        ViewModel.GIABANBUON_VAT = GIABANBUON_VAT;
+                                    }
+                                    if (dataReader["GIAVON"] != DBNull.Value)
+                                    {
+                                        decimal GIAVON = 0;
+                                        decimal.TryParse(dataReader["GIAVON"].ToString(), out GIAVON);
+                                        ViewModel.GIAVON = GIAVON;
+                                    }
+                                    if (dataReader["TONCUOIKYSL"] != DBNull.Value)
+                                    {
+                                        decimal TONCUOIKYSL = 0;
+                                        decimal.TryParse(dataReader["TONCUOIKYSL"].ToString(), out TONCUOIKYSL);
+                                        ViewModel.TONCUOIKYSL = TONCUOIKYSL;
+                                    }
+                                    if (dataReader["TRANGTHAI"] != DBNull.Value)
+                                    {
+                                        int TRANGTHAI = 0;
+                                        int.TryParse(dataReader["TRANGTHAI"].ToString(), out TRANGTHAI);
+                                        ViewModel.TRANGTHAI = TRANGTHAI;
+                                    }
+                                    ListViewModel.Add(ViewModel);
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        ListViewModel = null;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+            }
+            return ListViewModel;
+        }
+
 
         public string FindExistsBarCode(string barcodeText, string stringConnect)
         {

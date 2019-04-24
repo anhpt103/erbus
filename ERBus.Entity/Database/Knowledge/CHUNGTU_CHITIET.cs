@@ -53,6 +53,16 @@ namespace ERBus.Entity.Database.Knowledge
         [Description("GIÁ MUA CÓ VAT TẠI THỜI ĐIỂM")]
         public decimal GIAMUA_VAT { get; set; }
 
+        [Required]
+        [Column("GIABANLE")]
+        [Description("GIÁ BÁN LẺ CHƯA VAT TẠI THỜI ĐIỂM")]
+        public decimal GIABANLE { get; set; }
+
+        [Required]
+        [Column("GIABANLE_VAT")]
+        [Description("GIÁ BÁN LẺ CÓ VAT TẠI THỜI ĐIỂM")]
+        public decimal GIABANLE_VAT { get; set; }
+
         [Column("TIEN_GIAMGIA")]
         [Description("TIỀN GIẢM GIÁ _ ĐỐI VỚI NGHIỆP VỤ XUẤT BÁN BUÔN")]
         public decimal? TIEN_GIAMGIA { get; set; }

@@ -83,7 +83,8 @@
             btnSettingGrant: 'Phân quyền',
             btnPrintItem: 'In tem',
             btnPrintItemShelves: 'In tem kệ',
-
+            btnActionPrint: 'In',
+            btnPrint: 'In phiếu',
             btnSearch: 'Tìm kiếm',
             btnRefresh: 'Làm mới',
             btnBack: 'Quay lại',
@@ -107,12 +108,12 @@
             btnCall: 'Call',
             btnChart: 'Biểu đồ',
             btnData: 'Số liệu',
-            btnPrint: 'In phiếu',
+           
             btnExit: 'Thoát',
             btnExportPDF: 'Kết xuất file PDF',
             btnExport: 'Kết xuất',
 
-            btnPrintList: 'In DS',
+           
             btnPrintDetailList: 'In DS chi tiết',
             btnSend: 'DS duyệt',
             btnApproval: 'Duyệt',

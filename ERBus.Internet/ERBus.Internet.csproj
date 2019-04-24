@@ -425,6 +425,7 @@
     <Content Include="ERBus\views\knowledge\NhapMua\edit.html" />
     <Content Include="ERBus\views\knowledge\NhapMua\index.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\search.html" />
+    <Content Include="ERBus\views\knowledge\XuatBan\print.html" />
     <Content Include="ERBus\views\knowledge\XuatBan\approval.html" />
     <Content Include="ERBus\views\knowledge\XuatBan\create.html" />
     <Content Include="ERBus\views\knowledge\XuatBan\delete.html" />

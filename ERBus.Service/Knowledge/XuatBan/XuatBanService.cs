@@ -22,6 +22,7 @@ namespace ERBus.Service.Knowledge.XuatBan
         bool DeleteChungTu(string ID);
         CHUNGTU Approval(string ID, string StringConnection, CHUNGTU ChungTu, string UnitCode);
         PagedObj<CHUNGTU> QueryPageChungTu(string stringConnect, PagedObj<CHUNGTU> page, string strKey, string maDonVi);
+        List<XuatBanViewModel.DtoDetails> GetDataDetails(string MaChungTu, string stringConnect, string TableName, string MaKhoXuat);
     }
     public class XuatBanService : DataInfoServiceBase<CHUNGTU>, IXuatBanService
     {
@@ -200,16 +201,17 @@ namespace ERBus.Service.Knowledge.XuatBan
         {
             var dataChungTu = Mapper.Map<XuatBanViewModel.Dto, CHUNGTU>(instance);
             dataChungTu.ID = Guid.NewGuid().ToString();
-            dataChungTu.LOAI_CHUNGTU = "NMUA";
+            dataChungTu.LOAI_CHUNGTU = "XBAN";
             dataChungTu.THOIGIAN_TAO = DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
             dataChungTu.MADONVI_NHAP = GetCurrentUnitCode();
             dataChungTu.MAKHACHHANG = instance.MAKHACHHANG;
+            dataChungTu.MANHACUNGCAP = instance.MAKHACHHANG;
             dataChungTu.I_STATE = "C";
             if (dataChungTu.TRANGTHAI == (int)TypeState.APPROVAL)
             {
                 dataChungTu.NGAY_DUYETPHIEU = DateTime.Now;
                 dataChungTu.THOIGIAN_DUYET = DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-                //chạy tăng tồn
+                //chạy giảm tồn
             }
             var result = AddUnit(dataChungTu);
             var dataDetails = Mapper.Map<List<XuatBanViewModel.DtoDetails>, List<CHUNGTU_CHITIET>>(instance.DataDetails);
@@ -217,6 +219,8 @@ namespace ERBus.Service.Knowledge.XuatBan
             {
                 x.ID = Guid.NewGuid().ToString();
                 x.MA_CHUNGTU = result.MA_CHUNGTU;
+                x.GIAMUA = 0;
+                x.GIAMUA_VAT = 0;
             });
             result = Insert(result);
             UnitOfWork.Repository<CHUNGTU_CHITIET>().InsertRange(dataDetails);
@@ -231,10 +235,11 @@ namespace ERBus.Service.Knowledge.XuatBan
             {
                 dataChungTu.NGAY_DUYETPHIEU = DateTime.Now;
                 dataChungTu.THOIGIAN_DUYET = DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second;
-                //chạy tăng tồn
+                //chạy giảm tồn
             }
             dataChungTu.UNITCODE = GetCurrentUnitCode();
             dataChungTu.MAKHACHHANG = instance.MAKHACHHANG;
+            dataChungTu.MANHACUNGCAP = instance.MAKHACHHANG;
             var listProduct = UnitOfWork.Repository<CHUNGTU_CHITIET>().DbSet.Where(x => x.MA_CHUNGTU == dataChungTu.MA_CHUNGTU).ToList();
             if (listProduct.Count > 0) listProduct.ForEach(x => x.ObjectState = ObjectState.Deleted);
             var dataDetails = Mapper.Map<List<XuatBanViewModel.DtoDetails>, List<CHUNGTU_CHITIET>>(instance.DataDetails);
@@ -242,6 +247,8 @@ namespace ERBus.Service.Knowledge.XuatBan
             {
                 x.ID = Guid.NewGuid().ToString();
                 x.MA_CHUNGTU = dataChungTu.MA_CHUNGTU;
+                x.GIAMUA = 0;
+                x.GIAMUA_VAT = 0;
             });
             UnitOfWork.Repository<CHUNGTU_CHITIET>().InsertRange(dataDetails);
             var result = Update(dataChungTu);
@@ -281,7 +288,7 @@ namespace ERBus.Service.Knowledge.XuatBan
             if (period != null && period.KY > 0 && period.NAM > 0)
             {
                 var tableName = Get_TableName_XNT(period.NAM, period.KY);
-                if (XuatNhapTon_TangPhieu(tableName, period.NAM, period.KY, ID, StringConnection))
+                if (XuatNhapTon_GiamPhieu(tableName, period.NAM, period.KY, ID, StringConnection))
                 {
                     ChungTu.TRANGTHAI = (int)TypeState.APPROVAL;
                     ChungTu.NGAY_DUYETPHIEU = period.NGAYKETOAN;
@@ -298,6 +305,159 @@ namespace ERBus.Service.Knowledge.XuatBan
                 ChungTu = null;
             }
             return ChungTu;
+        }
+
+        public List<XuatBanViewModel.DtoDetails> GetDataDetails(string MaChungTu, string stringConnect, string TableName, string MaKhoXuat)
+        {
+            List<XuatBanViewModel.DtoDetails> result = new List<XuatBanViewModel.DtoDetails>();
+            if (!string.IsNullOrEmpty(MaChungTu))
+            {
+                try
+                {
+                    using (OracleConnection connection = new OracleConnection(stringConnect))
+                    {
+                        try
+                        {
+                            connection.Open();
+                            if (connection.State == ConnectionState.Open)
+                            {
+                                OracleCommand command = new OracleCommand();
+                                command.Connection = connection;
+                                command.CommandType = CommandType.Text;
+                                command.CommandText = @"SELECT a.MA_CHUNGTU,a.MAHANG,b.TENHANG, a.MATHUE_VAO,a.MATHUE_RA,a.SOLUONG,a.GIAMUA,a.GIAMUA_VAT,a.TIEN_GIAMGIA,a.THANHTIEN,a.""INDEX"",a.GIABANLE,a.GIABANLE_VAT,b.MADONVITINH,c.TYLE_LAILE,xnt.GIAVON,xnt.TONCUOIKYSL
+                                FROM CHUNGTU_CHITIET a INNER JOIN MATHANG b ON a.MAHANG = b.MAHANG INNER JOIN MATHANG_GIA c ON a.MAHANG = c.MAHANG INNER JOIN DONVITINH d ON b.MADONVITINH = d.MADONVITINH INNER JOIN " + TableName + " xnt ON a.MAHANG = xnt.MAHANG AND xnt.MAKHO = '"+ MaKhoXuat + "' AND a.MA_CHUNGTU = '"+ MaChungTu + "' ";
+                                OracleDataReader dataReader = command.ExecuteReader();
+                                if (dataReader.HasRows)
+                                {
+                                    while (dataReader.Read())
+                                    {
+                                        XuatBanViewModel.DtoDetails row = new XuatBanViewModel.DtoDetails();
+                                        if (dataReader["MA_CHUNGTU"] != null)
+                                        {
+                                            row.MA_CHUNGTU = dataReader["MA_CHUNGTU"].ToString();
+                                        }
+                                        if (dataReader["MAHANG"] != null)
+                                        {
+                                            row.MAHANG = dataReader["MAHANG"].ToString();
+                                        }
+
+                                        if (dataReader["TENHANG"] != null)
+                                        {
+                                            row.TENHANG = dataReader["TENHANG"].ToString();
+                                        }
+
+                                        if (dataReader["MATHUE_VAO"] != null)
+                                        {
+                                            row.MATHUE_VAO = dataReader["MATHUE_VAO"].ToString();
+                                        }
+                                        if (dataReader["MATHUE_RA"] != null)
+                                        {
+                                            row.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
+                                        }
+
+                                        decimal SOLUONG = 0;
+                                        if (dataReader["SOLUONG"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
+                                        }
+                                        row.SOLUONG = SOLUONG;
+
+                                        decimal GIAMUA = 0;
+                                        if (dataReader["GIAMUA"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["GIAMUA"].ToString(), out GIAMUA);
+                                        }
+                                        row.GIAMUA = GIAMUA;
+
+                                        decimal GIAMUA_VAT = 0;
+                                        if (dataReader["GIAMUA_VAT"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["GIAMUA_VAT"].ToString(), out GIAMUA_VAT);
+                                        }
+                                        row.GIAMUA_VAT = GIAMUA_VAT;
+
+                                        decimal TIEN_GIAMGIA = 0;
+                                        if (dataReader["TIEN_GIAMGIA"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["TIEN_GIAMGIA"].ToString(), out TIEN_GIAMGIA);
+                                        }
+                                        row.TIEN_GIAMGIA = TIEN_GIAMGIA;
+
+                                        decimal THANHTIEN = 0;
+                                        if (dataReader["THANHTIEN"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["THANHTIEN"].ToString(), out THANHTIEN);
+                                        }
+                                        row.THANHTIEN = THANHTIEN;
+
+                                        int INDEX = 0;
+                                        if (dataReader["INDEX"] != null)
+                                        {
+                                            int.TryParse(dataReader["INDEX"].ToString(), out INDEX);
+                                        }
+                                        row.INDEX = INDEX;
+
+                                        decimal GIABANLE = 0;
+                                        if (dataReader["GIABANLE"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["GIABANLE"].ToString(), out GIABANLE);
+                                        }
+                                        row.GIABANLE = GIABANLE;
+
+                                        decimal GIABANLE_VAT = 0;
+                                        if (dataReader["GIABANLE_VAT"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
+                                        }
+                                        row.GIABANLE_VAT = GIABANLE_VAT;
+
+                                        decimal TYLE_LAILE = 0;
+                                        if (dataReader["TYLE_LAILE"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["TYLE_LAILE"].ToString(), out TYLE_LAILE);
+                                        }
+                                        row.TYLE_LAILE = TYLE_LAILE;
+
+                                        decimal GIAVON = 0;
+                                        if (dataReader["GIAVON"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["GIAVON"].ToString(), out GIAVON);
+                                        }
+                                        row.GIAVON = GIAVON;
+
+                                        decimal TONCUOIKYSL = 0;
+                                        if (dataReader["TONCUOIKYSL"] != null)
+                                        {
+                                            decimal.TryParse(dataReader["TONCUOIKYSL"].ToString(), out TONCUOIKYSL);
+                                        }
+                                        row.TONCUOIKYSL = TONCUOIKYSL;
+
+                                        if (dataReader["MADONVITINH"] != null)
+                                        {
+                                            row.MADONVITINH = dataReader["MADONVITINH"].ToString();
+                                        }
+                                        result.Add(row);
+                                    }
+                                }
+                                dataReader.Close();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                        finally
+                        {
+                            connection.Close();
+                            connection.Dispose();
+                        }
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Lỗi không thể truy xuất hàng hóa");
+                }
+            }
+            return result;
         }
     }
 }

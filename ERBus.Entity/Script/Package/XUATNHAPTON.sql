@@ -1,0 +1,507 @@
+﻿create or replace PACKAGE "XUATNHAPTON" AS 
+PROCEDURE XNT_CREATE_TABLE_TONKY (
+        P_TABLENAME_KYTRUOC   IN                    VARCHAR2,
+        P_TABLENAME           IN                    VARCHAR2,
+        P_UNITCODE            IN                    VARCHAR2,
+        P_NAM                 IN                    NUMBER,
+        P_KY                  IN                    NUMBER
+    );
+PROCEDURE XNT_TANG_TONKY (
+        P_TABLENAME    IN             VARCHAR2,
+        P_UNITCODE     IN             VARCHAR2,
+        P_NAM          IN             NUMBER,
+        P_KY           IN             NUMBER,
+        P_MA_NHAPXUAT  IN            VARCHAR2,
+        P_TUNGAY       DATE,
+        P_DENNGAY      DATE
+    );
+PROCEDURE XNT_GIAM_TONKY (
+        P_TABLENAME    IN             VARCHAR2,
+        P_UNITCODE      IN            VARCHAR2,
+        P_NAM          IN             NUMBER,
+        P_KY           IN             NUMBER,
+        P_MA_NHAPXUAT   IN            VARCHAR2,
+        P_TUNGAY       DATE,
+        P_DENNGAY      DATE
+    );
+PROCEDURE XNT_KHOASO (
+        P_TABLENAME_KYTRUOC   IN                    VARCHAR2,
+        P_TABLENAME           IN                    VARCHAR2,
+        P_UNITCODE            IN                    VARCHAR2,
+        P_NAM                 IN                    NUMBER,
+        P_KY                  IN                    NUMBER
+    );
+PROCEDURE XNT_TANG_PHIEU (
+        P_TABLENAME   IN            VARCHAR2,
+        P_NAM         IN            NUMBER,
+        P_KY          IN            NUMBER,
+        P_ID          IN            VARCHAR2
+    );
+PROCEDURE XNT_GIAM_PHIEU (
+        P_TABLENAME   IN            VARCHAR2,
+        P_NAM         IN            NUMBER,
+        P_KY          IN            NUMBER,
+        P_ID          IN            VARCHAR2
+    );
+END XUATNHAPTON;
+/
+create or replace PACKAGE BODY "XUATNHAPTON" AS
+    PROCEDURE XNT_CREATE_TABLE_TONKY (
+        P_TABLENAME_KYTRUOC   IN                    VARCHAR2,
+        P_TABLENAME           IN                    VARCHAR2,
+        P_UNITCODE            IN                    VARCHAR2,
+        P_NAM                 IN                    NUMBER,
+        P_KY                  IN                    NUMBER
+    ) IS
+
+        P_CREATE_TABLE   VARCHAR2(2000);
+        P_SQL_INSERT     VARCHAR2(1000);
+        P_SQL_DELETE     VARCHAR2(200);
+        N_COUNT          NUMBER(10, 0) := 0;
+    BEGIN
+        P_CREATE_TABLE := 'CREATE TABLE '
+                 || P_TABLENAME
+                 || '(
+    "UNITCODE" NVARCHAR2(10), 
+    "NAM" NUMBER(10,0),
+    "KY" NUMBER(10,0),
+    "MAKHO" NVARCHAR2(50),
+    "MAHANG" NVARCHAR2(50),
+    "GIAVON" NUMBER(18,2) DEFAULT 0,
+    "TONDAUKYSL" NUMBER(18,2) DEFAULT 0,
+    "TONDAUKYGT" NUMBER(18,2) DEFAULT 0,
+    "NHAPSL" NUMBER(18,2) DEFAULT 0,
+    "NHAPGT" NUMBER(18,2) DEFAULT 0,
+    "XUATSL" NUMBER(18,2) DEFAULT 0,
+    "XUATGT" NUMBER(18,2) DEFAULT 0,
+    "TONCUOIKYSL" NUMBER(18,2) DEFAULT 0, 
+    "TONCUOIKYGT" NUMBER(18,2) DEFAULT 0
+    ) SEGMENT CREATION IMMEDIATE PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING STORAGE
+    (INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645 PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)';
+--    TỒN CUỐI KỲ CỦA KỲ TRƯỚC ĐẨY LÊN TỒN ĐẦU KỲ CỦA KỲ SAU
+        P_SQL_INSERT := 'INSERT INTO '
+                        || P_TABLENAME
+                        || ' a
+                        (
+                         a.UNITCODE, a.NAM, a.KY, a.MAKHO, a.MAHANG, a.GIAVON, 
+                         a.TONDAUKYSL, a.TONDAUKYGT,
+                         a.TONCUOIKYSL, a.TONCUOIKYGT
+                        )
+                        SELECT b.UNITCODE, '
+                        || P_NAM
+                        || ', '
+                        || P_KY
+                        || ', b.MAKHO, b.MAHANG, b.GIAVON, 
+                         b.TONCUOIKYSL ,b.TONCUOIKYGT, 
+                         b.TONCUOIKYSL ,b.TONCUOIKYGT
+                        FROM '
+                        || P_TABLENAME_KYTRUOC
+                        || ' b WHERE b.UNITCODE = '''
+                        || P_UNITCODE
+                        || '''';
+
+        IF TRIM(P_TABLENAME_KYTRUOC) IS NULL THEN
+            P_SQL_INSERT := 'DECLARE CURSOR CUR_KHO IS SELECT MAKHO FROM KHOHANG WHERE UNITCODE='''
+                            || P_UNITCODE
+                            || ''';
+        BEGIN FOR ROW_KHO IN CUR_KHO LOOP
+         BEGIN 
+            INSERT INTO '
+                            || P_TABLENAME
+                            || '(UNITCODE,NAM, KY, MAKHO, MAHANG,GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT) 
+             SELECT '''
+                            || P_UNITCODE
+                            || ''' AS UNITCODE,'
+                            || P_NAM
+                            || ' AS NAM,'
+                            || P_KY
+                            || ' AS KY,
+                            ROW_KHO.MAKHO AS MAKHO,
+                            MAHANG, 0 AS GIAVON, 0 AS TONDAUKYSL, 0 AS TONDAUKYGT, 0 AS NHAPSL, 0 AS NHAPGT,
+                            0 AS XUATSL, 0 AS XUATGT, 0 AS TONCUOIKYSL, 0 AS TONCUOIKYGT
+                            FROM MATHANG WHERE UNITCODE = '''||P_UNITCODE||''';
+          END;
+         END LOOP;
+        END;';
+        END IF;
+--        DBMS_OUTPUT.PUT_LINE(P_SQL_INSERT);  
+        BEGIN
+            SELECT COUNT(*) INTO N_COUNT
+            FROM USER_TABLES
+            WHERE TABLE_NAME = UPPER(P_TABLENAME);
+        EXCEPTION
+            WHEN OTHERS THEN
+                N_COUNT := 0;
+        END;
+
+        IF ( N_COUNT IS NULL OR N_COUNT <= 0 ) THEN
+            BEGIN
+                EXECUTE IMMEDIATE P_CREATE_TABLE;
+            END;
+        END IF;
+
+        BEGIN
+            P_SQL_DELETE := 'DELETE FROM '
+                            || P_TABLENAME
+                            || ' WHERE UNITCODE='''
+                            || P_UNITCODE
+                            || '''';
+            EXECUTE IMMEDIATE P_SQL_DELETE;
+            EXECUTE IMMEDIATE P_SQL_INSERT;
+        END;
+
+    END XNT_CREATE_TABLE_TONKY;
+
+    PROCEDURE XNT_TANG_TONKY (
+        P_TABLENAME    IN             VARCHAR2,
+        P_UNITCODE     IN             VARCHAR2,
+        P_NAM          IN             NUMBER,
+        P_KY           IN             NUMBER,
+        P_MA_NHAPXUAT  IN            VARCHAR2,
+        P_TUNGAY       DATE,
+        P_DENNGAY      DATE
+    ) IS
+        N_SQL_INSERT    VARCHAR(5000);
+        STR_IF_REFUND   VARCHAR(2000);
+    BEGIN
+        IF P_MA_NHAPXUAT = '2' THEN
+            BEGIN
+                    STR_IF_REFUND := 'SELECT B.MAHANG, B.MAKHO_NHAP,B.SOLUONG, 
+                CASE  
+                WHEN xnt.GIAVON IS NULL OR xnt.GIAVON = 0 THEN ROUND(NVL(gia.GIAMUA,0) * B.SOLUONG, 2) 
+                ELSE ROUND(NVL(xnt.GIAVON,0) * B.SOLUONG, 2) 
+                END AS NHAPGT, B.UNITCODE 
+                FROM
+                (SELECT b.MAHANG, a.MAKHO_NHAP, ROUND(SUM(b.SOLUONG), 2) AS SOLUONG, ROUND(SUM(b.GIAMUA * b.SOLUONG), 2) AS NHAPGT, a.UNITCODE FROM
+                CHUNGTU a INNER JOIN CHUNGTU_CHITIET b ON a.MA_CHUNGTU = b.MA_CHUNGTU 
+                WHERE a.LOAI_CHUNGTU = '''|| P_MA_NHAPXUAT|| '''
+                 AND UNITCODE = '''|| P_UNITCODE|| '''
+                 AND TO_DATE(a.NGAY_DUYETPHIEU,''DD-MM-YY'') <= TO_DATE('''|| P_DENNGAY|| ''',''DD-MM-YY'')
+                 AND TO_DATE(a.NGAY_DUYETPHIEU,''DD-MM-YY'') >= TO_DATE('''|| P_TUNGAY || ''',''DD-MM-YY'')
+                GROUP BY b.MAHANG,a.MAKHO_NHAP,a.UNITCODE) B
+                INNER JOIN '|| P_TABLENAME || ' xnt  ON  B.MAVATTU = P.MAVATTU AND B.MAKHONHAP = P.MAKHO 
+                INNER JOIN MATHANG_GIA gia ON B.MAHANG = gia.MAHANG AND B.UNITCODE = gia.UNITCODE AND B.UNITCODE = xnt.UNITCODE AND gia.UNITCODE = '''|| P_UNITCODE ||''';
+                ';
+            END;
+        ELSE
+                    STR_IF_REFUND := 'SELECT b.MAHANG,a.MAKHO_NHAP,ROUND(SUM(b.SOLUONG), 2) AS SOLUONG, ROUND(SUM(b.SOLUONG*b.GIAMUA), 2) AS NHAPGT,a.UNITCODE
+                        FROM CHUNGTU a INNER JOIN CHUNGTU_CHITIET b ON a.MA_CHUNGTU = b.MA_CHUNGTU
+                        WHERE UNITCODE = '''|| P_UNITCODE || ''' 
+                        AND a.LOAI_CHUNGTU = '''|| P_MA_NHAPXUAT|| '''
+                        AND TO_DATE(a.NGAY_DUYETPHIEU,''DD-MM-YY'') <= TO_DATE('''|| P_DENNGAY|| ''',''DD-MM-YY'')
+                        AND TO_DATE(a.NGAY_DUYETPHIEU,''DD-MM-YY'') >= TO_DATE('''|| P_TUNGAY || ''',''DD-MM-YY'')
+                        GROUP BY b.MAHANG,a.MAKHO_NHAP,a.UNITCODE;';
+        END IF;
+--        DBMS_OUTPUT.PUT_LINE(STR_IF_REFUND);
+        N_SQL_INSERT := 'DECLARE 
+        N_COUNT NUMBER(10,0) :=0; 
+        P_TONDAUKYSL NUMBER(18,2) :=0; 
+        P_TONDAUKYGT NUMBER(18,2) :=0;
+        T_NHAPSL NUMBER(18,2) :=0;
+    
+    CURSOR NHAP_XUAT_VATTU IS '|| STR_IF_REFUND|| '
+    BEGIN FOR ROW_VATTU IN NHAP_XUAT_VATTU LOOP
+    N_COUNT :=0;
+      BEGIN 
+        SELECT COUNT(*) INTO N_COUNT FROM '|| P_TABLENAME|| ' WHERE 
+        MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_NHAP AND UNITCODE = ROW_VATTU.UNITCODE;      
+        EXCEPTION WHEN OTHERS THEN N_COUNT:=0;
+      END;
+    BEGIN
+      IF(N_COUNT=0) THEN 
+        BEGIN 
+      INSERT INTO '|| P_TABLENAME|| ' (UNITCODE, NAM, KY, MAKHO, MAHANG,GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT) 
+      SELECT ROW_VATTU.UNITCODE AS UNITCODE,'
+                        || P_NAM
+                        || ' AS NAM,'
+                        || P_KY
+                        || ' AS KY,ROW_VATTU.MAKHO_NHAP AS MAKHO,ROW_VATTU.MAHANG,
+                        0 AS GIAVON, 0 AS TONDAUKYSL, 0 AS TONDAUKYGT,
+                        0 AS NHAPSL, 0 AS NHAPGT, 0 AS XUATSL, 0 AS XUATGT,
+                        0 AS TONCUOIKYSL, 0 AS TONCUOIKYGT
+                        FROM MATHANG 
+                        WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG;
+        END;
+       END IF;
+     END;
+    BEGIN 
+     -----------------
+     UPDATE '|| P_TABLENAME|| ' SET
+                  NHAPSL = NHAPSL + ROW_VATTU.SOLUONG, 
+                  NHAPGT = NHAPGT + ROW_VATTU.NHAPGT, 
+                  TONCUOIKYSL = TONCUOIKYSL + ROW_VATTU.SOLUONG, 
+                  TONCUOIKYGT = TONCUOIKYGT + ROW_VATTU.NHAPGT,
+                  GIAVON = CASE (TONCUOIKYSL + ROW_VATTU.SOLUONG) WHEN 0 THEN NVL((SELECT GIAMUA FROM MATHANG_GIA WHERE MAHANG = ROW_VATTU.MAHANG AND UNITCODE = ROW_VATTU.UNITCODE), 0) ELSE ( ABS(NVL(TONCUOIKYGT, 0))+ ABS(NVL(ROW_VATTU.NHAPGT, 0)) )/( ABS(NVL(TONCUOIKYSL, 0)) + ABS(NVL(ROW_VATTU.SOLUONG, 0)) ) END
+                  WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_NHAP;  
+       -----------------
+    END;
+    END LOOP; 
+    END; ';
+--    DBMS_OUTPUT.PUT_LINE('STR_IF_REFUND: ' || STR_IF_REFUND);
+--    DBMS_OUTPUT.PUT_LINE('N_SQL_INSERT: ' || N_SQL_INSERT);
+        EXECUTE IMMEDIATE N_SQL_INSERT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('ERROR:' || N_SQL_INSERT);
+    END XNT_TANG_TONKY;
+---------------------------------------------------
+
+    PROCEDURE XNT_GIAM_TONKY (
+        P_TABLENAME    IN             VARCHAR2,
+        P_UNITCODE     IN             VARCHAR2,
+        P_NAM          IN             NUMBER,
+        P_KY           IN             NUMBER,
+        P_MA_NHAPXUAT  IN             VARCHAR2,
+        P_TUNGAY       DATE,
+        P_DENNGAY      DATE
+    ) IS
+        N_SQL_INSERT   VARCHAR(5000);
+    BEGIN
+        N_SQL_INSERT := '
+    DECLARE 
+    N_COUNT NUMBER :=0; 
+    P_TONDAUKYSL NUMBER :=0; 
+    P_TONDAUKYGT NUMBER := 0; 
+    GIAVON_KHOASO NUMBER := 0; 
+    TONDAUKY_KHOASO NUMBER := 0; 
+    GIAMUA NUMBER := 0;
+    CURSOR NHAP_XUAT_VATTU IS SELECT B.MAHANG, B.MAKHO_XUAT ,B.SOLUONG,
+	 CASE  WHEN xnt.GIAVON = 0 OR xnt.GIAVON IS NULL THEN ROUND(NVL(gia.GIAMUA, 0) * B.SOLUONG, 2) 
+	 ELSE ROUND(xnt.GIAVON * B.SOLUONG, 2) END AS XUATGT, B.UNITCODE 
+     FROM
+    (SELECT b.MAHANG, a.MAKHO_XUAT, a.UNITCODE, ROUND(SUM(b.SOLUONG),2) AS SOLUONG, 
+    ROUND(SUM(b.GIAMUA * b.SOLUONG), 2) AS XUATGT 
+    FROM CHUNGTU a INNER JOIN CHUNGTU_CHITIET b ON a.MA_CHUNGTU = b.MA_CHUNGTU 
+    WHERE a.LOAI_CHUNGTU = '''|| P_MA_NHAPXUAT|| '''  
+    AND a.UNITCODE = '''|| P_UNITCODE|| ''' 
+    AND TO_DATE(a.NGAY_DUYETPHIEU,''DD-MM-YY'') <= TO_DATE('''|| P_DENNGAY || ''',''DD-MM-YY'')
+    AND TO_DATE(a.NGAY_DUYETPHIEU,''DD-MM-YY'') >= TO_DATE('''|| P_TUNGAY || ''',''DD-MM-YY'') 
+    GROUP BY b.MAHANG,a.MAKHO_XUAT,a.UNITCODE) B
+    LEFT JOIN '|| P_TABLENAME || ' xnt ON B.MAVATTU = xnt.MAVATTU AND B.MAKHOXUAT = xnt.MAKHO 
+    AND B.UNITCODE = xnt.UNITCODE 
+	LEFT JOIN MATHANG_GIA gia ON B.MAHANG = gia.MAVATTU AND B.UNITCODE = gia.UNITCODE;
+  BEGIN FOR ROW_VATTU IN NHAP_XUAT_VATTU LOOP
+    N_COUNT :=0;
+      BEGIN 
+        SELECT COUNT(*) INTO N_COUNT FROM '|| P_TABLENAME|| ' WHERE 
+        MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_XUAT AND UNITCODE = ROW_VATTU.UNITCODE;      
+        EXCEPTION WHEN OTHERS THEN N_COUNT := 0;
+      END;
+    BEGIN
+      IF(N_COUNT=0) THEN
+        BEGIN 
+      INSERT INTO '|| P_TABLENAME|| ' (UNITCODE,NAM,KY,MAKHO,MAHANG, GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT)
+      SELECT ROW_VATTU.UNITCODE AS UNITCODE,'
+                        || P_NAM
+                        || ' AS NAM,'
+                        || P_KY
+                        || ' AS KY,ROW_VATTU.MAKHO_XUAT AS MAKHO,
+                        ROW_VATTU.MAHANG AS MAHANG,0 AS GIAVON, 0 AS TONDAUKYSL, 0 AS TONDAUKYGT,
+                        0 AS NHAPSL, 0 AS NHAPGT, 0 AS XUATSL, 0 AS XUATGT,
+                        0 AS TONCUOIKYSL, 0 AS TONCUOIKYGT
+                        FROM MATHANG
+                        WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG;
+        END;
+       END IF;
+     END;
+
+    BEGIN   
+      UPDATE '|| P_TABLENAME|| ' SET XUATSL = NVL(XUATSL,0) + NVL(ROW_VATTU.SOLUONG,0), 
+          XUATGT = NVL(XUATGT,0) + NVL(ROW_VATTU.XUATGT,0), 
+          TONCUOIKYSL = NVL(TONCUOIKYSL,0) - NVL(ROW_VATTU.SOLUONG,0) ,
+          TONCUOIKYGT = NVL(TONCUOIKYGT,0) - NVL(ROW_VATTU.XUATGT,0)
+          WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_XUAT;      
+    END;
+    END LOOP; 
+    END';
+--    DBMS_OUTPUT.PUT_LINE('GIAMTONKY' || N_SQL_INSERT);        
+        EXECUTE IMMEDIATE N_SQL_INSERT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+    END XNT_GIAM_TONKY;
+    
+    PROCEDURE XNT_GIAM_PHIEU (
+        P_TABLENAME   IN            VARCHAR2,
+        P_NAM         IN            NUMBER,
+        P_KY          IN            NUMBER,
+        P_ID          IN            VARCHAR2
+    ) IS
+        N_SQL_INSERT   VARCHAR(5000);
+    BEGIN
+        N_SQL_INSERT := 'DECLARE 
+    N_COUNT NUMBER(10,0) := 0; 
+    P_TONDAUKYSL NUMBER(18,2) := 0; 
+    P_TONDAUKYGT NUMBER(18,2) := 0;
+    CURSOR NHAP_XUAT_VATTU IS SELECT B.MAHANG, B.MAKHO_XUAT, B.UNITCODE, B.SOLUONG, 
+	CASE WHEN xnt.GIAVON IS NULL OR xnt.GIAVON = 0 THEN NVL(gia.GIAMUA, 0)*B.SOLUONG 
+	ELSE ROUND(xnt.GIAVON * B.SOLUONG , 2) END AS XUATGT FROM 
+    (SELECT b.MAHANG, a.MAKHO_XUAT, a.UNITCODE, ROUND(SUM(b.SOLUONG)) AS SOLUONG, ROUND(SUM(b.GIAMUA * b.SOLUONG),2) AS XUATGT 
+    FROM CHUNGTU a INNER JOIN CHUNGTU_CHITIET b ON a.MA_CHUNGTU = b.MA_CHUNGTU
+    WHERE a.ID = '''|| P_ID || ''' GROUP BY b.MAHANG, a.MAKHO_XUAT, a.UNITCODE)  B 
+    INNER JOIN '|| P_TABLENAME|| ' xnt  ON  B.MAHANG = xnt.MAHANG AND B.MAKHO_XUAT = xnt.MAKHO AND B.UNITCODE = xnt.UNITCODE 
+   	INNER JOIN MATHANG_GIA gia ON B.MAHANG = gia.MAHANG AND B.UNITCODE = gia.UNITCODE
+    UNION ALL
+    SELECT B.MAHANG, B.MAKHO_XUAT, B.UNITCODE, B.SOLUONG, 
+	CASE WHEN xnt.GIAVON IS NULL OR xnt.GIAVON = 0 THEN NVL(gia.GIABANLE, 0)*B.SOLUONG 
+	ELSE ROUND(xnt.GIAVON * B.SOLUONG , 2) END AS XUATGT FROM 
+    (SELECT b.MAHANG, a.MAKHO_XUAT, a.UNITCODE, ROUND(SUM(b.SOLUONG), 2) AS SOLUONG, SUM(ROUND(ROUND(b.GIABANLE_VAT/(1 + c.GIATRI/100),2) * b.SOLUONG, 2)) AS XUATGT                     
+    FROM GIAODICH a INNER JOIN GIAODICH_CHITIET b ON a.MA_GIAODICH = b.MA_GIAODICH INNER JOIN THUE c ON b.MATHUE_RA = c.MATHUE
+    WHERE a.ID = '''|| P_ID || ''' GROUP BY b.MAHANG, a.MAKHO_XUAT, a.UNITCODE)  B 
+    INNER JOIN '|| P_TABLENAME|| ' xnt  ON  B.MAHANG = xnt.MAHANG AND B.MAKHO_XUAT = xnt.MAKHO AND B.UNITCODE = xnt.UNITCODE 
+   	INNER JOIN MATHANG_GIA gia ON B.MAHANG = gia.MAHANG AND B.UNITCODE = gia.UNITCODE;
+  BEGIN FOR ROW_VATTU IN NHAP_XUAT_VATTU LOOP
+    N_COUNT :=0;
+      BEGIN 
+        SELECT COUNT(*) INTO N_COUNT FROM '|| P_TABLENAME || ' WHERE 
+        MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_XUAT AND UNITCODE = ROW_VATTU.UNITCODE;      
+        EXCEPTION WHEN OTHERS THEN N_COUNT:=0;
+      END;
+    BEGIN
+      IF(N_COUNT=0) THEN 
+        BEGIN 
+      INSERT INTO '|| P_TABLENAME || ' (UNITCODE, NAM, KY, MAKHO, MAHANG,GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT) 
+      SELECT ROW_VATTU.UNITCODE AS UNITCODE,'
+                        || P_NAM
+                        || ' AS NAM,'
+                        || P_KY
+                        || ' AS KY,ROW_VATTU.MAKHO_XUAT AS MAKHO,ROW_VATTU.MAHANG,
+                        0 AS GIAVON, 0 AS TONDAUKYSL, 0 AS TONDAUKYGT,
+                        0 AS NHAPSL, 0 AS NHAPGT, 0 AS XUATSL, 0 AS XUATGT,
+                        0 AS TONCUOIKYSL, 0 AS TONCUOIKYGT
+                        FROM MATHANG 
+                        WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG;
+        END;
+       END IF;
+     END;
+
+    BEGIN     
+      UPDATE '|| P_TABLENAME|| ' SET
+      XUATSL=NVL(XUATSL,0)+NVL(ROW_VATTU.SOLUONG,0), 
+      XUATGT=NVL(XUATGT,0)+NVL(ROW_VATTU.XUATGT,0), 
+      TONCUOIKYSL=NVL(TONCUOIKYSL,0)-NVL(ROW_VATTU.SOLUONG,0),
+      TONCUOIKYGT=NVL(TONCUOIKYGT,0)-NVL(ROW_VATTU.XUATGT,0)
+      WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_XUAT;      
+    END;
+
+    END LOOP; 
+    END;';
+        DBMS_OUTPUT.PUT_LINE(N_SQL_INSERT);
+        EXECUTE IMMEDIATE N_SQL_INSERT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+    END XNT_GIAM_PHIEU;
+
+    PROCEDURE XNT_TANG_PHIEU (
+        P_TABLENAME   IN            VARCHAR2,
+        P_NAM         IN            NUMBER,
+        P_KY          IN            NUMBER,
+        P_ID          IN            VARCHAR2
+    ) IS
+        N_SQL_INSERT    VARCHAR(5000);
+        N_LOAICHUNGTU   VARCHAR(100);
+        STR_IF_REFUND   VARCHAR(2000);
+    BEGIN
+    SELECT a.LOAI_CHUNGTU INTO N_LOAICHUNGTU FROM CHUNGTU a WHERE a.ID = P_ID AND ROWNUM = 1;
+        IF N_LOAICHUNGTU = '2' THEN
+            BEGIN
+                STR_IF_REFUND := 'SELECT B.MAHANG, B.MAKHO_NHAP, B.UNITCODE, B.SOLUONG, 
+                CASE WHEN P.TONCUOIKYSL = 0 THEN ROUND(NVL(gia.GIAMUA, 0)*B.SOLUONG,2) 
+                WHEN (xnt.TONDAUKYSL + xnt.NHAPSL) IS NULL THEN ROUND(NVL(gia.GIAMUA, 0)*B.SOLUONG,2) 
+                ELSE ABS(B.SOLUONG * ((xnt.TONDAUKYGT + ((.NHAPGT)/(((.TONDAUKYSL + ((.NHAPSL))) END AS NHAPGT FROM 
+                (SELECT MAVATTU, MAKHONHAP, UNITCODE, SUM(SOLUONG) AS SOLUONG, SUM(DONGIA*SOLUONG) AS NHAPGT 
+                FROM CHUNGTU a INNER JOIN CHUNGTU_CHITIET b ON a.MA_CHUNGTU = b.MA_CHUNGTU WHERE  
+                a.ID = '''|| P_ID ||''' GROUP BY b.MAHANG, a.MAKHO_NHAP, a.UNITCODE)  B 
+                LEFT JOIN '|| P_TABLENAME|| ' xnt ON  B.MAHANG = xnt.MAHANG AND B.MAKHO_NHAP = xnt.MAKHO AND B.UNITCODE = xnt.UNITCODE 
+                LEFT JOIN MATHANG_GIA gia ON B.MAHANG = gia.MAHANG AND B.UNITCODE = gia.UNITCODE ;';
+            END;
+        ELSE
+            STR_IF_REFUND := 'SELECT b.MAHANG,a.MAKHO_NHAP,a.UNITCODE,ROUND(SUM(b.SOLUONG),2) AS SOLUONG,
+            ROUND(SUM(b.SOLUONG * b.GIAMUA),2) AS NHAPGT 
+            FROM CHUNGTU a INNER JOIN CHUNGTU_CHITIET b ON a.MA_CHUNGTU = b.MA_CHUNGTU
+            WHERE a.ID = '''|| P_ID || '''     
+            GROUP BY b.MAHANG,a.MAKHO_NHAP,a.UNITCODE;';
+        END IF;
+        N_SQL_INSERT := 'DECLARE 
+    N_COUNT NUMBER(10,0) := 0; 
+    P_TONDAUKYSL NUMBER(18,2) := 0; 
+    P_TONDAUKYGT NUMBER(18,2) := 0;
+    CURSOR NHAP_XUAT_VATTU IS '|| STR_IF_REFUND|| '
+    BEGIN FOR ROW_VATTU IN NHAP_XUAT_VATTU LOOP
+    N_COUNT := 0;
+      BEGIN 
+        SELECT COUNT(*) INTO N_COUNT FROM '|| P_TABLENAME || ' WHERE 
+        MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_NHAP AND UNITCODE = ROW_VATTU.UNITCODE;      
+        EXCEPTION WHEN OTHERS THEN N_COUNT:=0;
+      END;
+    BEGIN
+      IF(N_COUNT=0) THEN 
+        BEGIN 
+      INSERT INTO '|| P_TABLENAME|| ' (UNITCODE, NAM, KY, MAKHO, MAHANG,GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT) 
+      SELECT ROW_VATTU.UNITCODE AS UNITCODE,'
+                        || P_NAM
+                        || ' AS NAM,'
+                        || P_KY
+                        || ' AS KY,ROW_VATTU.MAKHO_NHAP AS MAKHO,ROW_VATTU.MAHANG,
+                        0 AS GIAVON, 0 AS TONDAUKYSL, 0 AS TONDAUKYGT,
+                        0 AS NHAPSL, 0 AS NHAPGT, 0 AS XUATSL, 0 AS XUATGT,
+                        0 AS TONCUOIKYSL, 0 AS TONCUOIKYGT
+                        FROM MATHANG 
+                        WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG;
+        END;
+       END IF;
+     END;
+
+    BEGIN     
+      UPDATE '|| P_TABLENAME || ' SET
+      NHAPSL = NHAPSL + ROW_VATTU.SOLUONG, 
+	  NHAPGT = NHAPGT + ROW_VATTU.NHAPGT, 
+	  TONCUOIKYSL = TONCUOIKYSL + ROW_VATTU.SOLUONG, 
+	  TONCUOIKYGT = TONCUOIKYGT + ROW_VATTU.NHAPGT,
+	  GIAVON = 
+    CASE (TONCUOIKYSL + ROW_VATTU.SOLUONG) 
+    WHEN 0 THEN 
+    NVL((SELECT GIAMUA FROM MATHANG_GIA 
+    WHERE MAHANG = ROW_VATTU.MAHANG AND UNITCODE =ROW_VATTU.UNITCODE), 0) 
+	ELSE ABS((NVL(TONCUOIKYGT, 0) + NVL(ROW_VATTU.NHAPGT, 0))/(NVL(TONCUOIKYSL, 0)+NVL(ROW_VATTU.SOLUONG, 0))) END
+      WHERE UNITCODE = ROW_VATTU.UNITCODE AND MAHANG = ROW_VATTU.MAHANG AND MAKHO = ROW_VATTU.MAKHO_NHAP; 
+    END;
+    END LOOP; 
+    END;';
+        --DBMS_OUTPUT.PUT_LINE(N_SQL_INSERT);
+        EXECUTE IMMEDIATE N_SQL_INSERT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+    END XNT_TANG_PHIEU;
+    
+    PROCEDURE XNT_KHOASO (
+        P_TABLENAME_KYTRUOC   IN                    VARCHAR2,
+        P_TABLENAME           IN                    VARCHAR2,
+        P_UNITCODE            IN                    VARCHAR2,
+        P_NAM                 IN                    NUMBER,
+        P_KY                  IN                    NUMBER
+    ) IS
+        P_TUNGAY           DATE;
+        P_TUNGAY_KYTRUOC   DATE;
+        P_DENNGAY          DATE;
+        N_COUNT            NUMBER;
+    BEGIN
+      SELECT TO_DATE(TUNGAY,'DD-MM-YY') AS TUNGAY,TO_DATE(DENNGAY,'DD-MM-YY') AS DENNGAY INTO P_TUNGAY,P_DENNGAY FROM KYKETOAN WHERE KYKETOAN = P_KY AND NAM = P_NAM AND UNITCODE = P_UNITCODE;
+--      SELECT COUNT(*) INTO N_COUNT FROM DM_THEODOITIENTRINH WHERE PROCESSCODE = 'KHOASO' AND UNITCODE = P_UNITCODE;
+--      IF N_COUNT = 0 THEN
+--      INSERT INTO DM_THEODOITIENTRINH (ID, PROCESSCODE, DESCRIPTION, STATE, UNITCODE) VALUES (SYS_GUID(), 'KHOASO', 'TIáº¾N TRÃŒNH KHÃ“A Sá»”', 0, P_UNITCODE);
+--      END IF;
+--       -- IS RUNNING
+--      UPDATE DM_THEODOITIENTRINH SET STATE = 20 WHERE PROCESSCODE = 'KHOASO' AND UNITCODE = P_UNITCODE;
+        BEGIN
+            XNT_CREATE_TABLE_TONKY(P_TABLENAME_KYTRUOC, P_TABLENAME, P_UNITCODE, P_NAM, P_KY);
+            XNT_TANG_TONKY(P_TABLENAME, P_UNITCODE, P_NAM, P_KY, 'NMUA', P_TUNGAY, P_DENNGAY);
+        -- xuat
+    -- IS COMPLETE
+    -- UPDATE DM_THEODOITIENTRINH SET STATE = 0 WHERE PROCESSCODE = 'KHOASO' AND UNITCODE = P_UNITCODE;   
+        END;
+    END XNT_KHOASO;
+END XUATNHAPTON;
+/

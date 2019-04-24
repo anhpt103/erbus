@@ -86,7 +86,8 @@ namespace ERBus.Service.Knowledge.XuatBan
             public List<DtoDetails> DataDetails { get; set; }
         }
 
-        public class DtoDetails{
+        public class DtoDetails
+        {
             public string ID { get; set; }
             public string MA_CHUNGTU { get; set; }
             public string MAHANG { get; set; }
@@ -98,6 +99,10 @@ namespace ERBus.Service.Knowledge.XuatBan
             public decimal SOLUONG { get; set; }
             public decimal GIAMUA { get; set; }
             public decimal GIAMUA_VAT { get; set; }
+            public decimal GIABANLE { get; set; }
+            public decimal GIABANLE_VAT { get; set; }
+            public decimal GIAVON { get; set; }
+            public decimal TONCUOIKYSL { get; set; }
             public decimal? TIEN_GIAMGIA { get; set; }
             public decimal THANHTIEN { get; set; }
             public int? INDEX { get; set; }

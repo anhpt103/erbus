@@ -219,6 +219,8 @@ namespace ERBus.Service.Knowledge.NhapMua
             {
                 x.ID = Guid.NewGuid().ToString();
                 x.MA_CHUNGTU = result.MA_CHUNGTU;
+                x.GIABANLE = 0;
+                x.GIABANLE_VAT = 0;
             });
             result = Insert(result);
             UnitOfWork.Repository<CHUNGTU_CHITIET>().InsertRange(dataDetails);
@@ -244,6 +246,8 @@ namespace ERBus.Service.Knowledge.NhapMua
             {
                 x.ID = Guid.NewGuid().ToString();
                 x.MA_CHUNGTU = dataChungTu.MA_CHUNGTU;
+                x.GIABANLE = 0;
+                x.GIABANLE_VAT = 0;
             });
             UnitOfWork.Repository<CHUNGTU_CHITIET>().InsertRange(dataDetails);
             var result = Update(dataChungTu);

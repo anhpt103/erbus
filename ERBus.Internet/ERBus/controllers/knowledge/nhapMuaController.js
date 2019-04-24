@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/nhaCungCapController', 'controllers/catalog/donViTinhController', 'controllers/catalog/thueController', 'controllers/authorize/thamSoHeThongController', 'controllers/catalog/khoHangController', 'controllers/authorize/kyKeToanController', 'controllers/catalog/matHangController', 'controllers/authorize/cuaHangController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/nhaCungCapController', 'controllers/catalog/donViTinhController', 'controllers/catalog/thueController', 'controllers/authorize/thamSoHeThongController', 'controllers/catalog/khoHangController', 'controllers/authorize/kyKeToanController', 'controllers/catalog/matHangController', 'controllers/authorize/cuaHangController', 'controllers/authorize/thamSoHeThongController'], function () {
     'use strict';
-    var app = angular.module('nhapMuaModule', ['ui.bootstrap', 'nhaCungCapModule', 'donViTinhModule', 'thueModule', 'thamSoHeThongModule', 'khoHangModule', 'kyKeToanModule', 'matHangModule', 'cuaHangModule']);
+    var app = angular.module('nhapMuaModule', ['ui.bootstrap', 'nhaCungCapModule', 'donViTinhModule', 'thueModule', 'thamSoHeThongModule', 'khoHangModule', 'kyKeToanModule', 'matHangModule', 'cuaHangModule', 'thamSoHeThongModule']);
     app.factory('nhapMuaService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Knowledge/NhapMua';
         var selectedData = [];
@@ -393,8 +393,8 @@
            };
        }]);
     
-    app.controller('nhapMuaCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'nhaCungCapService', 'donViTinhService', 'thueService', 'khoHangService', 'kyKeToanService', 'matHangService', 'userService',
-    function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, nhaCungCapService, donViTinhService, thueService, khoHangService, kyKeToanService, matHangService, userService) {
+    app.controller('nhapMuaCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'nhaCungCapService', 'donViTinhService', 'thueService', 'khoHangService', 'kyKeToanService', 'matHangService', 'userService','thamSoHeThongService',
+    function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, nhaCungCapService, donViTinhService, thueService, khoHangService, kyKeToanService, matHangService, userService, thamSoHeThongService) {
         $scope.config = angular.copy(configService);
         $scope.tempData = tempDataService.tempData;
         $scope.paged = angular.copy(configService.pageDefault);
@@ -436,6 +436,17 @@
                 }
             }
         };
+        //Tham số cấu hình sử dụng chức năng
+        thamSoHeThongService.getDataByMaThamSo().then(function (successRes) {
+            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                angular.forEach(successRes.data.Data, function (v, k) {
+                    if (v.MA_THAMSO === 'DEFAULT_KHONHAP' && v.GIATRI_SO === 10 && v.GIATRI_CHU.trim() != '') {
+                        $scope.target.MAKHO_NHAP = v.GIATRI_CHU.trim();
+                    }
+                });
+            }
+        });
+        //end tham số hệ thống
         //Function load data catalog NhaCungCap
         function loadDataNhaCungCap() {
             $scope.nhaCungCap = [];

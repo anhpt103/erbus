@@ -50,6 +50,29 @@ namespace ERBus.Api.Controllers.Authorize
             return Ok(result);
         }
 
+        [Route("GetKyKeToanTheoNgay")]
+        [HttpPost]
+        public IHttpActionResult GetKyKeToanTheoNgay(KyKeToanViewModel.ParamKyKeToan paramDate)
+        {
+            var result = new TransferObj<KYKETOAN>();
+            var _unitCode = _service.GetCurrentUnitCode();
+            if(paramDate.TUNGAY != null && paramDate.DENNGAY != null)
+            {
+                var kyKeToan = _service.Repository.DbSet.FirstOrDefault(x => x.UNITCODE == _unitCode && x.TRANGTHAI == (int)TypeState.APPROVAL && x.TUNGAY == paramDate.TUNGAY && x.DENNGAY == paramDate.DENNGAY && x.NAM == paramDate.DENNGAY.Year);
+                if (kyKeToan != null)
+                {
+                    result.Status = true;
+                    result.Data = kyKeToan;
+                }
+                else
+                {
+                    result.Status = false;
+                    result.Data = null;
+                }
+            }
+            return Ok(result);
+        }
+
         [Route("GetLastestPeriod")]
         [HttpGet]
         public IHttpActionResult GetLastestPeriod()

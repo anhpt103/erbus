@@ -26,6 +26,8 @@ namespace ERBus.Service.Catalog.MatHang
             public byte[] AVATAR { get; set; }
             public string IMAGE { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
+            public string TABLE_NAME { get; set; }
+            public string MAKHO { get; set; }
             public string DefaultOrder
             {
                 get
@@ -107,6 +109,8 @@ namespace ERBus.Service.Catalog.MatHang
         {
             public string MAHANG { get; set; }
             public string MAKHO_NHAP { get; set; }
+            public string MAKHO_XUAT { get; set; }
+            public string TABLE_NAME { get; set; }
             public string UNITCODE { get; set; }
         }
 
@@ -136,6 +140,8 @@ namespace ERBus.Service.Catalog.MatHang
             public decimal GIABANBUON_VAT { get; set; }
             public decimal TYLE_LAILE { get; set; }
             public decimal TYLE_LAIBUON { get; set; }
+            public decimal GIAVON { get; set; }
+            public decimal TONCUOIKYSL { get; set; }
             public int TRANGTHAI { get; set; }
             public string UNITCODE { get; set; }
         }

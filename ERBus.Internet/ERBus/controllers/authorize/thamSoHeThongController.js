@@ -111,6 +111,39 @@
                     TRANGTHAI: 10,
                     ISDIABLED_GIATRI_CHU: false,
                     PLACEHOLDER: 'Nhập giá trị theo mã kho trong danh mục kho'
+                },
+                {
+                    MA_THAMSO: 'DEFAULT_KHONHAP',
+                    TEN_THAMSO: 'MẶC ĐỊNH KHO NHẬP HÀNG',
+                    GIATRI_SO: 0,
+                    GIATRI_CHU: null,
+                    I_STATE: 'C', //NOT
+                    UNITCODE: userService.CurrentUser.unitCode,
+                    TRANGTHAI: 10,
+                    ISDIABLED_GIATRI_CHU: false,
+                    PLACEHOLDER: 'Nhập giá trị theo mã kho trong danh mục kho'
+                },
+                {
+                    MA_THAMSO: 'DEFAULT_KHOXUAT',
+                    TEN_THAMSO: 'MẶC ĐỊNH KHO XUẤT HÀNG',
+                    GIATRI_SO: 0,
+                    GIATRI_CHU: null,
+                    I_STATE: 'C', //NOT
+                    UNITCODE: userService.CurrentUser.unitCode,
+                    TRANGTHAI: 10,
+                    ISDIABLED_GIATRI_CHU: false,
+                    PLACEHOLDER: 'Nhập giá trị theo mã kho trong danh mục kho'
+                },
+                {
+                    MA_THAMSO: 'DEFAULT_KHOKHUYENMAI',
+                    TEN_THAMSO: 'MẶC ĐỊNH KHO KHUYẾN MÃI',
+                    GIATRI_SO: 0,
+                    GIATRI_CHU: null,
+                    I_STATE: 'C', //NOT
+                    UNITCODE: userService.CurrentUser.unitCode,
+                    TRANGTHAI: 10,
+                    ISDIABLED_GIATRI_CHU: false,
+                    PLACEHOLDER: 'Nhập giá trị theo mã kho trong danh mục kho'
                 }
             ];
            

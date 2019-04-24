@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                                 <div class="input-group">
-                                    <select enter id="_trangThai" name="_trangThai" ng-init="target.TRANGTHAI = 10" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('trangThaiChungTu')" class="form-control" disabled></select>
+                                    <select enter id="_trangThai" name="_trangThai" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('trangThaiChungTu')" class="form-control" disabled></select>
                                 </div>
                                 <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
                                     <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
@@ -49,32 +49,21 @@
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label">Khách hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                                 <div class="input-group">
-                                    <select enter id="_maLoai" name="_maKhachHang" ng-model="target.MAKHACHHANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('khachHang')" class="form-control" disabled></select>
+                                    <select enter id="_maKhachHang" name="_maKhachHang" ng-model="target.MAKHACHHANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('khachHang')" class="form-control" disabled></select>
                                 </div>
                                 <small class="form-text text-muted" ng-show="_form._maKhachHang.$dirty && _form._maKhachHang.$invalid">
-                                    <span ng-show="_form._maKhachHang.$error.required">Mã nhà cung cấp không được để trống</span>
+                                    <span ng-show="_form._maKhachHang.$error.required">Mã khách hàng không được để trống</span>
                                 </small>
                             </div>
                         </div>
                         <div class="col col-md-4">
                             <div class="form-group">
-                                <label for="text-input" class="form-control-label">Mã kho nhập</label><span style="color: red" title="Bắt buộc phải nhập">(*)</span>
+                                <label for="text-input" class="form-control-label">Mã kho xuất</label><span style="color: red" title="Bắt buộc phải nhập">(*)</span>
                                 <div class="input-group">
                                     <select enter id="_maKho_Xuat" name="_maKho_Xuat" ng-model="target.MAKHO_XUAT" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('khoHang')" class="form-control" disabled></select>
                                 </div>
                                 <small class="form-text text-muted" ng-show="_form._maKho_Xuat.$dirty && _form._maKho_Xuat.$invalid">
                                     <span ng-show="_form._maKho_Xuat.$error.required">Mã kho nhập không được để trống</span>
-                                </small>
-                            </div>
-                        </div>
-                        <div class="col col-md-4">
-                            <div class="form-group">
-                                <label for="text-input" class="form-control-label">Thuế toàn đơn</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
-                                <div class="input-group">
-                                    <select enter id="_maThueToanDon" name="_maThueToanDon" ng-model="target.MATHUE_TOANDON" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('thue')" class="form-control" disabled></select>
-                                </div>
-                                <small class="form-text text-muted" ng-show="_form._maThueToanDon.$dirty && _form._maThueToanDon.$invalid">
-                                    <span ng-show="_form._maThueToanDon.$error.required">Mã thuế không được để trống</span>
                                 </small>
                             </div>
                         </div>
@@ -102,17 +91,18 @@
                                     <th class="th customize"><span class="title">Thuế</span></th>
                                     <th class="th customize"><span class="title">Lãi lẻ</span></th>
                                     <th class="th customize"><span class="title">Số lượng</span></th>
-                                    <th class="th customize"><span class="title">Giá mua</span></th>
-                                    <th class="th customize"><span class="title">Giá mua(VAT)</span></th>
+                                    <th class="th customize"><span class="title">Tồn kho</span></th>
+                                    <th class="th customize"><span class="title">Giá vốn(VAT)</span></th>
+                                    <th class="th customize"><span class="title">Giá bán lẻ</span></th>
+                                    <th class="th customize"><span class="title">Giá bán lẻ(VAT)</span></th>
                                     <th class="th customize"><span class="title">Giảm giá</span></th>
                                     <th class="th customize"><span class="title">Thành tiền</span></th>
-                                    <th class="th customize"><span class="title">Thành tiền(VAT)</span></th>
                                     <th class="th customize"><span class="title">#</span></th>
                                 </tr>
                             </thead>
                             <tbody ng-form name="_formDetails">
                                 <tr class="spacer"></tr>
-                                <tr class="tr-shadow" ng-repeat="item in target.DataDetails | orderBy:'INDEX':true track by $index">
+                                <tr class="tr-shadow" ng-repeat="item in data | orderBy:'INDEX':true track by $index">
                                     <td class="text code">
                                         <input enter type="text" id="_maHangDetail" name="_maHangDetail" onClick="this.select();" ng-model="item.MAHANG" title="Sản phẩm:{{item.MAHANG}} - Tên: {{item.TENHANG}} - Nhà cung cấp: {{convertCodeToName(item.MANHACUNGCAP,'nhaCungCap')}}" required class="form-control input-nhapMua code" readonly>
                                     </td>
@@ -123,28 +113,31 @@
                                         <input type="text" id="_maDonViTinhDetail" name="_maDonViTinhDetail" onClick="this.select();" ng-value="convertCodeToName(item.MADONVITINH,'donViTinh')" title="Mã đơn vị tính {{item.MADONVITINH}} - {{convertCodeToName(item.MADONVITINH,'donViTinh')}}" class="form-control input-nhapMua code" readonly>
                                     </td>
                                     <td class="text thue">
-                                        <input type="text" id="_maThueVaoDetail" name="_maThueVaoDetail" onClick="this.select();" ng-value="convertCodeToName(item.MATHUE_VAO,'thue')" title="Mã thuế vào {{item.MATHUE_VAO}} - {{convertCodeToName(item.MATHUE_VAO,'thue')}}" class="form-control input-nhapMua code" readonly>
+                                        <input type="text" id="_maThueRaDetail" name="_maThueRaDetail" onClick="this.select();" ng-value="convertCodeToName(item.MATHUE_RA,'thue')" title="Mã thuế vào {{item.MATHUE_RA}} - {{convertCodeToName(item.MATHUE_RA,'thue')}}" class="form-control input-nhapMua code" readonly>
                                     </td>
                                     <td class="text code">
                                         <input type="text" id="_tyLeLaiLeDetail" name="_tyLeLaiLeDetail" onClick="this.select();" ng-model="item.TYLE_LAILE" title="Sản phẩm {{item.MAHANG}} - Tỷ lệ lãi lẻ: {{item.TYLE_LAILE}}%" class="form-control input-nhapMua code" readonly>
                                     </td>
                                     <td class="number soluong">
-                                        <input enter type="text" awnum="number" id="_soLuongDetail" name="_soLuongDetail" onClick="this.select();" ng-model="item.SOLUONG" title="Số lượng: {{item.SOLUONG}}" ng-change="changedSoLuong(item);" required class="form-control input-nhapMua number" readonly>
+                                        <input enter type="text" awnum="number" id="_soLuongDetail" name="_soLuongDetail" onClick="this.select();" ng-model="item.SOLUONG" title="Số lượng: {{item.SOLUONG}}" ng-change="changedSoLuong(item);" required class="form-control input-nhapMua number">
+                                    </td>
+                                    <td class="number soluong">
+                                        <input enter type="text" awnum="number" id="_soLuongTonDetail" name="_soLuongTonDetail" onClick="this.select();" ng-model="item.TONCUOIKYSL" title="Số lượng: {{item.TONCUOIKYSL}}" required class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td>
-                                        <input enter type="text" awnum="number" id="_giaMuaDetail" name="_giaMuaDetail" onClick="this.select();" ng-model="item.GIAMUA" title="Giá mua: {{item.GIAMUA}} VNĐ" ng-change="changedDonGia(item);" required class="form-control input-nhapMua number" readonly>
+                                        <input enter type="text" awnum="number" id="_giaVonVatDetail" name="_giaVonVatDetail" onClick="this.select();" ng-model="item.GIAVON_VAT" title="Giá vốn có VAT: {{item.GIAVON_VAT}} VNĐ" required class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td>
-                                        <input enter type="text" awnum="number" id="_giaMuaVatDetail" name="_giaMuaVatDetail" onClick="this.select();" ng-model="item.GIAMUA_VAT" title="Giá mua bao gồm thuế: {{item.GIAMUA_VAT}} VNĐ" ng-change="changedDonGiaVat(item);" required class="form-control input-nhapMua number" readonly>
+                                        <input enter type="text" awnum="number" id="_giaBanLeDetail" name="_giaBanLeDetail" onClick="this.select();" ng-model="item.GIABANLE" title="Giá bán lẻ: {{item.GIABANLE}} VNĐ" required class="form-control input-nhapMua number" readonly>
+                                    </td>
+                                    <td>
+                                        <input enter type="text" awnum="number" id="_giaBanLeVatDetail" name="_giaBanLeVatDetail" onClick="this.select();" ng-model="item.GIABANLE_VAT" title="Giá bán lẻ có VAT: {{item.GIABANLE_VAT}} VNĐ" required class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td class="number soluong">
                                         <input enter type="text" awnum="number" id="_tienGiamGiaDetail" name="_tienGiamGiaDetail" onClick="this.select();" ng-model="item.TIEN_GIAMGIA" ng-change="changedGiamGia(item);" class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td>
                                         <input type="text" awnum="number" id="_thanhTienDetail" name="_thanhTienDetail" onClick="this.select();" ng-model="item.THANHTIEN" title="Thành tiền = Số lượng x Giá mua - Tiền giảm giá" required class="form-control input-nhapMua number" readonly>
-                                    </td>
-                                    <td>
-                                        <input type="text" awnum="number" id="_thanhTienVatDetail" name="_thanhTienVatDetail" onClick="this.select();" ng-model="item.THANHTIEN_VAT" title="Thành tiền gồm thuế = Số lượng x Giá mua gồm thuế - Tiền giảm giá" required class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td>
                                         <div class="table-data-feature">
@@ -158,7 +151,7 @@
                             <tbody ng-form name="_formTotal">
                                 <tr class="spacer"></tr>
                                 <tr class="tr-shadow">
-                                    <td colspan="7">
+                                    <td colspan="8">
                                         <ul style="float:left;" uib-pagination total-items="paged.TotalItems" ng-model="paged.CurrentPage" ng-change="pageChanged();" max-size="paged.MaxSize" class="pagination-sm cutomize" boundary-link-numbers="true" rotate="false"></ul>
                                     </td>
                                     <td colspan="2">Tổng tiền (bao gồm thuế)</td>
@@ -167,7 +160,7 @@
                                     </td>
                                 </tr>
                                 <tr class="tr-shadow">
-                                    <td colspan="7">
+                                    <td colspan="8">
                                         <pre class="pre-cutomize">Tổng số: {{paged.CurrentPage}} / {{paged.TotalPages}}</pre>
                                     </td>
                                     <td colspan="2">Chiết khấu</td>
@@ -176,14 +169,14 @@
                                     </td>
                                 </tr>
                                 <tr class="tr-shadow">
-                                    <td colspan="7"></td>
+                                    <td colspan="8"></td>
                                     <td colspan="2">Tổng tiền thuế</td>
                                     <td colspan="2">
                                         <input type="text" awnum="number" id="_tienThue" name="_tienThue" onClick="this.select();" required ng-model="target.TONG_TIENTHUE" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
                                     </td>
                                 </tr>
                                 <tr class="tr-shadow">
-                                    <td colspan="7"></td>
+                                    <td colspan="8"></td>
                                     <td colspan="2">Tổng tiền (đã trừ thuế)</td>
                                     <td colspan="2">
                                         <input type="text" awnum="number" id="_tongTienSauThue" name="_tongTienSauThue" onClick="this.select();" required ng-model="target.TONGTIEN_SAUTHUE" ng-disabled="target.DataDetails.length <= 0" class="form-control number" readonly>
@@ -198,7 +191,6 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_formDetails.$invalid || target.DataDetails.length <= 0" excel-export export-data="exportData" file-name="{{fileName}}"><i class="fa fa-file-export"></i>&nbsp;&nbsp;{{config.label.btnExportExcel}}</button>
         <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
     </div>
 </div>

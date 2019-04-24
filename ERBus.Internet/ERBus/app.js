@@ -300,6 +300,19 @@ define([
         });
     }]);
 
+
+    app.config(['$urlMatcherFactoryProvider', function ($urlMatcherFactory) {
+        $urlMatcherFactory.type('configParams',
+      {
+          name: 'configParams',
+          decode: function (val) { return typeof (val) === "string" ? JSON.parse(val) : val; },
+          encode: function (val) { return JSON.stringify(val); },
+          equals: function (a, b) { return this.is(a) && this.is(b) && a.ID === b.ID && a.TUNGAY == b.TUNGAY && a.DENNGAY == b.DENNGAY },
+          is: function (val) { return angular.isObject(val) && "ID" in val && "TUNGAY" in val && "DENNGAY" in val },
+      })
+    }]);
+
+
     //validate number
     app.config(function (dynamicNumberStrategyProvider) {
         dynamicNumberStrategyProvider.addStrategy('number', {
