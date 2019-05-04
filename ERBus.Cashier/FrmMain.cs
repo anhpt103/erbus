@@ -4,6 +4,9 @@ using ERBus.Cashier.Dto;
 using ERBus.Cashier.Giaodich.XuatBanLe;
 using DevExpress.XtraTab;
 using DevExpress.XtraTab.ViewInfo;
+using System.Resources;
+using System.ComponentModel;
+
 namespace ERBus.Cashier
 {
     public partial class FrmMain : Form
@@ -123,9 +126,15 @@ namespace ERBus.Cashier
             InitializeTabPageReturn(_i);
         }
 
-        private void btnMenuDongBoGiaoDichQuay_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void btnDongBoGiaoDich_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             frmGuiDuLieuBan frmGuiDuLieuBan = new frmGuiDuLieuBan();
-            frmGuiDuLieuBan.ShowDialog();}
+            frmGuiDuLieuBan.ShowDialog();
+        }
+
+        private void btnHome_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+           
+        }
     }
 }

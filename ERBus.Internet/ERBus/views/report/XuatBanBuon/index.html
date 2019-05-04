@@ -1,0 +1,192 @@
+﻿<script type="text/ng-template" id="common-custom-template">
+    <div class="right-panel">
+        <span>({{data.TEXT}})</span>
+    </div>
+</script>
+<div role="document">
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-8">
+                    <!-- TOP CAMPAIGN-->
+                    <div class="top-campaign report-table">
+                        <h3 class="title-3 m-b-30">{{title();}}</h3>
+                        <div class="table-responsive">
+                            <table class="table table-top-campaign report-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-title-report"></td>
+                                        <td></td>
+                                        <td>
+                                            <button type="button" prevent-default class="btn btn-info" ng-disabled="_form.$invalid" ng-click="report();"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnReport}}</button>&nbsp;
+                                            <button type="button" prevent-default class="btn btn-info" ng-disabled="_form.$invalid" ng-click="reportDetail();"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnDetailReport}}</button>&nbsp;
+                                            <button type="button" prevent-default class="btn btn-danger" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>&nbsp;
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Cửa hàng</td>
+                                        <td></td>
+                                        <td>
+                                            <input enter type="text" id="_maCuaHang" name="_maCuaHang" ng-model="target.TEN_CUHANG" required class="form-control" disabled>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Từ ngày</td>
+                                        <td></td>
+                                        <td>
+                                            <input enter class="form-control" type="text" ng-model="target.TUNGAY" placeholder="{{config.dateFormat}}"
+                                                   uib-datepicker-popup="{{config.dateFormat}}" is-open="TUNGAY" datepicker-localdate datepicker-options="options" />
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Đến ngày</td>
+                                        <td></td>
+                                        <td>
+                                            <input enter class="form-control" type="text" ng-model="target.DENNGAY" placeholder="{{config.dateFormat}}"
+                                                   uib-datepicker-popup="{{config.dateFormat}}" is-open="DENNGAY" datepicker-localdate datepicker-options="options" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Kho hàng</td>
+                                        <td>
+                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="KHOHANG">
+                                        </td>
+                                        <td>
+                                            <tags-input enter ng-model="target.MAKHO" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Kho hàng" replace-spaces-with-dashes="false">
+                                                <auto-complete source="loadKhoHangTags($query)"
+                                                               min-length="0"
+                                                               load-on-focus="false"
+                                                               load-on-empty="false"
+                                                               max-results-to-show="20"
+                                                               template="common-custom-template">
+                                                </auto-complete>
+                                            </tags-input>
+                                        </td>
+                                        <td class="button-title-report">
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedKhoHang();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Kho</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Loại hàng</td>
+                                        <td>
+                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="LOAIHANG">
+                                        </td>
+                                        <td>
+                                            <tags-input enter ng-model="target.MALOAI" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Loại hàng" replace-spaces-with-dashes="false">
+                                                <auto-complete source="loadLoaiHangTags($query)"
+                                                               min-length="0"
+                                                               load-on-focus="false"
+                                                               load-on-empty="false"
+                                                               max-results-to-show="20"
+                                                               template="common-custom-template">
+                                                </auto-complete>
+                                            </tags-input>
+                                        </td>
+                                        <td class="button-title-report">
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedLoaiHang();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Loại</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Nhóm hàng</td>
+                                        <td>
+                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="NHOMHANG">
+                                        </td>
+                                        <td>
+                                            <tags-input enter ng-model="target.MANHOM" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Nhóm hàng" replace-spaces-with-dashes="false">
+                                                <auto-complete source="loadNhomHangTags($query)"
+                                                               min-length="0"
+                                                               load-on-focus="false"
+                                                               load-on-empty="false"
+                                                               max-results-to-show="20"
+                                                               template="common-custom-template">
+                                                </auto-complete>
+                                            </tags-input>
+                                        </td>
+                                        <td class="button-title-report">
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedNhomHang();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Nhóm</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Nhà cung cấp</td>
+                                        <td>
+                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="NHACUNGCAP">
+                                        </td>
+                                        <td>
+                                            <tags-input enter ng-model="target.MANHACUNGCAP" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Nhà cung cấp" replace-spaces-with-dashes="false">
+                                                <auto-complete source="loadNhaCungCapTags($query)"
+                                                               min-length="0"
+                                                               load-on-focus="false"
+                                                               load-on-empty="false"
+                                                               max-results-to-show="20"
+                                                               template="common-custom-template">
+                                                </auto-complete>
+                                            </tags-input>
+                                        </td>
+                                        <td class="button-title-report">
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedNhaCungCap();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Nhà cung cấp</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Khách hàng</td>
+                                        <td>
+                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="KHACHHANG">
+                                        </td>
+                                        <td>
+                                            <tags-input enter ng-model="target.MAKHACHHANG" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Nhà cung cấp" replace-spaces-with-dashes="false">
+                                                <auto-complete source="loadKhachHangTags($query)"
+                                                               min-length="0"
+                                                               load-on-focus="false"
+                                                               load-on-empty="false"
+                                                               max-results-to-show="20"
+                                                               template="common-custom-template">
+                                                </auto-complete>
+                                            </tags-input>
+                                        </td>
+                                        <td class="button-title-report">
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedNhaCungCap();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Khách hàng</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-title-report">Hàng hóa</td>
+                                        <td>
+                                            <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="MATHANG">
+                                        </td>
+                                        <td style="height: 150px;">
+                                            <tags-input enter ng-model="target.MAHANG" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Mặt hàng" replace-spaces-with-dashes="false">
+                                                <auto-complete source="loadMatHangTags($query)"
+                                                               min-length="0"
+                                                               load-on-focus="false"
+                                                               load-on-empty="false"
+                                                               max-results-to-show="20"
+                                                               template="common-custom-template">
+                                                </auto-complete>
+                                            </tags-input>
+                                        </td>
+                                        <td class="button-title-report">
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedMatHang();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Mặt hàng</button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--  END TOP CAMPAIGN-->
+                </div>
+                <div class="col-lg-2">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>

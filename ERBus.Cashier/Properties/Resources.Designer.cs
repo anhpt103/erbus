@@ -10,6 +10,8 @@
 
 namespace ERBus.Cashier.Properties {
     using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -61,9 +63,9 @@ namespace ERBus.Cashier.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap headerLogin {
+        internal static System.Drawing.Bitmap change_pass_icon_24px {
             get {
-                object obj = ResourceManager.GetObject("headerLogin", resourceCulture);
+                object obj = ResourceManager.GetObject("change_pass_icon_24px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -71,9 +73,9 @@ namespace ERBus.Cashier.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap LOGIN {
+        internal static System.Drawing.Bitmap exit_icon_24px {
             get {
-                object obj = ResourceManager.GetObject("LOGIN", resourceCulture);
+                object obj = ResourceManager.GetObject("exit_icon_24px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -81,9 +83,79 @@ namespace ERBus.Cashier.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap technical_support {
+        internal static System.Drawing.Bitmap house_icon_24px {
             get {
-                object obj = ResourceManager.GetObject("technical_support", resourceCulture);
+                object obj = ResourceManager.GetObject("house-icon_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Icon_Logo_Top_Left {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Logo_Top_Left", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap login_icon_24px {
+            get {
+                object obj = ResourceManager.GetObject("login_icon_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nature_backgrounds_home_page {
+            get {
+                object obj = ResourceManager.GetObject("nature-backgrounds-home-page", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap retail_shop_icon_24px {
+            get {
+                object obj = ResourceManager.GetObject("retail-shop-icon_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap return_Purchase_icon_24px {
+            get {
+                object obj = ResourceManager.GetObject("return-Purchase-icon_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sign_sync_icon_24px {
+            get {
+                object obj = ResourceManager.GetObject("sign_sync_icon_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap user_login_icon {
+            get {
+                object obj = ResourceManager.GetObject("user_login_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

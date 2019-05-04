@@ -237,6 +237,7 @@
     <Content Include="ERBus\controllers\promotion\giamGiaNhomHangController.js" />
     <Content Include="ERBus\controllers\promotion\giamGiaLoaiHangController.js" />
     <Content Include="ERBus\controllers\promotion\tienTyLeController.js" />
+    <Content Include="ERBus\controllers\report\xuatBanBuonReportController.js" />
     <Content Include="ERBus\controllers\report\nhapMuaReportController.js" />
     <Content Include="ERBus\controllers\report\xuatNhapTonReportController.js" />
     <Content Include="ERBus\controllers\report\xuatBanLeReportController.js" />
@@ -452,6 +453,7 @@
     <Content Include="ERBus\views\promotion\TienTyLe\detail.html" />
     <Content Include="ERBus\views\promotion\TienTyLe\edit.html" />
     <Content Include="ERBus\views\promotion\TienTyLe\index.html" />
+    <Content Include="ERBus\views\report\XuatBanBuon\index.html" />
     <Content Include="ERBus\views\report\XuatNhapTon\index.html" />
     <Content Include="ERBus\views\report\Template\reports.template.html" />
     <Content Include="ERBus\views\report\NhapMua\index.html" />

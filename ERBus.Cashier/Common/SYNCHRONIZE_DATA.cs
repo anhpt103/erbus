@@ -4,11 +4,96 @@ using System.Data;
 using System.Data.SqlClient;
 using ERBus.Cashier.Giaodich.XuatBanLe;
 using Oracle.ManagedDataAccess.Client;
+using ERBus.Cashier.Dto;
 
 namespace ERBus.Cashier.Common
 {
     public class SYNCHRONIZE_DATA
     {
+        public static string Get_TableName_XNT(int Nam, int Ky)
+        {
+            return string.Format("XNT_{0}_KY_{1}", Nam, Ky);
+        }
+
+        public static void KHOASODULIEU()
+        {
+            using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connectionOrcl.Open();
+                if (connectionOrcl.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        OracleCommand cmdOrcl = new OracleCommand();
+                        cmdOrcl.Connection = connectionOrcl;
+                        cmdOrcl.Parameters.Clear();
+                        cmdOrcl.CommandType = CommandType.Text;
+                        cmdOrcl.CommandText = string.Format(@"SELECT KYKETOAN AS KYCHUAKHOA,NAM,TUNGAY AS NGAYKETOAN FROM KYKETOAN WHERE
+                        TO_DATE(DENNGAY,'DD-MM-YY') <= TO_DATE(SYSDATE,'DD-MM-YY') AND TO_DATE(TUNGAY,'DD-MM-YY') > TO_DATE((SELECT MAX(TUNGAY) AS NGAYKETOAN 
+                        FROM KYKETOAN WHERE TRANGTHAI = 10 AND NAM = (SELECT MAX(NAM) FROM KYKETOAN) AND UNITCODE = '" + Session.Session.CurrentUnitCode + "' GROUP BY NAM),'DD-MM-YY') ORDER BY KYKETOAN");
+                        OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
+                        if (dataReaderOrcl.HasRows)
+                        {
+                            while (dataReaderOrcl.Read())
+                            {
+
+                                KYKETOAN_DTO row = new KYKETOAN_DTO();
+                                int KYCHUAKHOA = 0;
+                                int.TryParse(dataReaderOrcl["KYCHUAKHOA"].ToString(), out KYCHUAKHOA);
+                                row.KY = KYCHUAKHOA;
+                                int NAM = 0;
+                                int.TryParse(dataReaderOrcl["NAM"].ToString(), out NAM);
+                                row.NAM = NAM;
+                                string CurrentTableName = Get_TableName_XNT(row.NAM, row.KY);
+                                string PreviousTableName = null;
+                                cmdOrcl.Parameters.Clear();
+                                cmdOrcl.CommandType = CommandType.Text;
+                                cmdOrcl.CommandText = string.Format(@"SELECT KYKETOAN,NAM FROM KYKETOAN WHERE NAM = " + row.NAM + " AND KYKETOAN = " + (row.KY - 1) + " AND ROWNUM = 1");
+                                OracleDataReader dataReaderOrclKyKeToan = null;
+                                dataReaderOrclKyKeToan = cmdOrcl.ExecuteReader();
+                                if (dataReaderOrclKyKeToan.HasRows)
+                                {
+                                    while (dataReaderOrclKyKeToan.Read())
+                                    {
+                                        int NAM_TRUOC = 0;
+                                        int.TryParse(dataReaderOrclKyKeToan["NAM"].ToString(), out NAM_TRUOC);
+                                        int KY_TRUOC = 0;
+                                        int.TryParse(dataReaderOrclKyKeToan["KYKETOAN"].ToString(), out KY_TRUOC);
+                                        PreviousTableName = Get_TableName_XNT(NAM_TRUOC, KY_TRUOC);
+                                    }
+                                    dataReaderOrclKyKeToan.Dispose();
+                                }
+                                cmdOrcl.CommandType = CommandType.StoredProcedure;
+                                cmdOrcl.CommandText = "ERBUS.XUATNHAPTON.XNT_KHOASO";
+                                cmdOrcl.Parameters.Clear();
+                                cmdOrcl.Parameters.Add("P_TABLENAME_KYTRUOC", OracleDbType.Varchar2, 15, PreviousTableName, ParameterDirection.Input);
+                                cmdOrcl.Parameters.Add("P_TABLENAME", OracleDbType.Varchar2, 15, CurrentTableName, ParameterDirection.Input);
+                                cmdOrcl.Parameters.Add("P_UNITCODE", OracleDbType.Varchar2, 10, Session.Session.CurrentUnitCode, ParameterDirection.Input);
+                                cmdOrcl.Parameters.Add("P_NAM", OracleDbType.Int32, row.NAM, ParameterDirection.Input);
+                                cmdOrcl.Parameters.Add("P_KY", OracleDbType.Int32, row.KY, ParameterDirection.Input);
+                                cmdOrcl.ExecuteNonQuery();
+                                cmdOrcl.Parameters.Clear();
+                                cmdOrcl.CommandType = CommandType.Text;
+                                cmdOrcl.CommandText = string.Format(@"UPDATE KYKETOAN SET TRANGTHAI = 10 WHERE NAM = " + row.NAM + " AND KYKETOAN = " + row.KY + " AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
+                                cmdOrcl.ExecuteNonQuery();
+                            }
+                            dataReaderOrcl.Dispose();
+                        }
+                        //Mở thì đóng
+                        connectionOrcl.Close();
+                        connectionOrcl.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        connectionOrcl.Close();
+                        connectionOrcl.Dispose();
+                        WriteLogs.LogError(ex);
+                    }
+                }
+            }
+        }
+
+
         public static void SYNCHRONIZE_NGUOIDUNG()
         {
             using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))

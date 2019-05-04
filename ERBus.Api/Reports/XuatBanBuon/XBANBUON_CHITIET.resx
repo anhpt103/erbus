@@ -117,35 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="retail-shop-icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Asset\Image\retail-shop-icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="user_login_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\asset\image\user-login-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="return-Purchase-icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Asset\Image\return-Purchase-icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nature-backgrounds-home-page" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Asset\Image\nature-backgrounds-home-page.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sign_sync_icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\asset\image\sign-sync-icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="login_icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\asset\image\login-icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="change_pass_icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\asset\image\change-pass_icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="exit_icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\asset\image\exit-icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Icon_Logo_Top_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\asset\image\icon_logo_top_left.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="house-icon_24px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Asset\Image\house-icon_24px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <metadata name="sqlDataSource1.ParameterValues" xml:space="preserve">
+    <value>{"DIEUKIEN_NHOM":"KHOHANG","UNITCODE":"01","TUNGAY":"04/24/2019","DENNGAY":"04/24/2019","USERNAME":"admin"}</value>
+  </metadata>
+  <metadata name="$this.ShowSnapGrid" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

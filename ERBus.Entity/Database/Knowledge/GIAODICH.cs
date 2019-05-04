@@ -17,7 +17,7 @@ namespace ERBus.Entity.Database.Knowledge
         [Required]
         [Column("LOAI_GIAODICH")]
         [Description("LOẠI GIAO DỊCH - BÁN LẺ - BÁN TRẢ LẠI")]
-        [StringLength(10)]
+        [StringLength(15)]
         public string LOAI_GIAODICH { get; set; }
 
         [Required]

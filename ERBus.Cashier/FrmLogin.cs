@@ -38,6 +38,7 @@ namespace ERBus.Cashier
                         {
                             try
                             {
+                                
                                 OracleCommand cmd = new OracleCommand();
                                 cmd.Connection = connection;
                                 cmd.CommandText = string.Format(@"SELECT USERNAME,MANHANVIEN,TENNHANVIEN,UNITCODE FROM NGUOIDUNG WHERE USERNAME = '" + Username + "' AND PASSWORD = '" + passMd5 + "'");
@@ -51,6 +52,7 @@ namespace ERBus.Cashier
                                         Session.Session.CurrentTenNhanVien = dataReader["TENNHANVIEN"].ToString();
                                         Session.Session.CurrentUnitCode = dataReader["UNITCODE"].ToString();
                                         Session.Session.CurrentCodeStore = Session.Session.CurrentUnitCode;
+                                        SYNCHRONIZE_DATA.KHOASODULIEU();
                                         cmd.Parameters.Clear();
                                         cmd.CommandText = string.Format(@"SELECT TEN_CUAHANG,DIACHI,SODIENTHOAI FROM CUAHANG WHERE MA_CUAHANG = '" + Session.Session.CurrentUnitCode + "'");
                                         OracleDataReader dataReaderDonVi = null;
@@ -81,6 +83,7 @@ namespace ERBus.Cashier
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_DONVITINH();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_THUE();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_HANGKHACHHANG();
+                                        
                                         SplashScreenManager.CloseForm();
                                         FrmMain frmMain = new FrmMain();
                                         frmMain.ShowDialog();

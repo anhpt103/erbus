@@ -147,6 +147,10 @@
     <Compile Include="Migrations\201904240702417_AddField_CHUNGTUCHITIET.Designer.cs">
       <DependentUpon>201904240702417_AddField_CHUNGTUCHITIET.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904290300229_UpdateField_GiaoDich_ChiTiet.cs" />
+    <Compile Include="Migrations\201904290300229_UpdateField_GiaoDich_ChiTiet.Designer.cs">
+      <DependentUpon>201904290300229_UpdateField_GiaoDich_ChiTiet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -164,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Desciption\KeywordUsed.txt" />
+    <Content Include="Script\BAOCAO_BANBUON_CHITIET.sql" />
+    <Content Include="Script\BAOCAO_BANBUON_TONGHOP.sql" />
     <Content Include="Script\MATHANG_TONKHO_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_KHACHHANG.sql" />
     <Content Include="Script\TIMKIEM_KHUYENMAI_PAGINATION.sql" />
@@ -210,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904240702417_AddField_CHUNGTUCHITIET.resx">
       <DependentUpon>201904240702417_AddField_CHUNGTUCHITIET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904290300229_UpdateField_GiaoDich_ChiTiet.resx">
+      <DependentUpon>201904290300229_UpdateField_GiaoDich_ChiTiet.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

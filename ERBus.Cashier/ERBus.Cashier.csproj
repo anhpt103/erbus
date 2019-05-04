@@ -179,6 +179,7 @@
     <Compile Include="Dto\HANGKHACHHANG_DTO.cs" />
     <Compile Include="Dto\KHACHHANG_DTO.cs" />
     <Compile Include="Dto\KHACHHANG_GIAMGIA_DTO.cs" />
+    <Compile Include="Dto\KYKETOAN_DTO.cs" />
     <Compile Include="Dto\KHUYENMAI_DTO.cs" />
     <Compile Include="Dto\MD_ID_BUILDER.cs" />
     <Compile Include="Dto\GIAODICH_DTO.cs" />
@@ -299,6 +300,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Session\Session.cs" />
     <Compile Include="Session\SessionConfig.cs" />
     <Compile Include="ToastNotifications\FormAnimator\FormAnimator.cs" />
@@ -378,14 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="ToastNotifications\Notification.resx">
       <DependentUpon>Notification.cs</DependentUpon>
     </EmbeddedResource>
@@ -407,20 +408,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Asset\Image\close.png" />
-    <Content Include="Asset\Image\closeBlack.png" />
-    <Content Include="Asset\Image\headerLogin.jpg" />
+    <Content Include="Asset\Image\change-pass_icon_24px.png" />
+    <Content Include="Asset\Image\exit-icon_24px.png" />
     <Content Include="Asset\Image\home-icon.jpg" />
+    <Content Include="Asset\Image\house-icon_24px.png" />
+    <Content Include="Asset\Image\Icon_Logo_Top_Left.ico" />
     <Content Include="Asset\Image\loading.gif" />
-    <Content Include="Asset\Image\LOGIN.png" />
-    <Content Include="Asset\Image\logoDBC.jpg" />
+    <Content Include="Asset\Image\login-icon_24px.png" />
+    <Content Include="Asset\Image\nature-backgrounds-home-page.jpg" />
+    <Content Include="Asset\Image\retail-shop-icon_24px.png" />
+    <Content Include="Asset\Image\return-Purchase-icon_24px.png" />
+    <Content Include="Asset\Image\sign-sync-icon_24px.png" />
     <Content Include="Asset\Image\Spinner-1s-97px.gif" />
-    <None Include="Resources\technical-support1.png" />
-    <None Include="Resources\LOGIN.png" />
-    <None Include="Resources\headerLogin.jpg" />
-    <Content Include="Resources\ImageMain.bmp" />
-    <Content Include="Resources\technical-support.png" />
-    <Content Include="Resource\Cjdowner-Cryptocurrency-ICON.ico" />
+    <Content Include="Asset\Image\user-login-icon.png" />
     <Content Include="SCRIPT\BANLE_TIMKIEM_BOHANG_MAHANG.sql" />
     <Content Include="SCRIPT\CREATE_TABLE_SQL.sql" />
     <Content Include="SCRIPT\EXPORT_DATA_ORACLE_TO_XML.sql" />
@@ -450,6 +450,7 @@
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="obj\Release\TempPE\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

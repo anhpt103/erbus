@@ -275,6 +275,18 @@
     <Compile Include="Reports\TonKho\TonKho_TongHop.Designer.cs">
       <DependentUpon>TonKho_TongHop.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\XuatBanBuon\XBANBUON_CHITIET.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XuatBanBuon\XBANBUON_CHITIET.Designer.cs">
+      <DependentUpon>XBANBUON_CHITIET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\XuatBanBuon\XBANBUON_TONGHOP.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XuatBanBuon\XBANBUON_TONGHOP.Designer.cs">
+      <DependentUpon>XBANBUON_TONGHOP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\XuatBanLe\XUATBANLE_TRONGNGAY.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -333,6 +345,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\TonKho\TonKho_TongHop.resx">
       <DependentUpon>TonKho_TongHop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XuatBanBuon\XBANBUON_CHITIET.resx">
+      <DependentUpon>XBANBUON_CHITIET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XuatBanBuon\XBANBUON_TONGHOP.resx">
+      <DependentUpon>XBANBUON_TONGHOP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XuatBanLe\XUATBANLE_TRONGNGAY.resx">
       <DependentUpon>XUATBANLE_TRONGNGAY.cs</DependentUpon>

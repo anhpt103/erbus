@@ -58,6 +58,19 @@
                 }
             },
             moduleUrl: controlUrl + "xuatNhapTonReportController.js"
+        },
+        {
+            name: 'BaoCaoXuatBanBuon',
+            url: '/outputBuyReport',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "XuatBanBuon/index.html",
+                    controller: "BaoCaoXuatBanBuon_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "xuatBanBuonReportController.js"
         }
     ];
     return states;
