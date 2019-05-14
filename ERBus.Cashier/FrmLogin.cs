@@ -52,7 +52,9 @@ namespace ERBus.Cashier
                                         Session.Session.CurrentTenNhanVien = dataReader["TENNHANVIEN"].ToString();
                                         Session.Session.CurrentUnitCode = dataReader["UNITCODE"].ToString();
                                         Session.Session.CurrentCodeStore = Session.Session.CurrentUnitCode;
+                                        SYNCHRONIZE_DATA.SYNCHRONIZE_KYKETOAN();
                                         SYNCHRONIZE_DATA.KHOASODULIEU();
+                                        SYNCHRONIZE_DATA.SYNCHRONIZE_KHOASO();
                                         cmd.Parameters.Clear();
                                         cmd.CommandText = string.Format(@"SELECT TEN_CUAHANG,DIACHI,SODIENTHOAI FROM CUAHANG WHERE MA_CUAHANG = '" + Session.Session.CurrentUnitCode + "'");
                                         OracleDataReader dataReaderDonVi = null;
@@ -70,7 +72,22 @@ namespace ERBus.Cashier
                                         Session.Session.CurrentUserName = dataReader["USERNAME"].ToString();
                                         Session.Session.CurrentNgayPhatSinh = FrmXuatBanLeService.GET_NGAYHACHTOAN_CSDL_ORACLE();
                                         Session.Session.CurrentTableNamePeriod = FrmXuatBanLeService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
-                                        Session.Session.CurrentWareHouse = "KH2";
+                                        cmd.Parameters.Clear();
+                                        cmd.CommandText = string.Format(@"SELECT GIATRI_CHU FROM THAMSOHETHONG WHERE MA_THAMSO = 'DEFAULT_KHOBANLE' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
+                                        OracleDataReader dataReaderThamSo = null;
+                                        dataReaderThamSo = cmd.ExecuteReader();
+                                        if (dataReaderThamSo.HasRows)
+                                        {
+                                            while (dataReaderThamSo.Read())
+                                            {
+                                                Session.Session.CurrentWareHouse = dataReaderThamSo["GIATRI_CHU"].ToString();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Session.Session.CurrentWareHouse = "KH2";
+                                        }
+                                        
                                         SplashScreenManager.ShowForm(typeof(WaitForm1));
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_NGUOIDUNG();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_KHACHHANG();
@@ -125,7 +142,7 @@ namespace ERBus.Cashier
                             {
                                 SqlCommand cmdSelectSa = new SqlCommand();
                                 cmdSelectSa.Connection = connectionSa;
-                                cmdSelectSa.CommandText = string.Format(@"SELECT MANHANVIEN,TENNHANVIEN,UNITCODE FROM [dbo].[NGUOIDUNG] WHERE USERNAME = '" + Username + "' AND PASSWORD = '" + passMd5 + "'");
+                                cmdSelectSa.CommandText = string.Format(@"SELECT USERNAME,MANHANVIEN,TENNHANVIEN,UNITCODE FROM [dbo].[NGUOIDUNG] WHERE USERNAME = '" + Username + "' AND PASSWORD = '" + passMd5 + "'");
                                 SqlDataReader dataReader = null;
                                 dataReader = cmdSelectSa.ExecuteReader();
                                 if (dataReader.HasRows)
@@ -136,11 +153,12 @@ namespace ERBus.Cashier
                                         Session.Session.CurrentTenNhanVien = dataReader["TENNHANVIEN"].ToString();
                                         Session.Session.CurrentUnitCode = dataReader["UNITCODE"].ToString();
                                         Session.Session.CurrentCodeStore = Session.Session.CurrentUnitCode;
-                                        SqlCommand commandDonVi = new SqlCommand();
-                                        commandDonVi.Connection = connectionSa;
-                                        commandDonVi.CommandText = string.Format(@"SELECT TEN_CUAHANG,DIACHI,SODIENTHOAI FROM [dbo].[CUAHANG] WHERE MA_CUAHANG = '" + Session.Session.CurrentUnitCode + "'");
+                                        SqlCommand cmdSelectCuaHang = new SqlCommand();
+                                        cmdSelectCuaHang.Parameters.Clear();
+                                        cmdSelectCuaHang.Connection = connectionSa;
+                                        cmdSelectCuaHang.CommandText = string.Format(@"SELECT TEN_CUAHANG,DIACHI,SODIENTHOAI FROM [dbo].[CUAHANG] WHERE MA_CUAHANG = '" + Session.Session.CurrentUnitCode + "'");
                                         SqlDataReader dataReaderDonVi = null;
-                                        dataReaderDonVi = commandDonVi.ExecuteReader();
+                                        dataReaderDonVi = cmdSelectCuaHang.ExecuteReader();
                                         if (dataReaderDonVi.HasRows)
                                         {
                                             while (dataReaderDonVi.Read())
@@ -153,12 +171,30 @@ namespace ERBus.Cashier
                                         dataReaderDonVi.Close();
                                         Session.Session.CurrentUserName = dataReader["USERNAME"].ToString();
                                         //nếu mất mạng thì ngày phát sinh là ngày hiện tại
-                                        Session.Session.CurrentNgayPhatSinh = DateTime.Now;
-                                        //Session.Session.CurrentWareHouse = (Session.Session.CurrentUnitCode + "-K2").ToUpper().Trim();
+                                        Session.Session.CurrentNgayPhatSinh = FrmXuatBanLeService.GET_NGAYHACHTOAN_CSDL_SQLSERVER();
+                                        SqlCommand cmdSelectThamSo = new SqlCommand();
+                                        cmdSelectThamSo.Connection = connectionSa;
+                                        cmdSelectThamSo.Parameters.Clear();
+                                        cmdSelectThamSo.CommandText = string.Format(@"SELECT GIATRI_CHU FROM dbo.THAMSOHETHONG WHERE MA_THAMSO = 'DEFAULT_KHOBANLE'");
+                                        SqlDataReader dataReaderThamSo = null;
+                                        dataReaderThamSo = cmdSelectThamSo.ExecuteReader();
+                                        if (dataReaderThamSo.HasRows)
+                                        {
+                                            while (dataReaderThamSo.Read())
+                                            {
+                                                Session.Session.CurrentWareHouse = dataReaderThamSo["GIATRI_CHU"].ToString();
+                                            }
+                                            dataReaderThamSo.Close();
+                                        }
+                                        else
+                                        {
+                                            Session.Session.CurrentWareHouse = "KH2";
+                                        }
                                         FrmMain frmMain = new FrmMain();
                                         frmMain.ShowDialog();
                                         break;
                                     }
+                                    dataReader.Close();
                                 }
                                 else
                                 {

@@ -37,10 +37,10 @@
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnModifieldPassword = new System.Windows.Forms.Button();
             this.btnCreateConnect = new System.Windows.Forms.Button();
             this.splashScreenManagerLogin = new DevExpress.XtraSplashScreen.SplashScreenManager(this, typeof(global::ERBus.Cashier.WaitForm1), true, true);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -138,13 +138,25 @@
             this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Image = global::ERBus.Cashier.Properties.Resources.user_login_icon;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 6);
+            this.pictureBox1.MaximumSize = new System.Drawing.Size(276, 248);
+            this.pictureBox1.MinimumSize = new System.Drawing.Size(276, 248);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(276, 248);
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            // 
             // btnModifieldPassword
             // 
             this.btnModifieldPassword.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModifieldPassword.ForeColor = System.Drawing.Color.Navy;
             this.btnModifieldPassword.Image = global::ERBus.Cashier.Properties.Resources.change_pass_icon_24px;
             this.btnModifieldPassword.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnModifieldPassword.Location = new System.Drawing.Point(472, 229);
+            this.btnModifieldPassword.Location = new System.Drawing.Point(470, 229);
             this.btnModifieldPassword.Name = "btnModifieldPassword";
             this.btnModifieldPassword.Size = new System.Drawing.Size(128, 32);
             this.btnModifieldPassword.TabIndex = 14;
@@ -158,9 +170,9 @@
             this.btnCreateConnect.ForeColor = System.Drawing.Color.Navy;
             this.btnCreateConnect.Image = global::ERBus.Cashier.Properties.Resources.sign_sync_icon_24px;
             this.btnCreateConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCreateConnect.Location = new System.Drawing.Point(334, 229);
+            this.btnCreateConnect.Location = new System.Drawing.Point(339, 229);
             this.btnCreateConnect.Name = "btnCreateConnect";
-            this.btnCreateConnect.Size = new System.Drawing.Size(138, 32);
+            this.btnCreateConnect.Size = new System.Drawing.Size(132, 32);
             this.btnCreateConnect.TabIndex = 13;
             this.btnCreateConnect.Text = "Cấu hình kết nối";
             this.btnCreateConnect.UseVisualStyleBackColor = true;
@@ -169,18 +181,6 @@
             // splashScreenManagerLogin
             // 
             this.splashScreenManagerLogin.ClosingDelay = 500;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Image = global::ERBus.Cashier.Properties.Resources.user_login_icon;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 6);
-            this.pictureBox1.MaximumSize = new System.Drawing.Size(276, 248);
-            this.pictureBox1.MinimumSize = new System.Drawing.Size(276, 248);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(276, 248);
-            this.pictureBox1.TabIndex = 15;
-            this.pictureBox1.TabStop = false;
             // 
             // FrmLogin
             // 

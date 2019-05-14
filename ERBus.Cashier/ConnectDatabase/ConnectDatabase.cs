@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Xml;
 using ERBus.Cashier.Common;
 using Oracle.ManagedDataAccess.Client;
+using System.IO;
+
 namespace ERBus.Cashier.ConnectDatabase
 {
     public partial class FrmConnectDatabase : Form

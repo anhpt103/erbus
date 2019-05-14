@@ -24,7 +24,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
     public partial class UC_Frame_BanLe : UserControl
     {
         private Keys CurrentKey = new Keys();
-        private bool FlagTangHang = true;private int CurentIndexDgv = 0;
+        private bool FlagTangHang = true; private int CurentIndexDgv = 0;
         private int MethodPrice = 0;
         public static decimal CURRENT_ROW_GIABANLE_VAT = 0;
         public static decimal THANHTOAN_TONGTIEN_THANHTOAN = 0;
@@ -254,12 +254,12 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 {
                     if (Config.CheckConnectToServer())
                     {
-                        _RESULT = FrmXuatBanLeService.CONVERT_BARCODE_TO_MAHANG_ORACLE(KEY,Session.Session.CurrentUnitCode);
+                        _RESULT = FrmXuatBanLeService.CONVERT_BARCODE_TO_MAHANG_ORACLE(KEY, Session.Session.CurrentUnitCode);
                     }
                     else
                     {
-                        _RESULT = FrmXuatBanLeService.CONVERT_BARCODE_TO_MAHANG_SQLSERVER(KEY, Session.Session.CurrentUnitCode); 
-                        
+                        _RESULT = FrmXuatBanLeService.CONVERT_BARCODE_TO_MAHANG_SQLSERVER(KEY, Session.Session.CurrentUnitCode);
+
                     }
                 }
             }
@@ -445,7 +445,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     {
                         GIAODICH_CHITIET_BILL.THANHTIEN_TEXT = FormatCurrency.FormatMoney(GIAODICH_CHITIET_BILL.THANHTIEN);
                     }
-                    GIAODICH_CHITIET_BILL.THANHTIEN_CHUA_GIAMGIA = GIAODICH_CHITIET_BILL.GIABANLE_VAT* GIAODICH_CHITIET_BILL.SOLUONG;
+                    GIAODICH_CHITIET_BILL.THANHTIEN_CHUA_GIAMGIA = GIAODICH_CHITIET_BILL.GIABANLE_VAT * GIAODICH_CHITIET_BILL.SOLUONG;
                     NVGDQUAY_ASYNCCLIENT_BILL.LST_DETAILS.Add(GIAODICH_CHITIET_BILL);
                 }
             }
@@ -585,7 +585,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                             List<EXTEND_BOHANGCHITIET_DTO> _LST_EXTEND_BOHANGCHITIET_DTO = new List<EXTEND_BOHANGCHITIET_DTO>();
                             if (Config.CheckConnectToServer())
                             {
-                                _LST_EXTEND_BOHANGCHITIET_DTO = FrmXuatBanLeService.LAYDULIEU_BOHANGCHITIET_FROM_DATABASE_ORACLE(MAHANG_MABO,GIAODICH_DTO.UNITCODE);
+                                _LST_EXTEND_BOHANGCHITIET_DTO = FrmXuatBanLeService.LAYDULIEU_BOHANGCHITIET_FROM_DATABASE_ORACLE(MAHANG_MABO, GIAODICH_DTO.UNITCODE);
 
                             }
                             else
@@ -928,14 +928,14 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             string MaVatTu = txtMaHang.Text.Trim().ToUpper();
             if (Config.CheckConnectToServer()) //Nếu có mạng lan
             {
-                listData = FrmXuatBanLeService.GET_DATA_VATTU_FROM_CSDL_ORACLE(MaVatTu, (EnumCommon.METHOD_PRICE)MethodPrice, SoLuong);
+                listData = FrmXuatBanLeService.GET_DATA_VATTU_FROM_CSDL_ORACLE(MaVatTu, (EnumCommon.METHOD_PRICE) MethodPrice, SoLuong);
                 txtSoLuong.Focus();
                 StatusConnect.Text = "TRẠNG THÁI BÁN: ONLINE";
                 StatusConnect.ForeColor = Color.ForestGreen;
             }
             else
             {
-                listData = FrmXuatBanLeService.GET_DATA_VATTU_FROM_CSDL_SQL(MaVatTu, (EnumCommon.METHOD_PRICE)MethodPrice);
+                listData = FrmXuatBanLeService.GET_DATA_VATTU_FROM_CSDL_SQLSERVER(MaVatTu, (EnumCommon.METHOD_PRICE) MethodPrice, SoLuong);
                 txtSoLuong.Focus(); //Bán SQL
                 StatusConnect.Text = "TRẠNG THÁI BÁN: OFFLINE";
                 StatusConnect.ForeColor = Color.Red;
@@ -957,7 +957,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    if (listData[0].TONCUOIKYSL <= 0)
+                    if (Config.CheckConnectToServer() && listData[0].TONCUOIKYSL <= 0)
                     {
                         if (FrmXuatBanLeService.GET_THAMSO_KHOABANAM_FROM_ORACLE() == 1)
                         {
@@ -965,8 +965,16 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                             return;
                         }
                     }
-                    INSERT_DATA(listData[0]);
-                    if(listData[0].LAMACAN)
+                    else
+                    {
+                        if (FrmXuatBanLeService.GET_THAMSO_KHOABANAM_FROM_SQLSERVER() == 1)
+                        {
+                            NotificationLauncher.ShowNotificationWarning("Thông báo", "Hết hàng trong kho ! Không thể bán", 1, "0x1", "0x8", "normal");
+                            return;
+                        }
+                    }
+                    INSERT_DULIEU_DATAGRIDVIEW(listData[0]);
+                    if (listData[0].LAMACAN)
                     {
                         CURRENT_SOLUONG_MACAN = listData[0].SOLUONG;
                     }
@@ -997,7 +1005,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 this.dgvDetails_Tab.ClearSelection();
                 this.dgvDetails_Tab.Rows[0].Selected = true;
             }
-            TINHTOAN_TONGTIEN_TOANHOADON(this.dgvDetails_Tab);          
+            TINHTOAN_TONGTIEN_TOANHOADON(this.dgvDetails_Tab);
         }
 
         private void txtMaHang_KeyDown(object sender, KeyEventArgs e)
@@ -1080,14 +1088,14 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     {
                         CURENT_ROW_MAHANG = dgvDetails_Tab.SelectedRows[0].Cells["MAHANG"].Value.ToString();
                         VATTU_DTO.CAL_KHUYENMAI_OBJ KHUYENMAI = new VATTU_DTO.CAL_KHUYENMAI_OBJ();
-                        KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI(CURENT_ROW_MAHANG, (EnumCommon.METHOD_PRICE)MethodPrice);
+                        KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI_ORACLE(CURENT_ROW_MAHANG, (EnumCommon.METHOD_PRICE)MethodPrice);
                         if (KHUYENMAI != null && !string.IsNullOrEmpty(KHUYENMAI.MA_KHUYENMAI))
                         {
                             CURRENT_ROW_TIENKM = KHUYENMAI.GIATRI_KHUYENMAI;
                         }
                     }
                     decimal SUM_TONGCHIETKHAU_LE = 0;
-                    
+
                     decimal CURENT_ROW_SOLUONG = 1;
                     decimal CHIETKHAU = 0;
                     decimal CURRENT_ROW_TTIENCOVAT = 0;
@@ -1254,7 +1262,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     {
                         CURRENT_ROW_SOLUONG_NEW = CURRENT_ROW_SOLUONG - 1;
                     }
-                    
+
                     if (CURRENT_ROW_SOLUONG_NEW > 0)
                     {
                         CURRENT_TIEN_KHUYENMAI_NEW = (CURRENT_ROW_GIATRI / CURRENT_ROW_SOLUONG) * CURRENT_ROW_SOLUONG_NEW;
@@ -1311,22 +1319,22 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         }
                     }
                     txtSoLuong.Text = CURRENT_ROW_SOLUONG_NEW.ToString();
-                    if(this.dgvDetails_Tab.Rows.Count > 0)
+                    if (this.dgvDetails_Tab.Rows.Count > 0)
                     {
                         HienThiManHinhLCD(dgvDetails_Tab.CurrentRow.Cells["TENHANG"].Value.ToString(), FormatCurrency.FormatMoney(CURRENT_ROW_SOLUONG_NEW), FormatCurrency.FormatMoney(CURRENT_ROW_GIABANLE_VAT), FormatCurrency.FormatMoney(CURRENT_ROW_SOLUONG_NEW * CURRENT_ROW_GIABANLE_VAT));
                     }
                     else
                     {
-                        HienThiManHinhLCD("","0","0","0");
+                        HienThiManHinhLCD("", "0", "0", "0");
                     }
                     txtMaHang.Text = "";
                 }
-                TINHTOAN_TONGTIEN_TOANHOADON(dgvDetails_Tab);        
+                TINHTOAN_TONGTIEN_TOANHOADON(dgvDetails_Tab);
                 lblChietKhauLe.Text = FormatCurrency.FormatMoney(SUM_TONGCHIETKHAU_LE);
             }
         }
 
-        
+
         /// <summary>
         /// Sự kiện tăng hàng
         /// </summary>
@@ -1780,7 +1788,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             return _DATA_INLAI_HOADON;
         }
 
-
         public GIAODICH_DTO KHOITAO_DULIEU_INLAI_HOADON_FROM_SQLSERVER(string MAGIAODICHQUAYPK)
         {
             GIAODICH_DTO _DATA_INLAI_HOADON = new GIAODICH_DTO();
@@ -1848,7 +1855,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         List<BOHANG_DTO> listBoHang = new List<BOHANG_DTO>();
                         while (dataReader.Read())
                         {
-                            decimal GIABANLE_VAT, VATBAN, TIEN_CHIETKHAU, TYLE_CHIETKHAU, TYLE_KHUYENMAI, TIEN_KHUYENMAI,THANHTIEN, SOLUONG = 0;
+                            decimal GIABANLE_VAT, VATBAN, TIEN_CHIETKHAU, TYLE_CHIETKHAU, TYLE_KHUYENMAI, TIEN_KHUYENMAI, THANHTIEN, SOLUONG = 0;
                             GIAODICH_CHITIET item = new GIAODICH_CHITIET();
                             string MaBoHangPk = dataReader["MABOPK"].ToString().Trim();
                             if (!string.IsNullOrEmpty(MaBoHangPk) && !MaBoHangPk.Equals("BH"))
@@ -2037,11 +2044,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         {
             VATTU_DTO vattu = new VATTU_DTO();
             vattu = listData_TrungMa[index];
-            INSERT_DATA(vattu);
+            INSERT_DULIEU_DATAGRIDVIEW(vattu);
             frmSelect.Dispose();
         }
 
-        private void INSERT_DATA(VATTU_DTO vattuDto)
+        private void INSERT_DULIEU_DATAGRIDVIEW(VATTU_DTO vattuDto)
         {
             decimal SoLuong = 1, RETURN_TIEN_KHUYENMAI = 0;
             btnStatus.Text = "+ TĂNG HÀNG";
@@ -2052,7 +2059,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             if (MethodPrice == (int)EnumCommon.METHOD_PRICE.GIABANLE_VAT)
             {
                 VATTU_DTO.CAL_KHUYENMAI_OBJ KHUYENMAI = new VATTU_DTO.CAL_KHUYENMAI_OBJ();
-                KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI(maVatTuCheck, (EnumCommon.METHOD_PRICE) MethodPrice);
+                KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI_ORACLE(maVatTuCheck, (EnumCommon.METHOD_PRICE)MethodPrice);
                 if (KHUYENMAI != null && !string.IsNullOrEmpty(KHUYENMAI.MA_KHUYENMAI))
                 {
                     RETURN_TIEN_KHUYENMAI = KHUYENMAI.GIATRI_KHUYENMAI;
@@ -2211,7 +2218,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         {
             try
             {
-                if (USE_LCD == 10)  DisplayLCD20x2(TenVatTu, SoLuong, GiaBanLeVat, ThanhTien);
+                if (USE_LCD == 10) DisplayLCD20x2(TenVatTu, SoLuong, GiaBanLeVat, ThanhTien);
             }
             catch { }
         }
@@ -2241,7 +2248,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 _serialPort.Close();
                 _serialPort.Close();
             }
-            catch {
+            catch
+            {
             }
         }
         public static void ClearDisplay()

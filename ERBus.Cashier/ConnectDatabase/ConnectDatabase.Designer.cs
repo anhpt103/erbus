@@ -58,6 +58,7 @@
             this.btnCheckConnectSql = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.btnCapNhatDuLieuScript = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -225,6 +226,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnCapNhatDuLieuScript);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.txtHostnameSql);
             this.groupBox2.Controls.Add(this.label14);
@@ -240,7 +242,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 225);
+            this.groupBox2.Location = new System.Drawing.Point(0, 264);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(345, 192);
             this.groupBox2.TabIndex = 2;
@@ -387,7 +389,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 417);
+            this.ClientSize = new System.Drawing.Size(345, 456);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "FrmConnectDatabase";
@@ -432,5 +434,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtHostnameSql;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button btnCapNhatDuLieuScript;
     }
 }

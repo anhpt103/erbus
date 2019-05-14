@@ -113,6 +113,7 @@ CREATE TABLE dbo."CUAHANG" (
   "ID" varchar(50) NOT NULL,
   "MA_CUAHANG" varchar(50) NOT NULL,
   "TEN_CUAHANG" nvarchar(200) NOT NULL,
+  "SODIENTHOAI" varchar(16),
   "DIACHI" nvarchar(200),
   "SODIENTHOAI" varchar(16),
   "UNITCODE" varchar(10),
@@ -207,4 +208,16 @@ CREATE TABLE dbo."LICHSU_TANGHANG"
 	"THOIGIAN_LENHANG" varchar(50), 
 	"MA_GIAODICH_LENHANG" varchar(70), 
 	CONSTRAINT "PK_LICHSU_TANGHANG" PRIMARY KEY ("ID")
+);
+
+CREATE TABLE dbo."KYKETOAN" 
+   ("ID" varchar(50), 
+	"KYKETOAN" int, 
+	"TENKY" nvarchar(150), 
+	"TUNGAY" DATE, 
+	"DENNGAY" DATE, 
+	"NAM" int, 
+	"TRANGTHAI" int, 
+	"UNITCODE" varchar(10), 
+	 CONSTRAINT "PK_KYKETOAN" PRIMARY KEY ("ID")
 );

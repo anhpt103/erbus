@@ -16,7 +16,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
     {
         static string KeyMaCan = "20";
 
-        public static List<VATTU_DTO> BAN_THEO_MACAN_DIENTU(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
+        public static List<VATTU_DTO> BAN_THEO_MACAN_DIENTU_ORACLE(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
         {
             List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
 
@@ -99,7 +99,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             return listDataDto;
         }
 
-        public static List<VATTU_DTO> BAN_THEO_MABOHANG(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
+        public static List<VATTU_DTO> BAN_THEO_MABOHANG_ORACLE(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
         {
             List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
@@ -212,7 +212,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             return listDataDto;
         }
 
-        public static List<VATTU_DTO> BAN_THEO_MAHANG(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
+        public static List<VATTU_DTO> BAN_THEO_MAHANG_ORACLE(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
         {
             List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
@@ -283,7 +283,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         }
 
 
-        public static List<VATTU_DTO> BAN_THEO_BARCODE(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
+        public static List<VATTU_DTO> BAN_THEO_BARCODE_ORACLE(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
         {
             List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
@@ -350,6 +350,342 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             }
             return listDataDto;
         }
+
+        public static List<VATTU_DTO> BAN_THEO_MACAN_DIENTU_SQLSERVER(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
+        {
+            List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
+            try
+            {
+                string itemCode = string.Empty; if (!string.IsNullOrEmpty(MaHang)) itemCode = MaHang.Substring(2, 5);
+                string soLuongItemCode = ""; if (!string.IsNullOrEmpty(MaHang)) soLuongItemCode = MaHang.Substring(7, 5);
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                {
+                    connection.Open();
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        try
+                        {
+                            SqlCommand cmd = new SqlCommand();
+                            cmd.Connection = connection;
+                            cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOINdbo. MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = @MAKHO AND A.ITEMCODE = @ITEMCODE AND A.UNITCODE = @UNITCODE");
+                            SqlDataReader dataReader = cmd.ExecuteReader();
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.Add("MAKHO", SqlDbType.VarChar, 50, Session.Session.CurrentWareHouse);
+                            cmd.Parameters.Add("ITEMCODE", SqlDbType.VarChar, 50, itemCode);
+                            cmd.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10, Session.Session.CurrentUnitCode);
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    decimal SOLUONG = 0;
+
+                                    VATTU_DTO dataDto = new VATTU_DTO();
+                                    dataDto.MAHANG = dataReader["MAHANG"] != DBNull.Value ? dataReader["MAHANG"].ToString() : "";
+                                    dataDto.TENHANG = dataReader["TENHANG"] != DBNull.Value ? dataReader["TENHANG"].ToString() : "";
+                                    dataDto.DONVITINH = dataReader["DONVITINH"] != DBNull.Value ? dataReader["DONVITINH"].ToString() : "";
+                                    dataDto.BARCODE = dataReader["BARCODE"] != DBNull.Value ? dataReader["BARCODE"].ToString() : "";
+                                    dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"] != DBNull.Value ? dataReader["MANHACUNGCAP"].ToString() : "";
+                                    dataDto.MATHUE_RA = dataReader["MATHUE_RA"] != DBNull.Value ? dataReader["MATHUE_RA"].ToString() : "";
+                                    dataDto.GIATRI_THUE_RA = dataReader["GIATRI_THUE_RA"] != DBNull.Value ? decimal.Parse(dataReader["GIATRI_THUE_RA"].ToString()) : 0;
+                                    dataDto.GIABANBUON_VAT = dataReader["GIABANBUON_VAT"] != DBNull.Value ? decimal.Parse(dataReader["GIABANBUON_VAT"].ToString()) : 0;
+                                    dataDto.GIABANLE_VAT = dataReader["GIABANLE_VAT"] != DBNull.Value ? decimal.Parse(dataReader["GIABANLE_VAT"].ToString()) : 0;
+                                    dataDto.GIAVON = dataReader["GIAVON"] != DBNull.Value ? decimal.Parse(dataReader["GIAVON"].ToString()) : 0;
+                                    dataDto.TONCUOIKYSL = dataReader["TONCUOIKYSL"] != DBNull.Value ? decimal.Parse(dataReader["TONCUOIKYSL"].ToString()) : 0;
+                                    dataDto.ITEMCODE = dataReader["ITEMCODE"] != DBNull.Value ? dataReader["ITEMCODE"].ToString() : "";
+                                    decimal.TryParse(soLuongItemCode, out SOLUONG);
+                                    dataDto.SOLUONG = SOLUONG;
+                                    dataDto.LAMACAN = true;
+                                    if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
+                                    {
+                                        dataDto.GIABANLE_VAT = dataDto.GIABANBUON_VAT;
+                                    }
+                                    else if (Session.Session.CurrentLoaiGiaoDich == "GIAVON")
+                                    {
+                                        dataDto.GIABANLE_VAT = dataDto.GIAVON * (1 + dataDto.GIATRI_THUE_RA / 100);
+                                    }
+
+                                    listDataDto.Add(dataDto);
+                                }
+                                dataReader.Close();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            WriteLogs.LogError(ex);
+                        }
+                        finally
+                        {
+                            connection.Close();
+                            connection.Dispose();
+                        }
+                    }
+                    else
+                    {
+                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    }
+                }
+            }
+            catch
+            {
+                string NOTIFICATION_WARNING = string.Format(@"MÃ CÂN '{0}' KHÔNG HỢP LỆ", MaHang);
+                MessageBox.Show(NOTIFICATION_WARNING);
+            }
+            return listDataDto;
+        }
+
+        public static List<VATTU_DTO> BAN_THEO_MABOHANG_SQLSERVER(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
+        {
+            List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"A.MABOHANG AS MAHANG,A.TENBOHANG  AS TENHANG,'Bó' AS DONVITINH,'' AS MANHACUNGCAP, SUM(B.TONGTIEN) AS GIABANBUON_VAT, SUM(B.TONGTIEN) AS GIABANLE_VAT, '' AS ITEMCODE FROM BOHANG a, BOHANG_CHITIET b WHERE a.MABOHANG = b.MABOHANG AND a.MABOHANG = '" + MaHang + "' AND a.UNITCODE = '" + Session.Session.CurrentUnitCode + "' GROUP BY a.MABOHANG,a.TENBOHANG");
+                        SqlDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                decimal GIABANBUON_VAT, GIABANLE_VAT, SOLUONG = 0;
+                                VATTU_DTO dataDto = new VATTU_DTO();
+                                dataDto.MAHANG = dataReader["MAHANG"].ToString();
+                                dataDto.MABO = dataDto.MAHANG;
+                                dataDto.TENHANG = dataReader["TENHANG"].ToString();
+                                dataDto.DONVITINH = dataReader["DONVITINH"].ToString();
+                                dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
+                                decimal.TryParse(dataReader["GIABANBUON_VAT"].ToString(), out GIABANBUON_VAT);
+                                dataDto.GIABANBUON_VAT = GIABANBUON_VAT;
+                                decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
+                                dataDto.GIABANLE_VAT = GIABANLE_VAT;
+                                dataDto.ITEMCODE = dataReader["ITEMCODE"].ToString();
+                                dataDto.SOLUONG = SOLUONG;
+                                dataDto.LAMACAN = false;
+                                cmd.Parameters.Clear();
+                                cmd.CommandText = "SELECT MAHANG, SOLUONG FROM BOHANG_CHITIET WHERE MABOHANG = '" + dataDto.MAHANG + "' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'";
+                                SqlDataReader dataReaderBoHangChiTiet = cmd.ExecuteReader();
+                                EXTEND_VAT_BOHANG _EXTEND_VAT_BOHANG = new EXTEND_VAT_BOHANG();
+                                if (Config.CheckConnectToServer())
+                                {
+                                    _EXTEND_VAT_BOHANG = LAYDULIEU_VAT_BOHANG_FROM_DATABASE_ORACLE(dataDto.MAHANG, Session.Session.CurrentUnitCode);
+                                    dataDto.MATHUE_RA = _EXTEND_VAT_BOHANG.MATHUE_RA;
+                                    dataDto.GIATRI_THUE_RA = _EXTEND_VAT_BOHANG.GIATRI_THUE_RA;
+                                }
+                                else
+                                {
+                                    _EXTEND_VAT_BOHANG = LAYDULIEU_VAT_BOHANG_FROM_DATABASE_SQLSERVER(dataDto.MAHANG, Session.Session.CurrentUnitCode);
+                                    dataDto.MATHUE_RA = _EXTEND_VAT_BOHANG.MATHUE_RA;
+                                    dataDto.GIATRI_THUE_RA = _EXTEND_VAT_BOHANG.GIATRI_THUE_RA;
+                                }
+                                if (dataReaderBoHangChiTiet.HasRows)
+                                {
+                                    while (dataReaderBoHangChiTiet.Read())
+                                    {
+                                        decimal GiaVon = 0;
+                                        decimal TONCUOIKYSL = 0;
+                                        string maVatTuBoHang = dataReaderBoHangChiTiet["MAHANG"] != null ? dataReaderBoHangChiTiet["MAHANG"].ToString().ToUpper().Trim() : "";
+                                        decimal.TryParse(dataReaderBoHangChiTiet["SOLUONG"].ToString(), out SOLUONG);
+                                        //dataDto.SOLUONG = SOLUONG;
+                                        SqlCommand cmdVatTu = new SqlCommand();
+                                        cmdVatTu.Connection = connection;
+                                        cmdVatTu.CommandText = "SELECT b.GIAVON,b.TONCUOIKYSL FROM V_VATTU_GIABAN a JOIN " + TABLE_NAME + " b ON a.MAHANG = b.MAHANG AND b.MAKHO = '" + Session.Session.CurrentWareHouse + "' WHERE a.MAHANG = '" + maVatTuBoHang + "' AND a.MADONVI = '" + Session.Session.CurrentUnitCode + "'";
+                                        SqlDataReader dataReaderVatTu = cmdVatTu.ExecuteReader();
+                                        if (dataReaderVatTu.HasRows)
+                                        {
+                                            while (dataReaderVatTu.Read())
+                                            {
+                                                decimal.TryParse(dataReaderVatTu["GIAVON"].ToString(), out GiaVon);
+                                                decimal.TryParse(dataReaderVatTu["TONCUOIKYSL"].ToString(), out TONCUOIKYSL);
+                                            }
+                                            dataDto.GIAVON += GiaVon * SOLUONG;
+                                            dataDto.TONCUOIKYSL += TONCUOIKYSL;
+                                        }
+                                    }
+                                }
+
+                                if (PhuongThucTinhGia == EnumCommon.METHOD_PRICE.GIABANLE_VAT)
+                                {
+                                    dataDto.GIABANLE_VAT = GIABANLE_VAT;
+                                }
+                                else
+                                {
+                                    if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
+                                    {
+                                        dataDto.GIABANLE_VAT = GIABANBUON_VAT;
+                                    }
+                                    else
+                                    {
+                                        dataDto.GIABANLE_VAT = dataDto.GIAVON * (1 + dataDto.GIATRI_THUE_RA / 100);
+
+                                    }
+                                }
+                                dataDto.GIAVON = dataDto.GIAVON * (1 + dataDto.GIATRI_THUE_RA / 100);
+                                listDataDto.Add(dataDto);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            return listDataDto;
+        }
+
+        public static List<VATTU_DTO> BAN_THEO_MAHANG_SQLSERVER(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
+        {
+            List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = @MAKHO AND A.MAHANG = @MAHANG AND A.UNITCODE = @UNITCODE");
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.Add("MAKHO", SqlDbType.VarChar, 50, Session.Session.CurrentWareHouse);
+                        cmd.Parameters.Add("MAHANG", SqlDbType.VarChar, 50, MaHang);
+                        cmd.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10, Session.Session.CurrentUnitCode);
+                        SqlDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                VATTU_DTO dataDto = new VATTU_DTO();
+                                dataDto.MAHANG = dataReader["MAHANG"] != DBNull.Value ? dataReader["MAHANG"].ToString() : "";
+                                dataDto.TENHANG = dataReader["TENHANG"] != DBNull.Value ? dataReader["TENHANG"].ToString() : "";
+                                dataDto.DONVITINH = dataReader["DONVITINH"] != DBNull.Value ? dataReader["DONVITINH"].ToString() : "";
+                                dataDto.BARCODE = dataReader["BARCODE"] != DBNull.Value ? dataReader["BARCODE"].ToString() : "";
+                                dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"] != DBNull.Value ? dataReader["MANHACUNGCAP"].ToString() : "";
+                                dataDto.MATHUE_RA = dataReader["MATHUE_RA"] != DBNull.Value ? dataReader["MATHUE_RA"].ToString() : "";
+                                dataDto.GIATRI_THUE_RA = dataReader["GIATRI_THUE_RA"] != DBNull.Value ? decimal.Parse(dataReader["GIATRI_THUE_RA"].ToString()) : 0;
+                                dataDto.GIABANBUON_VAT = dataReader["GIABANBUON_VAT"] != DBNull.Value ? decimal.Parse(dataReader["GIABANBUON_VAT"].ToString()) : 0;
+                                dataDto.GIABANLE_VAT = dataReader["GIABANLE_VAT"] != DBNull.Value ? decimal.Parse(dataReader["GIABANLE_VAT"].ToString()) : 0;
+                                dataDto.GIAVON = dataReader["GIAVON"] != DBNull.Value ? decimal.Parse(dataReader["GIAVON"].ToString()) : 0;
+                                dataDto.TONCUOIKYSL = dataReader["TONCUOIKYSL"] != DBNull.Value ? decimal.Parse(dataReader["TONCUOIKYSL"].ToString()) : 0;
+                                dataDto.ITEMCODE = dataReader["ITEMCODE"] != DBNull.Value ? dataReader["ITEMCODE"].ToString() : "";
+                                dataDto.SOLUONG = SoLuong;
+                                dataDto.LAMACAN = false;
+                                if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
+                                {
+                                    dataDto.GIABANLE_VAT = dataDto.GIABANBUON_VAT;
+                                }
+                                else if (Session.Session.CurrentLoaiGiaoDich == "GIAVON")
+                                {
+                                    dataDto.GIABANLE_VAT = dataDto.GIAVON * (1 + dataDto.GIATRI_THUE_RA / 100);
+                                }
+
+                                listDataDto.Add(dataDto);
+                            }
+                            dataReader.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            return listDataDto;
+        }
+
+
+        public static List<VATTU_DTO> BAN_THEO_BARCODE_SQLSERVER(string MaHang, string TABLE_NAME, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
+        {
+            List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = @MAKHO AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = @UNITCODE");
+                        cmd.Parameters.Add("MAKHO", SqlDbType.VarChar, 50, Session.Session.CurrentWareHouse);
+                        cmd.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10, Session.Session.CurrentUnitCode);
+                        SqlDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                VATTU_DTO dataDto = new VATTU_DTO();
+                                dataDto.MAHANG = dataReader["MAHANG"] != DBNull.Value ? dataReader["MAHANG"].ToString() : "";
+                                dataDto.TENHANG = dataReader["TENHANG"] != DBNull.Value ? dataReader["TENHANG"].ToString() : "";
+                                dataDto.DONVITINH = dataReader["DONVITINH"] != DBNull.Value ? dataReader["DONVITINH"].ToString() : "";
+                                dataDto.BARCODE = dataReader["BARCODE"] != DBNull.Value ? dataReader["BARCODE"].ToString() : "";
+                                dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"] != DBNull.Value ? dataReader["MANHACUNGCAP"].ToString() : "";
+                                dataDto.MATHUE_RA = dataReader["MATHUE_RA"] != DBNull.Value ? dataReader["MATHUE_RA"].ToString() : "";
+                                dataDto.GIATRI_THUE_RA = dataReader["GIATRI_THUE_RA"] != DBNull.Value ? decimal.Parse(dataReader["GIATRI_THUE_RA"].ToString()) : 0;
+                                dataDto.GIABANBUON_VAT = dataReader["GIABANBUON_VAT"] != DBNull.Value ? decimal.Parse(dataReader["GIABANBUON_VAT"].ToString()) : 0;
+                                dataDto.GIABANLE_VAT = dataReader["GIABANLE_VAT"] != DBNull.Value ? decimal.Parse(dataReader["GIABANLE_VAT"].ToString()) : 0;
+                                dataDto.GIAVON = dataReader["GIAVON"] != DBNull.Value ? decimal.Parse(dataReader["GIAVON"].ToString()) : 0;
+                                dataDto.TONCUOIKYSL = dataReader["TONCUOIKYSL"] != DBNull.Value ? decimal.Parse(dataReader["TONCUOIKYSL"].ToString()) : 0;
+                                dataDto.ITEMCODE = dataReader["ITEMCODE"] != DBNull.Value ? dataReader["ITEMCODE"].ToString() : "";
+                                dataDto.SOLUONG = SoLuong;
+                                dataDto.LAMACAN = false;
+                                if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
+                                {
+                                    dataDto.GIABANLE_VAT = dataDto.GIABANBUON_VAT;
+                                }
+                                else if (Session.Session.CurrentLoaiGiaoDich == "GIAVON")
+                                {
+                                    dataDto.GIABANLE_VAT = dataDto.GIAVON * (1 + dataDto.GIATRI_THUE_RA / 100);
+                                }
+
+                                listDataDto.Add(dataDto);
+                            }
+                            dataReader.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            return listDataDto;
+        }
+
+
         /// <summary>
         /// TÌM KIẾM MÃ HÀNG TỪ CƠ SỞ DỮ LIỆU SERVER
         /// </summary>
@@ -367,27 +703,58 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 //TRƯỜNG HỢP BÁN MÃ CÂN ĐIỆN TỬ
                 if (beginCharacter.Equals(KeyMaCan) && MaHang.Length > 9)
                 {
-                    listDataDto = BAN_THEO_MACAN_DIENTU(MaHang, TABLE_NAME, PhuongThucTinhGia);
+                    listDataDto = BAN_THEO_MACAN_DIENTU_ORACLE(MaHang, TABLE_NAME, PhuongThucTinhGia);
                 }
                 //BÁN MÃ BÓ HÀNG
                 if (beginCharacter.Equals("BH"))
                 {
-                    listDataDto = BAN_THEO_MABOHANG(MaHang, TABLE_NAME, PhuongThucTinhGia);
+                    listDataDto = BAN_THEO_MABOHANG_ORACLE(MaHang, TABLE_NAME, PhuongThucTinhGia);
                 }
                 else if (MaHang.Length == 7)
                 {
-                    listDataDto = BAN_THEO_MAHANG(MaHang, TABLE_NAME, PhuongThucTinhGia, SoLuong);
+                    listDataDto = BAN_THEO_MAHANG_ORACLE(MaHang, TABLE_NAME, PhuongThucTinhGia, SoLuong);
                 }
                 else
                 {
-                    listDataDto = BAN_THEO_BARCODE(MaHang, TABLE_NAME, PhuongThucTinhGia, SoLuong);
+                    listDataDto = BAN_THEO_BARCODE_ORACLE(MaHang, TABLE_NAME, PhuongThucTinhGia, SoLuong);
+                }
+            }
+            return listDataDto;
+        }
+
+
+        public static List<VATTU_DTO> GET_DATA_VATTU_FROM_CSDL_SQLSERVER(string MaHang, EnumCommon.METHOD_PRICE PhuongThucTinhGia, decimal SoLuong)
+        {
+            string TABLE_NAME = GET_TABLE_NAME_NGAYHACHTOAN_CSDL_SQLSERVER();
+            List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
+            string beginCharacter = string.Empty;
+            if (MaHang.Length >= 4)
+            {
+                if (!string.IsNullOrEmpty(MaHang)) beginCharacter = MaHang.Substring(0, 2);
+                //TRƯỜNG HỢP BÁN MÃ CÂN ĐIỆN TỬ
+                if (beginCharacter.Equals(KeyMaCan) && MaHang.Length > 9)
+                {
+                    listDataDto = BAN_THEO_MACAN_DIENTU_SQLSERVER(MaHang, TABLE_NAME, PhuongThucTinhGia);
+                }
+                //BÁN MÃ BÓ HÀNG
+                if (beginCharacter.Equals("BH"))
+                {
+                    listDataDto = BAN_THEO_MABOHANG_SQLSERVER(MaHang, TABLE_NAME, PhuongThucTinhGia);
+                }
+                else if (MaHang.Length == 7)
+                {
+                    listDataDto = BAN_THEO_MAHANG_SQLSERVER(MaHang, TABLE_NAME, PhuongThucTinhGia, SoLuong);
+                }
+                else
+                {
+                    listDataDto = BAN_THEO_BARCODE_SQLSERVER(MaHang, TABLE_NAME, PhuongThucTinhGia, SoLuong);
                 }
             }
             return listDataDto;
         }
 
         //TÍNH TOÁN KHUYẾN MÃI
-        public static CAL_KHUYENMAI_OBJ TINHTOAN_KHUYENMAI(string maVatTu, EnumCommon.METHOD_PRICE method)
+        public static CAL_KHUYENMAI_OBJ TINHTOAN_KHUYENMAI_ORACLE(string maVatTu, EnumCommon.METHOD_PRICE method)
         {
             CAL_KHUYENMAI_OBJ RESULT = new CAL_KHUYENMAI_OBJ();
             decimal GIATRI_KHUYENMAI = 0;
@@ -480,6 +847,47 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             }
             return result;
         }
+
+        //Lấy ngày hạch toán , Số giao dịch
+        public static DateTime GET_NGAYHACHTOAN_CSDL_SQLSERVER()
+        {
+            DateTime result = DateTime.Now;
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"SELECT TOP 1 MAX(KYKETOAN) AS KY,TUNGAY AS NGAYHACHTOAN FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10 AND NAM = (SELECT MAX(NAM) FROM KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "') GROUP BY KYKETOAN,TUNGAY ORDER BY KY DESC");
+                        SqlDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                result = (DateTime)dataReader["NGAYHACHTOAN"];
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            return result;
+        }
         //Lấy table name Ngày hạch toán
         public static string GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE()
         {
@@ -527,7 +935,55 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             }
             return result;
         }
-        
+
+
+        public static string GET_TABLE_NAME_NGAYHACHTOAN_CSDL_SQLSERVER()
+        {
+            string result = string.Empty;
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"SELECT KY,NAM FROM (SELECT MAX(KYKETOAN) AS KY,NAM FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10 AND NAM = (SELECT MAX(NAM) FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "') GROUP BY KYKETOAN,NAM ORDER BY KY DESC)");
+                        SqlDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            string KY = string.Empty;
+                            string NAM = string.Empty;
+                            while (dataReader.Read())
+                            {
+                                KY = dataReader["KY"].ToString();
+                                Session.Session.CurrentPeriod = KY;
+                                NAM = dataReader["NAM"].ToString();
+                                Session.Session.CurrentYear = NAM;
+                            }
+                            result = ("XNT_" + NAM + "_KY_" + KY).ToUpper().Trim();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            return result;
+        }
+
         public static decimal TINHGIAMGIA_NHACUNGCAP_CSDL_ORACLE(string MaHang,string MaKhuyenMai)
         {
             decimal result = 0;
@@ -699,342 +1155,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             string time = DateTime.Now.ToString("yyMMddHHmmss");
             result = machineName + "-" + time;
             return result;
-        }
-
-        public static List<VATTU_DTO> GET_DATA_VATTU_FROM_CSDL_SQL(string MaHang, EnumCommon.METHOD_PRICE PhuongThucTinhGia)
-        {
-            List<VATTU_DTO> listDataDto = new List<VATTU_DTO>();
-            string beginCharacter = string.Empty;
-            if (MaHang.Length >= 4)
-            {
-                if (!string.IsNullOrEmpty(MaHang)) beginCharacter = MaHang.Substring(0, 2);
-                //TRƯỜNG HỢP BÁN MÃ CÂN ĐIỆN TỬ
-                if (beginCharacter.Equals(KeyMaCan) && MaHang.Length > 9)
-                {
-                    string itemCode = string.Empty; if (!string.IsNullOrEmpty(MaHang)) itemCode = MaHang.Substring(2, 5);
-                    string soLuongItemCode = ""; if (!string.IsNullOrEmpty(MaHang)) soLuongItemCode = MaHang.Substring(7, 5);
-                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
-                    {
-                        connection.Open();
-                        if (connection.State == ConnectionState.Open)
-                        {
-                            try
-                            {
-                                SqlCommand cmd = new SqlCommand();
-                                cmd.Connection = connection;
-                                cmd.CommandText = string.Format(@"SELECT [ID],[MAHANG],[TENHANG],[MANHACUNGCAP],[DONVITINH],[BARCODE],[GIABANBUON_VAT],[GIABANLE_VAT],[GIAVON],[TONCUOIKYSL],[GIATRI_THUE_RA],[TYLE_LAILE],[ITEMCODE],[MATHUE_RA],[UNITCODE]  FROM [dbo].[MATHANG] WHERE ITEMCODE = '" + itemCode + "' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
-                                SqlDataReader dataReader = cmd.ExecuteReader();
-                                if (dataReader.HasRows)
-                                {
-                                    while (dataReader.Read())
-                                    {
-                                        decimal GIABANBUON_VAT, GIABANLE_VAT, GIAVON, SOLUONG, GIATRI_THUE_RA, TYLE_LAILE = 0;
-                                        VATTU_DTO dataDto = new VATTU_DTO();
-                                        dataDto.MAHANG = dataReader["MAHANG"].ToString();
-                                        dataDto.TENHANG = dataReader["TENHANG"].ToString();
-                                        dataDto.DONVITINH = dataReader["DONVITINH"].ToString();
-                                        dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
-                                        dataDto.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
-                                        decimal.TryParse(dataReader["GIABANBUON_VAT"].ToString(), out GIABANBUON_VAT);
-                                        dataDto.GIABANBUON_VAT = GIABANBUON_VAT;
-                                        decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
-                                        decimal.TryParse(dataReader["GIAVON"].ToString(), out GIAVON);
-                                        decimal.TryParse(dataReader["GIATRI_THUE_RA"].ToString(), out GIATRI_THUE_RA);
-                                        decimal.TryParse(dataReader["TYLE_LAILE"].ToString(), out TYLE_LAILE);
-                                        if (PhuongThucTinhGia == EnumCommon.METHOD_PRICE.GIABANLE_VAT)
-                                        {
-                                            dataDto.GIABANLE_VAT = GIABANLE_VAT;
-                                        }
-                                        else
-                                        {
-                                            if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
-                                            {
-                                                dataDto.GIABANLE_VAT = GIABANBUON_VAT;
-                                            }
-                                            else
-                                            {
-                                                dataDto.GIABANLE_VAT = GIAVON;
-                                            }
-                                        }
-                                        dataDto.ITEMCODE = dataReader["ITEMCODE"].ToString();
-                                        dataDto.GIAVON = GIAVON * (1 + GIATRI_THUE_RA / 100);
-                                        dataDto.GIATRI_THUE_RA = GIATRI_THUE_RA;
-                                        dataDto.TYLE_LAILE = TYLE_LAILE;
-                                        decimal.TryParse(soLuongItemCode, out SOLUONG);
-                                        dataDto.SOLUONG = SOLUONG;
-                                        listDataDto.Add(dataDto);
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                WriteLogs.LogError(ex);
-                            }
-                            finally
-                            {
-                                connection.Close();
-                                connection.Dispose();
-                            }
-                        }
-                        else
-                        {
-                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
-                        }
-                    }
-                }
-                //BÁN MÃ BÓ HÀNG
-                if (beginCharacter.Equals("BH"))
-                {
-                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
-                    {
-                        connection.Open();
-                        if (connection.State == ConnectionState.Open)
-                        {
-                            try
-                            {
-                                SqlCommand cmd = new SqlCommand();
-                                cmd.Connection = connection;
-                                cmd.CommandText =
-                                    string.Format(
-                                        @"SELECT a.MABOHANG AS MAHANG,a.TENBOHANG AS TENHANG,'BÓ' AS DONVITINH,'' AS MANHACUNGCAP,SUM(b.TONGBUON) AS GIABANBUON_VAT,SUM(b.TONGLE) AS GIABANLE_VAT,'' AS ITEMCODE FROM dbo.DM_BOHANG a,dbo.DM_BOHANGCHITIET b WHERE a.MABOHANG = b.MABOHANG AND a.MABOHANG = '" +
-                                        MaHang + "' AND a.UNITCODE = '" + Session.Session.CurrentUnitCode +
-                                        "' GROUP BY a.MABOHANG,a.TENBOHANG");
-                                SqlDataReader dataReader = cmd.ExecuteReader();
-                                if (dataReader.HasRows)
-                                {
-                                    while (dataReader.Read())
-                                    {
-                                        decimal GIABANBUON_VAT, GIABANLE_VAT, SOLUONG = 0;
-                                        VATTU_DTO dataDto = new VATTU_DTO();
-                                        dataDto.MAHANG = dataReader["MAHANG"].ToString();
-                                        dataDto.MABO = dataDto.MAHANG;
-                                        dataDto.TENHANG = dataReader["TENHANG"].ToString();
-                                        dataDto.DONVITINH = dataReader["DONVITINH"].ToString();
-                                        dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
-                                        decimal.TryParse(dataReader["GIABANBUON_VAT"].ToString(), out GIABANBUON_VAT);
-                                        dataDto.GIABANBUON_VAT = GIABANBUON_VAT;
-                                        decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
-                                        dataDto.GIABANLE_VAT = GIABANLE_VAT;
-                                        dataDto.ITEMCODE = dataReader["ITEMCODE"].ToString();
-                                        dataDto.SOLUONG = SOLUONG;
-                                        SqlCommand cmdBoHangChiTiet = new SqlCommand();
-                                        cmdBoHangChiTiet.Connection = connection;
-                                        cmdBoHangChiTiet.CommandText = "SELECT TOP 1 MAHANG FROM dbo.DM_BOHANGCHITIET WHERE MABOHANG = '" + dataDto.MAHANG + "' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'";
-                                        SqlDataReader dataReaderBoHangChiTiet = cmdBoHangChiTiet.ExecuteReader();
-                                        if (dataReaderBoHangChiTiet.HasRows)
-                                        {
-                                            while (dataReaderBoHangChiTiet.Read())
-                                            {
-                                                string maVatTuBoHang = dataReaderBoHangChiTiet["MAHANG"] != null
-                                                    ? dataReaderBoHangChiTiet["MAHANG"].ToString().ToUpper().Trim()
-                                                    : "";
-                                                SqlCommand cmdVatTu = new SqlCommand();
-                                                cmdVatTu.Connection = connection;
-                                                cmdVatTu.CommandText = "SELECT MATHUE_RA,GIATRI_THUE_RA FROM DM_VATTU WHERE MAHANG = '" + maVatTuBoHang + "' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'";
-                                                SqlDataReader dataReaderVatTu = cmdVatTu.ExecuteReader();
-                                                if (dataReaderVatTu.HasRows)
-                                                {
-                                                    while (dataReaderVatTu.Read())
-                                                    {
-                                                        dataDto.MATHUE_RA = dataReaderVatTu["MATHUE_RA"] != null ? dataReaderVatTu["MATHUE_RA"].ToString() : "";
-                                                        decimal GIATRI_THUE_RA = 0;
-                                                        if (dataReaderVatTu["GIATRI_THUE_RA"] != null)
-                                                        {
-                                                            decimal.TryParse(dataReaderVatTu["GIATRI_THUE_RA"].ToString(),
-                                                                out GIATRI_THUE_RA);
-                                                        }
-                                                        else
-                                                        {
-                                                            GIATRI_THUE_RA = 0;
-                                                        }
-                                                        dataDto.GIATRI_THUE_RA = GIATRI_THUE_RA;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        listDataDto.Add(dataDto);
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                WriteLogs.LogError(ex);
-                            }
-                            finally
-                            {
-                                connection.Close();
-                            }
-                        }
-                        else
-                        {
-                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
-                        }
-                    }
-                }
-                else if (MaHang.Length == 7)
-                {
-                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
-                    {
-                        connection.Open();
-                        if (connection.State == ConnectionState.Open)
-                        {
-                            try
-                            {
-                                SqlCommand cmd = new SqlCommand();
-                                cmd.Connection = connection;
-                                cmd.CommandText =
-                                    string.Format(@"SELECT [ID],[MAHANG],[TENHANG],[MANHACUNGCAP],[DONVITINH],[BARCODE],[GIABANBUON_VAT],[GIABANLE_VAT],[GIAVON],[TONCUOIKYSL],[GIATRI_THUE_RA],[TYLE_LAILE],[ITEMCODE],[MATHUE_RA],[UNITCODE]  FROM [dbo].[DM_VATTU] WHERE MAHANG = '" + MaHang +
-                                        "' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
-                                SqlDataReader dataReader = cmd.ExecuteReader();
-                                if (dataReader.HasRows)
-                                {
-                                    while (dataReader.Read())
-                                    {
-                                        decimal GIABANBUON_VAT, GIABANLE_VAT, GIAVON, GIATRI_THUE_RA, SOLUONG = 0;
-                                        VATTU_DTO dataDto = new VATTU_DTO();
-                                        dataDto.MAHANG = dataReader["MAHANG"].ToString();
-                                        dataDto.TENHANG = dataReader["TENHANG"].ToString();
-                                        dataDto.DONVITINH = dataReader["DONVITINH"].ToString();
-                                        dataDto.BARCODE = dataReader["BARCODE"].ToString();
-                                        if (!string.IsNullOrEmpty(dataDto.BARCODE))
-                                        {
-                                            if (dataDto.BARCODE.Length <= 2)
-                                            {
-                                                dataDto.BARCODE = ";";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            dataDto.BARCODE = ";";
-                                        }
-                                        dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
-                                        dataDto.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
-                                        decimal.TryParse(dataReader["GIATRI_THUE_RA"].ToString(), out GIATRI_THUE_RA);
-                                        decimal.TryParse(dataReader["GIABANBUON_VAT"].ToString(), out GIABANBUON_VAT);
-                                        dataDto.GIABANBUON_VAT = GIABANBUON_VAT;
-                                        decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
-                                        decimal.TryParse(dataReader["GIAVON"].ToString(), out GIAVON);
-                                        if (PhuongThucTinhGia == EnumCommon.METHOD_PRICE.GIABANLE_VAT)
-                                        {
-                                            dataDto.GIABANLE_VAT = GIABANLE_VAT;
-                                        }
-                                        else
-                                        {
-                                            if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
-                                            {
-                                                dataDto.GIABANLE_VAT = GIABANBUON_VAT;
-                                            }
-                                            else
-                                            {
-                                                dataDto.GIABANLE_VAT = GIAVON;
-                                            }
-                                        }
-                                        dataDto.ITEMCODE = dataReader["ITEMCODE"].ToString();
-                                        dataDto.GIAVON = GIAVON * (1 + GIATRI_THUE_RA / 100);
-                                        dataDto.GIATRI_THUE_RA = GIATRI_THUE_RA;
-                                        dataDto.SOLUONG = SOLUONG;
-                                        listDataDto.Add(dataDto);
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                WriteLogs.LogError(ex);
-                            }
-                            finally
-                            {
-                                connection.Close();
-                            }
-                        }
-                        else
-                        {
-                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
-                        }
-                    }
-                }
-                else
-                {
-                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
-                    {
-                        connection.Open();
-                        if (connection.State == ConnectionState.Open)
-                        {
-                            try
-                            {
-                                SqlCommand cmd = new SqlCommand();
-                                cmd.Connection = connection;
-                                cmd.CommandText =
-                                    string.Format(
-                                        @"SELECT [ID],[MAHANG],[TENHANG],[MANHACUNGCAP],[DONVITINH],[BARCODE],[GIABANBUON_VAT],[GIABANLE_VAT],[GIAVON],[TONCUOIKYSL],[GIATRI_THUE_RA],[TYLE_LAILE],[ITEMCODE],[MATHUE_RA],[UNITCODE]  FROM [dbo].[DM_VATTU] WHERE BARCODE LIKE '%" + MaHang + "%' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
-                                SqlDataReader dataReader = cmd.ExecuteReader();
-                                if (dataReader.HasRows)
-                                {
-                                    while (dataReader.Read())
-                                    {
-                                        decimal GIABANBUON_VAT, GIABANLE_VAT, GIAVON, GIATRI_THUE_RA, SOLUONG = 0;
-                                        VATTU_DTO dataDto = new VATTU_DTO();
-                                        dataDto.MAHANG = dataReader["MAHANG"].ToString();
-                                        dataDto.TENHANG = dataReader["TENHANG"].ToString();
-                                        dataDto.DONVITINH = dataReader["DONVITINH"].ToString();
-                                        dataDto.BARCODE = dataReader["BARCODE"].ToString();
-                                        if (!string.IsNullOrEmpty(dataDto.BARCODE))
-                                        {
-                                            if (dataDto.BARCODE.Length <= 2)
-                                            {
-                                                dataDto.BARCODE = ";";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            dataDto.BARCODE = ";";
-                                        }
-                                        dataDto.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
-                                        dataDto.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
-                                        decimal.TryParse(dataReader["GIATRI_THUE_RA"].ToString(), out GIATRI_THUE_RA);
-                                        decimal.TryParse(dataReader["GIABANBUON_VAT"].ToString(), out GIABANBUON_VAT);
-                                        dataDto.GIABANBUON_VAT = GIABANBUON_VAT;
-                                        decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
-                                        decimal.TryParse(dataReader["GIAVON"].ToString(), out GIAVON);
-                                        if (PhuongThucTinhGia == EnumCommon.METHOD_PRICE.GIABANLE_VAT)
-                                        {
-                                            dataDto.GIABANLE_VAT = GIABANLE_VAT;
-                                        }
-                                        else
-                                        {
-                                            if (Session.Session.CurrentLoaiGiaoDich == "BANBUON")
-                                            {
-                                                dataDto.GIABANLE_VAT = GIABANBUON_VAT;
-                                            }
-                                            else
-                                            {
-                                                dataDto.GIABANLE_VAT = GIAVON;
-                                            }
-                                        }
-                                        dataDto.GIAVON = GIAVON * (1 + GIATRI_THUE_RA / 100);
-                                        dataDto.ITEMCODE = dataReader["ITEMCODE"].ToString();
-                                        dataDto.GIATRI_THUE_RA = GIATRI_THUE_RA;
-                                        dataDto.SOLUONG = SOLUONG;
-                                        listDataDto.Add(dataDto);
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                WriteLogs.LogError(ex);
-                            }
-                            finally
-                            {
-                                connection.Close();
-                            }
-                        }
-                        else
-                        {
-                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
-                        }
-                    }
-                }
-            }
-            return listDataDto;
         }
 
         public static string CONVERT_MACAN_TO_MAHANG_ORACLE(string KEY, string UNITCODE)
@@ -1699,6 +1819,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 catch
                 {
+                    GIATRI_THAMSO = 0;
                 }
                 finally
                 {
@@ -1708,7 +1829,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             }
             return GIATRI_THAMSO;
         }
-
 
         public static int GET_THAMSO_KHOABANAM_FROM_SQLSERVER()
         {
@@ -1720,7 +1840,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     connection.Open();
                     if (connection.State == ConnectionState.Open)
                     {
-                        string querrySelect = string.Format(@"SELECT GIATRI_THAMSO FROM AU_THAMSOHETHONG WHERE MA_THAMSO = 'LOCK_BANAM' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "' ");
+                        string querrySelect = string.Format(@"SELECT GIATRI_SO FROM dbo.THAMSOHETHONG WHERE MA_THAMSO = 'KHOA_BANAM' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "' ");
                         SqlCommand commamdThamSo = new SqlCommand();
                         commamdThamSo.Connection = connection;
                         commamdThamSo.CommandText = querrySelect;
@@ -1729,9 +1849,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         {
                             while (dataReaderThamSo.Read())
                             {
-                                if (dataReaderThamSo["GIATRI_THAMSO"] != null)
+                                if (dataReaderThamSo["GIATRI_SO"] != null)
                                 {
-                                    int.TryParse(dataReaderThamSo["GIATRI_THAMSO"].ToString(), out GIATRI_THAMSO);
+                                    int.TryParse(dataReaderThamSo["GIATRI_SO"].ToString(), out GIATRI_THAMSO);
                                 }
                             }
                         }
@@ -1739,6 +1859,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 catch
                 {
+                    GIATRI_THAMSO = 0;
                 }
                 finally
                 {

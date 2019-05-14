@@ -8,11 +8,31 @@ using ERBus.Cashier.Dto;
 
 namespace ERBus.Cashier.Common
 {
-    public class SYNCHRONIZE_DATA
+    public static class SYNCHRONIZE_DATA
     {
         public static string Get_TableName_XNT(int Nam, int Ky)
         {
             return string.Format("XNT_{0}_KY_{1}", Nam, Ky);
+        }
+
+        public static int GetNullableInt(this OracleDataReader reader, string name)
+        {
+            var colIndex = reader.GetOrdinal(name);
+            return !reader.IsDBNull(colIndex) ? reader.GetInt32(colIndex) : default(int);
+        }
+
+        public static decimal GetNullableDecimal (this OracleDataReader reader, string name)
+        {
+            var colIndex = reader.GetOrdinal(name);
+            return !reader.IsDBNull(colIndex) ? reader.GetDecimal(colIndex) : default(decimal);
+        }
+
+        public static DateTime? GetNullableDateTime(this OracleDataReader reader, string name)
+        {
+            var col = reader.GetOrdinal(name);
+            return reader.IsDBNull(col) ?
+                        (DateTime?)null :
+                        (DateTime?)reader.GetDateTime(col);
         }
 
         public static void KHOASODULIEU()
@@ -89,6 +109,216 @@ namespace ERBus.Cashier.Common
                         connectionOrcl.Dispose();
                         WriteLogs.LogError(ex);
                     }
+                }
+            }
+        }
+
+
+        public static void SYNCHRONIZE_KHOASO()
+        {
+            using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connectionOrcl.Open();
+                if (connectionOrcl.State == ConnectionState.Open)
+                {
+                    int countExists = 0;
+                    string QUERY_CREATE_TABLE = string.Empty;
+                    string TABLE_NAME = FrmXuatBanLeService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
+                    OracleCommand cmdOrcl = new OracleCommand();
+                    cmdOrcl.Connection = connectionOrcl;
+                    cmdOrcl.CommandText = string.Format(@"SELECT UNITCODE,NAM,KY,MAKHO,MAHANG,GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT FROM " + TABLE_NAME + " WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
+                    OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
+                    if (dataReaderOrcl.HasRows)
+                    {
+                        try
+                        {
+                            using (SqlConnection connectionSa = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                            {
+                                connectionSa.Open();
+                                if (connectionSa.State == ConnectionState.Open)
+                                {
+                                    SqlCommand cmdCommonSql = new SqlCommand();
+                                    cmdCommonSql.Connection = connectionSa;
+                                    cmdCommonSql.CommandText = string.Format(@"SELECT COUNT(*) AS TABLE_EXISTS FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'" + TABLE_NAME + "'");
+                                    SqlDataReader dataReaderSql = cmdCommonSql.ExecuteReader();
+                                    if (dataReaderSql.HasRows)
+                                    {
+                                        while (dataReaderSql.Read())
+                                        {
+                                            int.TryParse(dataReaderSql["TABLE_EXISTS"].ToString(), out countExists);
+                                        }
+                                        dataReaderSql.Close();
+                                    }
+
+                                    if(countExists == 0)
+                                    {
+                                        
+                                        QUERY_CREATE_TABLE = string.Format(@"CREATE TABLE dbo."+ TABLE_NAME + " ");
+                                        QUERY_CREATE_TABLE += string.Format(@"( UNITCODE VARCHAR(10), 
+	                                                                            NAM INT, 
+	                                                                            KY INT, 
+	                                                                            MAKHO VARCHAR(50), 
+	                                                                            MAHANG VARCHAR(50), 
+	                                                                            GIAVON DECIMAL DEFAULT 0, 
+	                                                                            TONDAUKYSL DECIMAL DEFAULT 0, 
+	                                                                            TONDAUKYGT DECIMAL DEFAULT 0, 
+	                                                                            NHAPSL DECIMAL DEFAULT 0, 
+	                                                                            NHAPGT DECIMAL DEFAULT 0, 
+	                                                                            XUATSL DECIMAL DEFAULT 0, 
+	                                                                            XUATGT DECIMAL DEFAULT 0, 
+	                                                                            TONCUOIKYSL DECIMAL DEFAULT 0, 
+	                                                                            TONCUOIKYGT DECIMAL DEFAULT 0
+                                                                               )
+                                                                            ");
+                                    }
+                                    else
+                                    {
+                                        QUERY_CREATE_TABLE = string.Format(@"DELETE dbo." + TABLE_NAME + " WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
+                                    }
+
+                                    using (SqlTransaction tranSa = connectionSa.BeginTransaction())
+                                    {
+                                        try
+                                        {
+                                            cmdCommonSql.Transaction = tranSa;
+                                            cmdCommonSql.Connection = connectionSa;
+                                            cmdCommonSql.Parameters.Clear();
+                                            cmdCommonSql.CommandText = QUERY_CREATE_TABLE;
+                                            if (!string.IsNullOrEmpty(QUERY_CREATE_TABLE))
+                                            {
+                                                cmdCommonSql.ExecuteNonQuery();
+                                            }
+                                            int countInsert = 0;
+                                            while (dataReaderOrcl.Read())
+                                            {
+                                                cmdCommonSql.Parameters.Clear();
+                                                cmdCommonSql.CommandText = string.Format(@"INSERT INTO dbo."+ TABLE_NAME + "(UNITCODE,NAM,KY,MAKHO,MAHANG,GIAVON,TONDAUKYSL,TONDAUKYGT,NHAPSL,NHAPGT,XUATSL,XUATGT,TONCUOIKYSL,TONCUOIKYGT) VALUES (@UNITCODE,@NAM,@KY,@MAKHO,@MAHANG,@GIAVON,@TONDAUKYSL,@TONDAUKYGT,@NHAPSL,@NHAPGT,@XUATSL,@XUATGT,@TONCUOIKYSL,@TONCUOIKYGT)");
+                                                cmdCommonSql.Parameters.Add("UNITCODE", SqlDbType.VarChar, 50).Value = dataReaderOrcl["UNITCODE"] != null ? dataReaderOrcl["UNITCODE"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("NAM", SqlDbType.Int).Value = GetNullableInt(dataReaderOrcl, "NAM");
+                                                cmdCommonSql.Parameters.Add("KY", SqlDbType.Int).Value = GetNullableInt(dataReaderOrcl, "KY");
+                                                cmdCommonSql.Parameters.Add("MAKHO", SqlDbType.VarChar, 50).Value = dataReaderOrcl["MAKHO"] != null ? dataReaderOrcl["MAKHO"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("MAHANG", SqlDbType.VarChar, 50).Value = dataReaderOrcl["MAHANG"] != null ? dataReaderOrcl["MAHANG"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("GIAVON", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "GIAVON");
+                                                cmdCommonSql.Parameters.Add("TONDAUKYSL", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "TONDAUKYSL");
+                                                cmdCommonSql.Parameters.Add("TONDAUKYGT", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "TONDAUKYGT");
+                                                cmdCommonSql.Parameters.Add("NHAPSL", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "NHAPSL");
+                                                cmdCommonSql.Parameters.Add("NHAPGT", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "NHAPGT");
+                                                cmdCommonSql.Parameters.Add("XUATSL", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "XUATSL");
+                                                cmdCommonSql.Parameters.Add("XUATGT", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "XUATGT");
+                                                cmdCommonSql.Parameters.Add("TONCUOIKYSL", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "TONCUOIKYSL");
+                                                cmdCommonSql.Parameters.Add("TONCUOIKYGT", SqlDbType.Decimal).Value = GetNullableDecimal(dataReaderOrcl, "TONCUOIKYGT");
+                                                if (cmdCommonSql.ExecuteNonQuery() > 0)
+                                                {
+                                                    countInsert++;
+                                                }
+                                            }
+                                            if (countInsert > 0)
+                                            {
+                                                tranSa.Commit();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            tranSa.Rollback();
+                                            WriteLogs.LogError(ex);
+                                        }
+                                        finally
+                                        {
+                                            dataReaderOrcl.Dispose();
+                                            connectionSa.Close();
+                                            connectionSa.Dispose();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            connectionOrcl.Close();
+                            WriteLogs.LogError(ex);
+                        }
+                    }
+                    //Mở thì đóng
+                    connectionOrcl.Close();
+                }
+            }
+        }
+
+        public static void SYNCHRONIZE_KYKETOAN()
+        {
+            using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connectionOrcl.Open();
+                if (connectionOrcl.State == ConnectionState.Open)
+                {
+                    OracleCommand cmdOrcl = new OracleCommand();
+                    cmdOrcl.Connection = connectionOrcl;
+                    cmdOrcl.CommandText = string.Format(@"SELECT ID,KYKETOAN,TENKY,TUNGAY,DENNGAY,NAM,TRANGTHAI,UNITCODE FROM KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
+                    OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
+                    if (dataReaderOrcl.HasRows)
+                    {
+                        try
+                        {
+                            using (SqlConnection connectionSa = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                            {
+                                connectionSa.Open();
+                                if (connectionSa.State == ConnectionState.Open)
+                                {
+                                    using (SqlTransaction tranSa = connectionSa.BeginTransaction())
+                                    {
+                                        try
+                                        {
+                                            SqlCommand cmdCommonSql = new SqlCommand();
+                                            cmdCommonSql.Connection = connectionSa;
+                                            cmdCommonSql.CommandText = string.Format(@"DELETE KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "'");
+                                            cmdCommonSql.Transaction = tranSa;
+                                            cmdCommonSql.ExecuteNonQuery();
+                                            int countInsert = 0;
+                                            while (dataReaderOrcl.Read())
+                                            {
+                                                cmdCommonSql.Parameters.Clear();
+                                                cmdCommonSql.CommandText = string.Format(@"INSERT INTO dbo.KYKETOAN(ID,KYKETOAN,TENKY,TUNGAY,DENNGAY,NAM,TRANGTHAI,UNITCODE) VALUES (@ID,@KYKETOAN,@TENKY,@TUNGAY,@DENNGAY,@NAM,@TRANGTHAI,@UNITCODE)");
+                                                cmdCommonSql.Parameters.Add("ID", SqlDbType.VarChar, 50).Value = dataReaderOrcl["ID"] != null ? dataReaderOrcl["ID"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("KYKETOAN", SqlDbType.Int).Value = GetNullableInt(dataReaderOrcl, "KYKETOAN");
+                                                cmdCommonSql.Parameters.Add("TENKY", SqlDbType.NVarChar, 150).Value = dataReaderOrcl["TENKY"] != null ? dataReaderOrcl["TENKY"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("TUNGAY", SqlDbType.Date).Value = GetNullableDateTime(dataReaderOrcl, "TUNGAY");
+                                                cmdCommonSql.Parameters.Add("DENNGAY", SqlDbType.Date).Value = GetNullableDateTime(dataReaderOrcl, "DENNGAY");
+                                                cmdCommonSql.Parameters.Add("NAM", SqlDbType.Int).Value = GetNullableInt(dataReaderOrcl, "NAM");
+                                                cmdCommonSql.Parameters.Add("TRANGTHAI", SqlDbType.Int).Value = GetNullableInt(dataReaderOrcl, "TRANGTHAI");
+                                                cmdCommonSql.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10).Value = dataReaderOrcl["UNITCODE"] != null ? dataReaderOrcl["UNITCODE"].ToString().Trim() : (object)DBNull.Value;
+                                                if (cmdCommonSql.ExecuteNonQuery() > 0)
+                                                {
+                                                    countInsert++;
+                                                }
+                                            }
+                                            if (countInsert > 0)
+                                            {
+                                                tranSa.Commit();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            tranSa.Rollback();
+                                            WriteLogs.LogError(ex);
+                                        }
+                                        finally
+                                        {
+                                            dataReaderOrcl.Dispose();
+                                            connectionSa.Close();
+                                            connectionSa.Dispose();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            connectionOrcl.Close();
+                            WriteLogs.LogError(ex);
+                        }
+                    }
+                    //Mở thì đóng
+                    connectionOrcl.Close();
                 }
             }
         }
@@ -585,7 +815,7 @@ namespace ERBus.Cashier.Common
                     OracleCommand cmdOrcl = new OracleCommand();
                     cmdOrcl.Connection = connectionOrcl;
                     string tableName = FrmXuatBanLeService.GET_TABLE_NAME_NGAYHACHTOAN_CSDL_ORACLE();
-                    cmdOrcl.CommandText = string.Format(@"SELECT a.MAHANG,a.GIAMUA,a.GIAMUA_VAT,a.GIABANLE,a.GIABANLE_VAT,a.GIABANBUON,a.GIABANBUON_VAT,a.TYLE_LAILE,a.TYLE_LAIBUON,b.GIAVON,a.UNITCODE FROM MATHANG_GIA a INNER JOIN " + tableName + " b ON a.MAHANG = b.MAHANG WHERE a.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND a.TRANGTHAI = 10 AND b.MAKHO = '"+ Session.Session.CurrentWareHouse + "' ");
+                    cmdOrcl.CommandText = string.Format(@"SELECT a.MAHANG,a.GIAMUA,a.GIAMUA_VAT,a.GIABANLE,a.GIABANLE_VAT,a.GIABANBUON,a.GIABANBUON_VAT,a.TYLE_LAILE,a.TYLE_LAIBUON,b.GIAVON,a.UNITCODE FROM MATHANG_GIA a INNER JOIN " + tableName + " b ON a.MAHANG = b.MAHANG WHERE a.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND a.TRANGTHAI = 10 AND b.MAKHO = '" + Session.Session.CurrentWareHouse + "' ");
                     OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
                     if (dataReaderOrcl.HasRows)
                     {

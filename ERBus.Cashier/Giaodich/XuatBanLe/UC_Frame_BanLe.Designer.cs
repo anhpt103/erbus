@@ -29,22 +29,23 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelHeader = new System.Windows.Forms.Panel();
+            this.lblTenCuaHang = new System.Windows.Forms.Label();
             this.StatusConnect = new System.Windows.Forms.Label();
             this.lblMaGiaoDichQuay = new System.Windows.Forms.Label();
             this.lblNgayPhatSinhPeriod = new System.Windows.Forms.Label();
@@ -92,7 +93,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblTongSoLuong = new DevExpress.XtraEditors.LabelControl();
             this.gridSplitContainerXuatBanLe = new DevExpress.XtraGrid.GridSplitContainer();
             this.printDialog = new System.Windows.Forms.PrintDialog();
-            this.lblTenCuaHang = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
             this.panelContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetails_Tab)).BeginInit();
@@ -118,6 +118,17 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(1336, 71);
             this.panelHeader.TabIndex = 0;
+            // 
+            // lblTenCuaHang
+            // 
+            this.lblTenCuaHang.AutoSize = true;
+            this.lblTenCuaHang.Font = new System.Drawing.Font("Arial Narrow", 20.25F, System.Drawing.FontStyle.Bold);
+            this.lblTenCuaHang.ForeColor = System.Drawing.Color.Navy;
+            this.lblTenCuaHang.Location = new System.Drawing.Point(997, 0);
+            this.lblTenCuaHang.Name = "lblTenCuaHang";
+            this.lblTenCuaHang.Size = new System.Drawing.Size(160, 31);
+            this.lblTenCuaHang.TabIndex = 33;
+            this.lblTenCuaHang.Text = "Tên cửa hàng";
             // 
             // StatusConnect
             // 
@@ -213,14 +224,14 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.dgvDetails_Tab.BackgroundColor = System.Drawing.Color.White;
             this.dgvDetails_Tab.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvDetails_Tab.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetails_Tab.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetails_Tab.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.dgvDetails_Tab.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDetails_Tab.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.STT,
@@ -236,28 +247,28 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.LAMACAN,
             this.TONCUOIKYSL,
             this.MA_KHUYENMAI});
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.CadetBlue;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetails_Tab.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle28.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.Color.CadetBlue;
+            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetails_Tab.DefaultCellStyle = dataGridViewCellStyle28;
             this.dgvDetails_Tab.Location = new System.Drawing.Point(0, 0);
             this.dgvDetails_Tab.MultiSelect = false;
             this.dgvDetails_Tab.Name = "dgvDetails_Tab";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetails_Tab.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle29.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDetails_Tab.RowHeadersDefaultCellStyle = dataGridViewCellStyle29;
             this.dgvDetails_Tab.RowHeadersVisible = false;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvDetails_Tab.RowsDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle30.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvDetails_Tab.RowsDefaultCellStyle = dataGridViewCellStyle30;
             this.dgvDetails_Tab.RowTemplate.Height = 30;
             this.dgvDetails_Tab.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDetails_Tab.Size = new System.Drawing.Size(1336, 391);
@@ -268,8 +279,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // STT
             // 
             this.STT.DataPropertyName = "STT";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.STT.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.STT.DefaultCellStyle = dataGridViewCellStyle17;
             this.STT.FillWeight = 60F;
             this.STT.Frozen = true;
             this.STT.HeaderText = "Stt";
@@ -281,8 +292,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // MAHANG
             // 
             this.MAHANG.DataPropertyName = "MAHANG";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.MAHANG.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.MAHANG.DefaultCellStyle = dataGridViewCellStyle18;
             this.MAHANG.Frozen = true;
             this.MAHANG.HeaderText = "Mã";
             this.MAHANG.MinimumWidth = 110;
@@ -294,8 +305,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.TENHANG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.TENHANG.DataPropertyName = "TENHANG";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.TENHANG.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.TENHANG.DefaultCellStyle = dataGridViewCellStyle19;
             this.TENHANG.Frozen = true;
             this.TENHANG.HeaderText = "Tên hàng";
             this.TENHANG.MinimumWidth = 300;
@@ -306,8 +317,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // DONVITINH
             // 
             this.DONVITINH.DataPropertyName = "DONVITINH";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.DONVITINH.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.DONVITINH.DefaultCellStyle = dataGridViewCellStyle20;
             this.DONVITINH.Frozen = true;
             this.DONVITINH.HeaderText = "Đ.V.T";
             this.DONVITINH.MinimumWidth = 80;
@@ -318,8 +329,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // GIABANLE_VAT
             // 
             this.GIABANLE_VAT.DataPropertyName = "GIABANLE_VAT";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.GIABANLE_VAT.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.GIABANLE_VAT.DefaultCellStyle = dataGridViewCellStyle21;
             this.GIABANLE_VAT.Frozen = true;
             this.GIABANLE_VAT.HeaderText = "Đ.G";
             this.GIABANLE_VAT.MinimumWidth = 110;
@@ -330,8 +341,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // SOLUONG
             // 
             this.SOLUONG.DataPropertyName = "SOLUONG";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.SOLUONG.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.SOLUONG.DefaultCellStyle = dataGridViewCellStyle22;
             this.SOLUONG.Frozen = true;
             this.SOLUONG.HeaderText = "S.L";
             this.SOLUONG.MinimumWidth = 110;
@@ -342,8 +353,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // GIAVON
             // 
             this.GIAVON.DataPropertyName = "GIAVON";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.GIAVON.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.GIAVON.DefaultCellStyle = dataGridViewCellStyle23;
             this.GIAVON.Frozen = true;
             this.GIAVON.HeaderText = "Giá vốn";
             this.GIAVON.MinimumWidth = 110;
@@ -354,8 +365,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // TIENKM
             // 
             this.TIENKM.DataPropertyName = "TIENKM";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.TIENKM.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.TIENKM.DefaultCellStyle = dataGridViewCellStyle24;
             this.TIENKM.Frozen = true;
             this.TIENKM.HeaderText = "Tiền K.M";
             this.TIENKM.MinimumWidth = 110;
@@ -366,8 +377,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // CHIETKHAU
             // 
             this.CHIETKHAU.DataPropertyName = "CHIETKHAU";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.CHIETKHAU.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.CHIETKHAU.DefaultCellStyle = dataGridViewCellStyle25;
             this.CHIETKHAU.Frozen = true;
             this.CHIETKHAU.HeaderText = "C.K";
             this.CHIETKHAU.MinimumWidth = 110;
@@ -378,11 +389,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.THANHTIEN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.THANHTIEN.DataPropertyName = "THANHTIEN";
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Arial", 15.75F);
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.CadetBlue;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.White;
-            this.THANHTIEN.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("Arial", 15.75F);
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.Color.CadetBlue;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.Color.White;
+            this.THANHTIEN.DefaultCellStyle = dataGridViewCellStyle26;
             this.THANHTIEN.Frozen = true;
             this.THANHTIEN.HeaderText = "Thành Tiền";
             this.THANHTIEN.MinimumWidth = 110;
@@ -393,8 +404,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // LAMACAN
             // 
             this.LAMACAN.DataPropertyName = "LAMACAN";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.LAMACAN.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.LAMACAN.DefaultCellStyle = dataGridViewCellStyle27;
             this.LAMACAN.HeaderText = "Bán mã cân";
             this.LAMACAN.Name = "LAMACAN";
             this.LAMACAN.Width = 5;
@@ -447,7 +458,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblChietKhauLe.AutoSize = true;
             this.lblChietKhauLe.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChietKhauLe.ForeColor = System.Drawing.Color.Red;
-            this.lblChietKhauLe.Location = new System.Drawing.Point(366, 35);
+            this.lblChietKhauLe.Location = new System.Drawing.Point(436, 35);
             this.lblChietKhauLe.Name = "lblChietKhauLe";
             this.lblChietKhauLe.Size = new System.Drawing.Size(36, 40);
             this.lblChietKhauLe.TabIndex = 41;
@@ -456,19 +467,21 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // lblCKLe
             // 
             this.lblCKLe.Appearance.Font = new System.Drawing.Font("Arial", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCKLe.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblCKLe.Appearance.Options.UseFont = true;
-            this.lblCKLe.Location = new System.Drawing.Point(365, 6);
+            this.lblCKLe.Appearance.Options.UseForeColor = true;
+            this.lblCKLe.Location = new System.Drawing.Point(398, 6);
             this.lblCKLe.Name = "lblCKLe";
-            this.lblCKLe.Size = new System.Drawing.Size(70, 26);
+            this.lblCKLe.Size = new System.Drawing.Size(107, 26);
             this.lblCKLe.TabIndex = 40;
-            this.lblCKLe.Text = "C.K Lẻ";
+            this.lblCKLe.Text = "Chiết khấu";
             // 
             // lblSumSoLuong
             // 
             this.lblSumSoLuong.AutoSize = true;
             this.lblSumSoLuong.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSumSoLuong.ForeColor = System.Drawing.Color.Red;
-            this.lblSumSoLuong.Location = new System.Drawing.Point(12, 35);
+            this.lblSumSoLuong.Location = new System.Drawing.Point(56, 35);
             this.lblSumSoLuong.Name = "lblSumSoLuong";
             this.lblSumSoLuong.Size = new System.Drawing.Size(36, 40);
             this.lblSumSoLuong.TabIndex = 39;
@@ -479,7 +492,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblTongTienKhuyenMai.AutoSize = true;
             this.lblTongTienKhuyenMai.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTongTienKhuyenMai.ForeColor = System.Drawing.Color.Red;
-            this.lblTongTienKhuyenMai.Location = new System.Drawing.Point(180, 35);
+            this.lblTongTienKhuyenMai.Location = new System.Drawing.Point(250, 35);
             this.lblTongTienKhuyenMai.Name = "lblTongTienKhuyenMai";
             this.lblTongTienKhuyenMai.Size = new System.Drawing.Size(36, 40);
             this.lblTongTienKhuyenMai.TabIndex = 38;
@@ -490,7 +503,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblTongTienThanhToan.AutoSize = true;
             this.lblTongTienThanhToan.Font = new System.Drawing.Font("Arial", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTongTienThanhToan.ForeColor = System.Drawing.Color.Red;
-            this.lblTongTienThanhToan.Location = new System.Drawing.Point(524, 35);
+            this.lblTongTienThanhToan.Location = new System.Drawing.Point(601, 35);
             this.lblTongTienThanhToan.Name = "lblTongTienThanhToan";
             this.lblTongTienThanhToan.Size = new System.Drawing.Size(36, 40);
             this.lblTongTienThanhToan.TabIndex = 37;
@@ -675,7 +688,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.lblSoLuong.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSoLuong.Appearance.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSoLuong.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblSoLuong.Appearance.Options.UseFont = true;
+            this.lblSoLuong.Appearance.Options.UseForeColor = true;
             this.lblSoLuong.Location = new System.Drawing.Point(1089, 12);
             this.lblSoLuong.Name = "lblSoLuong";
             this.lblSoLuong.Size = new System.Drawing.Size(113, 32);
@@ -686,7 +701,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.lblMaHang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMaHang.Appearance.Font = new System.Drawing.Font("Arial", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaHang.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblMaHang.Appearance.Options.UseFont = true;
+            this.lblMaHang.Appearance.Options.UseForeColor = true;
             this.lblMaHang.Location = new System.Drawing.Point(763, 12);
             this.lblMaHang.Name = "lblMaHang";
             this.lblMaHang.Size = new System.Drawing.Size(110, 32);
@@ -696,32 +713,38 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // lblSumThanhToan
             // 
             this.lblSumThanhToan.Appearance.Font = new System.Drawing.Font("Arial", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSumThanhToan.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblSumThanhToan.Appearance.Options.UseFont = true;
-            this.lblSumThanhToan.Location = new System.Drawing.Point(525, 6);
+            this.lblSumThanhToan.Appearance.Options.UseForeColor = true;
+            this.lblSumThanhToan.Location = new System.Drawing.Point(547, 6);
             this.lblSumThanhToan.Name = "lblSumThanhToan";
-            this.lblSumThanhToan.Size = new System.Drawing.Size(121, 26);
+            this.lblSumThanhToan.Size = new System.Drawing.Size(169, 26);
             this.lblSumThanhToan.TabIndex = 9;
-            this.lblSumThanhToan.Text = "Thanh Toán";
+            this.lblSumThanhToan.Text = "Phải Thanh Toán";
             // 
             // lblTienChietKhau
             // 
             this.lblTienChietKhau.Appearance.Font = new System.Drawing.Font("Arial", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTienChietKhau.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblTienChietKhau.Appearance.Options.UseFont = true;
-            this.lblTienChietKhau.Location = new System.Drawing.Point(174, 6);
+            this.lblTienChietKhau.Appearance.Options.UseForeColor = true;
+            this.lblTienChietKhau.Location = new System.Drawing.Point(188, 6);
             this.lblTienChietKhau.Name = "lblTienChietKhau";
-            this.lblTienChietKhau.Size = new System.Drawing.Size(89, 26);
+            this.lblTienChietKhau.Size = new System.Drawing.Size(167, 26);
             this.lblTienChietKhau.TabIndex = 7;
-            this.lblTienChietKhau.Text = "Tiền K.M";
+            this.lblTienChietKhau.Text = "Tiền Khuyến Mãi";
             // 
             // lblTongSoLuong
             // 
             this.lblTongSoLuong.Appearance.Font = new System.Drawing.Font("Arial", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTongSoLuong.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.lblTongSoLuong.Appearance.Options.UseFont = true;
+            this.lblTongSoLuong.Appearance.Options.UseForeColor = true;
             this.lblTongSoLuong.Location = new System.Drawing.Point(5, 6);
             this.lblTongSoLuong.Name = "lblTongSoLuong";
-            this.lblTongSoLuong.Size = new System.Drawing.Size(91, 26);
+            this.lblTongSoLuong.Size = new System.Drawing.Size(158, 26);
             this.lblTongSoLuong.TabIndex = 6;
-            this.lblTongSoLuong.Text = "Tổng S.L";
+            this.lblTongSoLuong.Text = "Tổng Số Lượng";
             // 
             // gridSplitContainerXuatBanLe
             // 
@@ -735,17 +758,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // printDialog
             // 
             this.printDialog.UseEXDialog = true;
-            // 
-            // lblTenCuaHang
-            // 
-            this.lblTenCuaHang.AutoSize = true;
-            this.lblTenCuaHang.Font = new System.Drawing.Font("Arial Narrow", 20.25F, System.Drawing.FontStyle.Bold);
-            this.lblTenCuaHang.ForeColor = System.Drawing.Color.OliveDrab;
-            this.lblTenCuaHang.Location = new System.Drawing.Point(997, 0);
-            this.lblTenCuaHang.Name = "lblTenCuaHang";
-            this.lblTenCuaHang.Size = new System.Drawing.Size(160, 31);
-            this.lblTenCuaHang.TabIndex = 33;
-            this.lblTenCuaHang.Text = "Tên cửa hàng";
             // 
             // UC_Frame_BanLe
             // 
