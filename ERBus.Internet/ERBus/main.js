@@ -19,7 +19,6 @@ require.config({
         'ngTable': 'utils/ng-table.min',
         'ui.tree': 'lib/angular-ui-tree.min',
         'dynamic-number': 'utils/dynamic-number.min',
-        'kendo': 'utils/telerik/js/kendo.all.min',
         'telerikReportViewer': 'utils/telerik/js/telerikReportViewer-11.0.17.118.min',
         'telerikReportViewer_kendo': 'utils/telerik/js/telerikReportViewer.kendo-11.0.17.118.min',
         'ui-grid': 'utils/ui-grid/ui-grid.min',
@@ -34,7 +33,8 @@ require.config({
         'angular-chart': 'utils/angular-chart/angular-chart.min',
         'ng-tags-input': 'js/ngTagInput/ng-tags-input.min',
         'moment': 'js/moment/moment',
-        'jp.ng-bs-animated-button': 'js/ng-bs-animated-button/ng-bs-animated-button'
+        'jp.ng-bs-animated-button': 'js/ng-bs-animated-button/ng-bs-animated-button',
+        'kendo.all.min': 'js/kendo/kendo.all.min'
     },
     shim: {
         'jquery': {
@@ -59,7 +59,6 @@ require.config({
         'ngTable': ['angular'],
         'ui.tree': ['angular'],
         'dynamic-number': ['angular'],
-        'kendo': ['jquery', 'angular'],
         'telerikReportViewer': ['jquery', 'angular'],
         'telerikReportViewer_kendo': ['jquery', 'angular'],
         'ui-grid': ['angular'],
@@ -74,7 +73,10 @@ require.config({
         'angular-chart': ['chart-js'],
         'ng-tags-input': ['angular'],
         'moment': ['angular'],
-        'jp.ng-bs-animated-button': ['angular']
+        'jp.ng-bs-animated-button': ['angular'],
+        'kendo.all.min': {
+            deps: ['angular']
+        }
     },
     waitSeconds: 0,
     //urlArgs: 'bust=' + new Date().getTime()

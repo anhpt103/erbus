@@ -245,6 +245,27 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">Barcode</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6" ng-repeat="barcode in target.BARCODE_ADD track by $index">
+                            <span kendo-barcode k-type="'code128'" ng-model="barcode.text" style="width: 250px; margin: 0 auto;"></span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">QR Code</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6">
+                            <span kendo-qrcode k-error-correction="'M'" ng-model="qrcode" style="height: 250px;"></span>
+                        </div>
+                    </div>
                 </div>
                 <!--end phần bên phải md-4-->
             </div>

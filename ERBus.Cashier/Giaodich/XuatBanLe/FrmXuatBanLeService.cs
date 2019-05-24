@@ -87,7 +87,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     }
                     else
                     {
-                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                     }
                 }
             }
@@ -206,7 +206,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return listDataDto;
@@ -276,7 +276,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return listDataDto;
@@ -345,7 +345,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return listDataDto;
@@ -421,7 +421,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     }
                     else
                     {
-                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                     }
                 }
             }
@@ -540,7 +540,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return listDataDto;
@@ -559,11 +559,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         SqlCommand cmd = new SqlCommand();
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = @MAKHO AND A.MAHANG = @MAHANG AND A.UNITCODE = @UNITCODE");
                         cmd.Parameters.Clear();
-                        cmd.Parameters.Add("MAKHO", SqlDbType.VarChar, 50, Session.Session.CurrentWareHouse);
-                        cmd.Parameters.Add("MAHANG", SqlDbType.VarChar, 50, MaHang);
-                        cmd.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10, Session.Session.CurrentUnitCode);
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = '"+ Session.Session.CurrentWareHouse + "' AND A.MAHANG = '"+ MaHang + "' AND A.UNITCODE = '"+ Session.Session.CurrentUnitCode + "'");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -610,7 +607,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return listDataDto;
@@ -630,9 +627,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         SqlCommand cmd = new SqlCommand();
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = @MAKHO AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = @UNITCODE");
-                        cmd.Parameters.Add("MAKHO", SqlDbType.VarChar, 50, Session.Session.CurrentWareHouse);
-                        cmd.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10, Session.Session.CurrentUnitCode);
+                        cmd.Parameters.Clear();
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = '"+ Session.Session.CurrentWareHouse + "' AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = '"+ Session.Session.CurrentUnitCode + "'");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -679,7 +675,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return listDataDto;
@@ -754,58 +750,42 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         }
 
         //TÍNH TOÁN KHUYẾN MÃI
-        public static CAL_KHUYENMAI_OBJ TINHTOAN_KHUYENMAI_ORACLE(string maVatTu, EnumCommon.METHOD_PRICE method)
+        public static CAL_KHUYENMAI_OBJ TINHTOAN_KHUYENMAI(string maVatTu, EnumCommon.METHOD_PRICE method)
         {
             CAL_KHUYENMAI_OBJ RESULT = new CAL_KHUYENMAI_OBJ();
-            decimal GIATRI_KHUYENMAI = 0;
-            List<KHUYENMAI_DTO> dataKhuyenMai = new List<KHUYENMAI_DTO>();
-            //GET CHƯƠNG TRÌNH KHUYẾN MÃI
             if (Config.CheckConnectToServer()) // nếu có mạng lan
             {
-                dataKhuyenMai = CACULATION_KHUYENMAI_CHIETKHAU_GIAMGIA_CSDL_ORACLE(maVatTu);
-            }
-            else //Không có mạng 
-            {
-                dataKhuyenMai = CACULATION_KHUYENMAI_CHIETKHAU_GIAMGIA_CSDL_SQL(maVatTu);
-            }
-            if (dataKhuyenMai.Count > 0)
-            {
-                foreach(var khuyenMai in dataKhuyenMai)
+                CAL_KHUYENMAI_OBJ RESULT_NHACUNGCAP = CACULATION_KHUYENMAI_CHIETKHAU_NHACUNGCAP_ORACLE(maVatTu);
+                CAL_KHUYENMAI_OBJ RESULT_LOAIHANG = CACULATION_KHUYENMAI_CHIETKHAU_LOAIHANG_ORACLE(maVatTu);
+                CAL_KHUYENMAI_OBJ RESULT_NHOMHANG = CACULATION_KHUYENMAI_CHIETKHAU_NHOMHANG_ORACLE(maVatTu);
+                if ((RESULT_NHACUNGCAP != null && RESULT_LOAIHANG != null) || (RESULT_LOAIHANG != null && RESULT_NHOMHANG != null) || (RESULT_NHACUNGCAP != null && RESULT_NHOMHANG != null))
                 {
-                    if (!string.IsNullOrEmpty(khuyenMai.TUGIO) && !string.IsNullOrEmpty(khuyenMai.DENGIO))
-                    {
-                        int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
-                        string[] tugio = khuyenMai.TUGIO.Split(':');
-                        string[] dengio = khuyenMai.DENGIO.Split(':');
-                        int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
-                        int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
-                        if (minuteTuGio <= getHour && getHour <= minuteDenGio)
-                        {
-                            //Khuyến mãi giảm giá loại hàng
-                            if (khuyenMai.LOAI_KHUYENMAI.Equals("GGLOAIHANG"))
-                            {
-                                if (!string.IsNullOrEmpty(maVatTu) && maVatTu.Substring(0, 1).Equals(khuyenMai.MAHANG))
-                                {
-                                    decimal.TryParse(khuyenMai.GIATRI_KHUYENMAI.ToString(), out GIATRI_KHUYENMAI);
-                                    RESULT.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
-                                    RESULT.MA_KHUYENMAI = khuyenMai.MA_KHUYENMAI;
-                                }
-                            }
-                            else if (khuyenMai.LOAI_KHUYENMAI.Equals("GGNHACUNGCAP"))
-                            {
-                                RESULT.MA_KHUYENMAI = "";
-                                RESULT.GIATRI_KHUYENMAI = TINHGIAMGIA_NHACUNGCAP_CSDL_ORACLE(maVatTu,khuyenMai.MA_KHUYENMAI);
-                                if (RESULT.GIATRI_KHUYENMAI > 0)
-                                {
-                                    RESULT.MA_KHUYENMAI = khuyenMai.MA_KHUYENMAI;
-                                }
-                            }
-                        }
-                    }
+                    RESULT = null;
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Trùng lặp chương trình khuyến mãi", 1, "0x1", "0x8", "normal");
                 }
+                else if (RESULT_NHACUNGCAP != null) RESULT = RESULT_NHACUNGCAP;
+                else if (RESULT_LOAIHANG != null) RESULT = RESULT_LOAIHANG;
+                else if (RESULT_NHOMHANG != null) RESULT = RESULT_NHOMHANG;
+                else RESULT = null;
+            }
+            else
+            {
+                CAL_KHUYENMAI_OBJ RESULT_NHACUNGCAP = CACULATION_KHUYENMAI_CHIETKHAU_NHACUNGCAP_SQLSERVER(maVatTu);
+                CAL_KHUYENMAI_OBJ RESULT_LOAIHANG = CACULATION_KHUYENMAI_CHIETKHAU_LOAIHANG_SQLSERVER(maVatTu);
+                CAL_KHUYENMAI_OBJ RESULT_NHOMHANG = CACULATION_KHUYENMAI_CHIETKHAU_NHOMHANG_SQLSERVER(maVatTu);
+                if ((RESULT_NHACUNGCAP != null && RESULT_LOAIHANG != null) || (RESULT_LOAIHANG != null && RESULT_NHOMHANG != null) || (RESULT_NHACUNGCAP != null && RESULT_NHOMHANG != null))
+                {
+                    RESULT = null;
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Trùng lặp chương trình khuyến mãi", 1, "0x1", "0x8", "normal");
+                }
+                else if (RESULT_NHACUNGCAP != null) RESULT = RESULT_NHACUNGCAP;
+                else if (RESULT_LOAIHANG != null) RESULT = RESULT_LOAIHANG;
+                else if (RESULT_NHOMHANG != null) RESULT = RESULT_NHOMHANG;
+                else RESULT = null;
             }
             return RESULT;
         }
+
 
         //Lấy ngày hạch toán , Số giao dịch
         public static DateTime GET_NGAYHACHTOAN_CSDL_ORACLE()
@@ -842,7 +822,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return result;
@@ -883,7 +863,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return result;
@@ -930,7 +910,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return result;
@@ -950,7 +930,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
 
                         SqlCommand cmd = new SqlCommand();
                         cmd.Connection = connection;
-                        cmd.CommandText = string.Format(@"SELECT KY,NAM FROM (SELECT MAX(KYKETOAN) AS KY,NAM FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10 AND NAM = (SELECT MAX(NAM) FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "') GROUP BY KYKETOAN,NAM ORDER BY KY DESC)");
+                        cmd.CommandText = string.Format(@"SELECT TOP 1 MAX(KYKETOAN) AS KY,NAM FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10 AND NAM = (SELECT MAX(NAM) FROM dbo.KYKETOAN WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "') GROUP BY KYKETOAN,NAM ORDER BY KY DESC");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -978,59 +958,16 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
             }
             return result;
         }
 
-        public static decimal TINHGIAMGIA_NHACUNGCAP_CSDL_ORACLE(string MaHang,string MaKhuyenMai)
-        {
-            decimal result = 0;
-            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
-            {
-                connection.Open();
-                if (connection.State == ConnectionState.Open)
-                {
-                    try
-                    {
-                        OracleCommand cmd = new OracleCommand();
-                        cmd.Connection = connection;
-                        cmd.CommandText = string.Format(@"SELECT B.GIATRI_KHUYENMAI 
-                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN MATHANG c ON C.MANHACUNGCAP = b.MAHANG
-                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND a.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND C.MAHANG = '"+MaHang+ "' AND B.MA_KHUYENMAI = '"+ MaKhuyenMai +"' ");
-                        OracleDataReader dataReader = cmd.ExecuteReader();
-                        if (dataReader.HasRows)
-                        {
-                            while (dataReader.Read())
-                            {
-                                decimal GIATRI_KHUYENMAI = 0;
-                                decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
-                                result = GIATRI_KHUYENMAI;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLogs.LogError(ex);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                        connection.Dispose();
-                    }
-                }
-                else
-                {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
-                }
-            }
-            return result;
-        }
         // TÍNH KHUYẾN MẠI FROM ORACLE
-        public static List<KHUYENMAI_DTO> CACULATION_KHUYENMAI_CHIETKHAU_GIAMGIA_CSDL_ORACLE(string MaHang)
+        public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_NHACUNGCAP_ORACLE(string MaHang)
         {
-            List<KHUYENMAI_DTO> result = new List<KHUYENMAI_DTO>();
+            CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
             using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
             {
                 connection.Open();
@@ -1040,9 +977,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     {
                         OracleCommand cmd = new OracleCommand();
                         cmd.Connection = connection;
-                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.LOAI_KHUYENMAI,A.TUNGAY,A.DENNGAY,A.TUGIO,A.DENGIO,A.DIENGIAI,B.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
+                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
                         FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP 
-                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND D.MAHANG = '"+ MaHang + "' ");
+                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "') ");
                         OracleDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -1051,19 +988,26 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                                 decimal SOLUONG, GIATRI_KHUYENMAI = 0;
                                 KHUYENMAI_DTO dto = new KHUYENMAI_DTO();
                                 dto.MA_KHUYENMAI = dataReader["MA_KHUYENMAI"].ToString();
-                                dto.LOAI_KHUYENMAI = dataReader["LOAI_KHUYENMAI"].ToString();
-                                dto.TUNGAY = dataReader["TUNGAY"].ToString();
-                                dto.DENNGAY = dataReader["DENNGAY"].ToString();
                                 dto.TUGIO = dataReader["TUGIO"].ToString();
                                 dto.DENGIO = dataReader["DENGIO"].ToString();
                                 dto.DIENGIAI = dataReader["DIENGIAI"].ToString();
-                                dto.MAHANG = dataReader["MAHANG"].ToString();
                                 decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
                                 decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
-                                dto.SOLUONG = SOLUONG;
-                                dto.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
-                                result.Add(dto);
+                                if (!string.IsNullOrEmpty(dto.TUGIO) && !string.IsNullOrEmpty(dto.DENGIO))
+                                {
+                                    int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+                                    string[] tugio = dto.TUGIO.Split(':');
+                                    string[] dengio = dto.DENGIO.Split(':');
+                                    int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
+                                    int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
+                                    if (minuteTuGio <= getHour && getHour <= minuteDenGio)
+                                    {
+                                        result.MA_KHUYENMAI = dto.MA_KHUYENMAI;
+                                        result.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
+                                    }
+                                }
                             }
+                            dataReader.Close();
                         }
                     }
                     catch (Exception ex)
@@ -1078,16 +1022,157 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
+            }
+            if(result != null && string.IsNullOrEmpty(result.MA_KHUYENMAI))
+            {
+                result = null;
             }
             return result;
         }
 
-        // TÍNH KHUYẾN MẠI FROM SQL
-        public static List<KHUYENMAI_DTO> CACULATION_KHUYENMAI_CHIETKHAU_GIAMGIA_CSDL_SQL(string MaHang)
+        // TÍNH KHUYẾN MẠI FROM ORACLE
+        public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_LOAIHANG_ORACLE(string MaHang)
         {
-            List<KHUYENMAI_DTO> result = new List<KHUYENMAI_DTO>();
+            CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
+                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI 
+                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "') ");
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                decimal SOLUONG, GIATRI_KHUYENMAI = 0;
+                                KHUYENMAI_DTO dto = new KHUYENMAI_DTO();
+                                dto.MA_KHUYENMAI = dataReader["MA_KHUYENMAI"].ToString();
+                                dto.TUGIO = dataReader["TUGIO"].ToString();
+                                dto.DENGIO = dataReader["DENGIO"].ToString();
+                                dto.DIENGIAI = dataReader["DIENGIAI"].ToString();
+                                decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
+                                decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
+                                if (!string.IsNullOrEmpty(dto.TUGIO) && !string.IsNullOrEmpty(dto.DENGIO))
+                                {
+                                    int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+                                    string[] tugio = dto.TUGIO.Split(':');
+                                    string[] dengio = dto.DENGIO.Split(':');
+                                    int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
+                                    int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
+                                    if (minuteTuGio <= getHour && getHour <= minuteDenGio)
+                                    {
+                                        result.MA_KHUYENMAI = dto.MA_KHUYENMAI;
+                                        result.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
+                                    }
+                                }
+                            }
+                            dataReader.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            if (result != null && string.IsNullOrEmpty(result.MA_KHUYENMAI))
+            {
+                result = null;
+            }
+            return result;
+        }
+
+        // TÍNH KHUYẾN MẠI FROM ORACLE
+        public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_NHOMHANG_ORACLE(string MaHang)
+        {
+            CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
+                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM 
+                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "') ");
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                decimal SOLUONG, GIATRI_KHUYENMAI = 0;
+                                KHUYENMAI_DTO dto = new KHUYENMAI_DTO();
+                                dto.MA_KHUYENMAI = dataReader["MA_KHUYENMAI"].ToString();
+                                dto.TUGIO = dataReader["TUGIO"].ToString();
+                                dto.DENGIO = dataReader["DENGIO"].ToString();
+                                dto.DIENGIAI = dataReader["DIENGIAI"].ToString();
+                                decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
+                                decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
+                                if (!string.IsNullOrEmpty(dto.TUGIO) && !string.IsNullOrEmpty(dto.DENGIO))
+                                {
+                                    int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+                                    string[] tugio = dto.TUGIO.Split(':');
+                                    string[] dengio = dto.DENGIO.Split(':');
+                                    int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
+                                    int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
+                                    if (minuteTuGio <= getHour && getHour <= minuteDenGio)
+                                    {
+                                        result.MA_KHUYENMAI = dto.MA_KHUYENMAI;
+                                        result.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
+                                    }
+                                }
+                            }
+                            dataReader.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            if (result != null && string.IsNullOrEmpty(result.MA_KHUYENMAI))
+            {
+                result = null;
+            }
+            return result;
+        }
+
+
+        // TÍNH KHUYẾN MẠI FROM ORACLE
+        public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_NHACUNGCAP_SQLSERVER(string MaHang)
+        {
+            CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
             using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
             {
                 connection.Open();
@@ -1097,29 +1182,37 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     {
                         SqlCommand cmd = new SqlCommand();
                         cmd.Connection = connection;
-                        cmd.CommandText = string.Format(@"SELECT [ID],[MA_KHUYENMAI],[TUNGAY],[DENNGAY],[TUGIO],[DENGIO],[MAHANG],[SOLUONG],[TYLE],[GIATRI] FROM [dbo].[KHUYENMAI] WHERE TUNGAY <= '" + DateTime.Now.ToString("yyyy-MM-dd") + "'  AND DENNGAY >= '" + DateTime.Now.ToString("yyyy-MM-dd") + "' AND MAHANG = '" + MaHang + "' ");
+                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
+                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP 
+                        WHERE '" + DateTime.Now.ToString("dd-MM-yyyy") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP WHERE '" + DateTime.Now.ToString("dd-MM-yyyy") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "') ");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
                             while (dataReader.Read())
                             {
-                                decimal SOLUONG, TYLE, GIATRI = 0;
+                                decimal SOLUONG, GIATRI_KHUYENMAI = 0;
                                 KHUYENMAI_DTO dto = new KHUYENMAI_DTO();
                                 dto.MA_KHUYENMAI = dataReader["MA_KHUYENMAI"].ToString();
-                                dto.TUNGAY = dataReader["TUNGAY"].ToString();
-                                dto.DENNGAY = dataReader["DENNGAY"].ToString();
                                 dto.TUGIO = dataReader["TUGIO"].ToString();
                                 dto.DENGIO = dataReader["DENGIO"].ToString();
-                                dto.DIENGIAI = "";
-                                dto.MAHANG = dataReader["MAHANG"].ToString();
+                                dto.DIENGIAI = dataReader["DIENGIAI"].ToString();
                                 decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
-                                decimal.TryParse(dataReader["TYLE"].ToString(), out TYLE);
-                                decimal.TryParse(dataReader["GIATRI"].ToString(), out GIATRI);
-                                dto.SOLUONG = SOLUONG;
-                                //dto.TYLE = TYLE;
-                                dto.GIATRI_KHUYENMAI = GIATRI;
-                                result.Add(dto);
+                                decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
+                                if (!string.IsNullOrEmpty(dto.TUGIO) && !string.IsNullOrEmpty(dto.DENGIO))
+                                {
+                                    int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+                                    string[] tugio = dto.TUGIO.Split(':');
+                                    string[] dengio = dto.DENGIO.Split(':');
+                                    int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
+                                    int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
+                                    if (minuteTuGio <= getHour && getHour <= minuteDenGio)
+                                    {
+                                        result.MA_KHUYENMAI = dto.MA_KHUYENMAI;
+                                        result.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
+                                    }
+                                }
                             }
+                            dataReader.Close();
                         }
                     }
                     catch (Exception ex)
@@ -1134,19 +1227,152 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 }
                 else
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                 }
-                if (result.Count != 0 && result.Count > 1)
-                {
-                    MessageBox.Show("Trùng lặp chương trình khuyến mãi mã hàng này !");
-                }
-                else
-                {
-                    return result;
-                }
+            }
+            if (result != null && string.IsNullOrEmpty(result.MA_KHUYENMAI))
+            {
+                result = null;
             }
             return result;
         }
+
+        // TÍNH KHUYẾN MẠI FROM ORACLE
+        public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_LOAIHANG_SQLSERVER(string MaHang)
+        {
+            CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
+                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI 
+                        WHERE '" + DateTime.Now.ToString("dd-MM-yyyy") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "') ");
+                        SqlDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                decimal SOLUONG, GIATRI_KHUYENMAI = 0;
+                                KHUYENMAI_DTO dto = new KHUYENMAI_DTO();
+                                dto.MA_KHUYENMAI = dataReader["MA_KHUYENMAI"].ToString();
+                                dto.TUGIO = dataReader["TUGIO"].ToString();
+                                dto.DENGIO = dataReader["DENGIO"].ToString();
+                                dto.DIENGIAI = dataReader["DIENGIAI"].ToString();
+                                decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
+                                decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
+                                if (!string.IsNullOrEmpty(dto.TUGIO) && !string.IsNullOrEmpty(dto.DENGIO))
+                                {
+                                    int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+                                    string[] tugio = dto.TUGIO.Split(':');
+                                    string[] dengio = dto.DENGIO.Split(':');
+                                    int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
+                                    int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
+                                    if (minuteTuGio <= getHour && getHour <= minuteDenGio)
+                                    {
+                                        result.MA_KHUYENMAI = dto.MA_KHUYENMAI;
+                                        result.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
+                                    }
+                                }
+                            }
+                            dataReader.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            if (result != null && string.IsNullOrEmpty(result.MA_KHUYENMAI))
+            {
+                result = null;
+            }
+            return result;
+        }
+
+        // TÍNH KHUYẾN MẠI FROM ORACLE
+        public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_NHOMHANG_SQLSERVER(string MaHang)
+        {
+            CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
+            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            {
+                connection.Open();
+                if (connection.State == ConnectionState.Open)
+                {
+                    try
+                    {
+                        OracleCommand cmd = new OracleCommand();
+                        cmd.Connection = connection;
+                        cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
+                        FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM 
+                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "') ");
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                decimal SOLUONG, GIATRI_KHUYENMAI = 0;
+                                KHUYENMAI_DTO dto = new KHUYENMAI_DTO();
+                                dto.MA_KHUYENMAI = dataReader["MA_KHUYENMAI"].ToString();
+                                dto.TUGIO = dataReader["TUGIO"].ToString();
+                                dto.DENGIO = dataReader["DENGIO"].ToString();
+                                dto.DIENGIAI = dataReader["DIENGIAI"].ToString();
+                                decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
+                                decimal.TryParse(dataReader["GIATRI_KHUYENMAI"].ToString(), out GIATRI_KHUYENMAI);
+                                if (!string.IsNullOrEmpty(dto.TUGIO) && !string.IsNullOrEmpty(dto.DENGIO))
+                                {
+                                    int getHour = DateTime.Now.Hour * 60 + DateTime.Now.Minute;
+                                    string[] tugio = dto.TUGIO.Split(':');
+                                    string[] dengio = dto.DENGIO.Split(':');
+                                    int minuteTuGio = Int32.Parse(tugio[0]) * 60 + Int32.Parse(tugio[1]);
+                                    int minuteDenGio = Int32.Parse(dengio[0]) * 60 + Int32.Parse(dengio[1]);
+                                    if (minuteTuGio <= getHour && getHour <= minuteDenGio)
+                                    {
+                                        result.MA_KHUYENMAI = dto.MA_KHUYENMAI;
+                                        result.GIATRI_KHUYENMAI = GIATRI_KHUYENMAI;
+                                    }
+                                }
+                            }
+                            dataReader.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                else
+                {
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                }
+            }
+            if (result != null && string.IsNullOrEmpty(result.MA_KHUYENMAI))
+            {
+                result = null;
+            }
+            return result;
+        }
+
         //Lấy ngày hạch toán , Số giao dịch
         public static string INIT_CODE_TRADE()
         {
@@ -1840,7 +2066,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     connection.Open();
                     if (connection.State == ConnectionState.Open)
                     {
-                        string querrySelect = string.Format(@"SELECT GIATRI_SO FROM dbo.THAMSOHETHONG WHERE MA_THAMSO = 'KHOA_BANAM' AND UNITCODE = '" + Session.Session.CurrentUnitCode + "' ");
+                        string querrySelect = string.Format(@"SELECT GIATRI_SO FROM dbo.THAMSOHETHONG WHERE MA_THAMSO = 'KHOA_BANAM'");
                         SqlCommand commamdThamSo = new SqlCommand();
                         commamdThamSo.Connection = connection;
                         commamdThamSo.CommandText = querrySelect;

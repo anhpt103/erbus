@@ -1023,6 +1023,7 @@
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
+            $scope.qrcode = 'https://google.com/';
             $scope.convertCodeToName = function (paraValue, moduleName) {
                 if (paraValue) {
                     var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);

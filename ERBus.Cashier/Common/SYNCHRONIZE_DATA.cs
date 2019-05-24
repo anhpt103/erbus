@@ -323,6 +323,87 @@ namespace ERBus.Cashier.Common
             }
         }
 
+        public static void SYNCHRONIZE_NHACUNGCAP()
+        {
+            using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connectionOrcl.Open();
+                if (connectionOrcl.State == ConnectionState.Open)
+                {
+                    OracleCommand cmdOrcl = new OracleCommand();
+                    cmdOrcl.Connection = connectionOrcl;
+                    cmdOrcl.CommandText = string.Format(@"SELECT ID,MANHACUNGCAP,TENNHACUNGCAP,DIACHI,MASOTHUE,DIENTHOAI,DIENGIAI,TRANGTHAI,UNITCODE FROM NHACUNGCAP WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10");
+                    OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
+                    if (dataReaderOrcl.HasRows)
+                    {
+                        try
+                        {
+                            using (SqlConnection connectionSa = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                            {
+                                connectionSa.Open();
+                                if (connectionSa.State == ConnectionState.Open)
+                                {
+                                    using (SqlTransaction tranSa = connectionSa.BeginTransaction())
+                                    {
+                                        try
+                                        {
+                                            SqlCommand cmdCommonSql = new SqlCommand();
+                                            cmdCommonSql.Connection = connectionSa;
+                                            cmdCommonSql.CommandText = string.Format(@"DELETE NHACUNGCAP");
+                                            cmdCommonSql.Transaction = tranSa;
+                                            cmdCommonSql.ExecuteNonQuery();
+                                            int countInsert = 0;
+                                            while (dataReaderOrcl.Read())
+                                            {
+                                                cmdCommonSql.Parameters.Clear();
+                                                cmdCommonSql.CommandText = string.Format(@"INSERT INTO dbo.NHACUNGCAP(ID,MANHACUNGCAP,TENNHACUNGCAP,DIACHI,MASOTHUE,DIENTHOAI,DIENGIAI,TRANGTHAI,UNITCODE) VALUES (@ID,@MANHACUNGCAP,@TENNHACUNGCAP,@DIACHI,@MASOTHUE,@DIENTHOAI,@DIENGIAI,@TRANGTHAI,@UNITCODE)");
+                                                cmdCommonSql.Parameters.Add("ID", SqlDbType.VarChar, 50).Value = dataReaderOrcl["ID"] != null ? dataReaderOrcl["ID"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("MANHACUNGCAP", SqlDbType.VarChar, 50).Value = dataReaderOrcl["MANHACUNGCAP"] != null ? dataReaderOrcl["MANHACUNGCAP"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("TENNHACUNGCAP", SqlDbType.NVarChar, 300).Value = dataReaderOrcl["TENNHACUNGCAP"] != null ? dataReaderOrcl["TENNHACUNGCAP"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("DIACHI", SqlDbType.NVarChar, 300).Value = dataReaderOrcl["DIACHI"] != null ? dataReaderOrcl["DIACHI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("MASOTHUE ", SqlDbType.VarChar, 80).Value = dataReaderOrcl["MASOTHUE"] != null ? dataReaderOrcl["MASOTHUE"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("DIENTHOAI", SqlDbType.VarChar, 20).Value = dataReaderOrcl["DIENTHOAI"] != null ? dataReaderOrcl["DIENTHOAI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("DIENGIAI", SqlDbType.NVarChar, 300).Value = dataReaderOrcl["DIENGIAI"] != null ? dataReaderOrcl["DIENGIAI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("TRANGTHAI", SqlDbType.Int).Value = GetNullableInt(dataReaderOrcl, "TRANGTHAI");
+                                                cmdCommonSql.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10).Value = dataReaderOrcl["UNITCODE"] != null ? dataReaderOrcl["UNITCODE"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Transaction = tranSa;
+                                                if (cmdCommonSql.ExecuteNonQuery() > 0)
+                                                {
+                                                    countInsert++;
+                                                }
+                                            }
+                                            if (countInsert > 0)
+                                            {
+                                                tranSa.Commit();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            tranSa.Rollback();
+                                            WriteLogs.LogError(ex);
+                                        }
+                                        finally
+                                        {
+                                            dataReaderOrcl.Dispose();
+                                            connectionSa.Close();
+                                            connectionSa.Dispose();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            connectionOrcl.Close();
+                            WriteLogs.LogError(ex);
+                        }
+                    }
+                    //Mở thì đóng
+                    connectionOrcl.Close();
+                }
+            }
+        }
+
 
         public static void SYNCHRONIZE_NGUOIDUNG()
         {
@@ -524,6 +605,7 @@ namespace ERBus.Cashier.Common
                                                 cmdCommonSql.CommandText = string.Format(@"INSERT INTO dbo.KHUYENMAI(ID,MA_KHUYENMAI,LOAI_KHUYENMAI,TUNGAY,DENNGAY,TUGIO,DENGIO,MAKHO_KHUYENMAI,DIENGIAI,UNITCODE) VALUES (@ID,@MA_KHUYENMAI,@LOAI_KHUYENMAI,@TUNGAY,@DENNGAY,@TUGIO,@DENGIO,@MAKHO_KHUYENMAI,@DIENGIAI,@UNITCODE)");
                                                 cmdCommonSql.Parameters.Add("ID", SqlDbType.VarChar, 50).Value = Guid.NewGuid().ToString();
                                                 cmdCommonSql.Parameters.Add("MA_KHUYENMAI", SqlDbType.VarChar, 30).Value = dataReaderOrcl["MA_KHUYENMAI"] != null ? dataReaderOrcl["MA_KHUYENMAI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("LOAI_KHUYENMAI", SqlDbType.VarChar, 20).Value = dataReaderOrcl["LOAI_KHUYENMAI"] != null ? dataReaderOrcl["LOAI_KHUYENMAI"].ToString().Trim() : (object)DBNull.Value;
                                                 cmdCommonSql.Parameters.Add("TUNGAY", SqlDbType.Date).Value = dataReaderOrcl["TUNGAY"] != DBNull.Value ? DateTime.Parse(dataReaderOrcl["TUNGAY"].ToString()) : (object)DBNull.Value;
                                                 cmdCommonSql.Parameters.Add("DENNGAY", SqlDbType.Date).Value = dataReaderOrcl["DENNGAY"] != DBNull.Value ? DateTime.Parse(dataReaderOrcl["DENNGAY"].ToString()) : (object)DBNull.Value;
                                                 cmdCommonSql.Parameters.Add("TUGIO", SqlDbType.VarChar, 10).Value = dataReaderOrcl["TUGIO"] != null ? dataReaderOrcl["TUGIO"].ToString().Trim() : (object)DBNull.Value;

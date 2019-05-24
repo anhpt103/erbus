@@ -16,16 +16,19 @@ namespace ERBus.Cashier.Common
                 if (connection.State == ConnectionState.Open)
                 {
                     result = true;
+                    Session.Session.SESSION_ONLINE = result;
                 }
             }
-            catch
+           catch
             {
                 result = false;
+                Session.Session.SESSION_ONLINE = result;
             }
             finally
             {
-                connection.Close();
-                connection.Dispose();
+                if (Session.Session.SESSION_ONLINE)  connection.Close();
+                if (Session.Session.SESSION_ONLINE)  connection.Dispose();
+                Session.Session.SESSION_ONLINE = result;
             }
             return result;
         }

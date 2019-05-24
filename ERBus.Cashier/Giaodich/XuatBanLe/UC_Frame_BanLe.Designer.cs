@@ -29,21 +29,21 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelHeader = new System.Windows.Forms.Panel();
             this.lblTenCuaHang = new System.Windows.Forms.Label();
             this.StatusConnect = new System.Windows.Forms.Label();
@@ -114,6 +114,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.panelHeader.Controls.Add(this.lblCKDon);
             this.panelHeader.Controls.Add(this.txtChietKhauToanDon);
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelHeader.ForeColor = System.Drawing.Color.Navy;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(1336, 71);
@@ -146,6 +147,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblMaGiaoDichQuay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMaGiaoDichQuay.AutoSize = true;
             this.lblMaGiaoDichQuay.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaGiaoDichQuay.ForeColor = System.Drawing.Color.Navy;
             this.lblMaGiaoDichQuay.Location = new System.Drawing.Point(34, 5);
             this.lblMaGiaoDichQuay.Name = "lblMaGiaoDichQuay";
             this.lblMaGiaoDichQuay.Size = new System.Drawing.Size(166, 24);
@@ -157,6 +159,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblNgayPhatSinhPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNgayPhatSinhPeriod.AutoSize = true;
             this.lblNgayPhatSinhPeriod.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNgayPhatSinhPeriod.ForeColor = System.Drawing.Color.Navy;
             this.lblNgayPhatSinhPeriod.Location = new System.Drawing.Point(147, 39);
             this.lblNgayPhatSinhPeriod.Name = "lblNgayPhatSinhPeriod";
             this.lblNgayPhatSinhPeriod.Size = new System.Drawing.Size(142, 24);
@@ -166,7 +169,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // lblMaGiaoDich
             // 
             this.lblMaGiaoDich.Appearance.Font = new System.Drawing.Font("Arial Narrow", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaGiaoDich.Appearance.ForeColor = System.Drawing.Color.Navy;
             this.lblMaGiaoDich.Appearance.Options.UseFont = true;
+            this.lblMaGiaoDich.Appearance.Options.UseForeColor = true;
             this.lblMaGiaoDich.Location = new System.Drawing.Point(8, 4);
             this.lblMaGiaoDich.Name = "lblMaGiaoDich";
             this.lblMaGiaoDich.Size = new System.Drawing.Size(35, 25);
@@ -176,7 +181,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // lblNgayPhatSinh
             // 
             this.lblNgayPhatSinh.Appearance.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNgayPhatSinh.Appearance.ForeColor = System.Drawing.Color.Navy;
             this.lblNgayPhatSinh.Appearance.Options.UseFont = true;
+            this.lblNgayPhatSinh.Appearance.Options.UseForeColor = true;
             this.lblNgayPhatSinh.Location = new System.Drawing.Point(8, 38);
             this.lblNgayPhatSinh.Name = "lblNgayPhatSinh";
             this.lblNgayPhatSinh.Size = new System.Drawing.Size(149, 24);
@@ -186,7 +193,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // lblCKDon
             // 
             this.lblCKDon.Appearance.Font = new System.Drawing.Font("Arial", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCKDon.Appearance.ForeColor = System.Drawing.Color.Navy;
             this.lblCKDon.Appearance.Options.UseFont = true;
+            this.lblCKDon.Appearance.Options.UseForeColor = true;
             this.lblCKDon.Location = new System.Drawing.Point(561, 36);
             this.lblCKDon.Name = "lblCKDon";
             this.lblCKDon.Size = new System.Drawing.Size(84, 26);
@@ -224,14 +233,14 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.dgvDetails_Tab.BackgroundColor = System.Drawing.Color.White;
             this.dgvDetails_Tab.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvDetails_Tab.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetails_Tab.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetails_Tab.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDetails_Tab.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDetails_Tab.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.STT,
@@ -247,28 +256,28 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.LAMACAN,
             this.TONCUOIKYSL,
             this.MA_KHUYENMAI});
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.Color.CadetBlue;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetails_Tab.DefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Arial", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.CadetBlue;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetails_Tab.DefaultCellStyle = dataGridViewCellStyle13;
             this.dgvDetails_Tab.Location = new System.Drawing.Point(0, 0);
             this.dgvDetails_Tab.MultiSelect = false;
             this.dgvDetails_Tab.Name = "dgvDetails_Tab";
-            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle29.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetails_Tab.RowHeadersDefaultCellStyle = dataGridViewCellStyle29;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDetails_Tab.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvDetails_Tab.RowHeadersVisible = false;
-            dataGridViewCellStyle30.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvDetails_Tab.RowsDefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvDetails_Tab.RowsDefaultCellStyle = dataGridViewCellStyle15;
             this.dgvDetails_Tab.RowTemplate.Height = 30;
             this.dgvDetails_Tab.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDetails_Tab.Size = new System.Drawing.Size(1336, 391);
@@ -279,8 +288,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // STT
             // 
             this.STT.DataPropertyName = "STT";
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.STT.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.STT.DefaultCellStyle = dataGridViewCellStyle2;
             this.STT.FillWeight = 60F;
             this.STT.Frozen = true;
             this.STT.HeaderText = "Stt";
@@ -292,8 +301,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // MAHANG
             // 
             this.MAHANG.DataPropertyName = "MAHANG";
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.MAHANG.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.MAHANG.DefaultCellStyle = dataGridViewCellStyle3;
             this.MAHANG.Frozen = true;
             this.MAHANG.HeaderText = "Mã";
             this.MAHANG.MinimumWidth = 110;
@@ -305,8 +314,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.TENHANG.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.TENHANG.DataPropertyName = "TENHANG";
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.TENHANG.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.TENHANG.DefaultCellStyle = dataGridViewCellStyle4;
             this.TENHANG.Frozen = true;
             this.TENHANG.HeaderText = "Tên hàng";
             this.TENHANG.MinimumWidth = 300;
@@ -317,8 +326,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // DONVITINH
             // 
             this.DONVITINH.DataPropertyName = "DONVITINH";
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.DONVITINH.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.DONVITINH.DefaultCellStyle = dataGridViewCellStyle5;
             this.DONVITINH.Frozen = true;
             this.DONVITINH.HeaderText = "Đ.V.T";
             this.DONVITINH.MinimumWidth = 80;
@@ -329,8 +338,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // GIABANLE_VAT
             // 
             this.GIABANLE_VAT.DataPropertyName = "GIABANLE_VAT";
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.GIABANLE_VAT.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.GIABANLE_VAT.DefaultCellStyle = dataGridViewCellStyle6;
             this.GIABANLE_VAT.Frozen = true;
             this.GIABANLE_VAT.HeaderText = "Đ.G";
             this.GIABANLE_VAT.MinimumWidth = 110;
@@ -341,8 +350,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // SOLUONG
             // 
             this.SOLUONG.DataPropertyName = "SOLUONG";
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.SOLUONG.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.SOLUONG.DefaultCellStyle = dataGridViewCellStyle7;
             this.SOLUONG.Frozen = true;
             this.SOLUONG.HeaderText = "S.L";
             this.SOLUONG.MinimumWidth = 110;
@@ -353,8 +362,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // GIAVON
             // 
             this.GIAVON.DataPropertyName = "GIAVON";
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.GIAVON.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.GIAVON.DefaultCellStyle = dataGridViewCellStyle8;
             this.GIAVON.Frozen = true;
             this.GIAVON.HeaderText = "Giá vốn";
             this.GIAVON.MinimumWidth = 110;
@@ -365,8 +374,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // TIENKM
             // 
             this.TIENKM.DataPropertyName = "TIENKM";
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.TIENKM.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.TIENKM.DefaultCellStyle = dataGridViewCellStyle9;
             this.TIENKM.Frozen = true;
             this.TIENKM.HeaderText = "Tiền K.M";
             this.TIENKM.MinimumWidth = 110;
@@ -377,8 +386,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // CHIETKHAU
             // 
             this.CHIETKHAU.DataPropertyName = "CHIETKHAU";
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.CHIETKHAU.DefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.CHIETKHAU.DefaultCellStyle = dataGridViewCellStyle10;
             this.CHIETKHAU.Frozen = true;
             this.CHIETKHAU.HeaderText = "C.K";
             this.CHIETKHAU.MinimumWidth = 110;
@@ -389,11 +398,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.THANHTIEN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.THANHTIEN.DataPropertyName = "THANHTIEN";
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Arial", 15.75F);
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.Color.CadetBlue;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.Color.White;
-            this.THANHTIEN.DefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Arial", 15.75F);
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.CadetBlue;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.White;
+            this.THANHTIEN.DefaultCellStyle = dataGridViewCellStyle11;
             this.THANHTIEN.Frozen = true;
             this.THANHTIEN.HeaderText = "Thành Tiền";
             this.THANHTIEN.MinimumWidth = 110;
@@ -404,8 +413,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // LAMACAN
             // 
             this.LAMACAN.DataPropertyName = "LAMACAN";
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.LAMACAN.DefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.LAMACAN.DefaultCellStyle = dataGridViewCellStyle12;
             this.LAMACAN.HeaderText = "Bán mã cân";
             this.LAMACAN.Name = "LAMACAN";
             this.LAMACAN.Width = 5;

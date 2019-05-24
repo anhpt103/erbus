@@ -22,6 +22,7 @@ namespace ERBus.Cashier.Danhmuc
             dateNgayDacBiet.Format = DateTimePickerFormat.Custom;
             dateNgayDacBiet.CustomFormat = "dd/MM/yyyy";
             txtMaKhachHang.Text = BUILD_MAKHACHHANG_FROM_ORACLE();
+            txtMaThe.Text = txtMaKhachHang.Text;
         }
 
         public void SET_HANDLER_STATUS_THEMMOI_KHACHHANG(STATUS_THEMMOI_KHACHHANG BINDING_DATA_KHACHHANG_TO_THANHTOAN)

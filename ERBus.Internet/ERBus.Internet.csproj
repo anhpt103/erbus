@@ -196,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MatHangController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +204,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\background-image.png" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\js\jsMatHang.js" />
+    <Content Include="Content\styleMatHang.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
@@ -227,6 +232,7 @@
     <Content Include="ERBus\controllers\catalog\baoBiController.js" />
     <Content Include="ERBus\controllers\catalog\nhomHangController.js" />
     <Content Include="ERBus\controllers\catalog\loaiHangController.js" />
+    <Content Include="ERBus\controllers\knowledge\kiemKeController.js" />
     <Content Include="ERBus\controllers\knowledge\xuatBanLeThuNganController.js" />
     <Content Include="ERBus\controllers\knowledge\xuatBanController.js" />
     <Content Include="ERBus\controllers\knowledge\nhapMuaController.js" />
@@ -244,12 +250,16 @@
     <Content Include="ERBus\controllers\report\tonKhoReportController.js" />
     <Content Include="ERBus\css\angular-material.css" />
     <Content Include="ERBus\css\bootstrap-glyphicons.min.css" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\KendoUIGlyphs.svg" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\WebComponentsIcons.svg" />
+    <Content Include="ERBus\css\kendo\kendo.blueopal.min.css" />
+    <Content Include="ERBus\css\kendo\kendo.bootstrap.min.css" />
+    <Content Include="ERBus\css\kendo\kendo.common.min.css" />
+    <Content Include="ERBus\css\kendo\kendo.default.min.css" />
     <Content Include="ERBus\css\ng-bs-animated-button.css" />
     <Content Include="ERBus\css\font-face.css" />
     <Content Include="ERBus\css\fonts\glyphs\KendoUIGlyphs.svg" />
     <Content Include="ERBus\css\fonts\glyphs\WebComponentsIcons.svg" />
-    <Content Include="ERBus\css\kendo.blueopal.min.css" />
-    <Content Include="ERBus\css\kendo.common.min.css" />
     <Content Include="ERBus\css\loading-bar.css" />
     <Content Include="ERBus\css\ng-tags-input.min.css" />
     <Content Include="ERBus\css\theme.css" />
@@ -287,6 +297,7 @@
     <Content Include="ERBus\img\icon\logo-white.png" />
     <Content Include="ERBus\img\icon\logo.png" />
     <Content Include="ERBus\img\icon\Untitled-1.jpg" />
+    <Content Include="ERBus\js\kendo\kendo.all.min.js" />
     <Content Include="ERBus\js\moment\moment.js" />
     <Content Include="ERBus\js\ng-bs-animated-button\ng-bs-animated-button.js" />
     <Content Include="ERBus\js\ngTagInput\ng-tags-input.min.js" />
@@ -307,7 +318,6 @@
     <Content Include="ERBus\lib\ui-bootstrap-tpls.js" />
     <Content Include="ERBus\states\promotion.js" />
     <Content Include="ERBus\states\knowledge.js" />
-    <Content Include="ERBus\utils\telerik\js\kendo.all.min.js" />
     <Content Include="ERBus\vendor\bootstrap\bootstrap-confirmation.min.js" />
     <Content Include="ERBus\vendor\bootstrap\bootstrap.bundle.min.js" />
     <Content Include="ERBus\vendor\bootstrap\bootstrap.min.css" />
@@ -414,6 +424,7 @@
     <Content Include="ERBus\views\catalog\LoaiHang\edit.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\create.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\index.html" />
+    <Content Include="ERBus\views\knowledge\KiemKe\index.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\detail.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\edit.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\index.html" />
@@ -981,8 +992,17 @@
     <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.ttf" />
     <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.woff" />
     <Content Include="ERBus\fonts\glyphicons\glyphicons-halflings-regular.woff2" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\KendoUIGlyphs.eot" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\KendoUIGlyphs.ttf" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\KendoUIGlyphs.woff" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\WebComponentsIcons.eot" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\WebComponentsIcons.ttf" />
+    <Content Include="ERBus\css\kendo\fonts\glyphs\WebComponentsIcons.woff" />
     <None Include="Project_Readme.html" />
     <None Include="Properties\PublishProfiles\ERBusInternet.pubxml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\MatHang\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

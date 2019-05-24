@@ -100,7 +100,8 @@ namespace ERBus.Cashier
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_DONVITINH();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_THUE();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_HANGKHACHHANG();
-                                        
+                                        SYNCHRONIZE_DATA.SYNCHRONIZE_NHACUNGCAP();
+
                                         SplashScreenManager.CloseForm();
                                         FrmMain frmMain = new FrmMain();
                                         frmMain.ShowDialog();
@@ -126,7 +127,7 @@ namespace ERBus.Cashier
                         }
                         else
                         {
-                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                         }
                     }
                 }
@@ -205,7 +206,7 @@ namespace ERBus.Cashier
                             }
                             catch (Exception ex)
                             {
-                                NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu máy bán", 1, "0x1", "0x8", "normal");
+                                NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu máy bán", 1, "0x1", "0x8", "normal");
                                 WriteLogs.LogError(ex);
                             }
                             finally
@@ -216,7 +217,7 @@ namespace ERBus.Cashier
                         }
                         else
                         {
-                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                            NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                         }
                     }
                 }
@@ -224,7 +225,7 @@ namespace ERBus.Cashier
             }
             catch (Exception ex)
             {
-                NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu máy bán", 1, "0x1", "0x8", "normal");
+                NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu máy bán", 1, "0x1", "0x8", "normal");
                 WriteLogs.LogError(ex);
             }
         }

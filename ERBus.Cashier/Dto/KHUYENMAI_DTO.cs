@@ -9,9 +9,6 @@ namespace ERBus.Cashier.Dto
     public class KHUYENMAI_DTO
     {
         public string MA_KHUYENMAI { get; set; }
-        public string LOAI_KHUYENMAI { get; set; }
-        public string TUNGAY { get; set; }
-        public string DENNGAY { get; set; }
         public string TUGIO{ get; set; }
         public string DENGIO{ get; set; }
         public string DIENGIAI { get; set; }

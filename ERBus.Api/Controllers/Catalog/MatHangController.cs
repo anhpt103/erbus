@@ -48,6 +48,27 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
+
+        [Route("GetAllMatHang/{maHang}")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "MatHang")]
+        public IHttpActionResult GetAllMatHang(string maHang)
+        {
+            var result = new TransferObj<List<MATHANG>>();
+            var unitCode = _service.GetCurrentUnitCode();
+            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode) && x.MAHANG.Equals(maHang.ToUpper())).OrderBy(x => x.MALOAI).ToList();
+            if (result.Data.Count > 0)
+            {
+                result.Status = true;
+            }
+            else
+            {
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+        
+
         [Route("GetAllBarcode")]
         [HttpGet]
         [CustomAuthorize(Method = "XEM", State = "MatHang")]

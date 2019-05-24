@@ -72,11 +72,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 {
                     lblNgayPhatSinhPeriod.Text = "TRẠNG THÁI BÁN: OFFLINE";
                     lblNgayPhatSinhPeriod.ForeColor = Color.Red;
-                    lblCKDon.Visible = false;
-                    lblCKLe.Visible = false;
-                    lblChietKhauLe.Visible = false;
-                    txtChietKhauToanDon.Visible = false;
-                    dgvDetails_Tab.Columns["CHIETKHAU"].Visible = false;
+                    //lblCKDon.Visible = false;
+                    //lblCKLe.Visible = false;
+                    //lblChietKhauLe.Visible = false;
+                    //txtChietKhauToanDon.Visible = false;
+                    //dgvDetails_Tab.Columns["CHIETKHAU"].Visible = false;
                     btnF7.Visible = false;
                     cbbLoaiGiaoDich.Items.Remove("Giá vốn");
                     cbbLoaiGiaoDich.Items.Remove("Bán buôn");
@@ -928,6 +928,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             string MaVatTu = txtMaHang.Text.Trim().ToUpper();
             if (Config.CheckConnectToServer()) //Nếu có mạng lan
             {
+                
                 listData = FrmXuatBanLeService.GET_DATA_VATTU_FROM_CSDL_ORACLE(MaVatTu, (EnumCommon.METHOD_PRICE) MethodPrice, SoLuong);
                 txtSoLuong.Focus();
                 StatusConnect.Text = "TRẠNG THÁI BÁN: ONLINE";
@@ -1088,8 +1089,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     {
                         CURENT_ROW_MAHANG = dgvDetails_Tab.SelectedRows[0].Cells["MAHANG"].Value.ToString();
                         VATTU_DTO.CAL_KHUYENMAI_OBJ KHUYENMAI = new VATTU_DTO.CAL_KHUYENMAI_OBJ();
-                        KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI_ORACLE(CURENT_ROW_MAHANG, (EnumCommon.METHOD_PRICE)MethodPrice);
-                        if (KHUYENMAI != null && !string.IsNullOrEmpty(KHUYENMAI.MA_KHUYENMAI))
+                        KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI(CURENT_ROW_MAHANG, (EnumCommon.METHOD_PRICE)MethodPrice);
+                        if (KHUYENMAI != null)
                         {
                             CURRENT_ROW_TIENKM = KHUYENMAI.GIATRI_KHUYENMAI;
                         }
@@ -2059,13 +2060,13 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             if (MethodPrice == (int)EnumCommon.METHOD_PRICE.GIABANLE_VAT)
             {
                 VATTU_DTO.CAL_KHUYENMAI_OBJ KHUYENMAI = new VATTU_DTO.CAL_KHUYENMAI_OBJ();
-                KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI_ORACLE(maVatTuCheck, (EnumCommon.METHOD_PRICE)MethodPrice);
-                if (KHUYENMAI != null && !string.IsNullOrEmpty(KHUYENMAI.MA_KHUYENMAI))
+                KHUYENMAI = FrmXuatBanLeService.TINHTOAN_KHUYENMAI(maVatTuCheck, (EnumCommon.METHOD_PRICE)MethodPrice);
+                if (KHUYENMAI != null)
                 {
                     RETURN_TIEN_KHUYENMAI = KHUYENMAI.GIATRI_KHUYENMAI;
+                    vattuDto.MA_KHUYENMAI = KHUYENMAI.MA_KHUYENMAI;
+                    vattuDto.TIEN_KHUYENMAIRETURN = RETURN_TIEN_KHUYENMAI;
                 }
-                vattuDto.TIEN_KHUYENMAIRETURN = RETURN_TIEN_KHUYENMAI;
-                vattuDto.MA_KHUYENMAI = KHUYENMAI.MA_KHUYENMAI;
             }
             //CHECK TRÙNG TRONG GRIDVIEW
             int indexRowExists = CHECK_ROW_EXIST_DATAGRIDVIEW(dgvDetails_Tab, maVatTuCheck);

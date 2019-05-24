@@ -382,6 +382,7 @@
     <EmbeddedResource Include="Hethong\FrmDoiMatKhau.resx">
       <DependentUpon>FrmDoiMatKhau.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -421,6 +422,7 @@
     <Content Include="Asset\Image\sign-sync-icon_24px.png" />
     <Content Include="Asset\Image\Spinner-1s-97px.gif" />
     <Content Include="Asset\Image\user-login-icon.png" />
+    <Content Include="SCRIPT\SCRIPT_SQLSERVER.sql" />
     <Content Include="SCRIPT\BANLE_TIMKIEM_BOHANG_MAHANG.sql" />
     <Content Include="SCRIPT\CREATE_TABLE_SQL.sql" />
     <Content Include="SCRIPT\EXPORT_DATA_ORACLE_TO_XML.sql" />

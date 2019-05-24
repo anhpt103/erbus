@@ -22,7 +22,7 @@ namespace ERBus.Cashier.Session
         public static string CurrentYear;
         public static string CurrentLoaiGiaoDich;
         public static string CurrentTableNamePeriod;
-        public static bool SESSION_OFFLINE = false;
+        public static bool SESSION_ONLINE = true;
         /// <summary>
         /// 
         /// </summary>

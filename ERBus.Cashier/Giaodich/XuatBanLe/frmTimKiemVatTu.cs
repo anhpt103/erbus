@@ -7,6 +7,7 @@ using Oracle.ManagedDataAccess.Client;
 using ERBus.Cashier.Dto;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlClient;
 
 namespace ERBus.Cashier.Giaodich.XuatBanLe
 {
@@ -55,7 +56,15 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             cboDieuKienTimKiem.SelectedIndex = 0;
             txtFilterSearch.Text = MaHang;
             List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = new List<TIMKIEM_HANGHOA_DTO>();
-            LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(MaHang, 1, cboDieuKienTimKiem.SelectedIndex, Session.Session.CurrentUnitCode);
+            if (Config.CheckConnectToServer())
+            {
+                LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(MaHang, 1, cboDieuKienTimKiem.SelectedIndex, Session.Session.CurrentUnitCode);
+            }
+            else
+            {
+                LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_SQLSERVER(MaHang, 1, cboDieuKienTimKiem.SelectedIndex, Session.Session.CurrentUnitCode);
+            }
+
             BINDING_DATA_TO_GRIDVIEW(LST_TIMKIEM_VATTU_DTO);
         }
         private const int WM_KEYDOWN = 256;
@@ -75,7 +84,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         {
             this.searchVatTu = search;
         }
-        public List<TIMKIEM_HANGHOA_DTO> TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(string DIEUKIENLOC,int SUDUNG_TIMKIEM_ALL,int DIEUKIENCHON,string UNITCODE)
+        public List<TIMKIEM_HANGHOA_DTO> TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(string DIEUKIENLOC, int SUDUNG_TIMKIEM_ALL, int DIEUKIENCHON, string UNITCODE)
         {
             List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = new List<TIMKIEM_HANGHOA_DTO>();
             if (!string.IsNullOrEmpty(DIEUKIENLOC))
@@ -153,7 +162,99 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                             }
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
+                    {
+                        WriteLogs.LogError(ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+            }
+            return LST_TIMKIEM_VATTU_DTO;
+        }
+
+        public List<TIMKIEM_HANGHOA_DTO> TIMKIEM_DULIEU_HANGHOA_DATABASE_SQLSERVER(string DIEUKIENLOC, int SUDUNG_TIMKIEM_ALL, int DIEUKIENCHON, string UNITCODE)
+        {
+            List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = new List<TIMKIEM_HANGHOA_DTO>();
+            if (!string.IsNullOrEmpty(DIEUKIENLOC))
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            SqlCommand command = new SqlCommand();
+                            command.Connection = connection;
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.CommandText = @"BANLE_TIMKIEM_BOHANG_MAHANG";
+                            command.Parameters.Clear();
+                            command.Parameters.AddWithValue("@P_MADONVI", UNITCODE);
+                            command.Parameters.AddWithValue("@P_TUKHOA", DIEUKIENLOC.ToString().ToUpper().Trim());
+                            command.Parameters.AddWithValue("@P_SUDUNG_TIMKIEM_ALL", SUDUNG_TIMKIEM_ALL);
+                            command.Parameters.AddWithValue("@P_DIEUKIENCHON", DIEUKIENCHON);
+                            SqlDataReader dataReader = command.ExecuteReader();
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    TIMKIEM_HANGHOA_DTO TIMKIEM_HANGHOA_DTO = new TIMKIEM_HANGHOA_DTO();
+                                    if (dataReader["MAHANG"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.MAHANG = dataReader["MAHANG"].ToString();
+                                    }
+                                    if (dataReader["MACON"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.MACON = dataReader["MACON"].ToString();
+                                    }
+                                    if (dataReader["TENHANG"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.TENHANG = dataReader["TENHANG"].ToString();
+                                    }
+                                    if (dataReader["MALOAI"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.MALOAI = dataReader["MALOAI"].ToString();
+                                    }
+                                    if (dataReader["MANHOM"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.MANHOM = dataReader["MANHOM"].ToString();
+                                    }
+                                    if (dataReader["DONVITINH"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.DONVITINH = dataReader["DONVITINH"].ToString();
+                                    }
+                                    if (dataReader["MANHACUNGCAP"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.MANHACUNGCAP = dataReader["MANHACUNGCAP"].ToString();
+                                    }
+                                    if (dataReader["TENNHACUNGCAP"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.TENNHACUNGCAP = dataReader["TENNHACUNGCAP"].ToString();
+                                    }
+                                    decimal GIABANLE_VAT = 0;
+                                    if (dataReader["GIABANLE_VAT"] != null)
+                                    {
+                                        decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
+                                    }
+                                    TIMKIEM_HANGHOA_DTO.GIABANLE_VAT = GIABANLE_VAT;
+                                    if (dataReader["ITEMCODE"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.ITEMCODE = dataReader["ITEMCODE"].ToString();
+                                    }
+                                    if (dataReader["BARCODE"] != null)
+                                    {
+                                        TIMKIEM_HANGHOA_DTO.BARCODE = dataReader["BARCODE"].ToString();
+                                    }
+                                    LST_TIMKIEM_VATTU_DTO.Add(TIMKIEM_HANGHOA_DTO);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
                     {
                         WriteLogs.LogError(ex);
                     }
@@ -169,7 +270,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
 
         public void BINDING_DATA_TO_GRIDVIEW(List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO)
         {
-            if(LST_TIMKIEM_VATTU_DTO.Count > 0)
+            if (LST_TIMKIEM_VATTU_DTO.Count > 0)
             {
                 dgvResultSearch.Rows.Clear();
                 dgvResultSearch.DataSource = null;
@@ -195,18 +296,22 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         }
         private void txtFilterSearch_TextChanged(object sender, EventArgs e)
         {
+            int P_DIEUKIEN_TIMKIEM = cboDieuKienTimKiem.SelectedIndex;
             if (Config.CheckConnectToServer()) // nếu có mạng lan
             {
-                int P_DIEUKIEN_TIMKIEM = cboDieuKienTimKiem.SelectedIndex;
-                List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(txtFilterSearch.Text, 0 ,P_DIEUKIEN_TIMKIEM,Session.Session.CurrentUnitCode);
-                if(LST_TIMKIEM_VATTU_DTO.Count > 0)
+                List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(txtFilterSearch.Text, 0, P_DIEUKIEN_TIMKIEM, Session.Session.CurrentUnitCode);
+                if (LST_TIMKIEM_VATTU_DTO.Count > 0)
                 {
                     BINDING_DATA_TO_GRIDVIEW(LST_TIMKIEM_VATTU_DTO);
                 }
             }
             else
             {
-                MessageBox.Show("Không có kết nối database !");
+                List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_SQLSERVER(txtFilterSearch.Text, 0, P_DIEUKIEN_TIMKIEM, Session.Session.CurrentUnitCode);
+                if (LST_TIMKIEM_VATTU_DTO.Count > 0)
+                {
+                    BINDING_DATA_TO_GRIDVIEW(LST_TIMKIEM_VATTU_DTO);
+                }
             }
         }
 
@@ -219,17 +324,22 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
 
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
+            int P_DIEUKIEN_TIMKIEM = cboDieuKienTimKiem.SelectedIndex;
             if (Config.CheckConnectToServer()) // nếu có mạng lan
             {
-                int P_DIEUKIEN_TIMKIEM = cboDieuKienTimKiem.SelectedIndex;
-                List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(txtFilterSearch.Text, 0 , P_DIEUKIEN_TIMKIEM, Session.Session.CurrentUnitCode);
+                List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_ORACLE(txtFilterSearch.Text, 0, P_DIEUKIEN_TIMKIEM, Session.Session.CurrentUnitCode);
                 if (LST_TIMKIEM_VATTU_DTO.Count > 0)
                 {
                     BINDING_DATA_TO_GRIDVIEW(LST_TIMKIEM_VATTU_DTO);
-                }}
+                }
+            }
             else
             {
-                MessageBox.Show("Không có kết nối database !");
+                List<TIMKIEM_HANGHOA_DTO> LST_TIMKIEM_VATTU_DTO = TIMKIEM_DULIEU_HANGHOA_DATABASE_SQLSERVER(txtFilterSearch.Text, 0, P_DIEUKIEN_TIMKIEM, Session.Session.CurrentUnitCode);
+                if (LST_TIMKIEM_VATTU_DTO.Count > 0)
+                {
+                    BINDING_DATA_TO_GRIDVIEW(LST_TIMKIEM_VATTU_DTO);
+                }
             }
         }
     }

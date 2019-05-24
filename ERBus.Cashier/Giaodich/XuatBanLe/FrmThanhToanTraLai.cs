@@ -595,7 +595,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                     }
                     else
                     {
-                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kế nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
+                        NotificationLauncher.ShowNotificationError("Thông báo", "Không có kết nối với cơ sở dữ liệu", 1, "0x1", "0x8", "normal");
                     }
                 }
 
