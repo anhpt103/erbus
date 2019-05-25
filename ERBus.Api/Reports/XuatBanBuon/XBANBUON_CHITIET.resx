@@ -120,6 +120,9 @@
   <metadata name="sqlDataSource1.ParameterValues" xml:space="preserve">
     <value>{"DIEUKIEN_NHOM":"KHOHANG","UNITCODE":"01","TUNGAY":"04/24/2019","DENNGAY":"04/24/2019","USERNAME":"admin"}</value>
   </metadata>
+  <data name="textBox45.Value" xml:space="preserve">
+    <value>Điều kiện lọc: {ERBus.Api.Utils.Utils.DieuKienLoc(Parameters.MAKHO.Value, Parameters.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, Parameters.MAKHACHHANG.Value, Parameters.MAHANG.Value)}</value>
+  </data>
   <metadata name="$this.ShowSnapGrid" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

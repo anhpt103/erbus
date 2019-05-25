@@ -358,6 +358,7 @@
     <Content Include="ERBus\views\authorize\NhomQuyen\edit.html" />
     <Content Include="ERBus\views\authorize\NhomQuyen\index.html" />
     <Content Include="ERBus\views\authorize\ThamSoHeThong\index.html" />
+    <Content Include="ERBus\views\catalog\KhachHang\search.html" />
     <Content Include="ERBus\views\catalog\KhoHang\search.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\search.html" />
     <Content Include="ERBus\views\catalog\MatHang\checkDataImport.html" />
@@ -839,7 +840,6 @@
     <Content Include="ERBus\utils\ng-table.min.js" />
     <Content Include="ERBus\utils\smart-table.min.js" />
     <Content Include="ERBus\utils\telerik\js\telerikReportViewer-11.0.17.118.min.js" />
-    <Content Include="ERBus\utils\telerik\js\telerikReportViewer.kendo-11.0.17.118.min.js" />
     <Content Include="ERBus\utils\telerik\styles\blueopal\loading.gif" />
     <Content Include="ERBus\utils\telerik\styles\blueopal\sprite.png" />
     <Content Include="ERBus\utils\telerik\styles\kendo.blueopal.min.css" />

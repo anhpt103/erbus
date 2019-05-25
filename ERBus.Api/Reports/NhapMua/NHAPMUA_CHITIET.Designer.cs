@@ -989,8 +989,8 @@
             this.textBox3.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Left;
             this.textBox3.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox3.Value = "Điều kiện lọc: {ERBus.Api.Utils.Utils.DieuKienLoc(Parameters.MAKHO.Value, Paramet" +
-    "ers.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, Parame" +
-    "ters.MAHANG.Value)}";
+    "ers.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, \'\',  P" +
+    "arameters.MAHANG.Value)}";
             // 
             // textBox2
             // 

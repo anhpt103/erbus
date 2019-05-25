@@ -324,9 +324,9 @@
             this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.829319953918457D)));
             this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(1.0856553316116333D)));
             this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(1.2601368427276611D)));
-            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.40833336114883423D)));
-            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.45000007748603821D)));
-            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.48124995827674866D)));
+            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.40833339095115662D)));
+            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.4500001072883606D)));
+            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.48124998807907104D)));
             this.crosstab1.Body.SetCellContent(1, 9, this.textBox8);
             this.crosstab1.Body.SetCellContent(1, 1, this.textBox18);
             this.crosstab1.Body.SetCellContent(1, 0, this.textBox24);
@@ -1092,8 +1092,8 @@
             this.textBox45.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Left;
             this.textBox45.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox45.Value = "Điều kiện lọc: {ERBus.Api.Utils.Utils.DieuKienLoc(Parameters.MAKHO.Value, Paramet" +
-    "ers.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, Parame" +
-    "ters.MAHANG.Value)}";
+    "ers.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, \'\', Pa" +
+    "rameters.MAHANG.Value)}";
             // 
             // textBox21
             // 

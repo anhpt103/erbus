@@ -1,6 +1,6 @@
 ﻿<style>
     tags-input .host{
-        margin-top: 0px;
+        margin-top: 0px !important;ssssss
     }
 </style>
 <script type="text/ng-template" id="common-custom-template">
@@ -277,7 +277,7 @@
                         </div>
                         <div class="col-12 col-md-9">
                             <input id="file-input-upload" ng-disabled="!fileAvatar.SRC" onchange="angular.element(this).scope().uploadFile(this)" accept="image/*" class="form-control-file" text="Chọn ảnh" type="file" placeholder="Tải ảnh" multiple /><a ng-show="!fileAvatar.SRC" ng-attr-title="{{!fileAvatar.SRC}}">Kích hoạt Avatar trước khi sử dụng chức năng này</a>
-                        </div>
+                        </div>ss
                     </div>
                     <div class="row form-group">
                         <div class="col-12 col-md-12">
@@ -289,6 +289,16 @@
                                     <button class="form-control" style="margin: auto" ng-click="deleteImage($index)">Bỏ chọn {{lstImagesSrcFromDb.length + $index+1}}</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">Barcode</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6" ng-repeat="barcode in target.BARCODE_ADD track by $index">
+                            <span kendo-barcode k-type="'code128'" ng-model="barcode.text" style="width: 250px; margin: 0 auto;"></span>
                         </div>
                     </div>
                 </div>

@@ -445,8 +445,8 @@
             this.textBox20.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Left;
             this.textBox20.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox20.Value = "Điều kiện lọc: {ERBus.Api.Utils.Utils.DieuKienLoc(Parameters.MAKHO.Value, Paramet" +
-    "ers.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, Parame" +
-    "ters.MAHANG.Value)}";
+    "ers.MALOAI.Value, Parameters.MANHOM.Value, Parameters.MANHACUNGCAP.Value, \'\', Pa" +
+    "rameters.MAHANG.Value)}";
             // 
             // textBox21
             // 
@@ -511,7 +511,7 @@
             // crosstab1
             // 
             this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(1.1749991178512573D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(1.5937519073486328D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(1.5937520265579224D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.31458312273025513D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.34583327174186707D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.33541655540466309D)));

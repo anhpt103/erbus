@@ -324,5 +324,81 @@
                $uibModalInstance.close();
            };
        }]);
+
+    app.controller('khachHangSearch_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'khachHangService', 'tempDataService', '$filter', '$uibModal', 'filterObject',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, filterObject) {
+            $scope.config = angular.copy(configService);;
+            $scope.paged = angular.copy(configService.pageDefault);
+            $scope.filtered = angular.copy(configService.filterDefault);
+            $scope.title = function () { return 'Danh sách khách hàng'; };
+            $scope.isLoading = false;
+            $scope.sortType = 'MAKHACHHANG';
+            $scope.sortReverse = false;
+            $scope.listSelectedData = [];
+            if (filterObject && filterObject.ISSELECT_POST && filterObject.ISSELECT_POST.length > 0) {
+                angular.forEach(filterObject.ISSELECT_POST, function (v, k) {
+                    var obj = {
+                        MAKHACHHANG: v.VALUE,
+                        TENKHACHHANG: v.DESCRIPTION,
+                        ISSELECT: true
+                    };
+                    $scope.listSelectedData.push(obj);
+                });
+            }
+            function filterData() {
+                $scope.isLoading = true;
+                var postdata = { paged: $scope.paged, filtered: $scope.filtered };
+                service.postQuery(postdata).then(function (successRes) {
+                    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
+                        $scope.isLoading = false;
+                        $scope.data = successRes.data.Data.Data;
+                        angular.forEach($scope.data, function (v, k) {
+                            var isSelected = $filter('filter')($scope.listSelectedData, { MAKHACHHANG: v.MAKHACHHANG }, true);
+                            if (isSelected && isSelected.length === 1) {
+                                $scope.data[k].ISSELECT = isSelected[0].ISSELECT;
+                            } else {
+                                $scope.data[k].ISSELECT = false;
+                            }
+                        });
+                        angular.extend($scope.paged, successRes.data.Data);
+                    }
+                }, function (errorRes) {
+                    $scope.isLoading = false;
+                    console.log(errorRes);
+                });
+            };
+            filterData();
+            $scope.setPage = function (pageNo) {
+                $scope.paged.currentPage = pageNo;
+                filterData();
+            };
+            $scope.doSearch = function () {
+                $scope.paged.currentPage = 1;
+                filterData();
+            };
+            $scope.pageChanged = function () {
+                filterData();
+            };
+            $scope.refresh = function () {
+                $scope.setPage($scope.paged.currentPage);
+            };
+            $scope.doCheck = function (item) {
+                if (item) {
+                    var checkExistList = $filter('filter')($scope.listSelectedData, { MAKHACHHANG: item.MAKHACHHANG }, true);
+                    if (checkExistList && checkExistList.length === 1) {
+                        checkExistList[0].ISSELECT = item.ISSELECT;
+                    } else {
+                        $scope.listSelectedData.push(item);
+                    }
+                }
+            };
+            $scope.choice = function () {
+                var listChaged = $filter('filter')($scope.data, { ISSELECT: true }, false);
+                $uibModalInstance.close(listChaged);
+            };
+            $scope.cancel = function () {
+                $uibModalInstance.close();
+            };
+        }]);
     return app;
 });

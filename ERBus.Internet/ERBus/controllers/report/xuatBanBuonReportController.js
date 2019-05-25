@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/khoHangController', 'controllers/catalog/loaiHangController', 'controllers/catalog/nhomHangController', 'controllers/catalog/nhaCungCapController', 'controllers/catalog/matHangController', 'controllers/authorize/cuaHangController', 'controllers/authorize/authController', 'controllers/authorize/kyKeToanController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/khoHangController', 'controllers/catalog/loaiHangController', 'controllers/catalog/nhomHangController', 'controllers/catalog/nhaCungCapController', 'controllers/catalog/khachHangController', 'controllers/catalog/matHangController', 'controllers/authorize/cuaHangController', 'controllers/authorize/authController', 'controllers/authorize/kyKeToanController'], function () {
     'use strict';
-    var app = angular.module('xuatBanBuonModule', ['ui.bootstrap', 'khoHangModule', 'loaiHangModule', 'nhomHangModule', 'nhaCungCapModule', 'matHangModule', 'cuaHangModule', 'kyKeToanModule']);
+    var app = angular.module('xuatBanBuonModule', ['ui.bootstrap', 'khoHangModule', 'loaiHangModule', 'nhomHangModule', 'nhaCungCapModule','khachHangModule', 'matHangModule', 'cuaHangModule', 'kyKeToanModule']);
     app.factory('xuatBanBuonService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Report/XuatBanBuon';
         var selectedData = [];
@@ -12,8 +12,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('BaoCaoXuatBanBuon_Ctrl', ['$scope', '$http', 'configService', 'xuatBanBuonService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'khoHangService', 'loaiHangService', 'nhomHangService', 'nhaCungCapService', 'matHangService', 'cuaHangService', 'userService', 'kyKeToanService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, khoHangService, loaiHangService, nhomHangService, nhaCungCapService, matHangService, cuaHangService, userService, kyKeToanService) {
+    app.controller('BaoCaoXuatBanBuon_Ctrl', ['$scope', '$http', 'configService', 'xuatBanBuonService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'khoHangService', 'loaiHangService', 'nhomHangService', 'nhaCungCapService', 'khachHangService', 'matHangService', 'cuaHangService', 'userService', 'kyKeToanService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, khoHangService, loaiHangService, nhomHangService, nhaCungCapService, khachHangService, matHangService, cuaHangService, userService, kyKeToanService) {
             $scope.config = angular.copy(configService);
             $scope.filtered = angular.copy(configService.filterDefault);
             $scope.tempData = tempDataService.tempData;
@@ -153,6 +153,25 @@
                 }
             };
             loadDataNhaCungCap();
+            //end
+
+            //Function load data catalog KhachHang
+            function loadDataKhachHang() {
+                $scope.khachHang = [];
+                if (!tempDataService.tempData('khachHang')) {
+                    khachHangService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('khachHang', successRes.data.Data);
+                            $scope.khachHang = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.khachHang = tempDataService.tempData('khachHang');
+                }
+            };
+            loadDataKhachHang();
             //end
 
             //Function load data catalog MatHang
@@ -347,6 +366,40 @@
             }
             //end search by supplier
 
+            //search by customer
+            $scope.selectedKhachHang = function () {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    templateUrl: configService.buildUrl('catalog/KhachHang', 'search'),
+                    controller: 'khachHangSearch_Ctrl',
+                    windowClass: 'search-window-nhacungcap',
+                    resolve: {
+                        filterObject: function () {
+                            return {
+                                ISSELECT_POST: $scope.target.MAKHACHHANG,
+                            };
+                        }
+                    }
+                });
+                modalInstance.result.then(function (updatedData) {
+                    $scope.target.MAKHACHHANG = [];
+                    if (updatedData && updatedData.length > 0) {
+                        angular.forEach(updatedData, function (v, k) {
+                            var obj = {
+                                VALUE: v.MAKHACHHANG,
+                                TEXT: v.MAKHACHHANG + ' | ' + v.TENKHACHHANG,
+                                DESCRIPTION: v.TENKHACHHANG,
+                                ID: v.ID
+                            };
+                            $scope.target.MAKHACHHANG.push(obj);
+                        });
+                    }
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            }
+            //end search by customer
+
             //search by merchandise
             $scope.selectedMatHang = function () {
                 var modalInstance = $uibModal.open({
@@ -412,6 +465,13 @@
             };
             //end 
 
+            //tags input KhachHang
+            $scope.loadKhachHangTags = function ($query) {
+                var khachHang = $filter('filter')($scope.khachHang, { TEXT: $query.toUpperCase() }, false);
+                return khachHang;
+            };
+            //end 
+
             //tags input MatHang
             $scope.loadMatHangTags = function ($query) {
                 var matHang = $filter('filter')($scope.matHang, { TEXT: $query.toUpperCase() }, false);
@@ -446,7 +506,7 @@
                         windowClass: 'reportTongHop-window',
                         keyboard: false,
                         templateUrl: configService.buildUrl('report/Template', 'reports.template'),
-                        controller: 'XuatBanBuonReportReport_Ctrl',
+                        controller: 'XuatBanBuonReport_Ctrl',
                         resolve: {
                             objParam: function () {
                                 return $scope.target;
@@ -489,7 +549,7 @@
                         windowClass: 'reportChiTiet-window',
                         keyboard: false,
                         templateUrl: configService.buildUrl('report/Template', 'reports.template'),
-                        controller: 'XuatBanBuonReportReportDetail_Ctrl',
+                        controller: 'XuatBanBuonReportDetail_Ctrl',
                         resolve: {
                             objParam: function () {
                                 return $scope.target;
@@ -509,7 +569,7 @@
             };
         }]);
 
-    app.controller('XuatBanBuonReportReport_Ctrl', ['$scope', '$http', 'configService', 'objParam','$uibModalInstance','$filter','kyKeToanService',
+    app.controller('XuatBanBuonReport_Ctrl', ['$scope', '$http', 'configService', 'objParam', '$uibModalInstance', '$filter', 'kyKeToanService',
         function ($scope, $http, configService, objParam, $uibModalInstance, $filter, kyKeToanService) {
             $scope.config = angular.copy(configService);
             function convertArrayToString(arr) {
@@ -547,9 +607,14 @@
                 paramsReport.MANHACUNGCAP = convertArrayToString(paramsReport.MANHACUNGCAP);
             else paramsReport.MANHACUNGCAP = '';
 
+            if (paramsReport.MAKHACHHANG && paramsReport.MAKHACHHANG.length > 0)
+                paramsReport.MAKHACHHANG = convertArrayToString(paramsReport.MAKHACHHANG);
+            else paramsReport.MAKHACHHANG = '';
+
             if (paramsReport.MAHANG && paramsReport.MAHANG.length > 0)
                 paramsReport.MAHANG = convertArrayToString(paramsReport.MAHANG);
             else paramsReport.MAHANG = '';
+            console.log(paramsReport);
             $scope.report = {
                 name: "ERBus.Api.Reports.XuatBanBuon.XBANBUON_TONGHOP,ERBus.Api",
                 title: "Báo cáo xuất bán buôn tổng hợp",
@@ -560,7 +625,7 @@
             };
         }]);
 
-    app.controller('XuatBanBuonReportReportDetail_Ctrl', ['$scope', '$http', 'configService', 'objParam', '$uibModalInstance', '$filter','kyKeToanService',
+    app.controller('XuatBanBuonReportDetail_Ctrl', ['$scope', '$http', 'configService', 'objParam', '$uibModalInstance', '$filter','kyKeToanService',
         function ($scope, $http, configService, objParam, $uibModalInstance, $filter, kyKeToanService) {
             $scope.config = angular.copy(configService);
             function convertArrayToString(arr) {
@@ -597,6 +662,10 @@
             if (paramsReport.MANHACUNGCAP && paramsReport.MANHACUNGCAP.length > 0)
                 paramsReport.MANHACUNGCAP = convertArrayToString(paramsReport.MANHACUNGCAP);
             else paramsReport.MANHACUNGCAP = '';
+
+            if (paramsReport.MAKHACHHANG && paramsReport.MAKHACHHANG.length > 0)
+                paramsReport.MAKHACHHANG = convertArrayToString(paramsReport.MAKHACHHANG);
+            else paramsReport.MAKHACHHANG = '';
 
             if (paramsReport.MAHANG && paramsReport.MAHANG.length > 0)
                 paramsReport.MAHANG = convertArrayToString(paramsReport.MAHANG);

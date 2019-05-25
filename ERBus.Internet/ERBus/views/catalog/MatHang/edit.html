@@ -1,6 +1,6 @@
 ﻿<style>
     tags-input .host {
-        margin-top: 0px;
+        margin-top: 0px !important;
     }
 </style>
 <div role="document">
@@ -291,6 +291,16 @@
                                     <button class="form-control" style="margin: auto" ng-click="deleteImage($index)">Xóa ảnh {{lstImagesSrcFromDb.length + $index+1}}</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">Barcode</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-6" ng-repeat="barcode in target.BARCODE_ADD track by $index">
+                            <span kendo-barcode k-type="'code128'" ng-model="barcode.text" style="width: 250px; margin: 0 auto;"></span>
                         </div>
                     </div>
                 </div>

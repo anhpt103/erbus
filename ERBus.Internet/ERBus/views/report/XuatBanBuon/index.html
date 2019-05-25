@@ -141,7 +141,7 @@
                                             <input type="radio" class="form-check-input" name="optradio" ng-model="target.DIEUKIEN_NHOM" value="KHACHHANG">
                                         </td>
                                         <td>
-                                            <tags-input enter ng-model="target.MAKHACHHANG" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Nhà cung cấp" replace-spaces-with-dashes="false">
+                                            <tags-input enter ng-model="target.MAKHACHHANG" track-by-expr="$index" key-property="ID" display-property="TEXT" placeholder="Khách hàng" replace-spaces-with-dashes="false">
                                                 <auto-complete source="loadKhachHangTags($query)"
                                                                min-length="0"
                                                                load-on-focus="false"
@@ -152,7 +152,7 @@
                                             </tags-input>
                                         </td>
                                         <td class="button-title-report">
-                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedNhaCungCap();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Khách hàng</button>
+                                            <button type="button" prevent-default class="btn btn-info" data-dismiss="modal" ng-click="selectedKhachHang();"><i class="fa fa-align-left"></i>&nbsp;&nbsp;Khách hàng</button>
                                         </td>
                                     </tr>
                                     <tr>

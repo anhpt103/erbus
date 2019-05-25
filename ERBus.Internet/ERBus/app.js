@@ -30,8 +30,8 @@ define([
     'services/configService',
     'services/tempDataService',
     'filters/common',
+    'kendo.all.min',
     'telerikReportViewer',
-    'telerikReportViewer_kendo',
     'ui-grid',
     'fileUpload',
     'ng-file-upload',
@@ -40,8 +40,7 @@ define([
     'ngAria',
     'ng-tags-input',
     'moment',
-    'jp.ng-bs-animated-button',
-    'kendo.all.min'
+    'jp.ng-bs-animated-button'
 ], function (jquery, jqueryui, angular, stateCatalog, stateAuthorize, stateKnowledge, statePromotion, stateReport) {
     'use strict';
     var app = angular.module('myApp', ['oc.lazyLoad', 'ui.router', 'InterceptorModule', 'LocalStorageModule', 'ui.bootstrap', 'configModule', 'tempDataModule', 'angular-loading-bar', 'ngAnimate', 'ngSanitize', 'common-filter', 'ngResource', 'smart-table', 'angular.filter', 'ngTable', 'angular-cache', 'ui.tree', 'dynamicNumber', 'ui.grid', 'angularFileUpload', 'ngFileUpload', 'ngCkeditor', 'ngMaterial', 'ngAria', 'ngTagsInput', 'jp.ng-bs-animated-button', 'kendo.directives']);

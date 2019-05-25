@@ -60,11 +60,12 @@ namespace ERBus.Api.Utils
             else if (dieuKien == "LOAIHANG") { result = "LOẠI HÀNG"; }
             else if (dieuKien == "NHOMHANG") { result = "NHÓM HÀNG"; }
             else if (dieuKien == "NHACUNGCAP") { result = "NHÀ CUNG CẤP"; }
+            else if (dieuKien == "KHACHHANG") { result = "KHÁCH HÀNG"; }
             else if (dieuKien == "MATHANG") { result = "MẶT HÀNG"; }
             return result;
         }
 
-        public static string DieuKienLoc(string MAKHO, string MALOAI, string MANHOM, string MANHACUNGCAP, string MAHANG)
+        public static string DieuKienLoc(string MAKHO, string MALOAI, string MANHOM, string MANHACUNGCAP, string MAKHACHHANG, string MAHANG)
         {
             string result = "";
             if (!string.IsNullOrEmpty(MAKHO))
@@ -82,6 +83,10 @@ namespace ERBus.Api.Utils
             if (!string.IsNullOrEmpty(MANHACUNGCAP))
             {
                 result += "Nhà cung cấp: " + MAKHO + "; ";
+            }
+            if (!string.IsNullOrEmpty(MAKHACHHANG))
+            {
+                result += "Khách hàng: " + MAKHACHHANG + "; ";
             }
             if (!string.IsNullOrEmpty(MAHANG))
             {

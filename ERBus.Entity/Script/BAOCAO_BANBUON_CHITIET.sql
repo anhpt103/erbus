@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE PROCEDURE "BAOCAO_BANBUON_CHITIET" (
+﻿create or replace PROCEDURE "BAOCAO_BANBUON_CHITIET" (
     DIEUKIEN_NHOM   IN              VARCHAR2,
     MANHANVIEN      IN              VARCHAR2,
     MAKHO           IN              VARCHAR2,
@@ -113,7 +113,7 @@ BEGIN
 
     IF TRIM(MAKHACHHANG) IS NOT NULL THEN
         P_EXPRESSION := P_EXPRESSION
-                        || ' AND mathang.MAKHACHHANG IN (SELECT REGEXP_SUBSTR('''
+                        || ' AND chungtu.MAKHACHHANG IN (SELECT REGEXP_SUBSTR('''
                         || MAKHACHHANG
                         || ''',''[^,]+'',1,LEVEL) FROM DUAL CONNECT BY REGEXP_SUBSTR('''
                         || MAKHACHHANG
