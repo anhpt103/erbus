@@ -26,6 +26,7 @@
             Telerik.Reporting.TableGroup tableGroup15 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup16 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.TableGroup tableGroup17 = new Telerik.Reporting.TableGroup();
+            Telerik.Reporting.TableGroup tableGroup18 = new Telerik.Reporting.TableGroup();
             Telerik.Reporting.ReportParameter reportParameter1 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.ReportParameter reportParameter2 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.ReportParameter reportParameter3 = new Telerik.Reporting.ReportParameter();
@@ -100,12 +101,15 @@
             this.textBox35 = new Telerik.Reporting.TextBox();
             this.textBox46 = new Telerik.Reporting.TextBox();
             this.textBox47 = new Telerik.Reporting.TextBox();
+            this.textBox9 = new Telerik.Reporting.TextBox();
+            this.textBox1 = new Telerik.Reporting.TextBox();
+            this.textBox8 = new Telerik.Reporting.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // textBox79
             // 
             this.textBox79.Name = "textBox79";
-            this.textBox79.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.91262054443359375D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
+            this.textBox79.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.79803752899169922D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
             this.textBox79.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(167)))), ((int)(((byte)(227)))));
             this.textBox79.Style.Color = System.Drawing.Color.Blue;
             this.textBox79.Style.Font.Bold = true;
@@ -119,7 +123,7 @@
             // textBox56
             // 
             this.textBox56.Name = "textBox56";
-            this.textBox56.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.98451858758926392D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
+            this.textBox56.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.94285213947296143D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
             this.textBox56.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(167)))), ((int)(((byte)(227)))));
             this.textBox56.Style.Color = System.Drawing.Color.Blue;
             this.textBox56.Style.Font.Bold = true;
@@ -133,7 +137,7 @@
             // textBox59
             // 
             this.textBox59.Name = "textBox59";
-            this.textBox59.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.89144831895828247D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
+            this.textBox59.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.80811530351638794D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
             this.textBox59.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(167)))), ((int)(((byte)(227)))));
             this.textBox59.Style.Color = System.Drawing.Color.Blue;
             this.textBox59.Style.Font.Bold = true;
@@ -231,7 +235,7 @@
             // textBox109
             // 
             this.textBox109.Name = "textBox109";
-            this.textBox109.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.85813552141189575D), Telerik.Reporting.Drawing.Unit.Inch(0.46041679382324219D));
+            this.textBox109.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.7331354022026062D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
             this.textBox109.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(167)))), ((int)(((byte)(227)))));
             this.textBox109.Style.Color = System.Drawing.Color.Blue;
             this.textBox109.Style.Font.Bold = true;
@@ -245,7 +249,7 @@
             // textBox73
             // 
             this.textBox73.Name = "textBox73";
-            this.textBox73.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.1687407493591309D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox73.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.7520734071731567D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox73.Style.Font.Name = "Times New Roman";
             this.textBox73.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
             this.textBox73.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(3D);
@@ -269,7 +273,7 @@
             // textBox7
             // 
             this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(3.1251785755157471D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox7.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.7085113525390625D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox7.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox7.Style.Color = System.Drawing.Color.Red;
             this.textBox7.Style.Font.Name = "Times New Roman";
@@ -412,38 +416,41 @@
             // 
             // crosstab1
             // 
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.9126204252243042D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.98451858758926392D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.89144837856292725D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811595916748047D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81184953451156616D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81864184141159058D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81117147207260132D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.85578489303588867D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.7560306191444397D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.85813552141189575D)));
-            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.366666704416275D)));
-            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.366666704416275D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.79803746938705444D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.94285190105438232D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811494588851929D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811589956283569D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81184935569763184D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81864196062088013D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.79166662693023682D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81117123365402222D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.85578459501266479D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.756030797958374D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.73313504457473755D)));
+            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D)));
+            this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D)));
             this.crosstab1.Body.SetCellContent(0, 0, this.textBox93);
             this.crosstab1.Body.SetCellContent(0, 1, this.textBox94);
             this.crosstab1.Body.SetCellContent(0, 2, this.textBox95);
             this.crosstab1.Body.SetCellContent(0, 3, this.textBox96);
             this.crosstab1.Body.SetCellContent(0, 4, this.textBox97);
             this.crosstab1.Body.SetCellContent(0, 5, this.textBox98);
-            this.crosstab1.Body.SetCellContent(0, 6, this.textBox99);
-            this.crosstab1.Body.SetCellContent(0, 7, this.textBox100);
-            this.crosstab1.Body.SetCellContent(0, 8, this.textBox105);
+            this.crosstab1.Body.SetCellContent(0, 7, this.textBox99);
+            this.crosstab1.Body.SetCellContent(0, 8, this.textBox100);
+            this.crosstab1.Body.SetCellContent(0, 9, this.textBox105);
             this.crosstab1.Body.SetCellContent(1, 0, this.textBox132);
             this.crosstab1.Body.SetCellContent(1, 1, this.textBox133);
             this.crosstab1.Body.SetCellContent(1, 2, this.textBox134);
             this.crosstab1.Body.SetCellContent(1, 3, this.textBox135);
             this.crosstab1.Body.SetCellContent(1, 4, this.textBox136);
             this.crosstab1.Body.SetCellContent(1, 5, this.textBox137);
-            this.crosstab1.Body.SetCellContent(1, 6, this.textBox138);
-            this.crosstab1.Body.SetCellContent(1, 7, this.textBox139);
-            this.crosstab1.Body.SetCellContent(1, 8, this.textBox144);
-            this.crosstab1.Body.SetCellContent(0, 9, this.textBox2);
-            this.crosstab1.Body.SetCellContent(1, 9, this.textBox3);
+            this.crosstab1.Body.SetCellContent(1, 7, this.textBox138);
+            this.crosstab1.Body.SetCellContent(1, 8, this.textBox139);
+            this.crosstab1.Body.SetCellContent(1, 9, this.textBox144);
+            this.crosstab1.Body.SetCellContent(0, 10, this.textBox2);
+            this.crosstab1.Body.SetCellContent(1, 10, this.textBox3);
+            this.crosstab1.Body.SetCellContent(1, 6, this.textBox1);
+            this.crosstab1.Body.SetCellContent(0, 6, this.textBox8);
             tableGroup1.Name = "sOLUONGBAN1";
             tableGroup1.ReportItem = this.textBox79;
             tableGroup2.Name = "vON1";
@@ -456,14 +463,16 @@
             tableGroup5.ReportItem = this.textBox61;
             tableGroup6.Name = "tIENKHUYENMAI1";
             tableGroup6.ReportItem = this.textBox65;
-            tableGroup7.Name = "dOANHTHU1";
-            tableGroup7.ReportItem = this.textBox63;
-            tableGroup8.Name = "tONGBAN1";
-            tableGroup8.ReportItem = this.textBox62;
-            tableGroup9.Name = "lAIBANLE1";
-            tableGroup9.ReportItem = this.textBox68;
-            tableGroup10.Name = "group9";
-            tableGroup10.ReportItem = this.textBox109;
+            tableGroup7.Name = "group1";
+            tableGroup7.ReportItem = this.textBox9;
+            tableGroup8.Name = "dOANHTHU1";
+            tableGroup8.ReportItem = this.textBox63;
+            tableGroup9.Name = "tONGBAN1";
+            tableGroup9.ReportItem = this.textBox62;
+            tableGroup10.Name = "lAIBANLE1";
+            tableGroup10.ReportItem = this.textBox68;
+            tableGroup11.Name = "group9";
+            tableGroup11.ReportItem = this.textBox109;
             this.crosstab1.ColumnGroups.Add(tableGroup1);
             this.crosstab1.ColumnGroups.Add(tableGroup2);
             this.crosstab1.ColumnGroups.Add(tableGroup3);
@@ -474,6 +483,7 @@
             this.crosstab1.ColumnGroups.Add(tableGroup8);
             this.crosstab1.ColumnGroups.Add(tableGroup9);
             this.crosstab1.ColumnGroups.Add(tableGroup10);
+            this.crosstab1.ColumnGroups.Add(tableGroup11);
             this.crosstab1.Corner.SetCellContent(0, 0, this.textBox77);
             this.crosstab1.Corner.SetCellContent(0, 1, this.textBox78);
             this.crosstab1.DataSource = this.sqlDataSource1;
@@ -512,31 +522,34 @@
             this.textBox109,
             this.textBox72,
             this.textBox73,
-            this.textBox7});
+            this.textBox7,
+            this.textBox9,
+            this.textBox1,
+            this.textBox8});
             this.crosstab1.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(0D), Telerik.Reporting.Drawing.Unit.Inch(3.9418537198798731E-05D));
             this.crosstab1.Name = "crosstab1";
-            tableGroup15.Name = "total1";
+            tableGroup16.Name = "total1";
+            tableGroup15.ChildGroups.Add(tableGroup16);
+            tableGroup15.Groupings.Add(new Telerik.Reporting.Grouping("= Fields.MA"));
+            tableGroup15.Name = "tEN1";
+            tableGroup15.ReportItem = this.textBox73;
+            tableGroup15.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.TEN", Telerik.Reporting.SortDirection.Asc));
             tableGroup14.ChildGroups.Add(tableGroup15);
-            tableGroup14.Groupings.Add(new Telerik.Reporting.Grouping("= Fields.MA"));
-            tableGroup14.Name = "tEN1";
-            tableGroup14.ReportItem = this.textBox73;
-            tableGroup14.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.TEN", Telerik.Reporting.SortDirection.Asc));
+            tableGroup14.Name = "group";
+            tableGroup14.ReportItem = this.textBox72;
             tableGroup13.ChildGroups.Add(tableGroup14);
-            tableGroup13.Name = "group";
-            tableGroup13.ReportItem = this.textBox72;
+            tableGroup13.Groupings.Add(new Telerik.Reporting.Grouping("= Fields.MA"));
+            tableGroup13.Name = "mA1";
+            tableGroup13.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.MA", Telerik.Reporting.SortDirection.Asc));
             tableGroup12.ChildGroups.Add(tableGroup13);
-            tableGroup12.Groupings.Add(new Telerik.Reporting.Grouping("= Fields.MA"));
-            tableGroup12.Name = "mA1";
-            tableGroup12.Sortings.Add(new Telerik.Reporting.Sorting("= Fields.MA", Telerik.Reporting.SortDirection.Asc));
-            tableGroup11.ChildGroups.Add(tableGroup12);
-            tableGroup11.Name = "mADONVI";
-            tableGroup17.Name = "group2";
-            tableGroup17.ReportItem = this.textBox7;
-            tableGroup16.ChildGroups.Add(tableGroup17);
-            tableGroup16.Name = "group4";
-            this.crosstab1.RowGroups.Add(tableGroup11);
-            this.crosstab1.RowGroups.Add(tableGroup16);
-            this.crosstab1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.633495330810547D), Telerik.Reporting.Drawing.Unit.Inch(1.1937501430511475D));
+            tableGroup12.Name = "mADONVI";
+            tableGroup18.Name = "group2";
+            tableGroup18.ReportItem = this.textBox7;
+            tableGroup17.ChildGroups.Add(tableGroup18);
+            tableGroup17.Name = "group4";
+            this.crosstab1.RowGroups.Add(tableGroup12);
+            this.crosstab1.RowGroups.Add(tableGroup17);
+            this.crosstab1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(11.64391040802002D), Telerik.Reporting.Drawing.Unit.Inch(1.1937500238418579D));
             this.crosstab1.Style.Font.Name = "Times New Roman";
             this.crosstab1.StyleName = "Normal.TableNormal";
             // 
@@ -544,7 +557,7 @@
             // 
             this.textBox93.Format = "{0:N0}";
             this.textBox93.Name = "textBox93";
-            this.textBox93.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.91262054443359375D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox93.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.79803752899169922D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox93.Style.Font.Name = "Times New Roman";
             this.textBox93.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
             this.textBox93.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(0D);
@@ -558,7 +571,7 @@
             // 
             this.textBox94.Format = "{0:N0}";
             this.textBox94.Name = "textBox94";
-            this.textBox94.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.98451858758926392D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox94.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.94285213947296143D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox94.Style.Font.Name = "Times New Roman";
             this.textBox94.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
             this.textBox94.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(0D);
@@ -572,7 +585,7 @@
             // 
             this.textBox95.Format = "{0:N0}";
             this.textBox95.Name = "textBox95";
-            this.textBox95.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.89144831895828247D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox95.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.80811530351638794D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox95.Style.Font.Name = "Times New Roman";
             this.textBox95.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
             this.textBox95.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(0D);
@@ -670,7 +683,7 @@
             // 
             this.textBox132.Format = "{0:N0}";
             this.textBox132.Name = "textBox132";
-            this.textBox132.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.91262054443359375D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox132.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.79803752899169922D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox132.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox132.Style.Color = System.Drawing.Color.Red;
             this.textBox132.Style.Font.Name = "Times New Roman";
@@ -686,7 +699,7 @@
             // 
             this.textBox133.Format = "{0:N0}";
             this.textBox133.Name = "textBox133";
-            this.textBox133.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.98451858758926392D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox133.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.94285213947296143D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox133.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox133.Style.Color = System.Drawing.Color.Red;
             this.textBox133.Style.Font.Name = "Times New Roman";
@@ -702,7 +715,7 @@
             // 
             this.textBox134.Format = "{0:N0}";
             this.textBox134.Name = "textBox134";
-            this.textBox134.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.89144831895828247D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox134.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.80811530351638794D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox134.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox134.Style.Color = System.Drawing.Color.Red;
             this.textBox134.Style.Font.Name = "Times New Roman";
@@ -814,7 +827,7 @@
             // 
             this.textBox2.Format = "{0:N0}";
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.85813552141189575D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox2.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.7331354022026062D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox2.Style.Font.Name = "Times New Roman";
             this.textBox2.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
             this.textBox2.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(0D);
@@ -829,7 +842,7 @@
             // 
             this.textBox3.Format = "{0:N0}";
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.85813552141189575D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox3.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.7331354022026062D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
             this.textBox3.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox3.Style.Color = System.Drawing.Color.Red;
             this.textBox3.Style.Font.Name = "Times New Roman";
@@ -859,7 +872,7 @@
             // textBox78
             // 
             this.textBox78.Name = "textBox78";
-            this.textBox78.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(2.1687407493591309D), Telerik.Reporting.Drawing.Unit.Inch(0.46041679382324219D));
+            this.textBox78.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(1.7520734071731567D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
             this.textBox78.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(167)))), ((int)(((byte)(227)))));
             this.textBox78.Style.Color = System.Drawing.Color.Blue;
             this.textBox78.Style.Font.Bold = true;
@@ -924,6 +937,50 @@
             this.textBox47.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
             this.textBox47.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
             this.textBox47.Value = "Giám đốc";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.79166662693023682D), Telerik.Reporting.Drawing.Unit.Inch(0.46041673421859741D));
+            this.textBox9.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(121)))), ((int)(((byte)(167)))), ((int)(((byte)(227)))));
+            this.textBox9.Style.Color = System.Drawing.Color.Blue;
+            this.textBox9.Style.Font.Bold = true;
+            this.textBox9.Style.Font.Name = "Times New Roman";
+            this.textBox9.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
+            this.textBox9.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Center;
+            this.textBox9.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
+            this.textBox9.StyleName = "Normal.TableHeader";
+            this.textBox9.Value = "Tiền giảm thẻ";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Format = "{0:N0}";
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.79166662693023682D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox1.Style.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.textBox1.Style.Color = System.Drawing.Color.Red;
+            this.textBox1.Style.Font.Name = "Times New Roman";
+            this.textBox1.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
+            this.textBox1.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(0D);
+            this.textBox1.Style.Padding.Right = Telerik.Reporting.Drawing.Unit.Pixel(3D);
+            this.textBox1.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
+            this.textBox1.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
+            this.textBox1.StyleName = "Normal.GrandTotal";
+            this.textBox1.Value = "= Sum(Fields.TIENTHE_VIP)";
+            // 
+            // textBox8
+            // 
+            this.textBox8.Format = "{0:N0}";
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.79166662693023682D), Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D));
+            this.textBox8.Style.Font.Name = "Times New Roman";
+            this.textBox8.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(14D);
+            this.textBox8.Style.Padding.Left = Telerik.Reporting.Drawing.Unit.Pixel(0D);
+            this.textBox8.Style.Padding.Right = Telerik.Reporting.Drawing.Unit.Pixel(3D);
+            this.textBox8.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
+            this.textBox8.Style.VerticalAlign = Telerik.Reporting.Drawing.VerticalAlign.Middle;
+            this.textBox8.StyleName = "Normal.SubTotal";
+            this.textBox8.Value = "= Sum(Fields.TIENTHE_VIP)";
             // 
             // XBANLE_TONGHOP
             // 
@@ -1064,7 +1121,7 @@
             styleRule5,
             styleRule6,
             styleRule7});
-            this.Width = Telerik.Reporting.Drawing.Unit.Inch(11.633494377136231D);
+            this.Width = Telerik.Reporting.Drawing.Unit.Inch(11.64391040802002D);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -1120,5 +1177,8 @@
         private Telerik.Reporting.TextBox textBox2;
         private Telerik.Reporting.TextBox textBox3;
         private Telerik.Reporting.TextBox textBox109;
+        private Telerik.Reporting.TextBox textBox9;
+        private Telerik.Reporting.TextBox textBox1;
+        private Telerik.Reporting.TextBox textBox8;
     }
 }

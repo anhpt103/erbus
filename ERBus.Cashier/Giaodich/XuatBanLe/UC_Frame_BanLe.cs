@@ -1659,7 +1659,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         List<BOHANG_DTO> listBoHang = new List<BOHANG_DTO>();
                         while (dataReader.Read())
                         {
-                            decimal GIABANLE_VAT, VATBAN, TIEN_CHIETKHAU, TYLE_CHIETKHAU, TYLE_KHUYENMAI, TIEN_KHUYENMAI, TYLEVOUCHER, TIEN_VOUCHER, TYLELAILE, GIAVON, THANHTIEN, SOLUONG = 0;
+                            decimal GIABANLE_VAT, VATBAN, TIEN_CHIETKHAU, TYLE_CHIETKHAU, TYLE_KHUYENMAI, TIEN_KHUYENMAI, THANHTIEN, SOLUONG = 0;
                             GIAODICH_CHITIET item = new GIAODICH_CHITIET();
                             string MaBoHangPk = dataReader["MABOPK"].ToString().Trim();
                             if (!string.IsNullOrEmpty(MaBoHangPk) && !MaBoHangPk.Equals("BH"))
@@ -1798,7 +1798,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 connection.Open();
                 if (connection.State == ConnectionState.Open)
                 {
-                    string KieuThanhToan = null;
                     SqlCommand cmdParent = new SqlCommand();
                     cmdParent.Connection = connection;
                     cmdParent.CommandText = string.Format(@"SELECT [MAGIAODICH],[MAGIAODICHQUAYPK],[MADONVI],[NGAYTAO],[NGAYPHATSINH],[MANGUOITAO],[NGUOITAO],[MAQUAYBAN],[LOAIGIAODICH]

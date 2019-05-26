@@ -193,6 +193,7 @@
             service.buildNewCode().then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
                     $scope.target.MAKHACHHANG = successRes.data;
+                    $scope.target.MATHE = $scope.target.MAKHACHHANGs;
                 }
             });
             //end

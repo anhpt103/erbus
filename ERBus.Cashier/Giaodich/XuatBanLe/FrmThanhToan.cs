@@ -130,7 +130,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                                             }
                                         }
                                     }
-                                };
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -211,7 +211,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
 
         private void TANG_HANG_KHACHHANG(string MAKHACHHANG, string HANG_HIENTAI, string HANG_MOI, string MA_GIAODICH)
         {
-            if (!string.IsNullOrEmpty(MAKHACHHANG) && !string.IsNullOrEmpty(HANG_HIENTAI))
+            if (!string.IsNullOrEmpty(MAKHACHHANG) && !string.IsNullOrEmpty(HANG_MOI))
             {
                 using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
                 {
@@ -228,9 +228,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                                     OracleCommand cmdUpdateHangKhachHang = new OracleCommand();
                                     cmdUpdateHangKhachHang.Connection = connection;
                                     queryUpdate = string.Format(@"UPDATE KHACHHANG SET MAHANG = :HANGKHACHHANG_NEW WHERE MAKHACHHANG = :MAKHACHHANG AND UNITCODE = :UNITCODE");
+                                    cmdUpdateHangKhachHang.CommandText = queryUpdate;
                                     cmdUpdateHangKhachHang.CommandType = CommandType.Text;
+                                    cmdUpdateHangKhachHang.Parameters.Clear();
                                     cmdUpdateHangKhachHang.Parameters.Add("HANGKHACHHANG_NEW", OracleDbType.NVarchar2, 50).Value = HANG_MOI;
-                                    cmdUpdateHangKhachHang.Parameters.Add("HANG_HIENTAI", OracleDbType.NVarchar2, 50).Value = HANG_HIENTAI;
                                     cmdUpdateHangKhachHang.Parameters.Add("MAKHACHHANG", OracleDbType.NVarchar2, 50).Value = MAKHACHHANG;
                                     cmdUpdateHangKhachHang.Parameters.Add("UNITCODE", OracleDbType.NVarchar2, 50).Value = Session.Session.CurrentUnitCode;
                                     int count = cmdUpdateHangKhachHang.ExecuteNonQuery();
@@ -239,7 +240,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                                         //LƯU LỊCH SỬ TĂNG HẠNG
                                         cmdUpdateHangKhachHang.Parameters.Clear();
                                         queryUpdate = string.Format(@"INSERT INTO LICHSU_TANGHANG(ID,MAKHACHHANG,MAHANG_CU,MAHANG_MOI,NGAY_LENHANG,THOIGIAN_LENHANG,MA_GIAODICH_LENHANG) VALUES (@ID,@MAKHACHHANG,@MAHANG_CU,@MAHANG_MOI,@NGAY_LENHANG,@THOIGIAN_LENHANG,@MA_GIAODICH_LENHANG)");
+                                        cmdUpdateHangKhachHang.CommandText = queryUpdate;
                                         cmdUpdateHangKhachHang.CommandType = CommandType.Text;
+                                        cmdUpdateHangKhachHang.Parameters.Clear();
                                         cmdUpdateHangKhachHang.Parameters.Add("ID", OracleDbType.Varchar2, 50).Value = Guid.NewGuid().ToString();
                                         cmdUpdateHangKhachHang.Parameters.Add("MAKHACHHANG", OracleDbType.Varchar2, 50).Value = MAKHACHHANG;
                                         cmdUpdateHangKhachHang.Parameters.Add("MAHANG_CU", OracleDbType.Varchar2, 50).Value = HANG_HIENTAI;
@@ -652,19 +655,19 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         {
                             foreach (GIAODICH_CHITIET row in _GIAODICH_DTO_GLOBAL.LST_DETAILS)
                             {
-                                GIAODICH_CHITIET rowClone = _GIAODICH_DTO_CLONE.LST_DETAILS.FirstOrDefault(x => x.MAHANG == row.MAHANG && x.MABOPK == row.MABOPK);
+                                GIAODICH_CHITIET rowClone = _GIAODICH_DTO_CLONE.LST_DETAILS.FirstOrDefault(x => x.MAHANG == row.MAHANG);
                                 if (rowClone != null)
                                 {
                                     decimal THANHTIEN_HANG = rowClone.THANHTIEN;
                                     if (row.SOLUONG > 0)
                                     {
-                                        row.TIEN_VOUCHER = decimal.Round(TIEN_CHIADEU_MATHANG, 2);
+                                        row.TIENTHE_VIP = decimal.Round(TIEN_CHIADEU_MATHANG, 2);
                                     }
                                     else
                                     {
                                         MessageBox.Show("CẢNH BÁO ! MÃ '" + rowClone.MAHANG + "', CÓ SỐ LƯỢNG = '0' ! XIN KIỂM TRA LẠI HOẶC GIỮ LẠI HÓA ĐƠN ĐỂ KIỂM TRA");
                                     }
-                                    row.THANHTIEN = THANHTIEN_HANG - row.TIEN_VOUCHER;
+                                    row.THANHTIEN = THANHTIEN_HANG - row.TIENTHE_VIP;
                                 }
                             }
                         }
@@ -677,19 +680,19 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                             }
                             foreach (GIAODICH_CHITIET rowBill in _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.LST_DETAILS)
                             {
-                                GIAODICH_CHITIET rowBillClone = _NVGDQUAY_ASYNCCLIENT_BILL_CLONE.LST_DETAILS.FirstOrDefault(x => x.MAHANG == rowBill.MAHANG && x.MABOPK == rowBill.MABOPK);
+                                GIAODICH_CHITIET rowBillClone = _NVGDQUAY_ASYNCCLIENT_BILL_CLONE.LST_DETAILS.FirstOrDefault(x => x.MAHANG == rowBill.MAHANG);
                                 if (rowBillClone != null)
                                 {
                                     decimal THANHTIEN_HANG = rowBillClone.THANHTIEN;
                                     if (rowBill.SOLUONG > 0)
                                     {
-                                        rowBill.TIEN_VOUCHER = decimal.Round(TIEN_CHIADEU_MATHANG_BILL, 2);
+                                        rowBill.TIENTHE_VIP = decimal.Round(TIEN_CHIADEU_MATHANG_BILL, 2);
                                     }
                                     else
                                     {
                                         MessageBox.Show("CẢNH BÁO ! MÃ '" + rowBillClone.MAHANG + "', CÓ SỐ LƯỢNG = '0' ! XIN KIỂM TRA LẠI HOẶC GIỮ LẠI HÓA ĐƠN ĐỂ KIỂM TRA");
                                     }
-                                    rowBill.THANHTIEN = THANHTIEN_HANG - rowBill.TIEN_VOUCHER;
+                                    rowBill.THANHTIEN = THANHTIEN_HANG - rowBill.TIENTHE_VIP;
                                 }
                             }
                         }
@@ -1099,7 +1102,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.MAKHACHHANG = _KHACHHANG_DTO.MAKHACHHANG;
             _GIAODICH_DTO_GLOBAL.HANGKHACHHANG = _KHACHHANG_DTO.HANGKHACHHANG;
             HANGKHACHHANG_DTO _HANGKHACHHANG_DTO = new HANGKHACHHANG_DTO();
-            _HANGKHACHHANG_DTO = TINHTOAN_DULIEU_HANGKHACHHANG(_KHACHHANG_DTO.HANGKHACHHANG);
+            if (!string.IsNullOrEmpty(_KHACHHANG_DTO.HANGKHACHHANG)) _HANGKHACHHANG_DTO = TINHTOAN_DULIEU_HANGKHACHHANG(_KHACHHANG_DTO.HANGKHACHHANG);
             if (!string.IsNullOrEmpty(_HANGKHACHHANG_DTO.MAHANG))
             {
                 _GIAODICH_DTO_GLOBAL.QUYDOITIEN_THANH_DIEM = _HANGKHACHHANG_DTO.QUYDOITIEN_THANH_DIEM;
@@ -1151,7 +1154,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.MAKHACHHANG = _KHACHHANG_DTO.MAKHACHHANG;
             _GIAODICH_DTO_GLOBAL.HANGKHACHHANG = _KHACHHANG_DTO.HANGKHACHHANG;
             HANGKHACHHANG_DTO _HANGKHACHHANG_DTO = new HANGKHACHHANG_DTO();
-            _HANGKHACHHANG_DTO = TINHTOAN_DULIEU_HANGKHACHHANG(_KHACHHANG_DTO.HANGKHACHHANG);
+            if (!string.IsNullOrEmpty(_KHACHHANG_DTO.HANGKHACHHANG))  _HANGKHACHHANG_DTO = TINHTOAN_DULIEU_HANGKHACHHANG(_KHACHHANG_DTO.HANGKHACHHANG);
             if (!string.IsNullOrEmpty(_HANGKHACHHANG_DTO.MAHANG))
             {
                 _GIAODICH_DTO_GLOBAL.QUYDOITIEN_THANH_DIEM = _HANGKHACHHANG_DTO.QUYDOITIEN_THANH_DIEM;
@@ -1218,7 +1221,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.MAKHACHHANG = _LST_KHACHHANG_DTO[0].MAKHACHHANG;
                         _GIAODICH_DTO_GLOBAL.HANGKHACHHANG = _LST_KHACHHANG_DTO[0].HANGKHACHHANG;
                         HANGKHACHHANG_DTO _HANGKHACHHANG_DTO = new HANGKHACHHANG_DTO();
-                        _HANGKHACHHANG_DTO = TINHTOAN_DULIEU_HANGKHACHHANG(_LST_KHACHHANG_DTO[0].HANGKHACHHANG);
+                        if (!string.IsNullOrEmpty(_LST_KHACHHANG_DTO[0].HANGKHACHHANG)) _HANGKHACHHANG_DTO = TINHTOAN_DULIEU_HANGKHACHHANG(_LST_KHACHHANG_DTO[0].HANGKHACHHANG);
                         if (!string.IsNullOrEmpty(_HANGKHACHHANG_DTO.MAHANG))
                         {
                             _GIAODICH_DTO_GLOBAL.QUYDOITIEN_THANH_DIEM = _HANGKHACHHANG_DTO.QUYDOITIEN_THANH_DIEM;

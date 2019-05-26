@@ -46,7 +46,8 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                                     _KHACHHANG_DTO.CANCUOC_CONGDAN = dataReader["CANCUOC_CONGDAN"] != null ? dataReader["CANCUOC_CONGDAN"].ToString().Trim() : "";
                                     _KHACHHANG_DTO.NGAYSINH = dataReader["NGAYSINH"] != DBNull.Value ? DateTime.Parse(dataReader["NGAYSINH"].ToString()) : (DateTime?)null;
                                     _KHACHHANG_DTO.NGAYDACBIET = dataReader["NGAYDACBIET"] != DBNull.Value ? DateTime.Parse(dataReader["NGAYDACBIET"].ToString()) : (DateTime?)null;
-                                    _KHACHHANG_DTO.HANGKHACHHANGCU = dataReader["MATHE"] != null ? dataReader["MATHE"].ToString().Trim() : "";
+                                    _KHACHHANG_DTO.MATHE = dataReader["MATHE"] != null ? dataReader["MATHE"].ToString().Trim() : "";
+                                    _KHACHHANG_DTO.HANGKHACHHANG = dataReader["MAHANG"] != null ? dataReader["MAHANG"].ToString().Trim() : "";
                                     decimal SODIEM = 0;
                                     if (dataReader["SODIEM"] != null)
                                     {

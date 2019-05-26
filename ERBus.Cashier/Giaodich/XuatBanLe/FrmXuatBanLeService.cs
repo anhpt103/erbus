@@ -1184,7 +1184,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         cmd.Connection = connection;
                         cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
                         FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP 
-                        WHERE '" + DateTime.Now.ToString("dd-MM-yyyy") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP WHERE '" + DateTime.Now.ToString("dd-MM-yyyy") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "') ");
+                        WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHACUNGCAP C ON B.MAHANG = C.MANHACUNGCAP INNER JOIN MATHANG D ON C.MANHACUNGCAP = D.MANHACUNGCAP WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHACUNGCAP' AND D.MAHANG = '" + MaHang + "') ");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -1252,7 +1252,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         cmd.Connection = connection;
                         cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
                         FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI 
-                        WHERE '" + DateTime.Now.ToString("dd-MM-yyyy") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "') ");
+                        WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN LOAIHANG C ON B.MAHANG = C.MALOAI INNER JOIN MATHANG D ON C.MALOAI = D.MALOAI WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGLOAIHANG' AND D.MAHANG = '" + MaHang + "') ");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -1305,23 +1305,23 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             return result;
         }
 
-        // TÍNH KHUYẾN MẠI FROM ORACLE
+        // TÍNH KHUYẾN MẠI FROM SQLSERVER
         public static CAL_KHUYENMAI_OBJ CACULATION_KHUYENMAI_CHIETKHAU_NHOMHANG_SQLSERVER(string MaHang)
         {
             CAL_KHUYENMAI_OBJ result = new CAL_KHUYENMAI_OBJ();
-            using (OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
             {
                 connection.Open();
                 if (connection.State == ConnectionState.Open)
                 {
                     try
                     {
-                        OracleCommand cmd = new OracleCommand();
+                        SqlCommand cmd = new SqlCommand();
                         cmd.Connection = connection;
                         cmd.CommandText = string.Format(@"SELECT A.MA_KHUYENMAI,A.TUGIO,A.DENGIO,A.DIENGIAI,D.MAHANG,B.SOLUONG,B.GIATRI_KHUYENMAI 
                         FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI  INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM 
-                        WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM WHERE TO_DATE('" + DateTime.Now.ToString("dd-MM-yyyy") + "', 'DD/MM/YY') BETWEEN TO_DATE(A.TUNGAY, 'DD/MM/YY') AND TO_DATE(A.DENNGAY, 'DD/MM/YY') AND A.TRANGTHAI = 10 AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "') ");
-                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "' AND A.TUNGAY = (SELECT MAX(A.TUNGAY) FROM KHUYENMAI a INNER JOIN KHUYENMAI_CHITIET b ON A.MA_KHUYENMAI = B.MA_KHUYENMAI INNER JOIN NHOMHANG C ON B.MAHANG = C.MANHOM INNER JOIN MATHANG D ON C.MANHOM = D.MANHOM WHERE '" + DateTime.Now.ToString("yyyy-MM-dd") + "' BETWEEN A.TUNGAY AND A.DENNGAY AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND A.LOAI_KHUYENMAI = 'GGNHOMHANG' AND D.MAHANG = '" + MaHang + "') ");
+                        SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
                             while (dataReader.Read())

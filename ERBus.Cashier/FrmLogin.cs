@@ -94,6 +94,8 @@ namespace ERBus.Cashier
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_KHUYENMAI();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_KHUYENMAI_CHITIET();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_THAMSOHETHONG();
+                                        SYNCHRONIZE_DATA.SYNCHRONIZE_LOAIHANG();
+                                        SYNCHRONIZE_DATA.SYNCHRONIZE_NHOMHANG();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_MATHANG();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_MATHANG_GIA();
                                         SYNCHRONIZE_DATA.SYNCHRONIZE_CUAHANG();

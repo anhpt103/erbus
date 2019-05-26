@@ -24,7 +24,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <UpdateUrl>http://14.241.39.230:7878/Upload/</UpdateUrl>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>15</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -60,6 +60,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>erbus_logo_U3A_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v17.1, Version=17.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -382,7 +385,6 @@
     <EmbeddedResource Include="Hethong\FrmDoiMatKhau.resx">
       <DependentUpon>FrmDoiMatKhau.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -422,6 +424,7 @@
     <Content Include="Asset\Image\sign-sync-icon_24px.png" />
     <Content Include="Asset\Image\Spinner-1s-97px.gif" />
     <Content Include="Asset\Image\user-login-icon.png" />
+    <Content Include="erbus_logo_U3A_icon.ico" />
     <Content Include="SCRIPT\SCRIPT_SQLSERVER.sql" />
     <Content Include="SCRIPT\BANLE_TIMKIEM_BOHANG_MAHANG.sql" />
     <Content Include="SCRIPT\CREATE_TABLE_SQL.sql" />

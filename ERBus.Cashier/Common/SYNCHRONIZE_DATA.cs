@@ -802,6 +802,162 @@ namespace ERBus.Cashier.Common
                 }
             }
         }
+
+        public static void SYNCHRONIZE_LOAIHANG()
+        {
+            using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connectionOrcl.Open();
+                if (connectionOrcl.State == ConnectionState.Open)
+                {
+                    OracleCommand cmdOrcl = new OracleCommand();
+                    cmdOrcl.Connection = connectionOrcl;
+                    cmdOrcl.CommandText = string.Format(@"SELECT MALOAI,TENLOAI,UNITCODE FROM LOAIHANG WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10");
+                    OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
+                    if (dataReaderOrcl.HasRows)
+                    {
+                        try
+                        {
+                            using (SqlConnection connectionSa = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                            {
+                                connectionSa.Open();
+                                if (connectionSa.State == ConnectionState.Open)
+                                {
+                                    using (SqlTransaction tranSa = connectionSa.BeginTransaction())
+                                    {
+                                        try
+                                        {
+                                            SqlCommand cmdCommonSql = new SqlCommand();
+                                            cmdCommonSql.Connection = connectionSa;
+                                            cmdCommonSql.CommandText = string.Format(@"TRUNCATE TABLE dbo.LOAIHANG");
+                                            cmdCommonSql.Transaction = tranSa;
+                                            cmdCommonSql.ExecuteNonQuery();
+                                            int countInsert = 0;
+                                            while (dataReaderOrcl.Read())
+                                            {
+                                                cmdCommonSql.Parameters.Clear();
+                                                cmdCommonSql.CommandText = string.Format(@"INSERT INTO dbo.LOAIHANG(ID,MALOAI,TENLOAI,UNITCODE) VALUES (@ID,@MALOAI,@TENLOAI,@UNITCODE)");
+                                                cmdCommonSql.Parameters.Add("ID", SqlDbType.VarChar, 50).Value = Guid.NewGuid().ToString();
+                                                cmdCommonSql.Parameters.Add("MALOAI", SqlDbType.VarChar, 50).Value = dataReaderOrcl["MALOAI"] != null ? dataReaderOrcl["MALOAI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("TENLOAI", SqlDbType.NVarChar, 300).Value = dataReaderOrcl["TENLOAI"] != null ? dataReaderOrcl["TENLOAI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10).Value = dataReaderOrcl["UNITCODE"] != null ? dataReaderOrcl["UNITCODE"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Transaction = tranSa;
+                                                if (cmdCommonSql.ExecuteNonQuery() > 0)
+                                                {
+                                                    countInsert++;
+                                                }
+                                            }
+                                            if (countInsert > 0)
+                                            {
+                                                tranSa.Commit();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            tranSa.Rollback();
+                                            WriteLogs.LogError(ex);
+                                        }
+                                        finally
+                                        {
+                                            dataReaderOrcl.Dispose();
+                                            connectionSa.Close();
+                                            connectionSa.Dispose();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            connectionOrcl.Close();
+                            WriteLogs.LogError(ex);
+                        }
+                    }
+                    //Mở thì đóng
+                    connectionOrcl.Close();
+                }
+            }
+        }
+
+
+        public static void SYNCHRONIZE_NHOMHANG()
+        {
+            using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
+            {
+                connectionOrcl.Open();
+                if (connectionOrcl.State == ConnectionState.Open)
+                {
+                    OracleCommand cmdOrcl = new OracleCommand();
+                    cmdOrcl.Connection = connectionOrcl;
+                    cmdOrcl.CommandText = string.Format(@"SELECT MALOAI,MANHOM,TENNHOM,UNITCODE FROM NHOMHANG WHERE UNITCODE = '" + Session.Session.CurrentUnitCode + "' AND TRANGTHAI = 10");
+                    OracleDataReader dataReaderOrcl = cmdOrcl.ExecuteReader();
+                    if (dataReaderOrcl.HasRows)
+                    {
+                        try
+                        {
+                            using (SqlConnection connectionSa = new SqlConnection(ConfigurationManager.ConnectionStrings["ERBusCashier"].ConnectionString))
+                            {
+                                connectionSa.Open();
+                                if (connectionSa.State == ConnectionState.Open)
+                                {
+                                    using (SqlTransaction tranSa = connectionSa.BeginTransaction())
+                                    {
+                                        try
+                                        {
+                                            SqlCommand cmdCommonSql = new SqlCommand();
+                                            cmdCommonSql.Connection = connectionSa;
+                                            cmdCommonSql.CommandText = string.Format(@"TRUNCATE TABLE dbo.NHOMHANG");
+                                            cmdCommonSql.Transaction = tranSa;
+                                            cmdCommonSql.ExecuteNonQuery();
+                                            int countInsert = 0;
+                                            while (dataReaderOrcl.Read())
+                                            {
+                                                cmdCommonSql.Parameters.Clear();
+                                                cmdCommonSql.CommandText = string.Format(@"INSERT INTO dbo.NHOMHANG(ID,MALOAI,MANHOM,TENNHOM,UNITCODE) VALUES (@ID,@MALOAI,@MANHOM,@TENNHOM,@UNITCODE)");
+                                                cmdCommonSql.Parameters.Add("ID", SqlDbType.VarChar, 50).Value = Guid.NewGuid().ToString();
+                                                cmdCommonSql.Parameters.Add("MALOAI", SqlDbType.VarChar, 50).Value = dataReaderOrcl["MALOAI"] != null ? dataReaderOrcl["MALOAI"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("MANHOM", SqlDbType.VarChar, 50).Value = dataReaderOrcl["MANHOM"] != null ? dataReaderOrcl["MANHOM"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("TENNHOM", SqlDbType.NVarChar, 300).Value = dataReaderOrcl["TENNHOM"] != null ? dataReaderOrcl["TENNHOM"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Parameters.Add("UNITCODE", SqlDbType.VarChar, 10).Value = dataReaderOrcl["UNITCODE"] != null ? dataReaderOrcl["UNITCODE"].ToString().Trim() : (object)DBNull.Value;
+                                                cmdCommonSql.Transaction = tranSa;
+                                                if (cmdCommonSql.ExecuteNonQuery() > 0)
+                                                {
+                                                    countInsert++;
+                                                }
+                                            }
+                                            if (countInsert > 0)
+                                            {
+                                                tranSa.Commit();
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            tranSa.Rollback();
+                                            WriteLogs.LogError(ex);
+                                        }
+                                        finally
+                                        {
+                                            dataReaderOrcl.Dispose();
+                                            connectionSa.Close();
+                                            connectionSa.Dispose();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            connectionOrcl.Close();
+                            WriteLogs.LogError(ex);
+                        }
+                    }
+                    //Mở thì đóng
+                    connectionOrcl.Close();
+                }
+            }
+        }
+
+
         public static void SYNCHRONIZE_MATHANG()
         {
             using (OracleConnection connectionOrcl = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString))
