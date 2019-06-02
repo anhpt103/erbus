@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="sqlDataSource1.ParameterValues" xml:space="preserve">
-    <value>{"DIEUKIEN_NHOM":"KHOHANG","USERNAME":"admin","UNITCODE":"01","TUNGAY":"03/29/2019","DENNGAY":"03/29/2019"}</value>
+    <value>{"DIEUKIEN_NHOM":"MAHANG","MAHANG":"B000254","USERNAME":"admin","UNITCODE":"01","TUNGAY":"05/24/2019","DENNGAY":"05/24/2019"}</value>
   </metadata>
   <metadata name="$this.ShowSnapGrid" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

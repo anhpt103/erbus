@@ -1596,7 +1596,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             frmSearch.SetHandlerBill(TimKIemGiaoDichQuayBanLe);
             frmSearch.ShowDialog();
         }
-        public GIAODICH_DTO KHOITAO_DULIEU_INLAI_HOADON_FROM_ORACLE(string MAGIAODICHQUAYPK)
+        public GIAODICH_DTO KHOITAO_DULIEU_INLAI_HOADON_FROM_ORACLE(string MaGiaoDich)
         {
             GIAODICH_DTO _DATA_INLAI_HOADON = new GIAODICH_DTO();
             OracleConnection connection = new OracleConnection(ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString);
@@ -1605,12 +1605,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                 connection.Open();
                 if (connection.State == ConnectionState.Open)
                 {
-                    string KieuThanhToan = null;
                     OracleCommand cmdParent = new OracleCommand();
                     cmdParent.Connection = connection;
-                    cmdParent.CommandText = string.Format(@"SELECT * FROM NVGDQUAY_ASYNCCLIENT WHERE MAGIAODICHQUAYPK = :MAGIAODICHQUAYPK AND UNITCODE = :UNITCODE");
+                    cmdParent.CommandText = string.Format(@"SELECT ID,MA_GIAODICH,LOAI_GIAODICH,NGAY_GIAODICH,MAKHACHHANG,THOIGIAN_TAO,TIENKHACH_TRA,TIEN_TRALAI_KHACH,MAKHO_XUAT,MA_VOUCHER,DIENGIAI,I_CREATE_DATE,I_CREATE_BY,UNITCODE FROM GIAODICH WHERE MA_GIAODICH = :MA_GIAODICH AND UNITCODE = :UNITCODE");
                     cmdParent.CommandType = CommandType.Text;
-                    cmdParent.Parameters.Add("MAGIAODICHQUAYPK", OracleDbType.NVarchar2, 50).Value = MAGIAODICHQUAYPK.Trim();
+                    cmdParent.Parameters.Add("MA_GIAODICH", OracleDbType.NVarchar2, 70).Value = MaGiaoDich.Trim();
                     cmdParent.Parameters.Add("UNITCODE", OracleDbType.NVarchar2, 50).Value = Session.Session.CurrentUnitCode;
                     OracleDataReader dataReaderParent = null;
                     dataReaderParent = cmdParent.ExecuteReader();
@@ -1619,161 +1618,74 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         while (dataReaderParent.Read())
                         {
                             _DATA_INLAI_HOADON.MA_GIAODICH = dataReaderParent["MA_GIAODICH"].ToString();
-                            if (dataReaderParent["NGAYTAO"] != null)
+                            if (dataReaderParent["I_CREATE_DATE"] != null)
                             {
-                                string NGAYTAO = dataReaderParent["I_CREATE_DATE"].ToString();
-                                _DATA_INLAI_HOADON.I_CREATE_DATE = DateTime.Parse(NGAYTAO);
+                                string I_CREATE_DATE = dataReaderParent["I_CREATE_DATE"].ToString();
+                                _DATA_INLAI_HOADON.I_CREATE_DATE = DateTime.Parse(I_CREATE_DATE);
                             }
                             else
                             {
                                 _DATA_INLAI_HOADON.I_CREATE_DATE = DateTime.Now;
                             }
-                            if (dataReaderParent["NGAYPHATSINH"] != null)
+                            if (dataReaderParent["NGAY_GIAODICH"] != null)
                             {
-                                string NGAYPHATSINH = dataReaderParent["NGAYPHATSINH"].ToString();
-                                _DATA_INLAI_HOADON.NGAY_GIAODICH = DateTime.Parse(NGAYPHATSINH);
+                                string NGAY_GIAODICH = dataReaderParent["NGAY_GIAODICH"].ToString();
+                                _DATA_INLAI_HOADON.NGAY_GIAODICH = DateTime.Parse(NGAY_GIAODICH);
                             }
                             else
                             {
                                 _DATA_INLAI_HOADON.NGAY_GIAODICH = DateTime.Now;
                             }
+                            _DATA_INLAI_HOADON.LOAI_GIAODICH = dataReaderParent["LOAI_GIAODICH"] != null ? dataReaderParent["LOAI_GIAODICH"].ToString() : "";
+                            _DATA_INLAI_HOADON.MAKHACHHANG = dataReaderParent["MAKHACHHANG"] != null ? dataReaderParent["MAKHACHHANG"].ToString() : "";
+                            _DATA_INLAI_HOADON.THOIGIAN_TAO = dataReaderParent["THOIGIAN_TAO"] != null ? dataReaderParent["THOIGIAN_TAO"].ToString() : "";
                             _DATA_INLAI_HOADON.I_CREATE_BY = dataReaderParent["I_CREATE_BY"] != null ? dataReaderParent["I_CREATE_BY"].ToString() : "";
                             decimal TIENKHACH_TRA = 0; decimal.TryParse(dataReaderParent["TIENKHACH_TRA"].ToString(), out TIENKHACH_TRA);
                             _DATA_INLAI_HOADON.TIENKHACH_TRA = TIENKHACH_TRA;
                             decimal TIEN_TRALAI_KHACH = 0; decimal.TryParse(dataReaderParent["TIEN_TRALAI_KHACH"].ToString(), out TIEN_TRALAI_KHACH);
                             _DATA_INLAI_HOADON.TIEN_TRALAI_KHACH = TIEN_TRALAI_KHACH;
-                            decimal THANHTIEN = 0; decimal.TryParse(dataReaderParent["THANHTIEN"].ToString(), out THANHTIEN);
-                            _DATA_INLAI_HOADON.THANHTIEN = THANHTIEN;
                         }
                     }
                     OracleCommand cmdChildren = new OracleCommand();
                     cmdChildren.Connection = connection;
-                    cmdChildren.CommandText = string.Format(@"SELECT * FROM GIAODICH_CHITIET WHERE MAGDQUAYPK = :MAGDQUAYPK AND MADONVI = :MADONVI");
+                    cmdChildren.CommandText = string.Format(@"SELECT a.MA_GIAODICH,a.MAHANG,b.TENHANG,a.MATHUE_RA, c.GIATRI,a.SOLUONG,a.GIABANLE_VAT,a.MA_KHUYENMAI,a.TYLE_KHUYENMAI,a.TIEN_KHUYENMAI,a.TYLE_CHIETKHAU,a.TIEN_CHIETKHAU,a.TIENTHE_VIP,a.TIEN_VOUCHER,a.THANHTIEN FROM GIAODICH_CHITIET a INNER JOIN MATHANG b ON a.MAHANG = b.MAHANG INNER JOIN THUE c ON a.MATHUE_RA = c.MATHUE AND a.MA_GIAODICH = :MA_GIAODICH");
                     cmdChildren.CommandType = CommandType.Text;
-                    cmdChildren.Parameters.Add("MAGDQUAYPK", OracleDbType.NVarchar2, 50).Value = MAGIAODICHQUAYPK;
-                    cmdChildren.Parameters.Add("MADONVI", OracleDbType.NVarchar2, 50).Value = Session.Session.CurrentUnitCode;
+                    cmdChildren.Parameters.Add("MA_GIAODICH", OracleDbType.NVarchar2, 70).Value = MaGiaoDich;
                     OracleDataReader dataReader = null;
                     dataReader = cmdChildren.ExecuteReader();
                     if (dataReader.HasRows)
                     {
-                        List<BOHANG_DTO> listBoHang = new List<BOHANG_DTO>();
+                        decimal SUM_TONGTIEN = 0;
                         while (dataReader.Read())
                         {
-                            decimal GIABANLE_VAT, VATBAN, TIEN_CHIETKHAU, TYLE_CHIETKHAU, TYLE_KHUYENMAI, TIEN_KHUYENMAI, THANHTIEN, SOLUONG = 0;
+                            decimal GIABANLE_VAT, TIEN_CHIETKHAU, TYLE_CHIETKHAU, TYLE_KHUYENMAI, TIENTHE_VIP, TIEN_KHUYENMAI, THANHTIEN, SOLUONG, GIATRI_THUE_RA  = 0;
                             GIAODICH_CHITIET item = new GIAODICH_CHITIET();
-                            string MaBoHangPk = dataReader["MABOPK"].ToString().Trim();
-                            if (!string.IsNullOrEmpty(MaBoHangPk) && !MaBoHangPk.Equals("BH"))
-                            {
-                                decimal SOLUONG_BOHANG, GIABANLECOVAT_BOHANG, THANHTIENCOVAT_BOHANG = 0;
-                                string MaVatTu = dataReader["MAHANG"].ToString().ToUpper().Trim();
-                                decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG_BOHANG);
-                                decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLECOVAT_BOHANG);
-                                decimal.TryParse(dataReader["THANHTIEN"].ToString(), out THANHTIENCOVAT_BOHANG);
-                                List<BOHANG_DETAILS_DTO> listBoHangMatHangExist = new List<BOHANG_DETAILS_DTO>();
-                                BOHANG_DTO boHangExist = listBoHang.FirstOrDefault(x => x.MABOHANG.Equals(MaBoHangPk));
-                                if (boHangExist == null)
-                                {
-                                    BOHANG_DTO boHang = new BOHANG_DTO();
-                                    boHang.MABOHANG = MaBoHangPk;
-                                    boHang.THANHTIEN = THANHTIENCOVAT_BOHANG;
-                                    boHang.TONGSL = SOLUONG_BOHANG;
-                                    BOHANG_DETAILS_DTO MatHangExist = listBoHangMatHangExist.FirstOrDefault(x => x.MABOHANG.Equals(MaBoHangPk) && x.MAHANG.Equals(MaVatTu));
-                                    if (MatHangExist == null)
-                                    {
-                                        BOHANG_DETAILS_DTO mathang = new BOHANG_DETAILS_DTO();
-                                        mathang.MABOHANG = MaBoHangPk;
-                                        mathang.MAHANG = MaVatTu;
-                                        mathang.SOLUONG = SOLUONG_BOHANG;
-                                        mathang.GIABANLE_VAT = GIABANLECOVAT_BOHANG;
-                                        mathang.THANHTIEN = THANHTIENCOVAT_BOHANG;
-                                        boHang.MATHANG_BOHANG.Add(mathang);
-                                    }
-                                    listBoHang.Add(boHang);
-                                }
-                                else
-                                {
-                                    boHangExist.THANHTIEN += THANHTIENCOVAT_BOHANG;
-                                    boHangExist.TONGSL += SOLUONG_BOHANG;
-                                    BOHANG_DETAILS_DTO MatHangExist = boHangExist.MATHANG_BOHANG.FirstOrDefault(x => x.MABOHANG.Equals(MaBoHangPk) && x.MAHANG.Equals(MaVatTu));
-                                    if (MatHangExist == null)
-                                    {
-                                        BOHANG_DETAILS_DTO mathang = new BOHANG_DETAILS_DTO();
-                                        mathang.MABOHANG = MaBoHangPk;
-                                        mathang.MAHANG = MaVatTu;
-                                        mathang.SOLUONG = SOLUONG_BOHANG;
-                                        mathang.GIABANLE_VAT = GIABANLECOVAT_BOHANG;
-                                        mathang.THANHTIEN = THANHTIENCOVAT_BOHANG;
-                                        boHangExist.MATHANG_BOHANG.Add(mathang);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                item.MAHANG = dataReader["MAHANG"].ToString();
-                                item.TENHANG = dataReader["TENHANG"].ToString();
-                                decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
-                                item.SOLUONG = SOLUONG;
-                                decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
-                                item.GIABANLE_VAT = GIABANLE_VAT;
-                                decimal.TryParse(dataReader["TIEN_CHIETKHAU"].ToString(), out TIEN_CHIETKHAU);
-                                item.TIEN_CHIETKHAU = TIEN_CHIETKHAU;
-                                decimal.TryParse(dataReader["TYLE_CHIETKHAU"].ToString(), out TYLE_CHIETKHAU);
-                                item.TYLE_CHIETKHAU = TYLE_CHIETKHAU;
-                                decimal.TryParse(dataReader["TYLE_KHUYENMAI"].ToString(), out TYLE_KHUYENMAI);
-                                item.TYLE_KHUYENMAI = TYLE_KHUYENMAI;
-                                decimal.TryParse(dataReader["TIEN_KHUYENMAI"].ToString(), out TIEN_KHUYENMAI);
-                                item.TIEN_KHUYENMAI = TIEN_KHUYENMAI;
-                                decimal.TryParse(dataReader["THANHTIEN"].ToString(), out THANHTIEN);
-                                item.THANHTIEN = THANHTIEN;
-                                item.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
-                                _DATA_INLAI_HOADON.LST_DETAILS.Add(item);
-                            }
+                            item.MAHANG = dataReader["MAHANG"].ToString();
+                            item.TENHANG = dataReader["TENHANG"].ToString();
+                            decimal.TryParse(dataReader["SOLUONG"].ToString(), out SOLUONG);
+                            item.SOLUONG = SOLUONG;
+                            decimal.TryParse(dataReader["GIABANLE_VAT"].ToString(), out GIABANLE_VAT);
+                            item.GIABANLE_VAT = GIABANLE_VAT;
+                            decimal.TryParse(dataReader["TIEN_CHIETKHAU"].ToString(), out TIEN_CHIETKHAU);
+                            item.TIEN_CHIETKHAU = TIEN_CHIETKHAU;
+                            decimal.TryParse(dataReader["TYLE_CHIETKHAU"].ToString(), out TYLE_CHIETKHAU);
+                            item.TYLE_CHIETKHAU = TYLE_CHIETKHAU;
+                            decimal.TryParse(dataReader["TYLE_KHUYENMAI"].ToString(), out TYLE_KHUYENMAI);
+                            item.TYLE_KHUYENMAI = TYLE_KHUYENMAI;
+                            decimal.TryParse(dataReader["TIEN_KHUYENMAI"].ToString(), out TIEN_KHUYENMAI);
+                            item.TIEN_KHUYENMAI = TIEN_KHUYENMAI;
+                            decimal.TryParse(dataReader["TIENTHE_VIP"].ToString(), out TIENTHE_VIP);
+                            item.TIENTHE_VIP = TIENTHE_VIP;
+                            decimal.TryParse(dataReader["THANHTIEN"].ToString(), out THANHTIEN);
+                            item.THANHTIEN = THANHTIEN;
+                            SUM_TONGTIEN += THANHTIEN;
+                            item.MATHUE_RA = dataReader["MATHUE_RA"].ToString();
+                            decimal.TryParse(dataReader["GIATRI"].ToString(), out GIATRI_THUE_RA);
+                            item.GIATRI_THUE_RA = GIATRI_THUE_RA;
+                            _DATA_INLAI_HOADON.LST_DETAILS.Add(item);
                         }
-                        //Add mã bó hàng vào list
-                        if (listBoHang.Count > 0)
-                        {
-                            foreach (BOHANG_DTO row in listBoHang)
-                            {
-                                decimal SOLUONG_BOHANG_BAN = 0;
-                                GIAODICH_CHITIET item = new GIAODICH_CHITIET();
-                                decimal TONGLE = 0;
-                                decimal SUM_SOLUONG_BO = 0;
-                                item.MAHANG = row.MABOHANG;
-                                OracleCommand commamdBoHang = new OracleCommand();
-                                commamdBoHang.Connection = connection;
-                                commamdBoHang.CommandText = string.Format(@"SELECT a.MABOHANG,a.TENBOHANG,SUM(b.SOLUONG) AS TONGSOLUONG,SUM(b.TONGLE) AS TONGLE FROM DM_BOHANG a INNER JOIN DM_BOHANGCHITIET b ON a.MABOHANG = b.MABOHANG WHERE a.MABOHANG = :MABOHANG AND a.UNITCODE = :UNITCODE GROUP BY a.MABOHANG,a.TENBOHANG");
-                                commamdBoHang.Parameters.Add("MABOHANG", OracleDbType.NVarchar2, 50).Value = row.MABOHANG;
-                                commamdBoHang.Parameters.Add("UNITCODE", OracleDbType.NVarchar2, 50).Value = Session.Session.CurrentUnitCode;
-                                OracleDataReader dataReaderBoHang = commamdBoHang.ExecuteReader();
-                                if (dataReaderBoHang.HasRows)
-                                {
-                                    while (dataReaderBoHang.Read())
-                                    {
-                                        item.TENHANG = dataReaderBoHang["TENBOHANG"].ToString();
-                                        decimal.TryParse(dataReaderBoHang["TONGSOLUONG"].ToString(), out SUM_SOLUONG_BO);
-                                        decimal.TryParse(dataReaderBoHang["TONGLE"].ToString(), out TONGLE);
-                                    }
-                                }
-                                decimal.TryParse((row.TONGSL / SUM_SOLUONG_BO).ToString(), out SOLUONG_BOHANG_BAN);
-                                item.SOLUONG = SOLUONG_BOHANG_BAN;
-                                item.GIABANLE_VAT = TONGLE;
-                                EXTEND_VAT_BOHANG _EXTEND_VAT_BOHANG = new EXTEND_VAT_BOHANG();
-                                _EXTEND_VAT_BOHANG = FrmXuatBanLeService.LAYDULIEU_VAT_BOHANG_FROM_DATABASE_ORACLE(row.MABOHANG, Session.Session.CurrentUnitCode);
-                                if (row.MATHANG_BOHANG.Count > 0)
-                                {
-                                    decimal SUM_TTIENCOVAT_MATHANG_BOHANG = 0;
-                                    foreach (BOHANG_DETAILS_DTO _BOHANG_DETAILS_DTO in row.MATHANG_BOHANG)
-                                    {
-                                        SUM_TTIENCOVAT_MATHANG_BOHANG += _BOHANG_DETAILS_DTO.THANHTIEN;
-                                    }
-                                    item.THANHTIEN = SUM_TTIENCOVAT_MATHANG_BOHANG;
-                                }
-                                item.GIAVON = 0;
-                                item.THANHTIEN = row.THANHTIEN;
-                                item.MATHUE_RA = _EXTEND_VAT_BOHANG.MATHUE_RA;
-                                _DATA_INLAI_HOADON.LST_DETAILS.Add(item);
-                            }
-                        }
+                        dataReader.Close();
+                        _DATA_INLAI_HOADON.THANHTIEN = SUM_TONGTIEN;
                     }
                 }
             }
@@ -1988,7 +1900,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         }
 
         /// <summary>
-        /// 
+        /// LOG
         /// </summary>
         /// <param name="BillId"></param>
         /// <param name="toDate"></param>
@@ -1996,19 +1908,19 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         public void TimKIemGiaoDichQuayBanLe(string BillId, DateTime toDate, DateTime fromDate)
         {
             BILL_DTO headerBill = new BILL_DTO();
-            string MaGiaoDichQuayPk = BillId.Trim() + "." + Session.Session.CurrentUnitCode.Split('-')[1];
+            string MaGiaoDich = BillId.Trim();
             GIAODICH_DTO _NVGDQUAY_ASYNCCLIENT_BILL = new GIAODICH_DTO();
             string MA_TEN_KHACHHANG = "";
             if (Config.CheckConnectToServer())
             {
-                _NVGDQUAY_ASYNCCLIENT_BILL = KHOITAO_DULIEU_INLAI_HOADON_FROM_ORACLE(MaGiaoDichQuayPk);
+                _NVGDQUAY_ASYNCCLIENT_BILL = KHOITAO_DULIEU_INLAI_HOADON_FROM_ORACLE(MaGiaoDich);
                 MA_TEN_KHACHHANG = FrmThanhToanService.LAY_MA_TEN_KHACHHANG_FROM_ORACLE(_NVGDQUAY_ASYNCCLIENT_BILL.MAKHACHHANG);
             }
-            else
-            {
-                _NVGDQUAY_ASYNCCLIENT_BILL = KHOITAO_DULIEU_INLAI_HOADON_FROM_SQLSERVER(MaGiaoDichQuayPk);
-                MA_TEN_KHACHHANG = FrmThanhToanService.LAY_MA_TEN_KHACHHANG_FROM_SQLSERVER(_NVGDQUAY_ASYNCCLIENT_BILL.MAKHACHHANG);
-            }
+            //else
+            //{
+            //    _NVGDQUAY_ASYNCCLIENT_BILL = KHOITAO_DULIEU_INLAI_HOADON_FROM_SQLSERVER(MaGiaoDich);
+            //    MA_TEN_KHACHHANG = FrmThanhToanService.LAY_MA_TEN_KHACHHANG_FROM_SQLSERVER(_NVGDQUAY_ASYNCCLIENT_BILL.MAKHACHHANG);
+            //}
             using (frmPrintInLaiBill frmInLai = new frmPrintInLaiBill())
             {
                 try
@@ -2019,12 +1931,12 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         CONLAI = _NVGDQUAY_ASYNCCLIENT_BILL.TIEN_TRALAI_KHACH,
                         PHONE = Session.Session.CurrentPhone,
                         MAKH = MA_TEN_KHACHHANG,
-                        DIEM = 0,
-                        INFOTHUNGAN = "THU NGÂN: " + _NVGDQUAY_ASYNCCLIENT_BILL.I_CREATE_BY + "\t QUẦY: ",
+                        DIEM = _NVGDQUAY_ASYNCCLIENT_BILL.SODIEM,
+                        INFOTHUNGAN = "THU NGÂN: " + Session.Session.CurrentTenNhanVien,
                         MA_GIAODICH = _NVGDQUAY_ASYNCCLIENT_BILL.MA_GIAODICH,
                         THANHTIENCHU = ConvertSoThanhChu.ChuyenDoiSoThanhChu(_NVGDQUAY_ASYNCCLIENT_BILL.THANHTIEN),
                         TIENKHACHTRA = _NVGDQUAY_ASYNCCLIENT_BILL.TIENKHACH_TRA,
-                        QUAYHANG = "TEST",
+                        TENCUAHANG = Session.Session.CurrentNameStore
                     };
                     frmInLai.PrintInvoice_BanLeInLai(infoBill, _NVGDQUAY_ASYNCCLIENT_BILL);
                 }

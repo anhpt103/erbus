@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using DevExpress.XtraReports.UI;
 using ERBus.Cashier.Dto;
+using DevExpress.XtraReports.UI;
+using System.Collections.Generic;
+using System.Linq;
 using ERBus.Cashier.Common;
+using System.Drawing;
 
 namespace ERBus.Cashier.Giaodich.XuatBanLe
 {
@@ -14,19 +14,19 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         {
             InitializeComponent();
         }
-        // GIAO DỊCH BÁN LẺ
+        // GIAO DỊCH BÁN LẺ IN LẠI BILL
         public void InitDataInLaiBillBanLe(GIAODICH_DTO _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL, BILL_DTO objecBillDto)
         {
-            lblDate.Text = _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.NGAY_GIAODICH.ToString("dd/MM/yyyy") + " " + _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.THOIGIAN_TAO;
             p_Phone.Value = objecBillDto.PHONE;
             p_Address.Value = objecBillDto.ADDRESS;
-            p_MaGiaoDich.Value = objecBillDto.MA_GIAODICH;
+            p_MaGiaoDich.Value = objecBillDto.MA_GIAODICH + "- IN LẠI";
             p_InfoThuNgan.Value = objecBillDto.INFOTHUNGAN;
             p_MaKH.Value = objecBillDto.MAKH;
             p_Diem.Value = objecBillDto.DIEM;
             p_ThanhTienChu.Value = objecBillDto.THANHTIENCHU;
             p_ConLai.Value = objecBillDto.CONLAI;
             p_TienKhachTra.Value = objecBillDto.TIENKHACHTRA;
+            p_TenCuaHang.Value = objecBillDto.TENCUAHANG;
             if (_NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL.LST_DETAILS.Count > 0)
             {
                 List<VATTU_DTO.OBJ_VAT> obj_Vat = new List<VATTU_DTO.OBJ_VAT>();

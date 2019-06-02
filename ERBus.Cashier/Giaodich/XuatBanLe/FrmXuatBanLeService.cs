@@ -225,11 +225,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         OracleCommand cmd = new OracleCommand();
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM MATHANG A INNER JOIN MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN "+ TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = :MAKHO AND A.MAHANG = :MAHANG AND A.UNITCODE = :UNITCODE");
-                        cmd.Parameters.Clear();
-                        cmd.Parameters.Add("MAKHO", OracleDbType.Varchar2, 50, Session.Session.CurrentWareHouse, ParameterDirection.Input);
-                        cmd.Parameters.Add("MAHANG", OracleDbType.Varchar2, 50,  MaHang, ParameterDirection.Input);
-                        cmd.Parameters.Add("UNITCODE", OracleDbType.Varchar2, 10, Session.Session.CurrentUnitCode, ParameterDirection.Input);
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,A.DONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(A.GIATRI_THUE_RA, 0) AS GIATRI_THUE_RA,A.ITEMCODE,A.GIABANBUON_VAT,A.GIABANLE_VAT,NVL(C.GIAVON,0) AS GIAVON,NVL(C.TONCUOIKYSL,0) AS TONCUOIKYSL  FROM ( SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT FROM MATHANG A INNER JOIN MATHANG_GIA B ON A.MAHANG = B.MAHANG  INNER JOIN THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN DONVITINH E ON A.MADONVITINH = E.MADONVITINH  AND A.MAHANG = '"+ MaHang + "' AND A.UNITCODE = '"+ Session.Session.CurrentUnitCode + "') A LEFT JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG AND C.MAKHO = '" + Session.Session.CurrentWareHouse + "'");
                         OracleDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -296,9 +292,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         OracleCommand cmd = new OracleCommand();
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM MATHANG A INNER JOIN MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = :MAKHO AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = :UNITCODE");
-                        cmd.Parameters.Add("MAKHO", OracleDbType.Varchar2, 50, Session.Session.CurrentWareHouse, ParameterDirection.Input);
-                        cmd.Parameters.Add("UNITCODE", OracleDbType.Varchar2, 10, Session.Session.CurrentUnitCode, ParameterDirection.Input);
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,A.DONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(A.GIATRI_THUE_RA, 0) AS GIATRI_THUE_RA,A.ITEMCODE,A.GIABANBUON_VAT,A.GIABANLE_VAT,NVL(C.GIAVON,0) AS GIAVON,NVL(C.TONCUOIKYSL,0) AS TONCUOIKYSL  FROM ( SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,NVL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT FROM MATHANG A INNER JOIN MATHANG_GIA B ON A.MAHANG = B.MAHANG  INNER JOIN THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "') A LEFT JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG AND C.MAKHO = '"+ Session.Session.CurrentWareHouse + "'");
                         OracleDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -560,7 +554,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
                         cmd.Parameters.Clear();
-                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = '"+ Session.Session.CurrentWareHouse + "' AND A.MAHANG = '"+ MaHang + "' AND A.UNITCODE = '"+ Session.Session.CurrentUnitCode + "'");
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,A.DONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(A.GIATRI_THUE_RA, 0) AS GIATRI_THUE_RA,A.ITEMCODE,A.GIABANBUON_VAT,A.GIABANLE_VAT,ISNULL(C.GIAVON,0) AS GIAVON,ISNULL(C.TONCUOIKYSL,0) AS TONCUOIKYSL FROM ( SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG  INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH  AND A.MAHANG = '" + MaHang + "' AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "') A LEFT JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG AND C.MAKHO = '" + Session.Session.CurrentWareHouse + "'");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -628,7 +622,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
                         cmd.Parameters.Clear();
-                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT,C.GIAVON,C.TONCUOIKYSL FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG INNER JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH AND C.MAKHO = '"+ Session.Session.CurrentWareHouse + "' AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = '"+ Session.Session.CurrentUnitCode + "'");
+                        cmd.CommandText = string.Format(@"SELECT A.MAHANG,A.TENHANG,A.DONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(A.GIATRI_THUE_RA, 0) AS GIATRI_THUE_RA,A.ITEMCODE,A.GIABANBUON_VAT,A.GIABANLE_VAT,ISNULL(C.GIAVON,0) AS GIAVON,ISNULL(C.TONCUOIKYSL,0) AS TONCUOIKYSL FROM ( SELECT A.MAHANG,A.TENHANG,E.TENDONVITINH AS DONVITINH,A.BARCODE,A.MANHACUNGCAP,A.MATHUE_RA,ISNULL(D.GIATRI, 0) AS GIATRI_THUE_RA,A.ITEMCODE,B.GIABANBUON_VAT,B.GIABANLE_VAT FROM dbo.MATHANG A INNER JOIN dbo.MATHANG_GIA B ON A.MAHANG = B.MAHANG  INNER JOIN dbo.THUE D ON A.MATHUE_RA = D.MATHUE INNER JOIN dbo.DONVITINH E ON A.MADONVITINH = E.MADONVITINH  AND A.BARCODE LIKE '%" + MaHang + "%' AND A.UNITCODE = '" + Session.Session.CurrentUnitCode + "' ) A LEFT JOIN " + TABLE_NAME + " C ON A.MAHANG = C.MAHANG AND C.MAKHO = '" + Session.Session.CurrentWareHouse + "'");
                         SqlDataReader dataReader = cmd.ExecuteReader();
                         if (dataReader.HasRows)
                         {

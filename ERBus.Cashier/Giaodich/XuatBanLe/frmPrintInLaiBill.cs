@@ -37,7 +37,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             {
                 NotificationLauncher.ShowNotificationError("THÔNG BÁO", "KHÔNG TÌM THẤY MÁY IN", 1, "0x1", "0x8", "normal");
             }
-           
         }
     }
 }

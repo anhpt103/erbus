@@ -32,12 +32,12 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         {
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraReports.UI.XRSummary xrSummary1 = new DevExpress.XtraReports.UI.XRSummary();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportBill));
             DevExpress.XtraReports.UI.XRSummary xrSummary2 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary3 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary4 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary5 = new DevExpress.XtraReports.UI.XRSummary();
             DevExpress.XtraReports.UI.XRSummary xrSummary6 = new DevExpress.XtraReports.UI.XRSummary();
+            DevExpress.XtraReports.UI.XRSummary xrSummary7 = new DevExpress.XtraReports.UI.XRSummary();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.xrTable2 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow2 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -50,6 +50,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.p_Address = new DevExpress.XtraReports.Parameters.Parameter();
             this.p_Phone = new DevExpress.XtraReports.Parameters.Parameter();
+            this.p_TenCuaHang = new DevExpress.XtraReports.Parameters.Parameter();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.xrControlStyle1 = new DevExpress.XtraReports.UI.XRControlStyle();
             this.p_MaGiaoDich = new DevExpress.XtraReports.Parameters.Parameter();
@@ -61,13 +62,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
             this.p_Diem = new DevExpress.XtraReports.Parameters.Parameter();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.lblName = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.lblDate = new DevExpress.XtraReports.UI.XRLabel();
             this.lblInfoUser = new DevExpress.XtraReports.UI.XRLabel();
@@ -98,8 +97,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrTableCell13 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell14 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell15 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrTable4 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow8 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -114,6 +111,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrTableCell30 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell31 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell32 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableRow7 = new DevExpress.XtraReports.UI.XRTableRow();
+            this.xrTableCell24 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell25 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell26 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableRow10 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell34 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell35 = new DevExpress.XtraReports.UI.XRTableCell();
@@ -184,7 +185,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // xrTableCell11
             // 
             this.xrTableCell11.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "MAVATTU")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "MAHANG")});
             this.xrTableCell11.Font = new System.Drawing.Font("Times New Roman", 7F);
             this.xrTableCell11.Name = "xrTableCell11";
             this.xrTableCell11.StylePriority.UseFont = false;
@@ -195,7 +196,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // xrTableCell10
             // 
             this.xrTableCell10.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TENDAYDU")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TENHANG")});
             this.xrTableCell10.Font = new System.Drawing.Font("Times New Roman", 7F);
             this.xrTableCell10.Name = "xrTableCell10";
             this.xrTableCell10.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
@@ -206,7 +207,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // xrTableCell9
             // 
             this.xrTableCell9.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "GIABANLECOVAT", "{0:#,#}")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "GIABANLE_VAT", "{0:#,#}")});
             this.xrTableCell9.Font = new System.Drawing.Font("Times New Roman", 7F);
             this.xrTableCell9.Name = "xrTableCell9";
             this.xrTableCell9.StylePriority.UseFont = false;
@@ -257,6 +258,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.p_Phone.Name = "p_Phone";
             this.p_Phone.ValueInfo = "012";
             // 
+            // p_TenCuaHang
+            // 
+            this.p_TenCuaHang.Description = "Tên cửa hàng";
+            this.p_TenCuaHang.Name = "p_TenCuaHang";
+            // 
             // BottomMargin
             // 
             this.BottomMargin.HeightF = 0F;
@@ -299,26 +305,24 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrLabel13,
             this.xrLabel12,
             this.xrLabel10,
-            this.xrPictureBox1,
             this.lblName,
             this.xrLabel1,
             this.xrLabel2,
             this.xrLabel3,
             this.xrLabel4,
-            this.xrLabel5,
             this.xrLabel6,
             this.lblDate,
             this.lblInfoUser,
             this.lblInfoKH,
             this.xrTable1});
-            this.PageHeader.HeightF = 182F;
+            this.PageHeader.HeightF = 161F;
             this.PageHeader.Name = "PageHeader";
             this.PageHeader.SnapLinePadding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 5, 10, 100F);
             // 
             // xrLabel13
             // 
             this.xrLabel13.Font = new System.Drawing.Font("Times New Roman", 7F);
-            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(0F, 97.00003F);
+            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(0F, 76.00003F);
             this.xrLabel13.Name = "xrLabel13";
             this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel13.SizeF = new System.Drawing.SizeF(64.58327F, 20F);
@@ -332,7 +336,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrLabel12.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding(this.p_Diem, "Text", "Điểm: {0}")});
             this.xrLabel12.Font = new System.Drawing.Font("Times New Roman", 6F);
-            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(215.625F, 137F);
+            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(215.625F, 116F);
             this.xrLabel12.Name = "xrLabel12";
             this.xrLabel12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel12.SizeF = new System.Drawing.SizeF(64.58324F, 20F);
@@ -350,26 +354,19 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // xrLabel10
             // 
             this.xrLabel10.Font = new System.Drawing.Font("Times New Roman", 6F);
-            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(3.178914E-05F, 137F);
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(3.178914E-05F, 116F);
             this.xrLabel10.Name = "xrLabel10";
             this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel10.SizeF = new System.Drawing.SizeF(36.5833F, 20F);
+            this.xrLabel10.SizeF = new System.Drawing.SizeF(64.58322F, 20F);
             this.xrLabel10.StylePriority.UseFont = false;
             this.xrLabel10.StylePriority.UseTextAlignment = false;
-            this.xrLabel10.Text = "Mã KH : ";
+            this.xrLabel10.Text = "Mã khách hàng : ";
             this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
-            // 
-            // xrPictureBox1
-            // 
-            this.xrPictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("xrPictureBox1.Image")));
-            this.xrPictureBox1.ImageAlignment = DevExpress.XtraPrinting.ImageAlignment.TopLeft;
-            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(215.625F, 21F);
-            this.xrPictureBox1.Name = "xrPictureBox1";
-            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(67.37506F, 40.00003F);
-            this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.StretchImage;
             // 
             // lblName
             // 
+            this.lblName.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding(this.p_TenCuaHang, "Text", "")});
             this.lblName.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.lblName.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.lblName.Name = "lblName";
@@ -377,7 +374,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblName.SizeF = new System.Drawing.SizeF(283F, 21F);
             this.lblName.StylePriority.UseFont = false;
             this.lblName.StylePriority.UseTextAlignment = false;
-            this.lblName.Text = "HỆ THỐNG SIÊU THỊ DABACO";
             this.lblName.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
             // 
             // xrLabel1
@@ -388,7 +384,9 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel1.SizeF = new System.Drawing.SizeF(64.58326F, 20F);
             this.xrLabel1.StylePriority.UseFont = false;
+            this.xrLabel1.StylePriority.UseTextAlignment = false;
             this.xrLabel1.Text = "Điện Thoại : ";
+            this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel2
             // 
@@ -398,9 +396,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(64.58327F, 21F);
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(151.0417F, 20F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(218.4167F, 20F);
             this.xrLabel2.StylePriority.UseFont = false;
+            this.xrLabel2.StylePriority.UseTextAlignment = false;
             this.xrLabel2.Text = "xrLabel2";
+            this.xrLabel2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel3
             // 
@@ -408,40 +408,32 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 41F);
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(54.16661F, 20F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(64.58327F, 20F);
             this.xrLabel3.StylePriority.UseFont = false;
+            this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "Địa chỉ : ";
+            this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel4
             // 
             this.xrLabel4.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding(this.p_Address, "Text", "")});
             this.xrLabel4.Font = new System.Drawing.Font("Times New Roman", 8F);
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(54.16661F, 41.00003F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(64.58327F, 41.00003F);
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel4.SizeF = new System.Drawing.SizeF(161.4584F, 20F);
+            this.xrLabel4.SizeF = new System.Drawing.SizeF(218.4169F, 20F);
             this.xrLabel4.StylePriority.UseFont = false;
+            this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.Text = "xrLabel4";
-            // 
-            // xrLabel5
-            // 
-            this.xrLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(0F, 61.00004F);
-            this.xrLabel5.Name = "xrLabel5";
-            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel5.SizeF = new System.Drawing.SizeF(283F, 21F);
-            this.xrLabel5.StylePriority.UseFont = false;
-            this.xrLabel5.StylePriority.UseTextAlignment = false;
-            this.xrLabel5.Text = "DABACO MART";
-            this.xrLabel5.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
+            this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             // 
             // xrLabel6
             // 
             this.xrLabel6.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding(this.p_MaGiaoDich, "Text", "")});
             this.xrLabel6.Font = new System.Drawing.Font("Times New Roman", 7F);
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(64.58327F, 97.00003F);
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(64.58327F, 76.00003F);
             this.xrLabel6.Name = "xrLabel6";
             this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel6.SizeF = new System.Drawing.SizeF(218.4168F, 20F);
@@ -453,7 +445,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // lblDate
             // 
             this.lblDate.Font = new System.Drawing.Font("Times New Roman", 6F);
-            this.lblDate.LocationFloat = new DevExpress.Utils.PointFloat(0F, 82.00004F);
+            this.lblDate.LocationFloat = new DevExpress.Utils.PointFloat(0F, 61.00003F);
             this.lblDate.Name = "lblDate";
             this.lblDate.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.lblDate.SizeF = new System.Drawing.SizeF(283F, 15F);
@@ -466,7 +458,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblInfoUser.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding(this.p_InfoThuNgan, "Text", "")});
             this.lblInfoUser.Font = new System.Drawing.Font("Times New Roman", 7F);
-            this.lblInfoUser.LocationFloat = new DevExpress.Utils.PointFloat(0F, 117F);
+            this.lblInfoUser.LocationFloat = new DevExpress.Utils.PointFloat(0F, 96F);
             this.lblInfoUser.Name = "lblInfoUser";
             this.lblInfoUser.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.lblInfoUser.SizeF = new System.Drawing.SizeF(283F, 20F);
@@ -484,10 +476,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.lblInfoKH.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding(this.p_MaKH, "Text", "")});
             this.lblInfoKH.Font = new System.Drawing.Font("Times New Roman", 6F);
-            this.lblInfoKH.LocationFloat = new DevExpress.Utils.PointFloat(36.58333F, 137F);
+            this.lblInfoKH.LocationFloat = new DevExpress.Utils.PointFloat(64.58327F, 116F);
             this.lblInfoKH.Name = "lblInfoKH";
             this.lblInfoKH.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.lblInfoKH.SizeF = new System.Drawing.SizeF(179.0416F, 20F);
+            this.lblInfoKH.SizeF = new System.Drawing.SizeF(151.0417F, 20F);
             this.lblInfoKH.StylePriority.UseFont = false;
             this.lblInfoKH.StylePriority.UseTextAlignment = false;
             this.lblInfoKH.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
@@ -500,7 +492,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // xrTable1
             // 
             this.xrTable1.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(1.907349E-06F, 157F);
+            this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(3.973643E-05F, 136F);
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow1});
@@ -578,18 +570,16 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xtTong,
             this.xrTable3,
             this.xtVAT,
-            this.xrLabel9,
-            this.xrLabel8,
             this.xrLabel7,
             this.xrTable4});
-            this.ReportFooter.HeightF = 223.3073F;
+            this.ReportFooter.HeightF = 204.8967F;
             this.ReportFooter.Name = "ReportFooter";
             this.ReportFooter.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.ReportFooter.StylePriority.UsePadding = false;
             // 
             // xtTong
             // 
-            this.xtTong.LocationFloat = new DevExpress.Utils.PointFloat(28.27604F, 136.9251F);
+            this.xtTong.LocationFloat = new DevExpress.Utils.PointFloat(28.27604F, 169.254F);
             this.xtTong.Name = "xtTong";
             this.xtTong.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow5});
@@ -630,7 +620,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // xrTable3
             // 
             this.xrTable3.Font = new System.Drawing.Font("Times New Roman", 8F, System.Drawing.FontStyle.Bold);
-            this.xrTable3.LocationFloat = new DevExpress.Utils.PointFloat(26.27604F, 108.8802F);
+            this.xrTable3.LocationFloat = new DevExpress.Utils.PointFloat(26.27604F, 141.2091F);
             this.xrTable3.Name = "xrTable3";
             this.xrTable3.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow4});
@@ -672,7 +662,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             // xtVAT
             // 
-            this.xtVAT.LocationFloat = new DevExpress.Utils.PointFloat(26.27604F, 120.7584F);
+            this.xtVAT.LocationFloat = new DevExpress.Utils.PointFloat(26.27604F, 153.0873F);
             this.xtVAT.Name = "xtVAT";
             this.xtVAT.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow3});
@@ -714,37 +704,13 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrTableCell15.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             this.xrTableCell15.Weight = 1.856557973339922D;
             // 
-            // xrLabel9
-            // 
-            this.xrLabel9.Font = new System.Drawing.Font("Times New Roman", 7F);
-            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(0F, 199.8698F);
-            this.xrLabel9.Name = "xrLabel9";
-            this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel9.SizeF = new System.Drawing.SizeF(282.9999F, 23F);
-            this.xrLabel9.StylePriority.UseFont = false;
-            this.xrLabel9.StylePriority.UseTextAlignment = false;
-            this.xrLabel9.Text = "Phần mêm cung cấp bởi công ty BTSOFTVN  -   ĐT : 024366735544";
-            this.xrLabel9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // xrLabel8
-            // 
-            this.xrLabel8.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(0F, 176.8698F);
-            this.xrLabel8.Name = "xrLabel8";
-            this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel8.SizeF = new System.Drawing.SizeF(283F, 23F);
-            this.xrLabel8.StylePriority.UseFont = false;
-            this.xrLabel8.StylePriority.UseTextAlignment = false;
-            this.xrLabel8.Text = "Hóa đơn giá trị gia tăng chỉ viết trong ngày";
-            this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
             // xrLabel7
             // 
             this.xrLabel7.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 153.8698F);
+            this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 184.8967F);
             this.xrLabel7.Name = "xrLabel7";
             this.xrLabel7.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel7.SizeF = new System.Drawing.SizeF(283F, 23F);
+            this.xrLabel7.SizeF = new System.Drawing.SizeF(283F, 20F);
             this.xrLabel7.StylePriority.UseFont = false;
             this.xrLabel7.StylePriority.UseTextAlignment = false;
             this.xrLabel7.Text = "Xin chân thành cảm ơn quý khách";
@@ -754,16 +720,17 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.xrTable4.Borders = ((DevExpress.XtraPrinting.BorderSide)(((DevExpress.XtraPrinting.BorderSide.Left | DevExpress.XtraPrinting.BorderSide.Right) 
             | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrTable4.LocationFloat = new DevExpress.Utils.PointFloat(3.051758E-05F, 0F);
+            this.xrTable4.LocationFloat = new DevExpress.Utils.PointFloat(3.178914E-05F, 0F);
             this.xrTable4.Name = "xrTable4";
             this.xrTable4.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
             this.xrTableRow8,
             this.xrTableRow6,
             this.xrTableRow9,
+            this.xrTableRow7,
             this.xrTableRow10,
             this.xrTableRow11,
             this.xrTableRow12});
-            this.xrTable4.SizeF = new System.Drawing.SizeF(282.9999F, 108F);
+            this.xrTable4.SizeF = new System.Drawing.SizeF(282.9999F, 141.2091F);
             this.xrTable4.StylePriority.UseBorders = false;
             // 
             // xrTableRow8
@@ -784,8 +751,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             new DevExpress.XtraReports.UI.XRBinding("Text", null, "SOLUONG")});
             this.xrTableCell27.Font = new System.Drawing.Font("Times New Roman", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell27.Name = "xrTableCell27";
+            this.xrTableCell27.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
             this.xrTableCell27.StylePriority.UseBorders = false;
             this.xrTableCell27.StylePriority.UseFont = false;
+            this.xrTableCell27.StylePriority.UsePadding = false;
             this.xrTableCell27.StylePriority.UseTextAlignment = false;
             xrSummary2.FormatString = "Tổng SL: {0:#,#}";
             xrSummary2.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
@@ -810,11 +779,13 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.xrTableCell29.Borders = DevExpress.XtraPrinting.BorderSide.Right;
             this.xrTableCell29.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TTIENCOVAT_CHUA_GIAMGIA")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "THANHTIEN")});
             this.xrTableCell29.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell29.Name = "xrTableCell29";
+            this.xrTableCell29.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
             this.xrTableCell29.StylePriority.UseBorders = false;
             this.xrTableCell29.StylePriority.UseFont = false;
+            this.xrTableCell29.StylePriority.UsePadding = false;
             this.xrTableCell29.StylePriority.UseTextAlignment = false;
             xrSummary3.FormatString = "{0:#,#}";
             xrSummary3.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
@@ -836,8 +807,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrTableCell21.Borders = DevExpress.XtraPrinting.BorderSide.Left;
             this.xrTableCell21.Font = new System.Drawing.Font("Times New Roman", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell21.Name = "xrTableCell21";
+            this.xrTableCell21.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
             this.xrTableCell21.StylePriority.UseBorders = false;
             this.xrTableCell21.StylePriority.UseFont = false;
+            this.xrTableCell21.StylePriority.UsePadding = false;
             this.xrTableCell21.StylePriority.UseTextAlignment = false;
             this.xrTableCell21.Text = "Tiền bằng chữ : ";
             this.xrTableCell21.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
@@ -851,7 +824,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.xrTableCell22.StylePriority.UseBorders = false;
             this.xrTableCell22.StylePriority.UseFont = false;
             this.xrTableCell22.StylePriority.UseTextAlignment = false;
-            this.xrTableCell22.Text = "Tiền khuyến mãi :";
+            this.xrTableCell22.Text = "Khuyến mãi :";
             this.xrTableCell22.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell22.Weight = 1.0600856633982665D;
             // 
@@ -859,11 +832,13 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.xrTableCell23.Borders = DevExpress.XtraPrinting.BorderSide.Right;
             this.xrTableCell23.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TIENKHUYENMAI")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TIEN_KHUYENMAI")});
             this.xrTableCell23.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell23.Name = "xrTableCell23";
+            this.xrTableCell23.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
             this.xrTableCell23.StylePriority.UseBorders = false;
             this.xrTableCell23.StylePriority.UseFont = false;
+            this.xrTableCell23.StylePriority.UsePadding = false;
             this.xrTableCell23.StylePriority.UseTextAlignment = false;
             xrSummary4.FormatString = "{0:#,#}";
             xrSummary4.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
@@ -887,8 +862,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             new DevExpress.XtraReports.UI.XRBinding(this.p_ThanhTienChu, "Text", "")});
             this.xrTableCell30.Font = new System.Drawing.Font("Times New Roman", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell30.Name = "xrTableCell30";
+            this.xrTableCell30.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 0, 0, 0, 100F);
             this.xrTableCell30.StylePriority.UseBorders = false;
             this.xrTableCell30.StylePriority.UseFont = false;
+            this.xrTableCell30.StylePriority.UsePadding = false;
             this.xrTableCell30.StylePriority.UseTextAlignment = false;
             this.xrTableCell30.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrTableCell30.Weight = 1.6051501293585631D;
@@ -909,17 +886,70 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.xrTableCell32.Borders = DevExpress.XtraPrinting.BorderSide.Right;
             this.xrTableCell32.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TIENCHIETKHAU")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TIEN_CHIETKHAU")});
             this.xrTableCell32.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell32.Name = "xrTableCell32";
+            this.xrTableCell32.NullValueText = "0";
+            this.xrTableCell32.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
             this.xrTableCell32.StylePriority.UseBorders = false;
             this.xrTableCell32.StylePriority.UseFont = false;
+            this.xrTableCell32.StylePriority.UsePadding = false;
             this.xrTableCell32.StylePriority.UseTextAlignment = false;
             xrSummary5.FormatString = "{0:#,#}";
             xrSummary5.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
             this.xrTableCell32.Summary = xrSummary5;
             this.xrTableCell32.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell32.Weight = 0.83278864047237133D;
+            // 
+            // xrTableRow7
+            // 
+            this.xrTableRow7.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
+            this.xrTableCell24,
+            this.xrTableCell25,
+            this.xrTableCell26});
+            this.xrTableRow7.Name = "xrTableRow7";
+            this.xrTableRow7.Weight = 1D;
+            // 
+            // xrTableCell24
+            // 
+            this.xrTableCell24.Borders = DevExpress.XtraPrinting.BorderSide.Left;
+            this.xrTableCell24.Font = new System.Drawing.Font("Times New Roman", 7F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrTableCell24.Name = "xrTableCell24";
+            this.xrTableCell24.StylePriority.UseBorders = false;
+            this.xrTableCell24.StylePriority.UseFont = false;
+            this.xrTableCell24.StylePriority.UseTextAlignment = false;
+            this.xrTableCell24.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell24.Weight = 1.6051501293585631D;
+            // 
+            // xrTableCell25
+            // 
+            this.xrTableCell25.Borders = DevExpress.XtraPrinting.BorderSide.None;
+            this.xrTableCell25.Font = new System.Drawing.Font("Times New Roman", 7F, System.Drawing.FontStyle.Bold);
+            this.xrTableCell25.Name = "xrTableCell25";
+            this.xrTableCell25.StylePriority.UseBorders = false;
+            this.xrTableCell25.StylePriority.UseFont = false;
+            this.xrTableCell25.StylePriority.UseTextAlignment = false;
+            this.xrTableCell25.Text = "Thẻ điểm :";
+            this.xrTableCell25.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.xrTableCell25.Weight = 1.0600860406112393D;
+            // 
+            // xrTableCell26
+            // 
+            this.xrTableCell26.Borders = DevExpress.XtraPrinting.BorderSide.Right;
+            this.xrTableCell26.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TIEN_VOUCHER")});
+            this.xrTableCell26.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrTableCell26.Name = "xrTableCell26";
+            this.xrTableCell26.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
+            this.xrTableCell26.StylePriority.UseBorders = false;
+            this.xrTableCell26.StylePriority.UseFont = false;
+            this.xrTableCell26.StylePriority.UsePadding = false;
+            this.xrTableCell26.StylePriority.UseTextAlignment = false;
+            xrSummary6.FormatString = "{0:#,#}";
+            xrSummary6.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
+            this.xrTableCell26.Summary = xrSummary6;
+            this.xrTableCell26.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
+            this.xrTableCell26.Weight = 0.83278864047237133D;
             // 
             // xrTableRow10
             // 
@@ -947,15 +977,17 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             // 
             this.xrTableCell35.Borders = DevExpress.XtraPrinting.BorderSide.Right;
             this.xrTableCell35.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "TTIENCOVAT")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "THANHTIEN")});
             this.xrTableCell35.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell35.Name = "xrTableCell35";
+            this.xrTableCell35.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
             this.xrTableCell35.StylePriority.UseBorders = false;
             this.xrTableCell35.StylePriority.UseFont = false;
+            this.xrTableCell35.StylePriority.UsePadding = false;
             this.xrTableCell35.StylePriority.UseTextAlignment = false;
-            xrSummary6.FormatString = "{0:#,#}";
-            xrSummary6.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
-            this.xrTableCell35.Summary = xrSummary6;
+            xrSummary7.FormatString = "{0:#,#}";
+            xrSummary7.Running = DevExpress.XtraReports.UI.SummaryRunning.Report;
+            this.xrTableCell35.Summary = xrSummary7;
             this.xrTableCell35.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell35.Weight = 0.83278864047237133D;
             // 
@@ -996,8 +1028,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             new DevExpress.XtraReports.UI.XRBinding(this.p_TienKhachTra, "Text", "{0:#,#}")});
             this.xrTableCell38.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell38.Name = "xrTableCell38";
+            this.xrTableCell38.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
             this.xrTableCell38.StylePriority.UseBorders = false;
             this.xrTableCell38.StylePriority.UseFont = false;
+            this.xrTableCell38.StylePriority.UsePadding = false;
             this.xrTableCell38.StylePriority.UseTextAlignment = false;
             this.xrTableCell38.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell38.Weight = 0.83278864047237133D;
@@ -1037,8 +1071,10 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             new DevExpress.XtraReports.UI.XRBinding(this.p_ConLai, "Text", "{0:#,#}")});
             this.xrTableCell41.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.xrTableCell41.Name = "xrTableCell41";
+            this.xrTableCell41.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 2, 0, 0, 100F);
             this.xrTableCell41.StylePriority.UseBorders = false;
             this.xrTableCell41.StylePriority.UseFont = false;
+            this.xrTableCell41.StylePriority.UsePadding = false;
             this.xrTableCell41.StylePriority.UseTextAlignment = false;
             this.xrTableCell41.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.xrTableCell41.Weight = 0.83278864047237133D;
@@ -1065,6 +1101,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
             this.PaperName = "ZPrinter Paper(80 x 297mm)";
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.p_TenCuaHang,
             this.p_Phone,
             this.p_Address,
             this.p_MaGiaoDich,
@@ -1093,6 +1130,7 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         private DevExpress.XtraReports.UI.DetailBand Detail;
         private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
         private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
+        private DevExpress.XtraReports.Parameters.Parameter p_TenCuaHang;
         private DevExpress.XtraReports.Parameters.Parameter p_Phone;
         private DevExpress.XtraReports.Parameters.Parameter p_Address;
         private DevExpress.XtraReports.UI.XRControlStyle xrControlStyle1;
@@ -1101,13 +1139,11 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         private DevExpress.XtraReports.Parameters.Parameter p_TienKhachTra;
         private DevExpress.XtraReports.Parameters.Parameter p_ConLai;
         private DevExpress.XtraReports.UI.PageHeaderBand PageHeader;
-        private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox1;
         private DevExpress.XtraReports.UI.XRLabel lblName;
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel5;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
         private DevExpress.XtraReports.UI.XRLabel lblDate;
         private DevExpress.XtraReports.UI.XRLabel lblInfoUser;
@@ -1131,8 +1167,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell7;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell8;
         private DevExpress.XtraReports.UI.ReportFooterBand ReportFooter;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel9;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel8;
         private DevExpress.XtraReports.UI.XRLabel xrLabel7;
         private DevExpress.XtraReports.UI.XRTable xrTable4;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow8;
@@ -1173,10 +1207,14 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell12;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell16;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell20;
-        private DevExpress.DataAccess.ObjectBinding.ObjectDataSource objectDataSource1;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow6;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell22;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell23;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell21;
+        private DevExpress.XtraReports.UI.XRTableRow xrTableRow7;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell24;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell25;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell26;
+        private DevExpress.DataAccess.ObjectBinding.ObjectDataSource objectDataSource1;
     }
 }

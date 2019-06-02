@@ -48,8 +48,8 @@
                 $scope.paged.CurrentPage = pageNo;
                 filterData();
             };
-            $scope.sortType = 'MA_CHUNGTU';
-            $scope.sortReverse = false;
+            $scope.sortType = 'NGAY_CHUNGTU';
+            $scope.sortReverse = true;
             $scope.doSearch = function () {
                 $scope.paged.CurrentPage = 1;
                 filterData();

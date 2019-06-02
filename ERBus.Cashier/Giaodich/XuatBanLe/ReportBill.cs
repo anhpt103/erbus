@@ -13,7 +13,6 @@ namespace ERBus.Cashier.Giaodich.XuatBanLe
         public ReportBill()
         {
             InitializeComponent();
-            lblDate.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
         // GIAO DỊCH BÁN LẺ
         public void InitDataBillBanLe(GIAODICH_DTO _NVGDQUAY_ASYNCCLIENT_BILL_GLOBAL, BILL_DTO objecBillDto)
