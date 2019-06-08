@@ -224,6 +224,7 @@
     <Content Include="ERBus\controllers\catalog\nhaCungCapController.js" />
     <Content Include="ERBus\controllers\catalog\khachHangController.js" />
     <Content Include="ERBus\controllers\catalog\khoHangController.js" />
+    <Content Include="ERBus\controllers\catalog\phongController.js" />
     <Content Include="ERBus\controllers\catalog\thueController.js" />
     <Content Include="ERBus\controllers\catalog\hangKhachHangController.js" />
     <Content Include="ERBus\controllers\catalog\keHangController.js" />
@@ -380,6 +381,11 @@
     <Content Include="ERBus\views\catalog\MatHang\index.html" />
     <Content Include="ERBus\views\catalog\NhaCungCap\search.html" />
     <Content Include="ERBus\views\catalog\NhomHang\search.html" />
+    <Content Include="ERBus\views\catalog\Phong\create.html" />
+    <Content Include="ERBus\views\catalog\Phong\delete.html" />
+    <Content Include="ERBus\views\catalog\Phong\detail.html" />
+    <Content Include="ERBus\views\catalog\Phong\edit.html" />
+    <Content Include="ERBus\views\catalog\Phong\index.html" />
     <Content Include="ERBus\views\catalog\Thue\create.html" />
     <Content Include="ERBus\views\catalog\Thue\delete.html" />
     <Content Include="ERBus\views\catalog\Thue\detail.html" />

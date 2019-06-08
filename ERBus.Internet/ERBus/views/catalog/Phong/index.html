@@ -1,0 +1,50 @@
+﻿<div class="section__content section__content--p30 customize">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="mr-2 fa fa-align-justify"></i>
+                        <strong class="card-title" v-if="headerText">{{title();}}</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <button type="button" class="btn btn-primary customize" ng-click="create();"><i class="fa fa-plus"></i>&ensp;{{config.label.btnCreate}}</button>
+                            <input class="au-input au-input--xl customize" type="text" name="search" placeholder="Tìm kiếm thông tin trong {{title();}}" ng-model="filtered.summary" ng-enter="doSearch()" />
+                            <button class="au-btn--submit" type="submit" ng-click="doSearch()">
+                                <i class="zmdi zmdi-search"></i>
+                            </button>
+                            <!-- Button function -->
+                            <button type="button" prevent-default class="btn btn-outline-info customize" ng-click="refresh();"><i class="fa fa-retweet"></i>&ensp;{{config.label.btnRefresh}}</button>
+                            <button type="button" prevent-default class="btn btn-outline-info customize" ng-click="goHome();"><i class="fa fa-undo"></i>&ensp;{{config.label.btnBack}}</button>
+                            <!-- Form data -->
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="tree">
+                                <ul>
+                                    <li>
+                                        <a style="font-size: 16px;">Tòa nhà</a>
+                                        <ul>
+                                            <li ng-repeat="parent in treeFloor">
+                                                <a style="font-size: 15px;" ng-bind="parent.TENPHONG"></a>
+                                                <ul>
+                                                    <li ng-repeat="children in parent.CHILDREN">
+                                                        <a style="font-size: 14px;" ng-click="edit(children);" ng-dblclick="detail(children)" ng-bind="children.TENPHONG"></a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <pre>Tổng số: {{paged.CurrentPage}} / {{paged.TotalPages}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

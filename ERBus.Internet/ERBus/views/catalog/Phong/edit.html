@@ -1,0 +1,69 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tầng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_tang" name="_tang" ng-model="target.TANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('floor')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form._tang.$dirty && _form._tang.$invalid">
+                        <span ng-show="_form._tang.$error.required">Tầng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <!--<div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maPhong" name="_maPhong" ng-model="target.MAPHONG" required placeholder="Nhập mã phòng" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._maPhong.$dirty && _form._maPhong.$invalid">
+                        <span ng-show="_form._maPhong.$error.required">Mã phòng không được để trống</span>
+                    </small>
+                </div>
+            </div>-->
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenPhong" name="_tenPhong" ng-model="target.TENPHONG" required placeholder="Nhập tên phòng" class="form-control">
+                    <small class="form-text text-muted" ng-show="_form._tenPhong.$dirty && _form._tenPhong.$invalid">
+                        <span ng-show="_form._tenPhong.$error.required">Tên phòng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Vị trí</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_viTri" name="_viTri" ng-model="target.VITRI" placeholder="Nhập vị trí phòng" class="form-control">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="select" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_trangThai" name="_trangThai" ng-model="target.TRANGTHAI" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('status')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form._trangThai.$dirty && _form._trangThai.$invalid">
+                        <span ng-show="_form._trangThai.$error.required">Trạng thái không được để trống</span>
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" class="btn btn-danger btn-sm" ng-click="delete($event,target);"><i class="fa fa-trash-alt"></i>&nbsp; {{config.label.btnDelete}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

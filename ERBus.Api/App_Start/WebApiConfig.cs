@@ -21,6 +21,7 @@ using ERBus.Service.Catalog.LoaiHang;
 using ERBus.Service.Catalog.MatHang;
 using ERBus.Service.Catalog.NhaCungCap;
 using ERBus.Service.Catalog.NhomHang;
+using ERBus.Service.Catalog.Phong;
 using ERBus.Service.Catalog.ThamSoHeThong;
 using ERBus.Service.Catalog.Thue;
 using ERBus.Service.Knowledge.NhapMua;
@@ -92,6 +93,9 @@ namespace ERBus.Api.App_Start
 
             container.RegisterType<IRepository<MATHANG>, Repository<MATHANG>>(new HierarchicalLifetimeManager());
             container.RegisterType<IMatHangService, MatHangService>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IRepository<PHONG>, Repository<PHONG>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IPhongService, PhongService>(new HierarchicalLifetimeManager());
 
             //Authorize
             container.RegisterType<IRepository<THAMSOHETHONG>, Repository<THAMSOHETHONG>>(new HierarchicalLifetimeManager());

@@ -156,6 +156,8 @@
     <Compile Include="Catalog\KhoHang\KhoHangViewModel.cs" />
     <Compile Include="Catalog\HangKhachHang\HangKhachHangService.cs" />
     <Compile Include="Catalog\HangKhachHang\HangKhachHangViewModel.cs" />
+    <Compile Include="Catalog\Phong\PhongService.cs" />
+    <Compile Include="Catalog\Phong\PhongViewModel.cs" />
     <Compile Include="Catalog\Thue\ThueService.cs" />
     <Compile Include="Catalog\Thue\ThueViewModel.cs" />
     <Compile Include="Catalog\BoHang\BoHangService.cs" />

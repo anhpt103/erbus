@@ -230,6 +230,7 @@
     <Compile Include="Controllers\Catalog\KhachHangController.cs" />
     <Compile Include="Controllers\Catalog\KhoHangController.cs" />
     <Compile Include="Controllers\Catalog\BoHangController.cs" />
+    <Compile Include="Controllers\Catalog\PhongController.cs" />
     <Compile Include="Controllers\Catalog\ThueController.cs" />
     <Compile Include="Controllers\Catalog\HangKhachHangController.cs" />
     <Compile Include="Controllers\Catalog\DonViTinhController.cs" />

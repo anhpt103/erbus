@@ -172,6 +172,20 @@
                 }
             },
             moduleUrl: controlUrl + "matHangController.js"
+        },
+        // Catalog Phòng
+        {
+            name: 'Phong',
+            url: '/room',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "Phong/index.html",
+                    controller: "Phong_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "phongController.js"
         }
     ];
     return states;

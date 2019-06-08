@@ -20,6 +20,7 @@ using ERBus.Service.Catalog.LoaiHang;
 using ERBus.Service.Catalog.MatHang;
 using ERBus.Service.Catalog.NhaCungCap;
 using ERBus.Service.Catalog.NhomHang;
+using ERBus.Service.Catalog.Phong;
 using ERBus.Service.Catalog.Thue;
 using ERBus.Service.Knowledge.NhapMua;
 using ERBus.Service.Knowledge.XuatBan;
@@ -75,6 +76,9 @@ namespace ERBus.Service
 
                 cfg.CreateMap<NHACUNGCAP, NhaCungCapViewModel.Dto>();
                 cfg.CreateMap<NhaCungCapViewModel.Dto, NHACUNGCAP>();
+
+                cfg.CreateMap<PHONG, PhongViewModel.Dto>();
+                cfg.CreateMap<PhongViewModel.Dto, PHONG>();
 
                 cfg.CreateMap<MATHANG, MatHangViewModel.Dto>();
                 cfg.CreateMap<MatHangViewModel.Dto, MATHANG>();
