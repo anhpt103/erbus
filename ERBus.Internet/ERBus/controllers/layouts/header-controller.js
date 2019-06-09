@@ -72,6 +72,15 @@
             }
         };
         loadUser();
+
+        $scope.detailAccount = function (currentUser) {
+            nguoiDungService.getDetails(currentUser.id).then(function (response) {
+                if (response && response.status === 200 && response.data) {
+                    $scope.detailCurrentUser = response.data;
+                }
+            });
+        };
+
         $scope.logOut = function () {
             accountService.logout();
         };

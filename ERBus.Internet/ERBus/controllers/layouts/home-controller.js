@@ -1,5 +1,4 @@
-
-define(['angular', 'chart-js', 'angular-chart'], function (angular, chartjs, angularChart) {
+define(['angular', 'chart-js', 'angular-chart', 'controllers/authorize/authController'], function (angular, chartjs, angularChart, authModule) {
     'use strict';
     var app = angular.module('homeModule', ['ui.bootstrap', 'chart.js']);
 
@@ -38,7 +37,7 @@ define(['angular', 'chart-js', 'angular-chart'], function (angular, chartjs, ang
         return result;
     }]);
 
-    app.controller('home_Ctrl', ['$scope', 'homeService', 'tempDataService', '$filter', function ($scope, service, tempDataService, $filter) {
+    app.controller('home_Ctrl', ['$scope', 'homeService', 'tempDataService', '$filter', 'userService', function ($scope, service, tempDataService, $filter, userService) {
         $scope.tempData = tempDataService.tempData;
         $scope.seriesLineChart = [];
         $scope.labelsLineChart = [];
@@ -49,6 +48,7 @@ define(['angular', 'chart-js', 'angular-chart'], function (angular, chartjs, ang
         $scope.merchandiseTypeData = [];
         $scope.merchandiseGroupLabel = [];
         $scope.merchandiseGroupData = [];
+        $scope.currentUser = userService.GetCurrentUser();
         function filterData() {
             service.getAmmountImportToDay().then(function (successRes) {
                 if (successRes.data.status) {
@@ -107,6 +107,32 @@ define(['angular', 'chart-js', 'angular-chart'], function (angular, chartjs, ang
             });
         }
         //filterData();
+
+        function showTime() {
+            var date = new Date();
+            var h = date.getHours(); // 0 - 23
+            var m = date.getMinutes(); // 0 - 59
+            var s = date.getSeconds(); // 0 - 59
+            var session = "AM";
+            if (h == 0) {
+                h = 12;
+            }
+            if (h > 12) {
+                h = h - 12;
+                session = "PM";
+            }
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+            var time = h + ":" + m + ":" + s + " " + session;
+            if (document.getElementById("MyClockDisplay") !== null) {
+                document.getElementById("MyClockDisplay").innerText = time;
+                document.getElementById("MyClockDisplay").textContent = time;
+            }
+            setTimeout(showTime, 1000);
+        };
+        showTime();
+
         $scope.displayHepler = function (paraValue, moduleName) {
             var data = $filter('filter')($scope.tempData(moduleName), { value: paraValue }, true);
             if (data && data.length === 1) {

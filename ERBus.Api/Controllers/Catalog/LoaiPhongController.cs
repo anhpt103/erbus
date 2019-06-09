@@ -5,7 +5,7 @@ using ERBus.Service;
 using ERBus.Service.Authorize.Utils;
 using ERBus.Service.BuildQuery;
 using ERBus.Service.BuildQuery.Query.Types;
-using ERBus.Service.Catalog.Phong;
+using ERBus.Service.Catalog.LoaiPhong;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,45 +16,27 @@ using System.Web.Http.Description;
 
 namespace ERBus.Api.Controllers.Catalog
 {
-    [RoutePrefix("api/Catalog/Phong")]
+    [RoutePrefix("api/Catalog/LoaiPhong")]
     [Route("{id?}")]
     [Authorize]
-    public class PhongController : ApiController
+    public class LoaiPhongController : ApiController
     {
-        private IPhongService _service;
-        public PhongController(IPhongService service)
+        private ILoaiPhongService _service;
+        public LoaiPhongController(ILoaiPhongService service)
         {
             _service = service;
         }
 
         [Route("GetAllData")]
         [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "Phong")]
+        [CustomAuthorize(Method = "XEM", State = "LoaiPhong")]
         public IHttpActionResult GetAllData()
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            var data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MAPHONG).ToList();
-            List<ChoiceObject> listData = new List<ChoiceObject>();
-            if (data.Count > 0)
+            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MALOAIPHONG).Select(x => new ChoiceObject { VALUE = x.MALOAIPHONG, TEXT = x.MALOAIPHONG + " | " + x.TENLOAIPHONG, DESCRIPTION = x.TENLOAIPHONG, EXTEND_VALUE = x.MABOHANG, ID = x.ID }).ToList();
+            if (result.Data.Count > 0)
             {
-                foreach(var row in data)
-                {
-                    var obj = new ChoiceObject()
-                    {
-                        VALUE = row.MAPHONG,
-                        TEXT = row.MAPHONG + " | " + row.TENPHONG,
-                        DESCRIPTION = row.TENPHONG,
-                        PARENT = row.TANG != null ? row.TANG.ToString() : "",
-                        ID = row.ID,
-                        EXTEND_VALUE = row.MALOAIPHONG
-                    };
-                    listData.Add(obj);
-                }
-            }
-            if (listData.Count > 0)
-            {
-                result.Data = listData;
                 result.Status = true;
             }
             else
@@ -63,40 +45,16 @@ namespace ERBus.Api.Controllers.Catalog
             }
             return Ok(result);
         }
-
-        [Route("GetDataByMaPhong/{maPhongSelected}")]
-        [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "Phong")]
-        public IHttpActionResult GetDataByMaPhong(string maPhongSelected)
-        {
-            var result = new TransferObj<ChoiceObject>();
-            var unitCode = _service.GetCurrentUnitCode();
-            var data = _service.Repository.DbSet.FirstOrDefault(x => x.TRANGTHAI == (int)TypeState.USED && x.MAPHONG.Equals(maPhongSelected) && x.UNITCODE.Equals(unitCode));
-            result.Status = false;
-            if (data != null)
-            {
-                result.Status = true;
-                result.Data = new ChoiceObject()
-                {
-                    VALUE = data.MAPHONG,
-                    TEXT = data.MAPHONG + " | " + data.TENPHONG,
-                    DESCRIPTION = data.TENPHONG,
-                    PARENT = data.TANG != null ? data.TANG.ToString() : "",
-                    EXTEND_VALUE = data.UNITCODE
-                };
-            }
-            return Ok(result);
-        }
-
+      
         [Route("PostQuery")]
         [HttpPost]
-        [CustomAuthorize(Method = "XEM", State = "Phong")]
+        [CustomAuthorize(Method = "XEM", State = "LoaiPhong")]
         public IHttpActionResult PostQuery(JObject jsonData)
         {
             var result = new TransferObj();
             var postData = ((dynamic)jsonData);
-            var filtered = ((JObject)postData.filtered).ToObject<FilterObj<PhongViewModel.Search>>();
-            var paged = ((JObject)postData.paged).ToObject<PagedObj<PHONG>>();
+            var filtered = ((JObject)postData.filtered).ToObject<FilterObj<LoaiPhongViewModel.Search>>();
+            var paged = ((JObject)postData.paged).ToObject<PagedObj<LOAIPHONG>>();
             var unitCode = _service.GetCurrentUnitCode();
             var query = new QueryBuilder
             {
@@ -104,7 +62,7 @@ namespace ERBus.Api.Controllers.Catalog
                 Skip = paged.FromItem - 1,
                 Filter = new QueryFilterLinQ()
                 {
-                    Property = ClassHelper.GetProperty(() => new PHONG().UNITCODE),
+                    Property = ClassHelper.GetProperty(() => new LOAIPHONG().UNITCODE),
                     Method = FilterMethod.EqualTo,
                     Value = unitCode
                 },
@@ -112,7 +70,7 @@ namespace ERBus.Api.Controllers.Catalog
                 {
                     new QueryOrder()
                     {
-                        Field = ClassHelper.GetPropertyName(() => new PHONG().MAPHONG),
+                        Field = ClassHelper.GetPropertyName(() => new LOAIPHONG().MALOAIPHONG),
                         Method = OrderMethod.ASC
                     }
                 }
@@ -134,20 +92,20 @@ namespace ERBus.Api.Controllers.Catalog
             }
         }
 
-        [Route("BuildNewCode/{maTang}")]
+        [Route("BuildNewCode")]
         [HttpGet]
-        public string BuildNewCode(string maTang)
+        public string BuildNewCode()
         {
-            return _service.BuildCode(maTang);
+            return _service.BuildCode();
         }
 
-        [ResponseType(typeof(PHONG))]
-        [CustomAuthorize(Method = "THEM", State = "Phong")]
-        public async Task<IHttpActionResult> Post (PhongViewModel.Dto instance)
+        [ResponseType(typeof(LOAIPHONG))]
+        [CustomAuthorize(Method = "THEM", State = "LoaiPhong")]
+        public async Task<IHttpActionResult> Post (LoaiPhongViewModel.Dto instance)
         {
-            var result = new TransferObj<PHONG>();
+            var result = new TransferObj<LOAIPHONG>();
             var curentUnitCode = _service.GetCurrentUnitCode();
-            if (instance.MAPHONG == "")
+            if (instance.MALOAIPHONG == "")
             {
                 result.Status = false;
                 result.Message = "Mã không hợp lệ";
@@ -155,18 +113,18 @@ namespace ERBus.Api.Controllers.Catalog
             }
             else
             {
-                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MAPHONG == instance.MAPHONG && x.UNITCODE.Equals(curentUnitCode));
+                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MALOAIPHONG == instance.MALOAIPHONG && x.UNITCODE.Equals(curentUnitCode));
                 if (exist != null)
                 {
                     result.Status = false;
-                    result.Message = "Đã tồn tại mã phòng này";
+                    result.Message = "Đã tồn tại loại phòng này";
                     return Ok(result);
                 }
             }
             try
             {
-                instance.MAPHONG = _service.SaveCode(instance.TANG.ToString());
-                var data = Mapper.Map<PhongViewModel.Dto, PHONG>(instance);
+                instance.MALOAIPHONG = _service.SaveCode();
+                var data = Mapper.Map<LoaiPhongViewModel.Dto, LOAIPHONG>(instance);
                 var item = _service.Insert(data);
                 int inst = await _service.UnitOfWork.SaveAsync();
                 if (inst > 0)
@@ -193,8 +151,8 @@ namespace ERBus.Api.Controllers.Catalog
 
 
         [ResponseType(typeof(void))]
-        [CustomAuthorize(Method = "SUA", State = "Phong")]
-        public async Task<IHttpActionResult> Put (string id, PHONG instance)
+        [CustomAuthorize(Method = "SUA", State = "LoaiPhong")]
+        public async Task<IHttpActionResult> Put (string id, LOAIPHONG instance)
         {
             if (!ModelState.IsValid)
             {
@@ -205,7 +163,7 @@ namespace ERBus.Api.Controllers.Catalog
             {
                 return BadRequest();
             }
-            var result = new TransferObj<PHONG>();
+            var result = new TransferObj<LOAIPHONG>();
             if (id != instance.ID)
             {
                 result.Status = false;
@@ -239,12 +197,12 @@ namespace ERBus.Api.Controllers.Catalog
         }
 
 
-        [ResponseType(typeof(PHONG))]
-        [CustomAuthorize(Method = "XOA", State = "Phong")]
+        [ResponseType(typeof(LOAIPHONG))]
+        [CustomAuthorize(Method = "XOA", State = "LoaiPhong")]
         public async Task<IHttpActionResult> Delete(string id)
         {
             var result = new TransferObj<bool>();
-            PHONG instance = await _service.Repository.FindAsync(id);
+            LOAIPHONG instance = await _service.Repository.FindAsync(id);
             if (instance == null)
             {
                 return NotFound();

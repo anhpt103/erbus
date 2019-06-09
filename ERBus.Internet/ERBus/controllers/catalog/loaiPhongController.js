@@ -1,10 +1,13 @@
-﻿define(['ui-bootstrap'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/boHangController'], function () {
     'use strict';
-    var app = angular.module('boHangModule', ['ui.bootstrap']);
-    app.factory('boHangService', ['$http', 'configService', function ($http, configService) {
-        var serviceUrl = configService.rootUrlWebApi + '/Catalog/BoHang';
+    var app = angular.module('loaiPhongModule', ['ui.bootstrap','boHangModule']);
+    app.factory('loaiPhongService', ['$http', 'configService', function ($http, configService) {
+        var serviceUrl = configService.rootUrlWebApi + '/Catalog/LoaiPhong';
         var selectedData = [];
         var result = {
+            getAllData: function () {
+                return $http.get(serviceUrl + '/GetAllData');
+            },
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
             },
@@ -19,27 +22,25 @@
             },
             delete: function (params) {
                 return $http.delete(serviceUrl + '/' + params.ID, params);
-            },
-            getAllData: function () {
-                return $http.get(serviceUrl + '/GetAllData');
             }
         }
         return result;
     }]);
     /* controller list */
-    app.controller('BoHang_Ctrl', ['$scope', '$http', 'configService', 'boHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService) {
+    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','boHangService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, boHangService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
             $scope.tempData = tempDataService.tempData;
-            $scope.title = function () { return 'Bó hàng' };
+            $scope.title = function () { return 'Loại phòng' };
             $scope.data = [];
+            $scope.treeFloor = [];
             $scope.setPage = function (pageNo) {
                 $scope.paged.CurrentPage = pageNo;
                 filterData();
             };
-            $scope.sortType = 'MABOHANG';
+            $scope.sortType = 'MALOAIPHONG';
             $scope.sortReverse = false;
             $scope.doSearch = function () {
                 $scope.paged.CurrentPage = 1;
@@ -54,6 +55,36 @@
             $scope.refresh = function () {
                 $scope.setPage($scope.paged.CurrentPage);
             };
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
+            //Function load data catalog LoaiHang
+            function loadDataBoHang() {
+                $scope.boHang = [];
+                if (!tempDataService.tempData('boHang')) {
+                    boHangService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('boHang', successRes.data.Data);
+                            $scope.boHang = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.boHang = tempDataService.tempData('boHang');
+                }
+            };
+            loadDataBoHang();
+            //end
+
+            
             function filterData() {
                 $scope.isLoading = true;
                 if ($scope.accessList.VIEW) {
@@ -72,7 +103,7 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('BoHang').then(function (successRes) {
+                securityService.getAccessList('LoaiPhong').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.VIEW) {
@@ -108,8 +139,8 @@
                     animation: true,
                     //windowClass: 'catalog-window',
                     size: 'lg',
-                    templateUrl: configService.buildUrl('catalog/BoHang', 'create'),
-                    controller: 'boHangCreate_Ctrl',
+                    templateUrl: configService.buildUrl('catalog/LoaiPhong', 'create'),
+                    controller: 'loaiPhongCreate_Ctrl',
                     resolve: {}
                 });
                 modalInstance.result.then(function (refundedData) {
@@ -125,8 +156,8 @@
                     backdrop: 'static',
                     animation: true,
                     size: 'lg',
-                    templateUrl: configService.buildUrl('catalog/BoHang', 'detail'),
-                    controller: 'boHangDetail_Ctrl',
+                    templateUrl: configService.buildUrl('catalog/LoaiPhong', 'detail'),
+                    controller: 'loaiPhongDetail_Ctrl',
                     resolve: {
                         targetData: function () {
                             return target;
@@ -146,8 +177,8 @@
                     backdrop: 'static',
                     animation: true,
                     size: 'lg',
-                    templateUrl: configService.buildUrl('catalog/BoHang', 'edit'),
-                    controller: 'boHangEdit_Ctrl',
+                    templateUrl: configService.buildUrl('catalog/LoaiPhong', 'edit'),
+                    controller: 'loaiPhongEdit_Ctrl',
                     resolve: {
                         targetData: function () {
                             return target;
@@ -167,8 +198,8 @@
                     backdrop: 'static',
                     animation: true,
                     windowClass: 'modal-delete',
-                    templateUrl: configService.buildUrl('catalog/BoHang', 'delete'),
-                    controller: 'boHangDelete_Ctrl',
+                    templateUrl: configService.buildUrl('catalog/LoaiPhong', 'delete'),
+                    controller: 'loaiPhongDelete_Ctrl',
                     resolve: {
                         targetData: function () {
                             return target;
@@ -181,23 +212,23 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
+
         }]);
 
-    app.controller('boHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'tempDataService', '$filter', '$uibModal', '$log',
+    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log',
         function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
-            $scope.title = function () { return 'Thêm bó hàng sản phẩm'; };
-            $scope.target = {};
-            //Tạo mới mã loại
+            $scope.title = function () { return 'Thêm loại phòng'; };
+
             service.buildNewCode().then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
-                    $scope.target.MABOHANG = successRes.data;
+                    $scope.target.MALOAIPHONG = successRes.data;
                 }
             });
-            //end
+            
             $scope.save = function () {
-                if (!$scope.target.MABOHANG || !$scope.target.TENBOHANG ) {
+                if (!$scope.target.MALOAIPHONG || !$scope.target.TENLOAIPHONG ) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
@@ -230,26 +261,26 @@
                 $uibModalInstance.close();
             };
         }]);
-    app.controller('boHangDetail_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
+    app.controller('loaiPhongDetail_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
         function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
-            $scope.title = function () { return 'Thông tin bó hàng sản phẩm [' + targetData.MABOHANG + ']'; };
+            $scope.title = function () { return 'Thông tin loại phòng [' + targetData.MALOAIPHONG + ']'; };
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
-    app.controller('boHangEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
+    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
         function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
-            $scope.title = function () { return 'Chỉnh sửa bó hàng sản phẩm'; };
+            $scope.title = function () { return 'Chỉnh sửa loại phòng [' + targetData.MALOAIPHONG + ']'; };
             $scope.save = function () {
-                if (!$scope.target.MABOHANG || !$scope.target.TENBOHANG ) {
+                if (!$scope.target.MALOAIPHONG || !$scope.target.TENLOAIPHONG ) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
@@ -278,18 +309,19 @@
                     });
                 }
             };
+
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
 
-    app.controller('boHangDelete_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
+    app.controller('loaiPhongDelete_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
            $scope.config = angular.copy(configService);
            $scope.tempData = tempDataService.tempData;
            $scope.target = {};
            $scope.target = angular.copy(targetData);;
-           $scope.title = function () { return 'Xóa bó hàng sản phẩm [' + targetData.MABOHANG + ']'; };
+           $scope.title = function () { return 'Xóa loại phòng [' + targetData.MALOAIPHONG + ']'; };
            $scope.delete = function () {
                service.delete($scope.target).then(function (successRes) {
                    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Data) {

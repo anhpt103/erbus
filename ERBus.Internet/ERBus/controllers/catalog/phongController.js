@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController'], function () {
     'use strict';
-    var app = angular.module('phongModule', ['ui.bootstrap']);
+    var app = angular.module('phongModule', ['ui.bootstrap', 'loaiPhongModule']);
     app.factory('phongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Catalog/Phong';
         var selectedData = [];
@@ -30,8 +30,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('Phong_Ctrl', ['$scope', '$http', 'configService', 'phongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService) {
+    app.controller('Phong_Ctrl', ['$scope', '$http', 'configService', 'phongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','loaiPhongService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiPhongService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -76,6 +76,25 @@
                 $scope.listFloor = tempDataService.tempData('floor');
             }
             //
+
+            //Function load data catalog LoaiHang
+            function loadDataLoaiPhong() {
+                $scope.loaiPhong = [];
+                if (!tempDataService.tempData('loaiPhong')) {
+                    loaiPhongService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('loaiPhong', successRes.data.Data);
+                            $scope.loaiPhong = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.loaiPhong = tempDataService.tempData('loaiPhong');
+                }
+            };
+            loadDataLoaiPhong();
+            //end
 
             function treeify(list, idAttr, parentAttr, childrenAttr) {
                 if (!idAttr) idAttr = 'MAPHONG';

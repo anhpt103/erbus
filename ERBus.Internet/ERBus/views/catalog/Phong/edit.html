@@ -18,6 +18,17 @@
                     </small>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Loại phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_maLoaiPhong" name="_maLoaiPhong" ng-model="target.MALOAIPHONG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('loaiPhong')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form._maLoaiPhong.$dirty && _form._maLoaiPhong.$invalid">
+                        <span ng-show="_form._maLoaiPhong.$error.required">Loại phòng không được để trống</span>
+                    </small>
+                </div>
+            </div>
             <!--<div class="row form-group">
                 <div class="col col-md-3">
                     <label for="text-input" class="form-control-label">Mã phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>

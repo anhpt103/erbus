@@ -35,6 +35,15 @@ namespace ERBus.Api.Controllers.Authorize
             return data.Where(x => x.UNITCODE == unitCode).Select(x => new ChoiceObject() { VALUE = x.MANHANVIEN, TEXT = x.TENNHANVIEN, ID = x.ID }).ToList();
         }
 
+        [Route("GetDetails/{id}")]
+        [HttpGet]
+        public NGUOIDUNG GetDetails(string id)
+        {
+            var data = _service.Repository.DbSet;
+            var unitCode = _service.GetCurrentUnitCode();
+            return data.FirstOrDefault(x => x.ID.Equals(id) && x.UNITCODE == unitCode);
+        }
+
         [Route("CheckExistsUsername/{userName}")]
         [HttpGet]
         public bool CheckExistsUsername(string userName)

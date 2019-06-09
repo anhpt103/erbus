@@ -5,15 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ERBus.Entity.Database.Catalog
 {
-    [Table("PHONG")]
-    public class PHONG : DataInfoEntity
+    [Table("LOAIPHONG")]
+    public class LOAIPHONG : DataInfoEntity
     {
-        [Required]
-        [Column("MAPHONG")]
-        [Description("MÃ PHÒNG")]
-        [StringLength(50)]
-        public string MAPHONG { get; set; }
-
         [Required]
         [Column("MALOAIPHONG")]
         [Description("MÃ LOẠI PHÒNG")]
@@ -21,19 +15,15 @@ namespace ERBus.Entity.Database.Catalog
         public string MALOAIPHONG { get; set; }
 
         [Required]
-        [Column("TENPHONG")]
-        [Description("TÊN PHÒNG")]
-        [StringLength(300)]
-        public string TENPHONG { get; set; }
+        [Column("TENLOAIPHONG")]
+        [Description("TÊN LOẠI PHÒNG")]
+        [StringLength(100)]
+        public string TENLOAIPHONG { get; set; }
 
-        [Column("TANG")]
-        [Description("TẦNG")]
-        public int? TANG { get; set; }
-
-        [Column("VITRI")]
-        [Description("VỊ TRÍ")]
-        [StringLength(200)]
-        public string VITRI { get; set; }
+        [Column("MABOHANG")]
+        [Description("MÃ BÓ HÀNG MẶC ĐỊNH CHO PHÒNG")]
+        [StringLength(50)]
+        public string MABOHANG { get; set; }
 
         [Column("TRANGTHAI")]
         [Description("TRẠNG THÁI DỮ LIỆU 0: CHƯA DUYỆT _ 10: ĐÃ DUYỆT _ 20: LƯU TẠM _ 30: TRẠNG THÁI MỞ RỘNG")]

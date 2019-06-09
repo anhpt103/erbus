@@ -231,12 +231,14 @@
     <Compile Include="Controllers\Catalog\KhoHangController.cs" />
     <Compile Include="Controllers\Catalog\BoHangController.cs" />
     <Compile Include="Controllers\Catalog\PhongController.cs" />
+    <Compile Include="Controllers\Catalog\LoaiPhongController.cs" />
     <Compile Include="Controllers\Catalog\ThueController.cs" />
     <Compile Include="Controllers\Catalog\HangKhachHangController.cs" />
     <Compile Include="Controllers\Catalog\DonViTinhController.cs" />
     <Compile Include="Controllers\Catalog\BaoBiController.cs" />
     <Compile Include="Controllers\Catalog\NhomHangController.cs" />
     <Compile Include="Controllers\Catalog\LoaiHangController.cs" />
+    <Compile Include="Controllers\Knowledge\DatPhongController.cs" />
     <Compile Include="Controllers\Knowledge\XuatBanLeThuNganController.cs" />
     <Compile Include="Controllers\Knowledge\XuatBanController.cs" />
     <Compile Include="Controllers\Knowledge\NhapMuaController.cs" />

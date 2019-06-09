@@ -60,6 +60,20 @@
                 }
             },
             moduleUrl: controlUrl + "xuatBanController.js"
+        },
+         // Knowledge Đặt phòng
+        {
+            name: 'DatPhong',
+            url: '/booking',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "DatPhong/index.html",
+                    controller: "DatPhong_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "datPhongController.js"
         }
     ];
     return states;

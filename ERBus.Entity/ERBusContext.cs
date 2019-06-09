@@ -46,6 +46,7 @@ namespace ERBus.Entity
         public virtual DbSet<LICHSU_TANGHANG> LICHSU_TANGHANGs { get; set; }
         public virtual DbSet<CAPMA> CAPMAs { get; set; }
         public virtual DbSet<PHONG> PHONGs { get; set; }
+        public virtual DbSet<LOAIPHONG> LOAIPHONGs { get; set; }
 
         /// <summary>
         /// Knowledge
@@ -58,6 +59,7 @@ namespace ERBus.Entity
 
         public virtual DbSet<KHUYENMAI> KHUYENMAIs { get; set; }
         public virtual DbSet<KHUYENMAI_CHITIET> KHUYENMAI_CHITIETs { get; set; }
+        public virtual DbSet<DATPHONG> DATPHONGs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

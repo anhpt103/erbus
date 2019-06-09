@@ -100,6 +100,7 @@
     <Compile Include="Database\Authorize\NGUOIDUNG.cs" />
     <Compile Include="Database\Catalog\LICHSU_TANGHANG.cs" />
     <Compile Include="Database\Catalog\HANGKHACHHANG.cs" />
+    <Compile Include="Database\Catalog\LOAIPHONG.cs" />
     <Compile Include="Database\Catalog\PHONG.cs" />
     <Compile Include="Database\Catalog\MATHANG_GIA.cs" />
     <Compile Include="Database\Catalog\KHACHHANG.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Database\Catalog\THUE.cs" />
     <Compile Include="Database\Catalog\NHOMHANG.cs" />
     <Compile Include="Database\Catalog\LOAIHANG.cs" />
+    <Compile Include="Database\Knowledge\DATPHONG.cs" />
     <Compile Include="Database\Knowledge\GIAODICH.cs" />
     <Compile Include="Database\Knowledge\GIAODICH_CHITIET.cs" />
     <Compile Include="Database\Knowledge\KHUYENMAI.cs" />
@@ -155,6 +157,14 @@
     <Compile Include="Migrations\201906071550013_ANHPT_CREATE_TABLE_PHONG.cs" />
     <Compile Include="Migrations\201906071550013_ANHPT_CREATE_TABLE_PHONG.Designer.cs">
       <DependentUpon>201906071550013_ANHPT_CREATE_TABLE_PHONG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906090830559_ANHPT_CREATE_TABLE_LOAIPHONG.cs" />
+    <Compile Include="Migrations\201906090830559_ANHPT_CREATE_TABLE_LOAIPHONG.Designer.cs">
+      <DependentUpon>201906090830559_ANHPT_CREATE_TABLE_LOAIPHONG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.cs" />
+    <Compile Include="Migrations\201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.Designer.cs">
+      <DependentUpon>201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
@@ -227,6 +237,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906071550013_ANHPT_CREATE_TABLE_PHONG.resx">
       <DependentUpon>201906071550013_ANHPT_CREATE_TABLE_PHONG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906090830559_ANHPT_CREATE_TABLE_LOAIPHONG.resx">
+      <DependentUpon>201906090830559_ANHPT_CREATE_TABLE_LOAIPHONG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.resx">
+      <DependentUpon>201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

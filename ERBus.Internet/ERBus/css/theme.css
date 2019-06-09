@@ -14941,6 +14941,12 @@ span.title {
     width: 1000px;
 }
 
+.modal-booking .modal-content {
+    left: 50%;
+    transform: translate(-50%, 5%);
+    width: 900px;
+}
+
 /*style panagation*/
 
 ul.pagination {
@@ -15470,3 +15476,65 @@ right connector from last child*/
 
 /*Thats all. I hope you enjoyed it.
 Thanks :)*/
+
+.clock {
+    position: absolute;
+    top: 50%;
+    left: 13.5%;
+    transform: translateX(-50%) translateY(-50%);
+    letter-spacing: 5px;
+}
+
+.project {
+    width: 100%;
+    height: 200px;
+    padding: 10px !important;
+    float: left;
+}
+.project-hover {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background-image: url('../img/icon/karaoke-image.png');
+    background-size: cover;
+    background-position: center;
+    /*opacity: 0;*/s
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    /*background-color: rgba(186, 232, 2, 0.7);*/
+    padding: 5% 30px !important;
+}
+.project-hover hr {
+    height: 30px;
+    width: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    background-color: rgba(255, 255, 255, 1);
+    border: 0;
+}
+.project-hover a {
+    color: rgba(255, 255, 255, 1);
+    padding: 2px 22px;
+    line-height: 40px;
+    border: 2px solid rgba(255, 255, 255, 1);
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+.project-hover a:hover {
+    border-color: rgba(51, 51, 51, 1);
+    color: rgba(51, 51, 51, 1);
+    background-color: #FFF;
+}
+.project:hover .project-hover {
+    opacity: 1;
+}
+.project:hover .project-hover hr {
+    width: 100%;
+    height: 5px;
+}

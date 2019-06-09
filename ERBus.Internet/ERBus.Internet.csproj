@@ -224,6 +224,7 @@
     <Content Include="ERBus\controllers\catalog\nhaCungCapController.js" />
     <Content Include="ERBus\controllers\catalog\khachHangController.js" />
     <Content Include="ERBus\controllers\catalog\khoHangController.js" />
+    <Content Include="ERBus\controllers\catalog\loaiPhongController.js" />
     <Content Include="ERBus\controllers\catalog\phongController.js" />
     <Content Include="ERBus\controllers\catalog\thueController.js" />
     <Content Include="ERBus\controllers\catalog\hangKhachHangController.js" />
@@ -233,6 +234,7 @@
     <Content Include="ERBus\controllers\catalog\baoBiController.js" />
     <Content Include="ERBus\controllers\catalog\nhomHangController.js" />
     <Content Include="ERBus\controllers\catalog\loaiHangController.js" />
+    <Content Include="ERBus\controllers\knowledge\datPhongController.js" />
     <Content Include="ERBus\controllers\knowledge\kiemKeController.js" />
     <Content Include="ERBus\controllers\knowledge\xuatBanLeThuNganController.js" />
     <Content Include="ERBus\controllers\knowledge\xuatBanController.js" />
@@ -285,6 +287,8 @@
     <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.svg" />
     <Content Include="ERBus\img\bg-title-01.jpg" />
     <Content Include="ERBus\img\bg-title-02.jpg" />
+    <Content Include="ERBus\img\icon\avartar-female.png" />
+    <Content Include="ERBus\img\icon\avartar-male.png" />
     <Content Include="ERBus\img\icon\avatar-01.jpg" />
     <Content Include="ERBus\img\icon\avatar-02.jpg" />
     <Content Include="ERBus\img\icon\avatar-03.jpg" />
@@ -292,7 +296,9 @@
     <Content Include="ERBus\img\icon\avatar-05.jpg" />
     <Content Include="ERBus\img\icon\avatar-06.jpg" />
     <Content Include="ERBus\img\icon\avatar-big-01.jpg" />
+    <Content Include="ERBus\img\icon\erbus_logo_mono.png" />
     <Content Include="ERBus\img\icon\favicon.ico" />
+    <Content Include="ERBus\img\icon\karaoke-image.png" />
     <Content Include="ERBus\img\icon\logo-blue.png" />
     <Content Include="ERBus\img\icon\logo-mini.png" />
     <Content Include="ERBus\img\icon\logo-white.png" />
@@ -361,6 +367,11 @@
     <Content Include="ERBus\views\authorize\ThamSoHeThong\index.html" />
     <Content Include="ERBus\views\catalog\KhachHang\search.html" />
     <Content Include="ERBus\views\catalog\KhoHang\search.html" />
+    <Content Include="ERBus\views\catalog\LoaiPhong\create.html" />
+    <Content Include="ERBus\views\catalog\LoaiPhong\delete.html" />
+    <Content Include="ERBus\views\catalog\LoaiPhong\detail.html" />
+    <Content Include="ERBus\views\catalog\LoaiPhong\edit.html" />
+    <Content Include="ERBus\views\catalog\LoaiPhong\index.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\search.html" />
     <Content Include="ERBus\views\catalog\MatHang\checkDataImport.html" />
     <Content Include="ERBus\views\catalog\MatHang\search.html" />
@@ -431,6 +442,8 @@
     <Content Include="ERBus\views\catalog\LoaiHang\edit.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\create.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\index.html" />
+    <Content Include="ERBus\views\knowledge\DatPhong\booking.html" />
+    <Content Include="ERBus\views\knowledge\DatPhong\index.html" />
     <Content Include="ERBus\views\knowledge\KiemKe\index.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\detail.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\edit.html" />

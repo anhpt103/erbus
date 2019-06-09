@@ -17,11 +17,13 @@ using ERBus.Service.Catalog.KeHang;
 using ERBus.Service.Catalog.KhachHang;
 using ERBus.Service.Catalog.KhoHang;
 using ERBus.Service.Catalog.LoaiHang;
+using ERBus.Service.Catalog.LoaiPhong;
 using ERBus.Service.Catalog.MatHang;
 using ERBus.Service.Catalog.NhaCungCap;
 using ERBus.Service.Catalog.NhomHang;
 using ERBus.Service.Catalog.Phong;
 using ERBus.Service.Catalog.Thue;
+using ERBus.Service.Knowledge.DatPhong;
 using ERBus.Service.Knowledge.NhapMua;
 using ERBus.Service.Knowledge.XuatBan;
 using ERBus.Service.Knowledge.XuatBanLeThuNgan;
@@ -80,6 +82,9 @@ namespace ERBus.Service
                 cfg.CreateMap<PHONG, PhongViewModel.Dto>();
                 cfg.CreateMap<PhongViewModel.Dto, PHONG>();
 
+                cfg.CreateMap<LOAIPHONG, LoaiPhongViewModel.Dto>();
+                cfg.CreateMap<LoaiPhongViewModel.Dto, LOAIPHONG>();
+
                 cfg.CreateMap<MATHANG, MatHangViewModel.Dto>();
                 cfg.CreateMap<MatHangViewModel.Dto, MATHANG>();
                 cfg.CreateMap<MATHANG_GIA, MatHangViewModel.Dto>();
@@ -122,6 +127,9 @@ namespace ERBus.Service
 
                 cfg.CreateMap<GIAODICH_CHITIET, XuatBanLeThuNganViewModel.DtoDetails>();
                 cfg.CreateMap<XuatBanLeThuNganViewModel.DtoDetails, GIAODICH_CHITIET>();
+
+                cfg.CreateMap<DATPHONG, DatPhongViewModel.Dto>();
+                cfg.CreateMap<DatPhongViewModel.Dto, DATPHONG>();
 
                 //Promotion
 

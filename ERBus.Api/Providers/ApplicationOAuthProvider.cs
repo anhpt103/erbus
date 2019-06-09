@@ -25,7 +25,7 @@ namespace ERBus.Api.Providers
                     using (var command = connection.CreateCommand())
                     {
                         command.CommandType = CommandType.Text;
-                        command.CommandText = string.Format(@"SELECT * FROM NGUOIDUNG WHERE USERNAME = '" + context.UserName + "' AND PASSWORD = '" + MD5Encrypt.MD5Hash(context.Password) + "' AND TRANGTHAI = 10 ");
+                        command.CommandText = string.Format(@"SELECT ID,USERNAME,TENNHANVIEN,SODIENTHOAI,CHUNGMINHTHU,UNITCODE,GIOITINH FROM NGUOIDUNG WHERE USERNAME = '" + context.UserName + "' AND PASSWORD = '" + MD5Encrypt.MD5Hash(context.Password) + "' AND TRANGTHAI = 10 ");
                         using (var oracleDataReader = command.ExecuteReaderAsync(CommandBehavior.CloseConnection))
                         {
                             if (!oracleDataReader.Result.HasRows)
@@ -36,11 +36,15 @@ namespace ERBus.Api.Providers
                             {
                                 while (oracleDataReader.Result.Read())
                                 {
+                                    user.ID = oracleDataReader.Result["ID"]?.ToString();
                                     user.USERNAME = oracleDataReader.Result["USERNAME"]?.ToString();
                                     user.TENNHANVIEN = oracleDataReader.Result["TENNHANVIEN"]?.ToString();
                                     user.SODIENTHOAI = oracleDataReader.Result["SODIENTHOAI"]?.ToString();
                                     user.CHUNGMINHTHU = oracleDataReader.Result["CHUNGMINHTHU"]?.ToString();
                                     user.UNITCODE = oracleDataReader.Result["UNITCODE"]?.ToString();
+                                    int GIOITINH = 0;
+                                    int.TryParse(oracleDataReader.Result["GIOITINH"]?.ToString(), out GIOITINH);
+                                    user.GIOITINH = GIOITINH;
                                 }
                             }
                         }
@@ -75,6 +79,12 @@ namespace ERBus.Api.Providers
                     },
                     {
                         "unitCode", string.IsNullOrEmpty(user.UNITCODE)?string.Empty:user.UNITCODE
+                    },
+                    {
+                        "sex", string.IsNullOrEmpty(user.GIOITINH.ToString())?string.Empty:user.GIOITINH.ToString()
+                    },
+                    {
+                        "id", string.IsNullOrEmpty(user.ID.ToString())?string.Empty:user.ID.ToString()
                     }
                     });
 

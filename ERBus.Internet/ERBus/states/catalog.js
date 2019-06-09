@@ -186,6 +186,20 @@
                 }
             },
             moduleUrl: controlUrl + "phongController.js"
+        },
+        // Catalog Loại Phòng
+        {
+            name: 'LoaiPhong',
+            url: '/typeRoom',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "LoaiPhong/index.html",
+                    controller: "LoaiPhong_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "loaiPhongController.js"
         }
     ];
     return states;

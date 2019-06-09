@@ -25,6 +25,9 @@
             },
             checkExistsUsername: function (user) {
                 return $http.get(serviceUrl + '/CheckExistsUsername/' + user);
+            },
+            getDetails: function (id) {
+                return $http.get(serviceUrl + '/GetDetails/' + id);
             }
         }
         return result;

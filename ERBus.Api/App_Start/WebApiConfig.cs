@@ -18,12 +18,14 @@ using ERBus.Service.Catalog.KeHang;
 using ERBus.Service.Catalog.KhachHang;
 using ERBus.Service.Catalog.KhoHang;
 using ERBus.Service.Catalog.LoaiHang;
+using ERBus.Service.Catalog.LoaiPhong;
 using ERBus.Service.Catalog.MatHang;
 using ERBus.Service.Catalog.NhaCungCap;
 using ERBus.Service.Catalog.NhomHang;
 using ERBus.Service.Catalog.Phong;
 using ERBus.Service.Catalog.ThamSoHeThong;
 using ERBus.Service.Catalog.Thue;
+using ERBus.Service.Knowledge.DatPhong;
 using ERBus.Service.Knowledge.NhapMua;
 using ERBus.Service.Knowledge.XuatBan;
 using ERBus.Service.Knowledge.XuatBanLeThuNgan;
@@ -97,6 +99,9 @@ namespace ERBus.Api.App_Start
             container.RegisterType<IRepository<PHONG>, Repository<PHONG>>(new HierarchicalLifetimeManager());
             container.RegisterType<IPhongService, PhongService>(new HierarchicalLifetimeManager());
 
+            container.RegisterType<IRepository<LOAIPHONG>, Repository<LOAIPHONG>>(new HierarchicalLifetimeManager());
+            container.RegisterType<ILoaiPhongService, LoaiPhongService>(new HierarchicalLifetimeManager());
+
             //Authorize
             container.RegisterType<IRepository<THAMSOHETHONG>, Repository<THAMSOHETHONG>>(new HierarchicalLifetimeManager());
             container.RegisterType<IThamSoHeThongService, ThamSoHeThongService>(new HierarchicalLifetimeManager());
@@ -122,6 +127,9 @@ namespace ERBus.Api.App_Start
 
             container.RegisterType<IRepository<GIAODICH>, Repository<GIAODICH>>(new HierarchicalLifetimeManager());
             container.RegisterType<IXuatBanLeThuNganService, XuatBanLeThuNganService>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IRepository<DATPHONG>, Repository<DATPHONG>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IDatPhongService, DatPhongService>(new HierarchicalLifetimeManager());
 
             //Promotion
             container.RegisterType<IRepository<KHUYENMAI>, Repository<KHUYENMAI>>(new HierarchicalLifetimeManager());
