@@ -51,6 +51,7 @@ define([
         urlInternet = configService.rootUrlWeb;
     }]);
 
+
     app.directive('enter', function () {
         return function (scope, element, attrs) {
             element.bind("keydown keypress", function (event) {
@@ -65,7 +66,7 @@ define([
             });
         };
     });
-
+    
     app.directive('dateCheck', [function () {
         return {
             require: 'ngModel',

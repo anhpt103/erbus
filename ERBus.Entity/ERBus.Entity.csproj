@@ -98,6 +98,7 @@
     <Compile Include="Database\Authorize\NGUOIDUNG_NHOMQUYEN.cs" />
     <Compile Include="Database\Authorize\THAMSOHETHONG.cs" />
     <Compile Include="Database\Authorize\NGUOIDUNG.cs" />
+    <Compile Include="Database\Catalog\CAPMA_THEONGAY.cs" />
     <Compile Include="Database\Catalog\LICHSU_TANGHANG.cs" />
     <Compile Include="Database\Catalog\HANGKHACHHANG.cs" />
     <Compile Include="Database\Catalog\LOAIPHONG.cs" />
@@ -165,6 +166,10 @@
     <Compile Include="Migrations\201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.cs" />
     <Compile Include="Migrations\201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.Designer.cs">
       <DependentUpon>201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906100733337_CreateTable_CAPMA_THEONGAY.cs" />
+    <Compile Include="Migrations\201906100733337_CreateTable_CAPMA_THEONGAY.Designer.cs">
+      <DependentUpon>201906100733337_CreateTable_CAPMA_THEONGAY.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
@@ -243,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.resx">
       <DependentUpon>201906091216189_ANHPT_CREATE_DATPHONG_UPDATE_PHONG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906100733337_CreateTable_CAPMA_THEONGAY.resx">
+      <DependentUpon>201906100733337_CreateTable_CAPMA_THEONGAY.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

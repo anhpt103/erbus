@@ -45,6 +45,7 @@ namespace ERBus.Entity
         public virtual DbSet<HANGKHACHHANG> HANGKHACHHANGs { get; set; }
         public virtual DbSet<LICHSU_TANGHANG> LICHSU_TANGHANGs { get; set; }
         public virtual DbSet<CAPMA> CAPMAs { get; set; }
+        public virtual DbSet<CAPMA_THEONGAY> CAPMA_THEONGAYs { get; set; }
         public virtual DbSet<PHONG> PHONGs { get; set; }
         public virtual DbSet<LOAIPHONG> LOAIPHONGs { get; set; }
 

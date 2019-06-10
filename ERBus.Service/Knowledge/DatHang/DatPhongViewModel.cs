@@ -31,7 +31,7 @@ namespace ERBus.Service.Knowledge.DatPhong
                 MAPHONG = summary;
                 MA_DATPHONG = summary;
             }
-            public List<BuildQuery.IQueryFilter> GetFilters()
+            public List<IQueryFilter> GetFilters()
             {
                 var result = new List<IQueryFilter>();
                 var refObj = new DATPHONG();
@@ -52,6 +52,15 @@ namespace ERBus.Service.Knowledge.DatPhong
                         Property = ClassHelper.GetProperty(() => refObj.MAPHONG),
                         Value = this.MAPHONG,
                         Method = FilterMethod.Like
+                    });
+                }
+                if (this.NGAY_DATPHONG != null)
+                {
+                    result.Add(new QueryFilterLinQ
+                    {
+                        Property = ClassHelper.GetProperty(() => refObj.NGAY_DATPHONG),
+                        Value = this.NGAY_DATPHONG.Date,
+                        Method = FilterMethod.GreaterThanOrEqualTo
                     });
                 }
                 return result;

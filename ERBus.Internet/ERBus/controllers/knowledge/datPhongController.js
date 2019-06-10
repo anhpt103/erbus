@@ -7,6 +7,15 @@
         var result = {
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
+            },
+            post: function (data) {
+                return $http.post(serviceUrl + '/Post', data);
+            },
+            buildNewCode: function () {
+                return $http.get(serviceUrl + '/BuildNewCode');
+            },
+            removeBooking: function (params) {
+                return $http.delete(serviceUrl + '/' + params.ID, params);
             }
         }
         return result;
@@ -39,6 +48,26 @@
             $scope.refresh = function () {
                 $scope.setPage($scope.paged.CurrentPage);
             };
+
+            //Function load data catalog Phong
+            function loadDataPhong() {
+                $scope.phong = [];
+                if (!tempDataService.tempData('phong')) {
+                    phongService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('phong', successRes.data.Data);
+                            $scope.phong = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.phong = tempDataService.tempData('phong');
+                }
+            };
+            loadDataPhong();
+            //end
+
             $scope.convertCodeToName = function (paraValue, moduleName) {
                 if (paraValue) {
                     var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
@@ -106,7 +135,6 @@
                         }
                     });
                     modalInstance.result.then(function (refundedData) {
-                        console.log(refundedData);
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());
                     });
@@ -114,15 +142,20 @@
             };
         }]);
 
-    app.controller('bookingRoom_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal) {
+    app.controller('bookingRoom_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal','$sce',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $sce) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target.NGAY_DATPHONG = new Date();
+            $scope.paged = angular.copy(configService.pageDefault);
+            $scope.filtered = angular.copy(configService.filterDefault);
             $scope.title = function () { return 'Đặt phòng [' + targetData.DESCRIPTION + ' - Tầng ' + targetData.PARENT + ']'; };
+            $scope.listBooking = [];
+            var dateTimeBooking;
             var isSettimeout = true;
             $scope.isAddInfoCustomer = false;
+            $scope.isShow = true;
             function getTime() {
                 var date = new Date();
                 var h = date.getHours(); // 0 - 23
@@ -164,15 +197,176 @@
                 } else {
                     $scope.isAddInfoCustomer = false;
                 }
+                $scope.isShow = false
             };
 
+            $scope.minusInfoCus = function () {
+                if ($scope.isAddInfoCustomer) {
+                    $scope.isAddInfoCustomer = false;
+                } else {
+                    $scope.isAddInfoCustomer = true;
+                }
+                $scope.isShow = true;
+            };
+
+            function buildCode() {
+                service.buildNewCode().then(function (successRes) {
+                    if (successRes && successRes.status == 200 && successRes.data) {
+                        $scope.target.MA_DATPHONG = successRes.data;
+                    }
+                });
+            };
+            buildCode();
+
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION + ' - Tầng ' + tempCache[0].PARENT;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            function toHHMMSS(time) {
+                var sec_num = parseInt(time, 10); // don't forget the second param
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+                if (hours < 10) { hours = "0" + hours; }
+                if (minutes < 10) { minutes = "0" + minutes; }
+                if (seconds < 10) { seconds = "0" + seconds; }
+                return hours + ':' + minutes + ':' + seconds;
+            };
+          
+            function caculateCountHour() {
+                if ($scope.listBooking && $scope.listBooking.length > 0) {
+                    angular.forEach($scope.listBooking, function (v, k) {
+                        v.NGAY_DATPHONG = new Date(v.NGAY_DATPHONG);
+                        if (v.THOIGIAN_DATPHONG && v.NGAY_DATPHONG && v.TRANGTHAI === 10) {
+                            var time = monthNames[v.NGAY_DATPHONG.getMonth()] + ' ' + v.NGAY_DATPHONG.getDate() + ',' + ' ' + v.NGAY_DATPHONG.getFullYear() + ' ' + v.THOIGIAN_DATPHONG;
+                            dateTimeBooking = new Date(time);
+                            v.inputText = $sce.trustAsHtml('<input type="text" id = "' + v.MA_DATPHONG + '"' + 'class="form-control" readonly>');
+                            if (document.getElementById(v.MA_DATPHONG) !== null) {
+                                $("#" + v.MA_DATPHONG).val(toHHMMSS((new Date().getTime() - dateTimeBooking.getTime()) / 1000));
+                            }
+                        }
+                    });
+                }
+                setTimeout(caculateCountHour, 1000);
+            };
+
+            function filterData() {
+                $scope.isLoading = true;
+                $scope.filtered.advanceData.MAPHONG = targetData.VALUE;
+                $scope.filtered.advanceData.NGAY_DATPHONG = $scope.config.moment(new Date()).format();
+                $scope.filtered.isAdvance = true;
+                var postdata = { paged: $scope.paged, filtered: $scope.filtered };
+                service.postQuery(postdata).then(function (successRes) {
+                    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
+                        $scope.isLoading = false;
+                        $scope.listBooking = successRes.data.Data.Data;
+                        caculateCountHour();
+                        angular.extend($scope.paged, successRes.data.Data);
+                    }
+                }, function (errorRes) {
+                    $scope.isLoading = false;
+                    console.log(errorRes);
+                });
+            };
+
+            filterData();
+
+            $scope.isValid = false;
             $scope.save = function () {
                 $scope.target.THOIGIAN_DATPHONG = getTime();
-                console.log($scope.target);
+                $scope.target.MAPHONG = targetData.VALUE;
+                $scope.target.NGAY_DATPHONG = $scope.config.moment($scope.target.NGAY_DATPHONG).format();
+                service.post($scope.target).then(function (successRes) {
+                    $scope.isValid = true;
+                    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                        Lobibox.notify('success', {
+                            title: 'Thông báo',
+                            width: 400,
+                            msg: successRes.data.Message,
+                            delay: 1500
+                        });
+                        $scope.isValid = false;
+                        filterData();
+                        $scope.target.NGAY_DATPHONG = new Date();
+                    } else {
+                        Lobibox.notify('error', {
+                            title: 'Xảy ra lỗi',
+                            msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                            delay: 3000
+                        });
+                        $scope.isValid = false;
+                    }
+                },
+                function (errorRes) {
+                    console.log('errorRes', errorRes);
+                    $scope.isValid = false;
+                });
             };
+            $scope.removeBooking = function (event, item) {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    animation: true,
+                    windowClass: 'modal-delete',
+                    templateUrl: configService.buildUrl('knowledge/DatPhong', 'remove'),
+                    controller: 'datPhongRemoveBooking_Ctrl',
+                    resolve: {
+                        targetData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (refundedData) {
+                    filterData();
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
+
+    app.controller('datPhongRemoveBooking_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
+       function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
+           $scope.config = angular.copy(configService);
+           $scope.tempData = tempDataService.tempData;
+           $scope.target = {};
+           $scope.target = angular.copy(targetData);;
+           $scope.title = function () { return 'Hủy đặt phòng [' + targetData.MAPHONG + ']'; };
+           $scope.removeBooking = function () {
+               service.removeBooking($scope.target).then(function (successRes) {
+                   if (successRes && successRes.status === 200 && successRes.data && successRes.data.Data) {
+                       Lobibox.notify('success', {
+                           title: 'Thông báo',
+                           width: 400,
+                           msg: successRes.data.Message,
+                           delay: 1500
+                       });
+                       $uibModalInstance.close($scope.target);
+                   } else {
+                       Lobibox.notify('error', {
+                           title: 'Xảy ra lỗi',
+                           msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                           delay: 3000
+                       });
+                   }
+               },
+               function (errorRes) {
+                   console.log('errorRes', errorRes);
+               });
+           };
+           $scope.cancel = function () {
+               $uibModalInstance.close();
+           };
+       }]);
     return app;
 });

@@ -25,6 +25,7 @@
         NHOMQUYEN, //NHOM QUYEN
         NGUOIDUNG, //NGUOIDUNG
         PHONG, //PHONG,
-        LOAIPHONG, //LOAIPHONG
+        LOAIPHONG, //LOAIPHONG,
+        DATPHONG, //DATPHONG
     }
 }

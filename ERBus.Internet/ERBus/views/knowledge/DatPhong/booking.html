@@ -14,7 +14,7 @@
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label">Ngày đặt phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                                 <div class="input-group">
-                                    <input class="form-control" id="_ngayDatPhong" type="text" ng-model="target.NGAY_DATPHONG" placeholder="{{config.dateFormat}}" uib-datepicker-popup="{{config.dateFormat}}" is-open="_ngayDatPhong" datepicker-localdate />
+                                    <input class="form-control" id="_ngayDatPhong" type="text" ng-model="target.NGAY_DATPHONG" placeholder="{{config.dateFormat}}" uib-datepicker-popup="{{config.dateFormat}}" is-open="_ngayDatPhong" datepicker-localdate readonly/>
                                 </div>
                                 <small class="form-text text-muted" ng-show="_form._ngayDatPhong.$dirty && _form._ngayDatPhong.$invalid">
                                     <span ng-show="_form._ngayDatPhong.$error.required">Ngày đặt phòng không được để trống</span>
@@ -25,7 +25,7 @@
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label">Thời gian đặt</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                                 <div class="input-group">
-                                    <input class="form-control" id="_thoiGianDatPhong" type="text" ng-model="target.THOIGIAN_DATPHONG" onload="showTime()"/>
+                                    <input class="form-control" id="_thoiGianDatPhong" type="text" ng-model="target.THOIGIAN_DATPHONG" onload="showTime()" />
                                     <div class="input-group-addon" title="Tự cài thời gian" ng-click="settingTime();">
                                         <i class="fa fa-clock"></i>
                                     </div>
@@ -39,9 +39,12 @@
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label">Khách hàng</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="_tenKhachHang" type="text" ng-model="target.TEN_KHACHHANG" />
-                                    <div class="input-group-addon" title="Bổ sung thông tin khách hàng" ng-click="addInfoCus();">
+                                    <input class="form-control" enter id="_tenKhachHang" type="text" ng-model="target.TEN_KHACHHANG" autofocus/>
+                                    <div class="input-group-addon" title="Bổ sung thông tin khách hàng" ng-click="addInfoCus();" ng-show="isShow">
                                         <i class="fa fa-plus"></i>
+                                    </div>
+                                    <div class="input-group-addon" title="Bổ sung thông tin khách hàng" ng-click="minusInfoCus();" ng-show="!isShow">
+                                        <i class="fa fa-minus"></i>
                                     </div>
                                 </div>
                             </div>
@@ -50,7 +53,7 @@
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label" style="opacity: 0">*</label>
                                 <div class="input-group">
-                                    <button type="button" prevent-default class="btn btn-success" ng-disabled="_form.$invalid || _formDetails.$invalid || _formTotal.$invalid" ng-click="save()"><i class="fa fa-book"></i>&nbsp;&nbsp;Đặt phòng ngay</button>
+                                    <button type="button" prevent-default class="btn btn-success" ng-disabled="_form.$invalid || _formDetails.$invalid || _formTotal.$invalid || isValid" ng-click="save()" ng-enter="save()"><i class="fa fa-book"></i>&nbsp;&nbsp;Đặt phòng ngay</button>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col col-md-3">
+                        <div class="col col-md-6">
                             <div class="form-group">
                                 <label for="text-input" class="form-control-label">Diễn giải</label>
                                 <div class="input-group">
@@ -99,36 +102,49 @@
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-                                    <th class="th customize"><span class="title">Mã phòng</span></th>
-                                    <th class="th customize"><span class="title">Ngày đặt</span></th>
-                                    <th class="th customize"><span class="title">Thời gian đặt</span></th>
-                                    <th class="th customize"><span class="title">Khách hàng</span></th>
-                                    <th class="th customize"><span class="title">Trạng thái</span></th>
-                                    <th class="th customize"><span class="title">#</span></th>
+                                    <th class="th customize" style="width:15%"><span class="title">Mã phòng</span></th>
+                                    <th class="th customize" style="width:15%"><span class="title">Ngày đặt</span></th>
+                                    <th class="th customize" style="width:15%"><span class="title">Thời gian đặt</span></th>
+                                    <th class="th customize" style="width:20%"><span class="title">Khách hàng</span></th>
+                                    <th class="th customize" style="width:15%"><span class="title">Số giờ</span></th>
+                                    <th class="th customize" style="width:20%"><span class="title">Trạng thái</span></th>
+                                    <th class="th customize" style="width:5%"><span class="title">#</span></th>
                                 </tr>
                             </thead>
                             <tbody ng-form name="_formDetails">
                                 <tr class="spacer"></tr>
-                                <tr class="tr-shadow" ng-repeat="item in data | orderBy:'INDEX':true track by $index">
-                                    <td class="text code">
-                                        <input enter type="text" id="_maHangDetail" name="_maHangDetail" onClick="this.select();" ng-model="item.MAHANG" title="Sản phẩm:{{item.MAHANG}} - Tên: {{item.TENHANG}} - Nhà cung cấp: {{convertCodeToName(item.MANHACUNGCAP,'nhaCungCap')}}" required class="form-control input-nhapMua code" readonly>
+                                <tr class="tr-shadow" ng-repeat="item in listBooking | orderBy:'THOIGIAN_DATPHONG':true track by $index" title="Mã đặt phòng {{item.MA_DATPHONG}}">
+                                    <td class="text">
+                                        <input enter type="text" id="_maPhong" name="_maPhong" onClick="this.select();" ng-model="item.MAPHONG" required typeahead-editable="false" uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('phong') | filter:$viewValue | limitTo:5" typeahead-on-select="" typeahead-input-formatter="convertCodeToName($model, 'phong')" class="form-control" readonly>
                                     </td>
-                                    <td class="text desc">
-                                        <input type="text" id="_tenHangDetail" name="_tenHangDetail" onClick="this.select();" ng-model="item.TENHANG" title="{{item.TENHANG}}" required class="form-control input-nhapMua" readonly>
+                                    <td class="text">
+                                        <input class="form-control" type="text" id="_ngayDatPhong" name="_ngayDatPhong" onClick="this.select();" ng-model="item.NGAY_DATPHONG" required placeholder="{{config.dateFormat}}" uib-datepicker-popup="{{config.dateFormat}}" datepicker-localdate readonly />
                                     </td>
-                                    <td class="text donvitinh">
-                                        <input type="text" id="_maDonViTinhDetail" name="_maDonViTinhDetail" onClick="this.select();" ng-value="convertCodeToName(item.MADONVITINH,'donViTinh')" title="Mã đơn vị tính {{item.MADONVITINH}} - {{convertCodeToName(item.MADONVITINH,'donViTinh')}}" class="form-control input-nhapMua code" readonly>
+                                    <td class="text">
+                                        <input type="text" id="_thoiGianDatPhong" name="_thoiGianDatPhong" onClick="this.select();" ng-model="item.THOIGIAN_DATPHONG" class="form-control" readonly>
                                     </td>
-                                    <td class="text thue">
-                                        <input type="text" id="_maThueVaoDetail" name="_maThueVaoDetail" onClick="this.select();" ng-value="convertCodeToName(item.MATHUE_VAO,'thue')" title="Mã thuế vào {{item.MATHUE_VAO}} - {{convertCodeToName(item.MATHUE_VAO,'thue')}}" class="form-control input-nhapMua code" readonly>
+                                    <td class="text">
+                                        <input type="text" id="_tenKhachHang" name="_tenKhachHang" onClick="this.select();"  ng-model="item.TEN_KHACHHANG" class="form-control" readonly>
                                     </td>
-                                    <td class="text thue">
-                                        <input type="text" id="_trangThai" name="_trangThai" onClick="this.select();" ng-value="convertCodeToName(item.MATHUE_VAO,'thue')" title="Mã thuế vào {{item.MATHUE_VAO}} - {{convertCodeToName(item.MATHUE_VAO,'thue')}}" class="form-control input-nhapMua code" readonly>
+                                    <td class="text" >
+                                        <div ng-bind-html="item.inputText"></div>
+                                    </td>
+                                    <td class="text" ng-if="item.TRANGTHAI === 10">
+                                        <button type="button" class="btn btn-success">
+                                            Đã đặt&nbsp;
+                                            <span class="badge badge-light"><i class="fa fa-check"></i></span>
+                                        </button>
+                                    </td>
+                                    <td class="text" ng-if="item.TRANGTHAI === 0">
+                                        <button type="button" class="btn btn-danger">
+                                            Chưa đặt &nbsp;
+                                            <span class="badge badge-light"><i class="fa fa-times"></i></span>
+                                        </button>
                                     </td>
                                     <td>
                                         <div class="table-data-feature">
-                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Xóa dòng" ng-disabled="_formDetails.$invalid" ng-click="removeItem($index)">
-                                                <i class="zmdi zmdi-minus"></i>
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Hủy đặt phòng {{item.MA_DATPHONG}}" ng-disabled="_formDetails.$invalid" ng-click="removeBooking($event,item);">
+                                                <i class="zmdi zmdi-close-circle-o"></i>
                                             </button>
                                         </div>
                                     </td>

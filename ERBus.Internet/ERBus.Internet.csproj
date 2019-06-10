@@ -443,6 +443,7 @@
     <Content Include="ERBus\views\catalog\LoaiHang\create.html" />
     <Content Include="ERBus\views\catalog\LoaiHang\index.html" />
     <Content Include="ERBus\views\knowledge\DatPhong\booking.html" />
+    <Content Include="ERBus\views\knowledge\DatPhong\remove.html" />
     <Content Include="ERBus\views\knowledge\DatPhong\index.html" />
     <Content Include="ERBus\views\knowledge\KiemKe\index.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\detail.html" />
