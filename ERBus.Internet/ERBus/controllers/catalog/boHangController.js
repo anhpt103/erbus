@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/donViTinhController', 'controllers/catalog/matHangController'], function () {
     'use strict';
-    var app = angular.module('boHangModule', ['ui.bootstrap']);
+    var app = angular.module('boHangModule', ['ui.bootstrap', 'donViTinhModule', 'matHangModule']);
     app.factory('boHangService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Catalog/BoHang';
         var selectedData = [];
@@ -22,6 +22,9 @@
             },
             getAllData: function () {
                 return $http.get(serviceUrl + '/GetAllData');
+            },
+            getDetails: function (ID) {
+                return $http.get(serviceUrl + '/GetDetails/' + ID);
             }
         }
         return result;
@@ -106,7 +109,6 @@
                 var modalInstance = $uibModal.open({
                     backdrop: 'static',
                     animation: true,
-                    //windowClass: 'catalog-window',
                     size: 'lg',
                     templateUrl: configService.buildUrl('catalog/BoHang', 'create'),
                     controller: 'boHangCreate_Ctrl',
@@ -183,12 +185,20 @@
             };
         }]);
 
-    app.controller('boHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
+    app.controller('boHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'userService', 'matHangService', 'donViTinhService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, userService, matHangService, donViTinhService) {
             $scope.config = angular.copy(configService);
+            $scope.paged = angular.copy(configService.pageDefault);
             $scope.tempData = tempDataService.tempData;
+            var currentUser = userService.GetCurrentUser();
+            var unitCode = currentUser.unitCode;
             $scope.title = function () { return 'Thêm bó hàng sản phẩm'; };
-            $scope.target = {};
+            $scope.target = {
+                TONGCHIETKHAU: 0,
+                TONGTIEN: 0,
+                TRANGTHAI: 10,
+                DataDetails: []
+            };
             //Tạo mới mã loại
             service.buildNewCode().then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
@@ -196,8 +206,194 @@
                 }
             });
             //end
+            //Function load data catalog DonViTinh
+            function loadDataDonViTinh() {
+                $scope.donViTinh = [];
+                if (!tempDataService.tempData('donViTinh')) {
+                    donViTinhService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('donViTinh', successRes.data.Data);
+                            $scope.donViTinh = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.donViTinh = tempDataService.tempData('donViTinh');
+                }
+            };
+            loadDataDonViTinh();
+            //end
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
+
+            $scope.pageChanged = function () {
+                var currentPage = $scope.paged.CurrentPage;
+                var itemsPerPage = $scope.paged.ItemsPerPage;
+                $scope.paged.TotalItems = $scope.target.DataDetails.length;
+                $scope.data = [];
+                if ($scope.target.DataDetails) {
+                    for (var i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < $scope.target.DataDetails.length; i++) {
+                        $scope.data.push($scope.target.DataDetails[i]);
+                    }
+                }
+            };
+
+            function TinhTongTien(listObj, name) {
+                var total = 0;
+                if (listObj && listObj.length > 0) {
+                    angular.forEach(listObj, function (obj, idx) {
+                        var increase = obj[name];
+                        if (!increase) {
+                            increase = 0;
+                        }
+                        total += increase;
+                    });
+                }
+                return total;
+            };
+
+            $scope.changedSoLuong = function (item) {
+                if (item) {
+                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                }
+            };
+            $scope.changedChietKhau = function (item) {
+                if (item) {
+                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                }
+                $scope.$watch("target.DataDetails", function (newValue, oldValue) {
+                    $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
+                }, true);
+            };
+
+            //function search mathang
+            $scope.searchMatHang = function (strKey) {
+                if (strKey) {
+                    var modalInstance = $uibModal.open({
+                        backdrop: 'static',
+                        templateUrl: configService.buildUrl('catalog/MatHang', 'search'),
+                        controller: 'matHangSearch_Ctrl',
+                        windowClass: 'search-window',
+                        resolve: {
+                            serviceSelectData: function () {
+                                return matHangService;
+                            },
+                            filterObject: function () {
+                                return {
+                                    keySearch: strKey,
+                                };
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (refundedData) {
+                        if (refundedData) {
+                            $scope.addItem = {
+                                MAHANG: refundedData.MAHANG,
+                                TENHANG: refundedData.TENHANG,
+                                MADONVITINH: refundedData.MADONVITINH,
+                                GIAMUA: refundedData.GIAMUA,
+                                CHIETKHAU: 0,
+                                SOLUONG: 1,
+                                TONGTIEN: SOLUONG * (GIAMUA - (GIAMUA * CHIETKHAU / 100)),
+                                INDEX: 0
+                            };
+                            $scope.pageChanged();
+                        }
+                    }, function () {
+                    });
+                }
+            };
+            //end function search
+
+            //CHANGED MAHANG ADD ITEM
+            $scope.changedMaHang = function (maHang) {
+                if (maHang) {
+                    var obj = {
+                        MAHANG: maHang,
+                        UNITCODE: unitCode
+                    }
+                    matHangService.getMatHangTheoDieuKien(obj).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                            $scope.addItem.MAHANG = successRes.data.Data.MAHANG;
+                            $scope.addItem.TENHANG = successRes.data.Data.TENHANG;
+                            $scope.addItem.MADONVITINH = successRes.data.Data.MADONVITINH;
+                            $scope.addItem.GIAMUA = successRes.data.Data.GIAMUA;
+                            $scope.addItem.CHIETKHAU = 0;
+                            $scope.addItem.SOLUONG = 1;
+                            $scope.addItem.TONGTIEN = $scope.addItem.SOLUONG * ($scope.addItem.GIAMUA - ($scope.addItem.GIAMUA * $scope.addItem.CHIETKHAU / 100));
+                            document.getElementById('_soLuongAddItem').focus();
+                            document.getElementById('_soLuongAddItem').select();
+                        }
+                        else {
+                            //bật lên modal tìm kiếm mặt hàng
+                            $scope.searchMatHang(maHang);
+                        }
+                    });
+                }
+            };
+
+            //add Row
+            $scope.addRow = function () {
+                if ($scope.addItem && $scope.addItem.MAHANG !== '') {
+                    var exist = $filter('filter')($scope.target.DataDetails, { MAHANG: $scope.addItem.MAHANG }, true);
+                    if (exist && exist.length == 1) {
+                        exist[0].SOLUONG = exist[0].SOLUONG + $scope.addItem.SOLUONG;
+                        exist[0].GIAMUA = $scope.addItem.GIAMUA;
+                        exist[0].TONGTIEN = Math.round(100 * (exist[0].SOLUONG * exist[0].GIAMUA)) / 100;
+                        Lobibox.notify('success', {
+                            title: 'Thông báo',
+                            width: 400,
+                            msg: "Đã tồn tại mã hàng " + exist[0].MAHANG + ". Cộng gộp!",
+                            delay: 1500
+                        });
+                    }
+                    else {
+                        $scope.target.DataDetails.push($scope.addItem);
+                    }
+                    $scope.pageChanged();
+                    $scope.addItem = {
+                        MAHANG: '',
+                        TENHANG: '',
+                        MADONVITINH: '',
+                        SOLUONG: 1,
+                        GIAMUA: 0,
+                        CHIETKHAU: 0,
+                        TONGTIEN: 0
+                    };
+                    focus('_maHangAddItem');
+                    document.getElementById('_maHangAddItem').focus();
+                    document.getElementById('_maHangAddItem').select();
+                }
+            };
+            //end add row
+
+            $scope.removeItem = function (index) {
+                var currentPage = $scope.paged.CurrentPage;
+                var itemsPerPage = 10;
+                var currentPageIndex = (currentPage - 1) * itemsPerPage + index;
+                $scope.target.DataDetails.splice(currentPageIndex, 1);
+                $scope.pageChanged();
+            };
+
+            function listenerDataDetails() {
+                $scope.$watch("target.DataDetails", function (newValue, oldValue) {
+                    $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
+                    $scope.target.TONGTIEN = TinhTongTien($scope.target.DataDetails, 'TONGTIEN');
+                }, true);
+            };
+            listenerDataDetails();
+
             $scope.save = function () {
-                if (!$scope.target.MABOHANG || !$scope.target.TENBOHANG ) {
+                if (!$scope.target.MABOHANG || !$scope.target.TENBOHANG) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
@@ -233,23 +429,272 @@
     app.controller('boHangDetail_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
         function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
             $scope.config = angular.copy(configService);
+            $scope.paged = angular.copy(configService.pageDefault);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
             $scope.title = function () { return 'Thông tin bó hàng sản phẩm [' + targetData.MABOHANG + ']'; };
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
+            function TinhTongTien(listObj, name) {
+                var total = 0;
+                if (listObj && listObj.length > 0) {
+                    angular.forEach(listObj, function (obj, idx) {
+                        var increase = obj[name];
+                        if (!increase) {
+                            increase = 0;
+                        }
+                        total += increase;
+                    });
+                }
+                return total;
+            };
+            $scope.pageChanged = function () {
+                var currentPage = $scope.paged.CurrentPage;
+                var itemsPerPage = $scope.paged.ItemsPerPage;
+                $scope.paged.TotalItems = $scope.target.DataDetails.length;
+                $scope.data = [];
+                if ($scope.target.DataDetails) {
+                    for (var i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < $scope.target.DataDetails.length; i++) {
+                        $scope.data.push($scope.target.DataDetails[i]);
+                    }
+                }
+            };
+            function filterData() {
+                service.getDetails($scope.target.ID).then(function (sucessRes) {
+                    if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
+                        $scope.target = sucessRes.data.Data;
+                        $scope.pageChanged();
+                    }
+                });
+            };
+            filterData();
+            function listenerDataDetails() {
+                $scope.$watch("target.DataDetails", function (newValue, oldValue) {
+                    $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
+                    $scope.target.TONGTIEN = TinhTongTien($scope.target.DataDetails, 'TONGTIEN');
+                }, true);
+            };
+            listenerDataDetails();
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
-    app.controller('boHangEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
+    app.controller('boHangEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'boHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', 'userService', 'matHangService', 'donViTinhService',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, userService, matHangService, donViTinhService) {
             $scope.config = angular.copy(configService);
+            $scope.paged = angular.copy(configService.pageDefault);
+            var currentUser = userService.GetCurrentUser();
+            var unitCode = currentUser.unitCode;
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
             $scope.title = function () { return 'Chỉnh sửa bó hàng sản phẩm'; };
+            //Function load data catalog DonViTinh
+            function loadDataDonViTinh() {
+                $scope.donViTinh = [];
+                if (!tempDataService.tempData('donViTinh')) {
+                    donViTinhService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('donViTinh', successRes.data.Data);
+                            $scope.donViTinh = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.donViTinh = tempDataService.tempData('donViTinh');
+                }
+            };
+            loadDataDonViTinh();
+            //end
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
+
+            $scope.pageChanged = function () {
+                var currentPage = $scope.paged.CurrentPage;
+                var itemsPerPage = $scope.paged.ItemsPerPage;
+                $scope.paged.TotalItems = $scope.target.DataDetails.length;
+                $scope.data = [];
+                if ($scope.target.DataDetails) {
+                    for (var i = (currentPage - 1) * itemsPerPage; i < currentPage * itemsPerPage && i < $scope.target.DataDetails.length; i++) {
+                        $scope.data.push($scope.target.DataDetails[i]);
+                    }
+                }
+            };
+
+            function TinhTongTien(listObj, name) {
+                var total = 0;
+                if (listObj && listObj.length > 0) {
+                    angular.forEach(listObj, function (obj, idx) {
+                        var increase = obj[name];
+                        if (!increase) {
+                            increase = 0;
+                        }
+                        total += increase;
+                    });
+                }
+                return total;
+            };
+
+            $scope.changedSoLuong = function (item) {
+                if (item) {
+                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                }
+            };
+            $scope.changedChietKhau = function (item) {
+                if (item) {
+                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                }
+                $scope.$watch("target.DataDetails", function (newValue, oldValue) {
+                    $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
+                }, true);
+            };
+
+            //function search mathang
+            $scope.searchMatHang = function (strKey) {
+                if (strKey) {
+                    var modalInstance = $uibModal.open({
+                        backdrop: 'static',
+                        templateUrl: configService.buildUrl('catalog/MatHang', 'search'),
+                        controller: 'matHangSearch_Ctrl',
+                        windowClass: 'search-window',
+                        resolve: {
+                            serviceSelectData: function () {
+                                return matHangService;
+                            },
+                            filterObject: function () {
+                                return {
+                                    keySearch: strKey,
+                                };
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (refundedData) {
+                        if (refundedData) {
+                            $scope.addItem = {
+                                MAHANG: refundedData.MAHANG,
+                                TENHANG: refundedData.TENHANG,
+                                MADONVITINH: refundedData.MADONVITINH,
+                                GIAMUA: refundedData.GIAMUA,
+                                CHIETKHAU: 0,
+                                SOLUONG: 1,
+                                TONGTIEN: SOLUONG * (GIAMUA - (GIAMUA * CHIETKHAU / 100)),
+                                INDEX: 0
+                            };
+                            $scope.pageChanged();
+                        }
+                    }, function () {
+                    });
+                }
+            };
+            //end function search
+
+            //CHANGED MAHANG ADD ITEM
+            $scope.changedMaHang = function (maHang) {
+                if (maHang) {
+                    var obj = {
+                        MAHANG: maHang,
+                        UNITCODE: unitCode
+                    }
+                    matHangService.getMatHangTheoDieuKien(obj).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                            $scope.addItem.MAHANG = successRes.data.Data.MAHANG;
+                            $scope.addItem.TENHANG = successRes.data.Data.TENHANG;
+                            $scope.addItem.MADONVITINH = successRes.data.Data.MADONVITINH;
+                            $scope.addItem.GIAMUA = successRes.data.Data.GIAMUA;
+                            $scope.addItem.CHIETKHAU = 0;
+                            $scope.addItem.SOLUONG = 1;
+                            $scope.addItem.TONGTIEN = $scope.addItem.SOLUONG * ($scope.addItem.GIAMUA - ($scope.addItem.GIAMUA * $scope.addItem.CHIETKHAU / 100));
+                            document.getElementById('_soLuongAddItem').focus();
+                            document.getElementById('_soLuongAddItem').select();
+                        }
+                        else {
+                            //bật lên modal tìm kiếm mặt hàng
+                            $scope.searchMatHang(maHang);
+                        }
+                    });
+                }
+            };
+
+            //add Row
+            $scope.addRow = function () {
+                if ($scope.addItem && $scope.addItem.MAHANG !== '') {
+                    var exist = $filter('filter')($scope.target.DataDetails, { MAHANG: $scope.addItem.MAHANG }, true);
+                    if (exist && exist.length == 1) {
+                        exist[0].SOLUONG = exist[0].SOLUONG + $scope.addItem.SOLUONG;
+                        exist[0].GIAMUA = $scope.addItem.GIAMUA;
+                        exist[0].TONGTIEN = Math.round(100 * (exist[0].SOLUONG * exist[0].GIAMUA)) / 100;
+                        Lobibox.notify('success', {
+                            title: 'Thông báo',
+                            width: 400,
+                            msg: "Đã tồn tại mã hàng " + exist[0].MAHANG + ". Cộng gộp!",
+                            delay: 1500
+                        });
+                    }
+                    else {
+                        $scope.target.DataDetails.push($scope.addItem);
+                    }
+                    $scope.pageChanged();
+                    $scope.addItem = {
+                        MAHANG: '',
+                        TENHANG: '',
+                        MADONVITINH: '',
+                        SOLUONG: 1,
+                        GIAMUA: 0,
+                        CHIETKHAU: 0,
+                        TONGTIEN: 0
+                    };
+                    focus('_maHangAddItem');
+                    document.getElementById('_maHangAddItem').focus();
+                    document.getElementById('_maHangAddItem').select();
+                }
+            };
+            //end add row
+
+            $scope.removeItem = function (index) {
+                var currentPage = $scope.paged.CurrentPage;
+                var itemsPerPage = 10;
+                var currentPageIndex = (currentPage - 1) * itemsPerPage + index;
+                $scope.target.DataDetails.splice(currentPageIndex, 1);
+                $scope.pageChanged();
+            };
+
+            function filterData() {
+                service.getDetails($scope.target.ID).then(function (sucessRes) {
+                    if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
+                        $scope.target = sucessRes.data.Data;
+                        $scope.pageChanged();
+                    }
+                });
+            };
+            filterData();
+
+            function listenerDataDetails() {
+                $scope.$watch("target.DataDetails", function (newValue, oldValue) {
+                    $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
+                    $scope.target.TONGTIEN = TinhTongTien($scope.target.DataDetails, 'TONGTIEN');
+                }, true);
+            };
+            listenerDataDetails();
             $scope.save = function () {
-                if (!$scope.target.MABOHANG || !$scope.target.TENBOHANG ) {
+                if (!$scope.target.MABOHANG || !$scope.target.TENBOHANG) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',

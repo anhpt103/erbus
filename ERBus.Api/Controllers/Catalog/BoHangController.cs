@@ -9,6 +9,7 @@ using ERBus.Service.Catalog.BoHang;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -124,8 +125,7 @@ namespace ERBus.Api.Controllers.Catalog
             try
             {
                 instance.MABOHANG = _service.SaveCode();
-                var data = Mapper.Map<BoHangViewModel.Dto, BOHANG>(instance);
-                var item = _service.Insert(data);
+                var item = _service.InsertBohang(instance);
                 int inst = await _service.UnitOfWork.SaveAsync();
                 if (inst > 0)
                 {
@@ -152,7 +152,7 @@ namespace ERBus.Api.Controllers.Catalog
 
         [ResponseType(typeof(void))]
         [CustomAuthorize(Method = "SUA", State = "BoHang")]
-        public async Task<IHttpActionResult> Put (string id, BOHANG instance)
+        public async Task<IHttpActionResult> Put (string id, BoHangViewModel.Dto instance)
         {
             if (!ModelState.IsValid)
             {
@@ -172,7 +172,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                var item = _service.Update(instance);
+                var item = _service.UpdateBohang(instance);
                 int upd = await _service.UnitOfWork.SaveAsync();
                 if (upd > 0)
                 {
@@ -196,6 +196,63 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
+
+        [Route("GetDetails/{ID}")]
+        [HttpGet]
+        public IHttpActionResult GetDetails(string ID)
+        {
+            var result = new TransferObj<BoHangViewModel.Dto>();
+            BoHangViewModel.Dto dto = new BoHangViewModel.Dto();
+            if (string.IsNullOrEmpty(ID))
+            {
+                return BadRequest("ID không chính xác");
+            }
+            else
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+                var boHang = _service.Repository.DbSet.FirstOrDefault(x => x.UNITCODE.Equals(unitCode) && x.ID.Equals(ID));
+                if (boHang != null)
+                {
+                    string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
+                    dto = Mapper.Map<BOHANG, BoHangViewModel.Dto>(boHang);
+                    var boHangChiTiet = _service.UnitOfWork.Repository<BOHANG_CHITIET>().DbSet.Where(x => x.MABOHANG.Equals(boHang.MABOHANG)).ToList();
+                    dto.DataDetails = Mapper.Map<List<BOHANG_CHITIET>, List<BoHangViewModel.DataDetails>>(boHangChiTiet);
+                    if (dto.DataDetails.Count > 0)
+                    {
+                        string listMatHang = "";
+                        foreach (var matHang in dto.DataDetails)
+                        {
+                            listMatHang += matHang.MAHANG + ",";
+                        }
+                        listMatHang = listMatHang.Substring(0, listMatHang.Length - 1);
+                        var MatHangViewModel = _service.GetDataMatHang(_service.ConvertConditionStringToArray(listMatHang), unitCode, connectString);
+                        foreach (var row in dto.DataDetails)
+                        {
+                            var hang = MatHangViewModel.FirstOrDefault(x => x.MAHANG.Equals(row.MAHANG));
+                            if (hang != null)
+                            {
+                                row.TENHANG = hang.TENHANG;
+                                row.MADONVITINH = hang.MADONVITINH;
+                                row.GIAMUA = hang.GIAMUA;
+                            }
+                        }
+                    }
+                }
+                if (dto != null && !string.IsNullOrEmpty(dto.MABOHANG))
+                {
+                    result.Data = dto;
+                    result.Status = true;
+                    result.Message = "Oke";
+                }
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                    result.Message = "NotFound";
+                }
+            }
+            return Ok(result);
+        }
 
         [ResponseType(typeof(BOHANG))]
         [CustomAuthorize(Method = "XOA", State = "BoHang")]

@@ -61,6 +61,9 @@ namespace ERBus.Service
                 cfg.CreateMap<BOHANG, BoHangViewModel.Dto>();
                 cfg.CreateMap<BoHangViewModel.Dto, BOHANG>();
 
+                cfg.CreateMap<BOHANG_CHITIET, BoHangViewModel.DataDetails>();
+                cfg.CreateMap<BoHangViewModel.DataDetails, BOHANG_CHITIET>();
+
                 cfg.CreateMap<THUE, ThueViewModel.Dto>();
                 cfg.CreateMap<ThueViewModel.Dto, THUE>();
 

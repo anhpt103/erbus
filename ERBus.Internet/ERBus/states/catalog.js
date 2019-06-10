@@ -50,7 +50,7 @@
         // Catalog Bó Hàng
         {
             name: 'BoHang',
-            url: '/pakage',
+            url: '/bundleGoods',
             parent: 'layout',
             abstract: false,
             views: {

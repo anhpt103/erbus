@@ -268,6 +268,38 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
+
+        [Route("GetMatHangTheoDieuKien")]
+        [HttpPost]
+        public IHttpActionResult GetMatHangTheoDieuKien(MatHangViewModel.PARAM_NHAPMUA_OBJ param)
+        {
+            var result = new TransferObj<MatHangViewModel.VIEW_MODEL>();
+            var viewModel = new MatHangViewModel.VIEW_MODEL();
+            if (string.IsNullOrEmpty(param.MAHANG))
+            {
+                return BadRequest("Mã hàng không chính xác");
+            }
+            else
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
+                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.MAHANG, unitCode, connectString);
+                if (listSearched != null && listSearched.Count == 1)
+                {
+                    result.Data = listSearched[0];
+                    result.Status = true;
+                    result.Message = "Oke";
+                }
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                    result.Message = "NotFound";
+                }
+            }
+            return Ok(result);
+        }
+
         [Route("SearchDataByKey")]
         [HttpPost]
         public IHttpActionResult SearchDataByKey(MatHangViewModel.PARAM_SEARCH_OBJ param)

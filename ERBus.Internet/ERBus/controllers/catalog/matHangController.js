@@ -49,6 +49,9 @@
             getMatHangXuatBanTheoMaKho: function (data) {
                 return $http.post(serviceUrl + '/GetMatHangXuatBanTheoMaKho', data);
             },
+            getMatHangTheoDieuKien: function (data) {
+                return $http.post(serviceUrl + '/GetMatHangTheoDieuKien', data);
+            },
             searchDataByKey: function (data) {
                 return $http.post(serviceUrl + '/SearchDataByKey', data);
             },
