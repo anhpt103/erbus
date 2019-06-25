@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using ERBus.Entity;
 using ERBus.Entity.Database.Knowledge;
 using ERBus.Service;
 using ERBus.Service.Authorize.Utils;
 using ERBus.Service.BuildQuery;
-using ERBus.Service.BuildQuery.Query.Types;
 using ERBus.Service.Knowledge.DatPhong;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,45 +31,40 @@ namespace ERBus.Api.Controllers.Knowledge
         [CustomAuthorize(Method = "XEM", State = "DatPhong")]
         public IHttpActionResult PostQuery(JObject jsonData)
         {
-            var result = new TransferObj();
+            TransferObj<PagedObj<DatPhongViewModel.ViewModel>> result = new TransferObj<PagedObj<DatPhongViewModel.ViewModel>>();
             var postData = ((dynamic)jsonData);
             var filtered = ((JObject)postData.filtered).ToObject<FilterObj<DatPhongViewModel.Search>>();
-            var paged = ((JObject)postData.paged).ToObject<PagedObj<DATPHONG>>();
+            var paged = ((JObject)postData.paged).ToObject<PagedObj<DatPhongViewModel.ViewModel>>();
             var unitCode = _service.GetCurrentUnitCode();
-            var query = new QueryBuilder
-            {
-                Take = paged.ItemsPerPage,
-                Skip = paged.FromItem - 1,
-                Filter = new QueryFilterLinQ()
-                {
-                    Property = ClassHelper.GetProperty(() => new DATPHONG().UNITCODE),
-                    Method = FilterMethod.EqualTo,
-                    Value = unitCode
-                },
-                Orders = new List<IQueryOrder>()
-                {
-                    new QueryOrder()
-                    {
-                        Field = ClassHelper.GetPropertyName(() => new DATPHONG().MA_DATPHONG),
-                        Method = OrderMethod.ASC
-                    }
-                }
-            };
             try
             {
-                var filterResult = _service.Filter(filtered, query);
-                if (!filterResult.WasSuccessful)
-                {
-                    return NotFound();
-                }
-                result.Data = filterResult.Value;
+                PagedObj<DatPhongViewModel.ViewModel> tempData = _service.QueryBookingRoom(_service.GetConnectionString(), paged, filtered.AdvanceData.MAPHONG, unitCode);
+                result.Data = tempData;
                 result.Status = true;
                 return Ok(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return InternalServerError();
             }
+        }
+
+        [Route("GetListBookingRoom")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "DatPhong")]
+        public IHttpActionResult GetListBookingRoom()
+        {
+            var result = new TransferObj<List<DatPhongViewModel.DatPhongPayDto>>();
+            result.Data = _service.GetListCloseBookingRoom(_service.GetCurrentUnitCode(), _service.GetConnectionString());
+            if (result.Data.Count > 0)
+            {
+                result.Status = true;
+            }
+            else
+            {
+                result.Status = false;
+            }
+            return Ok(result);
         }
 
         [Route("BuildNewCode")]
@@ -97,7 +92,7 @@ namespace ERBus.Api.Controllers.Knowledge
                 if (exist != null)
                 {
                     result.Status = false;
-                    result.Message = "Đã tồn tại chứng từ này";
+                    result.Message = "Đã tồn tại phiếu đặt phòng này";
                     return Ok(result);
                 }
             }
@@ -123,6 +118,53 @@ namespace ERBus.Api.Controllers.Knowledge
             }
             catch (Exception e)
             {
+                result.Status = false;
+                result.Message = e.Message;
+            }
+            return Ok(result);
+        }
+
+
+        [ResponseType(typeof(void))]
+        [CustomAuthorize(Method = "SUA", State = "DatPhong")]
+        public async Task<IHttpActionResult> Put(string id, DATPHONG instance)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != instance.ID)
+            {
+                return BadRequest();
+            }
+            var result = new TransferObj<DATPHONG>();
+            if (id != instance.ID)
+            {
+                result.Status = false;
+                result.Message = "Mã ID không hợp lệ";
+                return Ok(result);
+            }
+            try
+            {
+                var item = _service.Update(instance);
+                int upd = await _service.UnitOfWork.SaveAsync();
+                if (upd > 0)
+                {
+                    result.Status = true;
+                    result.Data = item;
+                    result.Message = "Cập nhật giờ đặt thành công";
+                }
+                else
+                {
+                    result.Status = false;
+                    result.Data = null;
+                    result.Message = "Thao tác không thành công";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Data = null;
                 result.Status = false;
                 result.Message = e.Message;
             }

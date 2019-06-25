@@ -9,6 +9,8 @@
         C, //CREATED
         U, //UPDATE
         ASYNC, //ASYNC
-        I //IMPORT EXCEL
+        I, //IMPORT EXCEL
+        CLOSE = 10, // ESTABLISHED ROOM
+        OPEN = 0, //VACATE ROOM
     }
 }

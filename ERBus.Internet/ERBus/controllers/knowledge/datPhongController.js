@@ -16,19 +16,26 @@
             },
             removeBooking: function (params) {
                 return $http.delete(serviceUrl + '/' + params.ID, params);
+            },
+            getListBookingRoom: function () {
+                return $http.get(serviceUrl + '/GetListBookingRoom');
+            },
+            updateBooking: function (params) {
+                return $http.put(serviceUrl + '/' + params.ID, params);
             }
         }
         return result;
     }]);
     /* controller list */
-    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService) {
+    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Đặt phòng' };
             $scope.data = [];
+            var dateTimeBooking;
             $scope.setPage = function (pageNo) {
                 $scope.paged.CurrentPage = pageNo;
                 filterData();
@@ -78,11 +85,39 @@
                     }
                 }
             };
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            function toHHMMSS(time) {
+                var sec_num = parseInt(time, 10); // don't forget the second param
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+                if (hours < 10) { hours = "0" + hours; }
+                if (minutes < 10) { minutes = "0" + minutes; }
+                if (seconds < 10) { seconds = "0" + seconds; }
+                return hours + ':' + minutes + ':' + seconds;
+            };
+            function caculateCountHour() {
+                if ($scope.data && $scope.data.length > 0) {
+                    var result = '';
+                    angular.forEach($scope.data, function (v, k) {
+                        v.NGAY_DATPHONG = new Date(v.NGAY_DATPHONG);
+                        if (v.THOIGIAN_DATPHONG && v.NGAY_DATPHONG && v.TRANGTHAI_DATPHONG === 10) {
+                            var time = monthNames[v.NGAY_DATPHONG.getMonth()] + ' ' + v.NGAY_DATPHONG.getDate() + ',' + ' ' + v.NGAY_DATPHONG.getFullYear() + ' ' + v.THOIGIAN_DATPHONG;
+                            dateTimeBooking = new Date(time);
+                            result = result + ' | ' + toHHMMSS((new Date().getTime() - dateTimeBooking.getTime()) / 1000)
+                            $scope.decriptionBooking = $sce.trustAsHtml('<a id = "noteBooking" class="form-control">' + result + '</a>');
+                        }
+                    });
+                }
+                setTimeout(caculateCountHour, 1000);
+            };
             
             function filterData() {
+                $scope.data = [];
                 $scope.isLoading = true;
                 if ($scope.accessList.VIEW) {
-                    phongService.getAllData().then(function (successRes) {
+                    phongService.getStatusAllRoom().then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status) {
                             $scope.data = successRes.data.Data;
                         }
@@ -135,6 +170,28 @@
                         }
                     });
                     modalInstance.result.then(function (refundedData) {
+                        filterData();
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                }
+            };
+
+            $scope.dischargeRoom = function (item) {
+                if (item && item.ID) {
+                    var modalInstance = $uibModal.open({
+                        backdrop: 'static',
+                        animation: true,
+                        windowClass: 'modal-booking',
+                        templateUrl: configService.buildUrl('knowledge/DatPhong', 'discharge'),
+                        controller: 'dischargeRoom_Ctrl',
+                        resolve: {
+                            targetData: function () {
+                                return item;
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (refundedData) {
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());
                     });
@@ -150,7 +207,7 @@
             $scope.target.NGAY_DATPHONG = new Date();
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
-            $scope.title = function () { return 'Đặt phòng [' + targetData.DESCRIPTION + ' - Tầng ' + targetData.PARENT + ']'; };
+            $scope.title = function () { return 'Đặt phòng [' + targetData.TENPHONG + ' - Tầng ' + targetData.TANG + ']'; };
             $scope.listBooking = [];
             var dateTimeBooking;
             var isSettimeout = true;
@@ -248,7 +305,7 @@
                         if (v.THOIGIAN_DATPHONG && v.NGAY_DATPHONG && v.TRANGTHAI === 10) {
                             var time = monthNames[v.NGAY_DATPHONG.getMonth()] + ' ' + v.NGAY_DATPHONG.getDate() + ',' + ' ' + v.NGAY_DATPHONG.getFullYear() + ' ' + v.THOIGIAN_DATPHONG;
                             dateTimeBooking = new Date(time);
-                            v.inputText = $sce.trustAsHtml('<input type="text" id = "' + v.MA_DATPHONG + '"' + 'class="form-control" readonly>');
+                            v.inputTextThoiGianDat = $sce.trustAsHtml('<input type="text" id = "' + v.MA_DATPHONG + '"' + 'class="form-control" readonly>');
                             if (document.getElementById(v.MA_DATPHONG) !== null) {
                                 $("#" + v.MA_DATPHONG).val(toHHMMSS((new Date().getTime() - dateTimeBooking.getTime()) / 1000));
                             }
@@ -260,7 +317,7 @@
 
             function filterData() {
                 $scope.isLoading = true;
-                $scope.filtered.advanceData.MAPHONG = targetData.VALUE;
+                $scope.filtered.advanceData.MAPHONG = targetData.MAPHONG;
                 $scope.filtered.advanceData.NGAY_DATPHONG = $scope.config.moment(new Date()).format();
                 $scope.filtered.isAdvance = true;
                 var postdata = { paged: $scope.paged, filtered: $scope.filtered };
@@ -282,7 +339,7 @@
             $scope.isValid = false;
             $scope.save = function () {
                 $scope.target.THOIGIAN_DATPHONG = getTime();
-                $scope.target.MAPHONG = targetData.VALUE;
+                $scope.target.MAPHONG = targetData.MAPHONG;
                 $scope.target.NGAY_DATPHONG = $scope.config.moment($scope.target.NGAY_DATPHONG).format();
                 service.post($scope.target).then(function (successRes) {
                     $scope.isValid = true;
@@ -330,10 +387,85 @@
                 });
             };
 
+            $scope.updateBooking = function (event, item) {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    animation: true,
+                    windowClass: 'modal-delete',
+                    templateUrl: configService.buildUrl('knowledge/DatPhong', 'update'),
+                    controller: 'datPhongUpdateBooking_Ctrl',
+                    resolve: {
+                        targetData: function () {
+                            return item;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (refundedData) {
+                    filterData();
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
+
+    app.controller('datPhongUpdateBooking_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
+       function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
+           $scope.config = angular.copy(configService);
+           $scope.tempData = tempDataService.tempData;
+           $scope.target = {};
+           $scope.target = angular.copy(targetData);;
+           $scope.title = function () { return 'Cập nhật đặt phòng [' + targetData.MAPHONG + ']'; };
+           function getTime() {
+               var date = new Date();
+               var h = date.getHours(); // 0 - 23
+               var m = date.getMinutes(); // 0 - 59
+               var s = date.getSeconds(); // 0 - 59
+               var session = "AM";
+               if (h == 0) {
+                   h = 12;
+               }
+               if (h > 12) {
+                   h = h - 12;
+                   session = "PM";
+               }
+               h = (h < 10) ? "0" + h : h;
+               m = (m < 10) ? "0" + m : m;
+               s = (s < 10) ? "0" + s : s;
+               var time = h + ":" + m + ":" + s + " " + session;
+               return time;
+           };
+           $scope.updateBooking = function () {
+               $scope.target.THOIGIAN_DATPHONG = getTime();
+               $scope.target.NGAY_DATPHONG = $scope.config.moment(new Date()).format();
+               service.updateBooking($scope.target).then(function (successRes) {
+                   if (successRes && successRes.status === 200 && successRes.data && successRes.data.Data) {
+                       Lobibox.notify('success', {
+                           title: 'Thông báo',
+                           width: 400,
+                           msg: successRes.data.Message,
+                           delay: 1500
+                       });
+                       $uibModalInstance.close($scope.target);
+                   } else {
+                       Lobibox.notify('error', {
+                           title: 'Xảy ra lỗi',
+                           msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                           delay: 3000
+                       });
+                   }
+               },
+               function (errorRes) {
+                   console.log('errorRes', errorRes);
+               });
+           };
+           $scope.cancel = function () {
+               $uibModalInstance.close();
+           };
+       }]);
 
     app.controller('datPhongRemoveBooking_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {

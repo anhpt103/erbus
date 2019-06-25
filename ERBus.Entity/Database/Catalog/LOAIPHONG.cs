@@ -25,6 +25,14 @@ namespace ERBus.Entity.Database.Catalog
         [StringLength(50)]
         public string MABOHANG { get; set; }
 
+        [Column("BACKGROUND")]
+        [Description("BACKGROUND ĐẠI DIỆN")]
+        public byte[] BACKGROUND { get; set; }
+
+        [Column("ICON")]
+        [Description("ICON ĐẠI DIỆN")]
+        public byte[] ICON { get; set; }
+
         [Column("TRANGTHAI")]
         [Description("TRẠNG THÁI DỮ LIỆU 0: CHƯA DUYỆT _ 10: ĐÃ DUYỆT _ 20: LƯU TẠM _ 30: TRẠNG THÁI MỞ RỘNG")]
         public Nullable<int> TRANGTHAI { get; set; }

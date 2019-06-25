@@ -1,0 +1,76 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã loại phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maLoaiPhong" name="_maLoaiPhong" ng-model="target.MALOAIPHONG" required placeholder="Nhập mã loại phòng" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._maLoaiPhong.$dirty && _form._maLoaiPhong.$invalid">
+                        <span ng-show="_form._maLoaiPhong.$error.required">Mã loại phòng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên loại phòng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenLoaiPhong" name="_tenLoaiPhong" ng-model="target.TENLOAIPHONG" required placeholder="Nhập tên loại phòng" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_form._tenLoaiPhong.$dirty && _form._tenLoaiPhong.$invalid">
+                        <span ng-show="_form._tenLoaiPhong.$error.required">Tên loại phòng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Bó hàng</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_maBoHang" name="_maBoHang" ng-model="target.MABOHANG" placeholder="Nhập bó hàng" typeahead-editable="false"
+                           uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('boHang') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                           typeahead-input-formatter="convertCodeToNameBoHang($model, 'boHang')" class="form-control" disabled required />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-12">
+                    <label for="text-input" class="form-control-label">Cài đặt mã hàng được tính theo thời gian sử dụng (Mã này là mã hàng trong danh mục hàng hóa thuộc bó hàng [ {{target.MABOHANG}} ])</label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã hàng</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_maHang" name="_maHang" ng-model="target.MAHANG" placeholder="Nhập mã hàng" typeahead-editable="false"
+                           uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('matHangTrongBo') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                           typeahead-input-formatter="convertCodeToName($model, 'matHangTrongBo')" class="form-control" required />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-12">
+                    <label for="text-input" class="form-control-label">Cài đặt thời gian tính tiền (Đơn vị được tính bằng phút)</label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Thời gian (phút)</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="number" id="_soPhut" name="_soPhut" value="0" min="0" ng-model="target.SOPHUT" placeholder="Nhập thời gian tính tiền" class="form-control" required />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

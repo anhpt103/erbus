@@ -63,6 +63,27 @@ namespace ERBus.Service.Catalog.LoaiPhong
             public string TENLOAIPHONG { get; set; }
             public string MABOHANG { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
+            public string BACKGROUND_NAME { get; set; }
+            public string ICON_NAME { get; set; }
+            public byte[] BACKGROUND { get; set; }
+            public byte[] ICON { get; set; }
+            public string MAHANG { get; set; }
+            public int SOPHUT { get; set; }
+        }
+
+        public class DtoCauHinh 
+        {
+            public string MALOAIPHONG { get; set; }
+            public string TENLOAIPHONG { get; set; }
+            public string MABOHANG { get; set; }
+            public string MAHANG { get; set; }
+            public int SOPHUT { get; set; }
+            public string UNITCODE { get; set; }
+        }
+
+        public class InfoUpload
+        {
+            public string FILENAME { get; set; }
         }
     }
 }

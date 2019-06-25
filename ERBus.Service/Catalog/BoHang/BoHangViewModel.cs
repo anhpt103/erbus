@@ -78,6 +78,7 @@ namespace ERBus.Service.Catalog.BoHang
             public string DIENGIAI { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
             public List<DataDetails> DataDetails { get; set; }
+            public string UNITCODE { get; set; }
         }
 
         public class DataDetails : DataInfoEntityDto
@@ -86,12 +87,13 @@ namespace ERBus.Service.Catalog.BoHang
             public string MAHANG { get; set; }
             public string TENHANG { get; set; }
             public string MADONVITINH { get; set; }
-            public decimal GIAMUA { get; set; }
+            public decimal GIABANLE_VAT { get; set; }
             public decimal SOLUONG { get; set; }
             public decimal CHIETKHAU { get; set; }
             public decimal TONGTIEN { get; set; }
             public string DIENGIAI { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
+            public string UNITCODE { get; set; }
         }
     }
 }

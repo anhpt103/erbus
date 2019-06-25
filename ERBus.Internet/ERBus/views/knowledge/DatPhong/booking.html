@@ -127,7 +127,7 @@
                                         <input type="text" id="_tenKhachHang" name="_tenKhachHang" onClick="this.select();"  ng-model="item.TEN_KHACHHANG" class="form-control" readonly>
                                     </td>
                                     <td class="text" >
-                                        <div ng-bind-html="item.inputText"></div>
+                                        <div ng-bind-html="item.inputTextThoiGianDat"></div>
                                     </td>
                                     <td class="text" ng-if="item.TRANGTHAI === 10">
                                         <button type="button" class="btn btn-success">
@@ -143,6 +143,9 @@
                                     </td>
                                     <td>
                                         <div class="table-data-feature">
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Cập nhật giờ đặt phòng {{item.MA_DATPHONG}}" ng-disabled="_formDetails.$invalid" ng-click="updateBooking($event,item);">
+                                                <i class="zmdi zmdi-time-restore-setting"></i>
+                                            </button>
                                             <button class="item" data-toggle="tooltip" data-placement="top" title="Hủy đặt phòng {{item.MA_DATPHONG}}" ng-disabled="_formDetails.$invalid" ng-click="removeBooking($event,item);">
                                                 <i class="zmdi zmdi-close-circle-o"></i>
                                             </button>

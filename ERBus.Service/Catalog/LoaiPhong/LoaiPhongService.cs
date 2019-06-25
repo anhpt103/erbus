@@ -2,8 +2,11 @@
 using ERBus.Entity.Database.Catalog;
 using ERBus.Service.Service;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web;
 
 namespace ERBus.Service.Catalog.LoaiPhong
 {
@@ -11,6 +14,7 @@ namespace ERBus.Service.Catalog.LoaiPhong
     {
         string BuildCode();
         string SaveCode();
+        LoaiPhongViewModel.InfoUpload UploadImageLoaiPhong();
     }
     public class LoaiPhongService : DataInfoServiceBase<LOAIPHONG>, ILoaiPhongService
     {
@@ -77,6 +81,43 @@ namespace ERBus.Service.Catalog.LoaiPhong
             }
             result = string.Format("{0}{1}", config.LOAIMA, config.GIATRI);
             return result;
+        }
+
+        public LoaiPhongViewModel.InfoUpload UploadImageLoaiPhong()
+        {
+            LoaiPhongViewModel.InfoUpload result = new LoaiPhongViewModel.InfoUpload();
+            try
+            {
+                string path = PhysicalPathUploadLoaiPhong();
+                HttpRequest request = HttpContext.Current.Request;
+                var maLoaiPhong = request.Form["MALOAIPHONG"];
+                path += maLoaiPhong + "\\";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                try
+                {
+                    if (request.Files.Count > 0)
+                    {
+                        HttpPostedFile file = request.Files[0];
+                        List<string> tmp = file.FileName.Split('.').ToList();
+                        string extension = tmp.Count > 0 ? tmp[1] : "jpg";
+                        string fileName = string.Format("{0}.{1}", maLoaiPhong, extension);
+                        file.SaveAs(path + fileName);
+                        result.FILENAME = fileName;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

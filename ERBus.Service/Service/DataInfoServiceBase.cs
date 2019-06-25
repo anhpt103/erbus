@@ -63,6 +63,11 @@ namespace ERBus.Service.Service
         {
             return HttpContext.Current.Server.MapPath("~/Upload") + "\\ImageMatHang\\";
         }
+
+        public string PhysicalPathUploadLoaiPhong()
+        {
+            return HttpContext.Current.Server.MapPath("~/Upload") + "\\ImageLoaiPhong\\";
+        }
         public virtual TEntity Insert(TEntity instance, bool withUnitCode = true)
         {
             var exist = Find(instance, true);
@@ -104,6 +109,7 @@ namespace ERBus.Service.Service
                     var currentUser = (HttpContext.Current.User as ClaimsPrincipal);
                     entity.I_UPDATE_DATE = DateTime.Now;
                     entity.I_UPDATE_BY = currentUser.Identity.Name;
+                    entity.UNITCODE = GetCurrentUnitCode();
                 }
                 else
                 {

@@ -50,6 +50,52 @@
                     </small>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col col-md-6">
+                    <!--BACKGROUND-->
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <label for="file-multiple-input" class="form-control-label">Background</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-12">
+                            <div class="preview " ng-if="target.BACKGROUND" style="float: right; float: left; margin: 5px; width: 200px; border-radius: 5px;">
+                                <div style="width: 200px; overflow: hidden;">
+                                    <img ng-src="data:image/JPEG;base64,{{target.BACKGROUND}}" width="195" height="145" />
+                                </div>
+                            </div>
+                            <div class="preview " ng-if="fileBackground.SRC" style="float: right; float: left; margin: 5px; width: 200px; border-radius: 5px;">
+                                <div style="width: 200px; overflow: hidden;">
+                                    <img rel="popover" ng-src="{{fileBackground.SRC}}" width="195" height="145" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <!--ICON-->
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <label for="file-multiple-input" class="form-control-label">Icon</label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-12">
+                            <div class="preview " ng-if="target.ICON" style="float: right; float: left; margin: 5px; width: 200px; border-radius: 5px;">
+                                <div style="width: 200px; overflow: hidden;">
+                                    <img ng-src="data:image/svg+xml;base64,{{target.ICON}}" width="195" height="145" />
+                                </div>
+                            </div>
+                            <div class="preview " ng-if="fileIcon.SRC" style="float: right; float: left; margin: 5px; width: 200px; border-radius: 5px;">
+                                <div style="width: 200px; overflow: hidden;">
+                                    <img rel="popover" ng-src="{{fileIcon.SRC}}" width="195" height="145" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
     <div class="modal-footer">

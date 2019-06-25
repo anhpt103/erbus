@@ -88,6 +88,24 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
+        [Route("GetStatusAllRoom")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "DatPhong")]
+        public IHttpActionResult GetStatusAllRoom()
+        {
+            var result = new TransferObj<List<PhongViewModel.StatusRoom>>();
+            result.Data = _service.GetListStatusRoom(_service.GetCurrentUnitCode(), _service.GetConnectionString());
+            if (result.Data.Count > 0)
+            {
+                result.Status = true;
+            }
+            else
+            {
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+
         [Route("PostQuery")]
         [HttpPost]
         [CustomAuthorize(Method = "XEM", State = "Phong")]

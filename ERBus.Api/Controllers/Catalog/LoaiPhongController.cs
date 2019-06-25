@@ -9,6 +9,7 @@ using ERBus.Service.Catalog.LoaiPhong;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -45,7 +46,43 @@ namespace ERBus.Api.Controllers.Catalog
             }
             return Ok(result);
         }
-      
+
+        [Route("GetDetails/{maLoaiPhong}")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "LoaiPhong")]
+        public IHttpActionResult GetDetails(string maLoaiPhong)
+        {
+            var result = new TransferObj<LoaiPhongViewModel.DtoCauHinh>();
+            if (!string.IsNullOrEmpty(maLoaiPhong))
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+                var loaiPhong = _service.Repository.DbSet.FirstOrDefault(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode) && x.MALOAIPHONG.Equals(maLoaiPhong));
+                if (loaiPhong != null)
+                {
+                    var data = Mapper.Map<LOAIPHONG, LoaiPhongViewModel.DtoCauHinh>(loaiPhong);
+                    var cauHinhLoaiPhong = _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG>().DbSet.FirstOrDefault(x => x.MALOAIPHONG.Equals(data.MALOAIPHONG) && x.UNITCODE.Equals(unitCode));
+                    if (cauHinhLoaiPhong != null)
+                    {
+                        data.MAHANG = cauHinhLoaiPhong.MAHANG;
+                        data.SOPHUT = cauHinhLoaiPhong.SOPHUT;
+                    }
+                    result.Data = data;
+                    result.Status = true;
+                }
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                }
+            }
+            else
+            {
+                result.Data = null;
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+
         [Route("PostQuery")]
         [HttpPost]
         [CustomAuthorize(Method = "XEM", State = "LoaiPhong")]
@@ -101,7 +138,7 @@ namespace ERBus.Api.Controllers.Catalog
 
         [ResponseType(typeof(LOAIPHONG))]
         [CustomAuthorize(Method = "THEM", State = "LoaiPhong")]
-        public async Task<IHttpActionResult> Post (LoaiPhongViewModel.Dto instance)
+        public async Task<IHttpActionResult> Post(LoaiPhongViewModel.Dto instance)
         {
             var result = new TransferObj<LOAIPHONG>();
             var curentUnitCode = _service.GetCurrentUnitCode();
@@ -125,6 +162,24 @@ namespace ERBus.Api.Controllers.Catalog
             {
                 instance.MALOAIPHONG = _service.SaveCode();
                 var data = Mapper.Map<LoaiPhongViewModel.Dto, LOAIPHONG>(instance);
+                string path = _service.PhysicalPathUploadLoaiPhong() + data.MALOAIPHONG + "\\";
+                if (!string.IsNullOrEmpty(instance.BACKGROUND_NAME))
+                {
+                    FileStream fs = new FileStream(path + instance.BACKGROUND_NAME, FileMode.Open, FileAccess.Read);
+                    byte[] BackgroundData = new byte[fs.Length];
+                    fs.Read(BackgroundData, 0, System.Convert.ToInt32(fs.Length));
+                    fs.Close();
+                    data.BACKGROUND = BackgroundData;
+                }
+
+                if (!string.IsNullOrEmpty(instance.ICON_NAME))
+                {
+                    FileStream fs = new FileStream(path + instance.ICON_NAME, FileMode.Open, FileAccess.Read);
+                    byte[] IconData = new byte[fs.Length];
+                    fs.Read(IconData, 0, System.Convert.ToInt32(fs.Length));
+                    fs.Close();
+                    data.ICON = IconData;
+                }
                 var item = _service.Insert(data);
                 int inst = await _service.UnitOfWork.SaveAsync();
                 if (inst > 0)
@@ -144,7 +199,7 @@ namespace ERBus.Api.Controllers.Catalog
             {
                 result.Status = false;
                 result.Message = e.Message;
-                
+
             }
             return Ok(result);
         }
@@ -152,7 +207,7 @@ namespace ERBus.Api.Controllers.Catalog
 
         [ResponseType(typeof(void))]
         [CustomAuthorize(Method = "SUA", State = "LoaiPhong")]
-        public async Task<IHttpActionResult> Put (string id, LOAIPHONG instance)
+        public async Task<IHttpActionResult> Put(string id, LoaiPhongViewModel.Dto instance)
         {
             if (!ModelState.IsValid)
             {
@@ -172,7 +227,26 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                var item = _service.Update(instance);
+                var data = Mapper.Map<LoaiPhongViewModel.Dto, LOAIPHONG>(instance);
+                string path = _service.PhysicalPathUploadLoaiPhong() + data.MALOAIPHONG + "\\";
+                if (!string.IsNullOrEmpty(instance.BACKGROUND_NAME))
+                {
+                    FileStream fs = new FileStream(path + instance.BACKGROUND_NAME, FileMode.Open, FileAccess.Read);
+                    byte[] BackgroundData = new byte[fs.Length];
+                    fs.Read(BackgroundData, 0, System.Convert.ToInt32(fs.Length));
+                    fs.Close();
+                    data.BACKGROUND = BackgroundData;
+                }
+
+                if (!string.IsNullOrEmpty(instance.ICON_NAME))
+                {
+                    FileStream fs = new FileStream(path + instance.ICON_NAME, FileMode.Open, FileAccess.Read);
+                    byte[] IconData = new byte[fs.Length];
+                    fs.Read(IconData, 0, System.Convert.ToInt32(fs.Length));
+                    fs.Close();
+                    data.ICON = IconData;
+                }
+                var item = _service.Update(data);
                 int upd = await _service.UnitOfWork.SaveAsync();
                 if (upd > 0)
                 {
@@ -209,9 +283,9 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                 _service.Delete(instance.ID);
+                _service.Delete(instance.ID);
                 int del = await _service.UnitOfWork.SaveAsync();
-                if(del > 0)
+                if (del > 0)
                 {
                     result.Data = true;
                     result.Status = true;
@@ -229,6 +303,68 @@ namespace ERBus.Api.Controllers.Catalog
                 result.Data = false;
                 result.Status = false;
                 result.Message = e.Message;
+            }
+            return Ok(result);
+        }
+
+        [Route("UploadBackground")]
+        [AllowAnonymous]
+        [HttpPost]
+        public IHttpActionResult UploadBackground()
+        {
+            var result = new TransferObj<LoaiPhongViewModel.InfoUpload>();
+            try
+            {
+                LoaiPhongViewModel.InfoUpload data = _service.UploadImageLoaiPhong();
+                if (data != null && !string.IsNullOrEmpty(data.FILENAME))
+                {
+                    result.Status = true;
+                    result.Data = data;
+                    result.Message = "Success";
+                }
+                else
+                {
+                    result.Status = false;
+                    result.Data = null;
+                    result.Message = "Not Success";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Status = false;
+                result.Data = null;
+                result.Message = "Exception:" + e.ToString();
+            }
+            return Ok(result);
+        }
+
+        [Route("UploadIcon")]
+        [AllowAnonymous]
+        [HttpPost]
+        public IHttpActionResult UploadIcon()
+        {
+            var result = new TransferObj<LoaiPhongViewModel.InfoUpload>();
+            try
+            {
+                LoaiPhongViewModel.InfoUpload data = _service.UploadImageLoaiPhong();
+                if (data != null && !string.IsNullOrEmpty(data.FILENAME))
+                {
+                    result.Status = true;
+                    result.Data = data;
+                    result.Message = "Success";
+                }
+                else
+                {
+                    result.Status = false;
+                    result.Data = null;
+                    result.Message = "Not Success";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Status = false;
+                result.Data = null;
+                result.Message = "Exception:" + e.ToString();
             }
             return Ok(result);
         }

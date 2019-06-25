@@ -11,6 +11,7 @@ using ERBus.Service.Authorize.ThamSoHeThong;
 using ERBus.Service.BuildQuery;
 using ERBus.Service.Catalog.BaoBi;
 using ERBus.Service.Catalog.BoHang;
+using ERBus.Service.Catalog.CauHinhLoaiPhong;
 using ERBus.Service.Catalog.DonViTinh;
 using ERBus.Service.Catalog.HangKhachHang;
 using ERBus.Service.Catalog.KeHang;
@@ -25,6 +26,7 @@ using ERBus.Service.Catalog.Phong;
 using ERBus.Service.Catalog.Thue;
 using ERBus.Service.Knowledge.DatPhong;
 using ERBus.Service.Knowledge.NhapMua;
+using ERBus.Service.Knowledge.ThanhToanDatPhong;
 using ERBus.Service.Knowledge.XuatBan;
 using ERBus.Service.Knowledge.XuatBanLeThuNgan;
 using ERBus.Service.Promotion.GiamGiaLoaiHang;
@@ -88,6 +90,12 @@ namespace ERBus.Service
                 cfg.CreateMap<LOAIPHONG, LoaiPhongViewModel.Dto>();
                 cfg.CreateMap<LoaiPhongViewModel.Dto, LOAIPHONG>();
 
+                cfg.CreateMap<LOAIPHONG, LoaiPhongViewModel.DtoCauHinh>();
+                cfg.CreateMap<LoaiPhongViewModel.DtoCauHinh, LOAIPHONG>();
+
+                cfg.CreateMap<CAUHINH_LOAIPHONG, CauHinhLoaiPhongViewModel.Dto>();
+                cfg.CreateMap<CauHinhLoaiPhongViewModel.Dto, CAUHINH_LOAIPHONG>();
+
                 cfg.CreateMap<MATHANG, MatHangViewModel.Dto>();
                 cfg.CreateMap<MatHangViewModel.Dto, MATHANG>();
                 cfg.CreateMap<MATHANG_GIA, MatHangViewModel.Dto>();
@@ -134,6 +142,14 @@ namespace ERBus.Service
                 cfg.CreateMap<DATPHONG, DatPhongViewModel.Dto>();
                 cfg.CreateMap<DatPhongViewModel.Dto, DATPHONG>();
 
+                cfg.CreateMap<LICHSU_DATPHONG, DATPHONG>();
+                cfg.CreateMap<DATPHONG, LICHSU_DATPHONG>();
+                
+                cfg.CreateMap<THANHTOAN_DATPHONG, ThanhToanDatPhongViewModel.Dto>();
+                cfg.CreateMap<ThanhToanDatPhongViewModel.Dto, THANHTOAN_DATPHONG>();
+
+                cfg.CreateMap<THANHTOAN_DATPHONG_CHITIET, ThanhToanDatPhongViewModel.DtoDetail>();
+                cfg.CreateMap<ThanhToanDatPhongViewModel.DtoDetail, THANHTOAN_DATPHONG_CHITIET>();
                 //Promotion
 
                 cfg.CreateMap<KHUYENMAI, TienTyLeViewModel.Dto>();

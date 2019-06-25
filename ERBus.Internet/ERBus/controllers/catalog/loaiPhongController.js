@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/boHangController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/boHangController', 'controllers/catalog/cauHinhLoaiPhongController'], function () {
     'use strict';
-    var app = angular.module('loaiPhongModule', ['ui.bootstrap','boHangModule']);
+    var app = angular.module('loaiPhongModule', ['ui.bootstrap', 'boHangModule', 'cauHinhLoaiPhongModule']);
     app.factory('loaiPhongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Catalog/LoaiPhong';
         var selectedData = [];
@@ -22,12 +22,15 @@
             },
             delete: function (params) {
                 return $http.delete(serviceUrl + '/' + params.ID, params);
+            },
+            getDetails: function (maLoaiPhong) {
+                return $http.get(serviceUrl + '/GetDetails/' + maLoaiPhong);
             }
         }
         return result;
     }]);
     /* controller list */
-    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','boHangService',
+    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'boHangService',
         function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, boHangService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
@@ -84,7 +87,7 @@
             loadDataBoHang();
             //end
 
-            
+
             function filterData() {
                 $scope.isLoading = true;
                 if ($scope.accessList.VIEW) {
@@ -192,6 +195,26 @@
                 });
             };
 
+            $scope.setting = function (target) {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    animation: true,
+                    size: 'lg',
+                    templateUrl: configService.buildUrl('catalog/LoaiPhong', 'setting'),
+                    controller: 'loaiPhongSetting_Ctrl',
+                    resolve: {
+                        targetData: function () {
+                            return target;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (refundedData) {
+                    $scope.refresh();
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
             /* Function delete item */
             $scope.delete = function (event, target) {
                 var modalInstance = $uibModal.open({
@@ -215,46 +238,157 @@
 
         }]);
 
-    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
+    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, $timeout, upload) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm loại phòng'; };
+
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
 
             service.buildNewCode().then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
                     $scope.target.MALOAIPHONG = successRes.data;
                 }
             });
-            
+
+            $scope.fileBackground = {};
+            $scope.uploadBackground = function (input) {
+                $scope.inputBackground = input;
+                if (input.files && input.files.length > 0) {
+                    $timeout(function () {
+                        var fileReader = new FileReader();
+                        fileReader.readAsDataURL(input.files[0]);
+                        fileReader.onload = function (e) {
+                            $timeout(function () {
+                                $scope.fileBackground.SRC = e.target.result;
+                            });
+                        };
+                    });
+                    $scope.fileBackground.FILE = input.files[0];
+                }
+            };
+            $scope.deleteBackground = function () {
+                if ($scope.target.BACKGROUND) {
+                    $scope.target.BACKGROUND = null;
+                }
+                if ($scope.fileBackground) {
+                    $scope.fileBackground = {};
+                    angular.element("#file-input-background").val(null);
+                }
+            };
+
+            $scope.fileIcon = {};
+            $scope.uploadIcon = function (input) {
+                $scope.inputIcon = input;
+                if (input.files && input.files.length > 0) {
+                    $timeout(function () {
+                        var fileReader = new FileReader();
+                        fileReader.readAsDataURL(input.files[0]);
+                        fileReader.onload = function (e) {
+                            $timeout(function () {
+                                $scope.fileIcon.SRC = e.target.result;
+                            });
+                        };
+                    });
+                    $scope.fileIcon.FILE = input.files[0];
+                }
+            };
+            $scope.deleteIcon = function () {
+                if ($scope.target.ICON) {
+                    $scope.target.ICON = null;
+                }
+                if ($scope.fileIcon) {
+                    $scope.fileIcon = {};
+                    angular.element("#file-input-icon").val(null);
+                }
+            };
+
+            function saveLoaiPhong() {
+                service.post($scope.target).then(function (successRes) {
+                    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                        Lobibox.notify('success', {
+                            title: 'Thông báo',
+                            width: 400,
+                            msg: successRes.data.Message,
+                            delay: 1500
+                        });
+                        $uibModalInstance.close($scope.target);
+                    } else {
+                        Lobibox.notify('error', {
+                            title: 'Xảy ra lỗi',
+                            msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                            delay: 3000
+                        });
+                    }
+                },
+                    function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+            };
+
+
+            function UploadIcon() {
+                if ($scope.fileIcon && $scope.fileIcon.SRC) {
+                    $scope.fileIcon.MALOAIPHONG = $scope.target.MALOAIPHONG;
+                    upload.upload({
+                        url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadIcon',
+                        data: $scope.fileIcon
+                    }).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                            $scope.target.ICON_NAME = successRes.data.Data.FILENAME;
+                            saveLoaiPhong();
+                        } else {
+                            Lobibox.notify('error', {
+                                title: 'Xảy ra lỗi',
+                                msg: 'Đã xảy ra lỗi! Thao tác upload Icon không thành công',
+                                delay: 2500
+                            });
+                        }
+                    });
+                } else {
+                    saveLoaiPhong();
+                }
+            };
+
+
             $scope.save = function () {
-                if (!$scope.target.MALOAIPHONG || !$scope.target.TENLOAIPHONG ) {
+                if (!$scope.target.MALOAIPHONG || !$scope.target.TENLOAIPHONG) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
                         delay: 4000
                     });
                 } else {
-                    service.post($scope.target).then(function (successRes) {
-                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
-                            Lobibox.notify('success', {
-                                title: 'Thông báo',
-                                width: 400,
-                                msg: successRes.data.Message,
-                                delay: 1500
-                            });
-                            $uibModalInstance.close($scope.target);
-                        } else {
-                            Lobibox.notify('error', {
-                                title: 'Xảy ra lỗi',
-                                msg: 'Đã xảy ra lỗi! Thao tác không thành công',
-                                delay: 3000
-                            });
-                        }
-                    },
-                    function (errorRes) {
-                        console.log('errorRes', errorRes);
-                    });
+                    if ($scope.fileBackground && $scope.fileBackground.SRC) {
+                        $scope.fileBackground.MALOAIPHONG = $scope.target.MALOAIPHONG;
+                        upload.upload({
+                            url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadBackground',
+                            data: $scope.fileBackground
+                        }).then(function (successRes) {
+                            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                                $scope.target.BACKGROUND_NAME = successRes.data.Data.FILENAME;
+                                UploadIcon();
+                            } else {
+                                Lobibox.notify('error', {
+                                    title: 'Xảy ra lỗi',
+                                    msg: 'Đã xảy ra lỗi! Thao tác upload Background không thành công',
+                                    delay: 2500
+                                });
+                            }
+                        });
+                    } else {
+                        UploadIcon();
+                    }
                 }
             };
             $scope.cancel = function () {
@@ -268,52 +402,232 @@
             $scope.target = {};
             $scope.target = angular.copy(targetData);
             $scope.title = function () { return 'Thông tin loại phòng [' + targetData.MALOAIPHONG + ']'; };
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
-    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
+
+    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, $timeout, upload) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
             $scope.title = function () { return 'Chỉnh sửa loại phòng [' + targetData.MALOAIPHONG + ']'; };
-            $scope.save = function () {
-                if (!$scope.target.MALOAIPHONG || !$scope.target.TENLOAIPHONG ) {
-                    Lobibox.notify('warning', {
-                        title: 'Thiếu thông tin',
-                        msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
-                        delay: 4000
-                    });
-                } else {
-                    service.update($scope.target).then(function (successRes) {
-                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
-                            Lobibox.notify('success', {
-                                title: 'Thông báo',
-                                width: 400,
-                                msg: successRes.data.Message,
-                                delay: 1500
+            $scope.convertCodeToName = function (paraValue, moduleName) {
+                if (paraValue) {
+                    var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                    if (tempCache && tempCache.length === 1) {
+                        return tempCache[0].DESCRIPTION;
+                    } else {
+                        return paraValue;
+                    }
+                }
+            };
+            $scope.fileBackground = {};
+            $scope.uploadBackground = function (input) {
+                $scope.inputBackground = input;
+                if (input.files && input.files.length > 0) {
+                    $timeout(function () {
+                        var fileReader = new FileReader();
+                        fileReader.readAsDataURL(input.files[0]);
+                        fileReader.onload = function (e) {
+                            $timeout(function () {
+                                $scope.fileBackground.SRC = e.target.result;
                             });
-                            $uibModalInstance.close($scope.target);
+                        };
+                    });
+                    $scope.fileBackground.FILE = input.files[0];
+                }
+            };
+            $scope.deleteBackground = function () {
+                if ($scope.target.BACKGROUND) {
+                    $scope.target.BACKGROUND = null;
+                }
+                if ($scope.fileBackground) {
+                    $scope.fileBackground = {};
+                    angular.element("#file-input-background").val(null);
+                }
+            };
+            function saveLoaiPhong() {
+                $scope.save = function () {
+                    if (!$scope.target.MALOAIPHONG || !$scope.target.TENLOAIPHONG) {
+                        Lobibox.notify('warning', {
+                            title: 'Thiếu thông tin',
+                            msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
+                            delay: 4000
+                        });
+                    } else {
+                        service.update($scope.target).then(function (successRes) {
+                            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                                Lobibox.notify('success', {
+                                    title: 'Thông báo',
+                                    width: 400,
+                                    msg: successRes.data.Message,
+                                    delay: 1500
+                                });
+                                $uibModalInstance.close($scope.target);
+                            } else {
+                                Lobibox.notify('error', {
+                                    title: 'Xảy ra lỗi',
+                                    msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                                    delay: 3000
+                                });
+                            }
+                        },
+                        function (errorRes) {
+                            console.log('errorRes', errorRes);
+                        });
+                    }
+                };
+            };
+
+            function UploadIcon() {
+                if ($scope.fileIcon && $scope.fileIcon.SRC) {
+                    $scope.fileIcon.MALOAIPHONG = $scope.target.MALOAIPHONG;
+                    upload.upload({
+                        url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadIcon',
+                        data: $scope.fileIcon
+                    }).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                            $scope.target.ICON_NAME = successRes.data.Data.FILENAME;
+                            saveLoaiPhong();
                         } else {
                             Lobibox.notify('error', {
                                 title: 'Xảy ra lỗi',
-                                msg: 'Đã xảy ra lỗi! Thao tác không thành công',
-                                delay: 3000
+                                msg: 'Đã xảy ra lỗi! Thao tác upload Icon không thành công',
+                                delay: 2500
                             });
                         }
-                    },
-                    function (errorRes) {
-                        console.log('errorRes', errorRes);
                     });
+                } else {
+                    saveLoaiPhong();
                 }
             };
+
+            $scope.save = function () {
+                if ($scope.fileBackground && $scope.fileBackground.SRC) {
+                    $scope.fileBackground.MALOAIPHONG = $scope.target.MALOAIPHONG;
+                    upload.upload({
+                        url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadBackground',
+                        data: $scope.fileBackground
+                    }).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                            $scope.target.BACKGROUND_NAME = successRes.data.Data.FILENAME;
+                            UploadIcon();
+                        } else {
+                            Lobibox.notify('error', {
+                                title: 'Xảy ra lỗi',
+                                msg: 'Đã xảy ra lỗi! Thao tác upload Background không thành công',
+                                delay: 2500
+                            });
+                        }
+                    });
+                } else {
+                    UploadIcon();
+                }
+            };
+
 
             $scope.cancel = function () {
                 $uibModalInstance.close();
             };
         }]);
+
+    app.controller('loaiPhongSetting_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', 'boHangService', 'cauHinhLoaiPhongService',
+       function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, boHangService, cauHinhLoaiPhongService) {
+           $scope.config = angular.copy(configService);
+           $scope.tempData = tempDataService.tempData;
+           $scope.target = {};
+           $scope.target = angular.copy(targetData);
+           $scope.title = function () { return 'Cài đặt loại phòng [' + targetData.MALOAIPHONG + ']'; };
+
+           $scope.convertCodeToNameBoHang = function (paraValue, moduleName) {
+               if (paraValue) {
+                   var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                   if (tempCache && tempCache.length === 1) {
+                       return tempCache[0].TEXT;
+                   } else {
+                       return paraValue;
+                   }
+               }
+           };
+
+           $scope.convertCodeToName = function (paraValue, moduleName) {
+               if (paraValue) {
+                   var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                   if (tempCache && tempCache.length === 1) {
+                       return tempCache[0].VALUE + ' | ' + tempCache[0].TEXT;
+                   } else {
+                       return paraValue;
+                   }
+               }
+           };
+           //Function load data catalog LoaiHang
+           function loadDataMatHangTrongBoHang() {
+               $scope.matHangTrongBo = [];
+               if (!tempDataService.tempData('matHangTrongBo')) {
+                   boHangService.getMatHangTrongBo($scope.target.MABOHANG).then(function (successRes) {
+                       if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                           tempDataService.putTempData('matHangTrongBo', successRes.data.Data);
+                           $scope.matHangTrongBo = successRes.data.Data;
+                       }
+                   }, function (errorRes) {
+                       console.log('errorRes', errorRes);
+                   });
+               } else {
+                   $scope.matHangTrongBo = tempDataService.tempData('matHangTrongBo');
+               }
+           };
+           loadDataMatHangTrongBoHang();
+           //end
+
+           function filterData() {
+               service.getDetails($scope.target.MALOAIPHONG).then(function (sucessRes) {
+                   if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
+                       $scope.target = sucessRes.data.Data;
+                   }
+               });
+           };
+           filterData();
+
+           $scope.save = function () {
+               cauHinhLoaiPhongService.post($scope.target).then(function (successRes) {
+                   if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                       Lobibox.notify('success', {
+                           title: 'Thông báo',
+                           width: 400,
+                           msg: successRes.data.Message,
+                           delay: 1500
+                       });
+                       $uibModalInstance.close($scope.target);
+                   } else {
+                       Lobibox.notify('error', {
+                           title: 'Xảy ra lỗi',
+                           msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                           delay: 3000
+                       });
+                   }
+               },
+               function (errorRes) {
+                   console.log('errorRes', errorRes);
+               });
+           };
+
+           $scope.cancel = function () {
+               $uibModalInstance.close();
+           };
+       }]);
 
     app.controller('loaiPhongDelete_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {

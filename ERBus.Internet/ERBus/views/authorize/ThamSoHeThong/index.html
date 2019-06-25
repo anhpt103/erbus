@@ -20,7 +20,7 @@
                         </div>
                         <br />
                         <div class="row">
-                            <table class="table table-borderless table-striped table-earning">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th class="thead-catalog-ordernumber">
@@ -100,10 +100,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <ul uib-pagination total-items="paged.TotalItems" ng-model="paged.CurrentPage" ng-change="pageChanged();" max-size="paged.MaxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></ul>
-                        <pre>Tổng số: {{paged.CurrentPage}} / {{paged.TotalPages}}</pre>
                     </div>
                 </div>
             </div>

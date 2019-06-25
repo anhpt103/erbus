@@ -1,0 +1,20 @@
+﻿<div role="document">
+    <div class="modal-dialog modal-confirm">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="fa fa-times"></i>
+                </div>
+                <h4 class="modal-title customize">Bạn có chắc không?</h4>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có thực sự muốn cập nhật đặt phòng vào khung giờ này.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" prevent-default class="btn btn-warning" ng-disabled="_form.$invalid" ng-click="updateBooking()"><i class="zmdi zmdi-refresh-sync"></i>&nbsp;&nbsp;Cập nhật giờ đặt</button>
+                <button type="button" prevent-default class="btn btn-secondary" data-dismiss="modal" ng-click="cancel()"><i class="zmdi zmdi-close-circle"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+            </div>
+        </div>
+    </div>
+</div>

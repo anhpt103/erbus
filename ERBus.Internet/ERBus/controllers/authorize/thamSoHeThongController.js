@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap','controllers/authorize/authController'], function () {
+﻿define(['ui-bootstrap', 'controllers/authorize/authController'], function () {
     'use strict';
-    var app = angular.module('thamSoHeThongModule', ['ui.bootstrap','authModule']);
+    var app = angular.module('thamSoHeThongModule', ['ui.bootstrap', 'authModule']);
     app.factory('thamSoHeThongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Authorize/ThamSoHeThong';
         var selectedData = [];
@@ -8,7 +8,7 @@
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
             },
-            getDataByMaThamSo: function (maThamSo) {
+            getDataByMaThamSo: function () {
                 return $http.get(serviceUrl + '/GetDataByMaThamSo');
             },
             buildNewCode: function () {
@@ -27,15 +27,26 @@
         return result;
     }]);
     /* controller list */
-    app.controller('ThamSoHeThong_Ctrl', ['$scope', '$http', 'configService', 'thamSoHeThongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService,userService) {
+    app.controller('ThamSoHeThong_Ctrl', ['$scope', '$http', 'configService', 'thamSoHeThongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Tham số hệ thống' };
             $scope.listThamSo = [
-                 {
+                {
+                    MA_THAMSO: 'SPECIAL_MER',
+                    TEN_THAMSO: 'MÃ HÀNG ĐƯỢC PHÉP CÀI ĐẶT GIÁ',
+                    GIATRI_SO: 0,
+                    GIATRI_CHU: null,
+                    I_STATE: 'C', //NOT
+                    UNITCODE: userService.CurrentUser.unitCode,
+                    TRANGTHAI: 10,
+                    ISDIABLED_GIATRI_CHU: false,
+                    PLACEHOLDER: 'Giá trị theo mã hàng (các mã cách nhau bằng dấu [;])'
+                },
+                {
                      MA_THAMSO: 'SUDUNG_LCD',
                      TEN_THAMSO: 'SỬ DỤNG MÀN HÌNH HIỂN THỊ LCD CHỨC NĂNG BÁN LẺ',
                      GIATRI_SO: 0,
@@ -45,7 +56,7 @@
                      TRANGTHAI: 10,
                      ISDIABLED_GIATRI_CHU: true,
                      PLACEHOLDER: 'Để trống'
-                 },
+                },
                 {
                     MA_THAMSO: 'KHOA_BANAM',
                     TEN_THAMSO: 'KHÔNG CHO PHÉP BÁN ÂM',
@@ -146,7 +157,7 @@
                     PLACEHOLDER: 'Nhập giá trị theo mã kho trong danh mục kho'
                 }
             ];
-           
+
             $scope.setPage = function (pageNo) {
                 $scope.paged.CurrentPage = pageNo;
                 filterData();

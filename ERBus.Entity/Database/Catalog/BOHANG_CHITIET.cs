@@ -30,11 +30,6 @@ namespace ERBus.Entity.Database.Catalog
         [Description("TỶ LỆ CHIẾT KHẤU MẶT HÀNG TRONG BÓ")]
         public decimal CHIETKHAU { get; set; }
 
-        [Required]
-        [Column("TONGTIEN")]
-        [Description("TỔNG TIỀN MẶT HÀNG TRONG BÓ")]
-        public decimal TONGTIEN { get; set; }
-
         [Column("DIENGIAI")]
         [Description("DIỄN GIẢI MẶT HÀNG TRONG BÓ HÀNG")]
         [StringLength(300)]

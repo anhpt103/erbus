@@ -225,6 +225,7 @@
     <Compile Include="Controllers\Authorize\MenuController.cs" />
     <Compile Include="Controllers\Authorize\NguoiDungController.cs" />
     <Compile Include="Controllers\Catalog\KeHangController.cs" />
+    <Compile Include="Controllers\Catalog\CauHinhLoaiPhongController.cs" />
     <Compile Include="Controllers\Catalog\MatHangController.cs" />
     <Compile Include="Controllers\Catalog\NhaCungCapController.cs" />
     <Compile Include="Controllers\Catalog\KhachHangController.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Controllers\Catalog\BaoBiController.cs" />
     <Compile Include="Controllers\Catalog\NhomHangController.cs" />
     <Compile Include="Controllers\Catalog\LoaiHangController.cs" />
+    <Compile Include="Controllers\Knowledge\ThanhToanDatPhongController.cs" />
     <Compile Include="Controllers\Knowledge\DatPhongController.cs" />
     <Compile Include="Controllers\Knowledge\XuatBanLeThuNganController.cs" />
     <Compile Include="Controllers\Knowledge\XuatBanController.cs" />

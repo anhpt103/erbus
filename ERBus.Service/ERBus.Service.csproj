@@ -144,6 +144,8 @@
     <Compile Include="BuildQuery\Result\Types\ResultState.cs" />
     <Compile Include="BuildQuery\Types\FilterMethod.cs" />
     <Compile Include="BuildQuery\Types\OrderMethod.cs" />
+    <Compile Include="Catalog\CauHinhLoaiPhong\CauHinhLoaiPhongService.cs" />
+    <Compile Include="Catalog\CauHinhLoaiPhong\CauHinhLoaiPhongViewModel.cs" />
     <Compile Include="Catalog\LoaiPhong\LoaiPhongService.cs" />
     <Compile Include="Catalog\LoaiPhong\LoaiPhongViewModel.cs" />
     <Compile Include="Catalog\MatHang\MatHangService.cs" />
@@ -178,8 +180,10 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Knowledge\DatHang\DatPhongService.cs" />
-    <Compile Include="Knowledge\DatHang\DatPhongViewModel.cs" />
+    <Compile Include="Knowledge\ThanhToanDatPhong\ThanhToanDatPhongService.cs" />
+    <Compile Include="Knowledge\ThanhToanDatPhong\ThanhToanDatPhongViewModel.cs" />
+    <Compile Include="Knowledge\DatPhong\DatPhongService.cs" />
+    <Compile Include="Knowledge\DatPhong\DatPhongViewModel.cs" />
     <Compile Include="Knowledge\XuatBanLeThuNgan\XuatBanLeThuNganService.cs" />
     <Compile Include="Knowledge\XuatBanLeThuNgan\XuatBanLeThuNganViewModel.cs" />
     <Compile Include="Knowledge\XuatBan\XuatBanService.cs" />

@@ -204,8 +204,7 @@ namespace ERBus.Api.Controllers.Catalog
             else
             {
                 var unitCode = _service.GetCurrentUnitCode();
-                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.MAHANG, unitCode, connectString);
+                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.MAHANG, unitCode, _service.GetConnectionString());
                 if (listSearched != null && listSearched.Count == 1)
                 {
                     result.Data = listSearched[0];
@@ -250,8 +249,7 @@ namespace ERBus.Api.Controllers.Catalog
             else
             {
                 var unitCode = _service.GetCurrentUnitCode();
-                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                var listSearched = _service.TimKiemMatHang_TonKho_NhieuDieuKien(param.MAHANG, unitCode, connectString, param.TABLE_NAME, param.MAKHO_XUAT);
+                var listSearched = _service.TimKiemMatHang_TonKho_NhieuDieuKien(param.MAHANG, unitCode, _service.GetConnectionString(), param.TABLE_NAME, param.MAKHO_XUAT);
                 if (listSearched != null && listSearched.Count == 1)
                 {
                     result.Data = listSearched[0];
@@ -282,8 +280,7 @@ namespace ERBus.Api.Controllers.Catalog
             else
             {
                 var unitCode = _service.GetCurrentUnitCode();
-                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.MAHANG, unitCode, connectString);
+                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.MAHANG, unitCode, _service.GetConnectionString());
                 if (listSearched != null && listSearched.Count == 1)
                 {
                     result.Data = listSearched[0];
@@ -313,8 +310,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             else
             {
-                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.KEYSEARCH,unitCode, connectString);
+                var listSearched = _service.TimKiemMatHang_NhieuDieuKien(param.KEYSEARCH,unitCode, _service.GetConnectionString());
                 if (listSearched != null && listSearched.Count > 0)
                 {
                     result.Data = listSearched;
@@ -338,8 +334,7 @@ namespace ERBus.Api.Controllers.Catalog
             var result = new TransferObj<string>();
             try
             {
-                string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                string refund = _service.FindExistsBarCode(barcodeText, connectString);
+                string refund = _service.FindExistsBarCode(barcodeText, _service.GetConnectionString());
                 if (!string.IsNullOrEmpty(refund))
                 {
                     result.Data = refund;
@@ -569,8 +564,7 @@ namespace ERBus.Api.Controllers.Catalog
             {
                 try
                 {
-                    string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
-                    if(_service.InsertDataExcel(listExcelData, curentUnitCode, connectString))
+                    if(_service.InsertDataExcel(listExcelData, curentUnitCode, _service.GetConnectionString()))
                     {
                         result.Status = true;
                         result.Data = true;

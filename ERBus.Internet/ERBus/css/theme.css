@@ -46,6 +46,9 @@ Notes:	decreasing heading by 0.4em with every subsequent heading level
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif;
+    font-style: normal;
+    font-size: 14px;
 }
 
 ul {
@@ -65,6 +68,8 @@ input[type='button'] {
 
 input, textarea {
     border: none;
+    font-family: 'Times New Roman', Times, serif !important; 
+    font-style: normal !important;
 }
 
 button {
@@ -99,7 +104,7 @@ p {
 
 /* ----- Typography ----- */
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: "Times New Roman", Times, serif;
     font-weight: 400;
     font-size: 13px;
     line-height: 1.625;
@@ -1479,9 +1484,9 @@ section {
         }
 
             .account-item > .content > a:after {
-                font-family: "Material-Design-Iconic-Font";
+                font-family: "Times New Roman", Times, serif;
                 font-weight: 500;
-                content: '\f2f9';
+                /*content: '\f2f9';*/
                 display: inline-block;
                 font-size: 16px;
                 margin-left: 5px;
@@ -1655,14 +1660,14 @@ section {
         z-index: 3;
     }
 
-    .menu-sidebar .navbar__list .navbar__sub-list {
-        display: none;
-        padding-left: 34px;
-    }
+.menu-sidebar .navbar__list .navbar__sub-list {
+    display: none;
+    padding-left: 34px;
+}
 
-        .menu-sidebar .navbar__list .navbar__sub-list li a {
-            padding: 11.5px 0;
-        }
+.menu-sidebar .navbar__list .navbar__sub-list li a {
+    padding: 11.5px 0;
+}
 
 .menu-sidebar__content {
     position: relative;
@@ -1814,7 +1819,7 @@ section {
 
             .header-mobile .navbar-mobile .navbar-mobile__list li.has-dropdown > a:after {
                 content: '\f105';
-                font-family: FontAwesome, cursive;
+                font-family: "Times New Roman", Times, serif;
                 float: right;
                 font-size: 16px;
                 line-height: 22px;
@@ -4305,10 +4310,10 @@ section {
     white-space: nowrap;
 }
 
-.table-earning thead th.text-right {
-    padding-left: 15px;
-    padding-right: 65px;
-}
+    .table-earning thead th.text-right {
+        padding-left: 15px;
+        padding-right: 65px;
+    }
 
 .table-earning tbody td {
     color: #000000;
@@ -4316,10 +4321,10 @@ section {
     white-space: nowrap;
 }
 
-.table-earning tbody td.text-right {
-    padding-left: 15px;
-    padding-right: 65px;
-}
+    .table-earning tbody td.text-right {
+        padding-left: 15px;
+        padding-right: 65px;
+    }
 
 .table-earning tbody tr:hover td {
     color: #555;
@@ -4646,12 +4651,15 @@ td.number.giaban-promotion {
 td.number.giatri-promotion {
     width: 13%;
 }
+
 td.number.thanhtien-promotion {
     width: 20%;
 }
+
 td.number.soluong-promotion {
     width: 10%;
 }
+
 td.text.code-promotion {
     width: 10%;
 }
@@ -4672,6 +4680,7 @@ td.number.giatri-promotion-loaiHang {
 td.number.soluong-promotion-loaiHang {
     width: 15%;
 }
+
 td.text.code-promotion-loaiHang {
     width: 25%;
 }
@@ -4820,35 +4829,39 @@ span.title {
     color: #fa4251;
 }
 
+.table-data3
+{
+    table-layout: fixed; width:100%;
+}
 .table-data3 thead {
     background: #333;
 }
 
-    .table-data3 thead tr th {
-        font-size: 13px;
-        color: #fff;
-        font-weight: 400;
-        text-transform: capitalize;
-        padding: 18px 40px;
-        padding-right: 10px;
-    }
+.table-data3 thead tr th {
+    font-size: 13px;
+    color: #fff;
+    font-weight: 400;
+    text-transform: capitalize;
+    padding: 18px 40px;
+    padding-right: 10px;
+}
 
-        .table-data3 thead tr th:first-child {
-            -webkit-border-top-left-radius: 3px;
-            -moz-border-radius-topleft: 3px;
-            border-top-left-radius: 3px;
-        }
+.table-data3 thead tr th:first-child {
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    border-top-left-radius: 3px;
+}
 
-        .table-data3 thead tr th:last-child {
-            -webkit-border-top-right-radius: 3px;
-            -moz-border-radius-topright: 3px;
-            border-top-right-radius: 3px;
-        }
+.table-data3 thead tr th:last-child {
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-right-radius: 3px;
+}
 
-        .table-data3 thead tr th:last-child {
-            text-align: right;
-            padding-right: 50px;
-        }
+.table-data3 thead tr th:last-child {
+    text-align: right;
+    padding-right: 50px;
+}
 
 .table-data3 tbody tr td:last-child {
     text-align: right;
@@ -4860,17 +4873,17 @@ span.title {
     border-right: 1px solid #e5e5e5;
 }
 
-    .table-data3 tbody tr:last-child td:first-child {
-        -webkit-border-bottom-left-radius: 8px;
-        -moz-border-radius-bottomleft: 8px;
-        border-bottom-left-radius: 8px;
-    }
+.table-data3 tbody tr:last-child td:first-child {
+    -webkit-border-bottom-left-radius: 8px;
+    -moz-border-radius-bottomleft: 8px;
+    border-bottom-left-radius: 8px;
+}
 
-    .table-data3 tbody tr:last-child td:last-child {
-        -webkit-border-bottom-right-radius: 8px;
-        -moz-border-radius-bottomright: 8px;
-        border-bottom-right-radius: 8px;
-    }
+.table-data3 tbody tr:last-child td:last-child {
+    -webkit-border-bottom-right-radius: 8px;
+    -moz-border-radius-bottomright: 8px;
+    border-bottom-right-radius: 8px;
+}
 
 .table-data3 tbody td {
     border-bottom: 1px solid #f5f5f5;
@@ -4881,13 +4894,13 @@ span.title {
     padding-right: 10px;
 }
 
-    .table-data3 tbody td.process {
-        color: #00ad5f;
-    }
+.table-data3 tbody td.process {
+    color: #00ad5f;
+}
 
-    .table-data3 tbody td.denied {
-        color: #fa4251;
-    }
+.table-data3 tbody td.denied {
+    color: #fa4251;
+}
 
 /* ----- Footer ----- */
 .copyright {
@@ -4896,13 +4909,13 @@ span.title {
     padding-top: 20px;
 }
 
-    .copyright p {
-        font-size: 14px;
-        color: #666;
-        line-height: -webkit-calc(24/14);
-        line-height: -moz-calc(24/14);
-        line-height: calc(24/14);
-    }
+.copyright p {
+    font-size: 14px;
+    color: #666;
+    line-height: -webkit-calc(24/14);
+    line-height: -moz-calc(24/14);
+    line-height: calc(24/14);
+}
 
 /* ----- Breadcrumb ----- */
 .au-breadcrumb {
@@ -5594,7 +5607,7 @@ span.title {
         position: relative;
         display: block;
         height: inherit;
-        font-family: FontAwesome;
+        font-family: "Times New Roman", Times, serif;
         font-size: 10px;
         font-weight: 600;
         text-transform: uppercase;
@@ -15256,52 +15269,52 @@ ul.pagination li {
 /*note style t-header table index catalog*/
 .table-earning thead th.thead-catalog-ordernumber {
     width: 5%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-code {
     width: 5%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-name {
     width: 15%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-unit {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-status {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-supplier {
     width: 11%;
-    text-align:center;
+    text-align: center;
 }
 
-.thead-action-crud{
+.thead-action-crud {
     width: 0%;
-    text-align:left;
+    text-align: left;
 }
 
 .table-earning thead th.thead-catalog-diachi {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-dienthoai {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-catalog-ngaysinh {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 /*end note style t-header table index catalog*/
 
@@ -15310,38 +15323,37 @@ ul.pagination li {
 /*note style t-header table index promotion*/
 .table-earning thead th.thead-promotion-ordernumber {
     width: 5%;
-    text-align:center;
-
+    text-align: center;
 }
 
 .table-earning thead th.thead-promotion-code {
     width: 5%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-promotion-name {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-promotion-unit {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-promotion-status {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-promotion-fromDate {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 .table-earning thead th.thead-promotion-toDate {
     width: 8%;
-    text-align:center;
+    text-align: center;
 }
 
 /*end note style t-header table index promotion*/
@@ -15377,102 +15389,113 @@ in the LICENSE file at http://material.angularjs.org/HEAD/license.
 
 
 .tree ul {
-	padding-top: 20px; position: relative;
-	
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
+    padding-top: 20px;
+    position: relative;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
 }
 
 .tree li {
-	float: left; text-align: center;
-	list-style-type: none;
-	position: relative;
-	padding: 20px 5px 0 5px;
-	
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
 }
 
-/*We will use ::before and ::after to draw the connectors*/
+    /*We will use ::before and ::after to draw the connectors*/
 
-.tree li::before, .tree li::after{
-	content: '';
-	position: absolute; top: 0; right: 50%;
-	border-top: 1px solid #ccc;
-	width: 50%; height: 20px;
-}
-.tree li::after{
-	right: auto; left: 50%;
-	border-left: 1px solid #ccc;
-}
+    .tree li::before, .tree li::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        border-top: 1px solid #ccc;
+        width: 50%;
+        height: 20px;
+    }
 
-/*We need to remove left-right connectors from elements without 
+    .tree li::after {
+        right: auto;
+        left: 50%;
+        border-left: 1px solid #ccc;
+    }
+
+    /*We need to remove left-right connectors from elements without 
 any siblings*/
-.tree li:only-child::after, .tree li:only-child::before {
-	display: none;
-}
+    .tree li:only-child::after, .tree li:only-child::before {
+        display: none;
+    }
 
-/*Remove space from the top of single children*/
-.tree li:only-child{ padding-top: 0;}
+    /*Remove space from the top of single children*/
+    .tree li:only-child {
+        padding-top: 0;
+    }
 
-/*Remove left connector from first child and 
+    /*Remove left connector from first child and 
 right connector from last child*/
-.tree li:first-child::before, .tree li:last-child::after{
-	border: 0 none;
-}
-/*Adding back the vertical connector to the last nodes*/
-.tree li:last-child::before{
-	border-right: 1px solid #ccc;
-	border-radius: 0 5px 0 0;
-	-webkit-border-radius: 0 5px 0 0;
-	-moz-border-radius: 0 5px 0 0;
-}
-.tree li:first-child::after{
-	border-radius: 5px 0 0 0;
-	-webkit-border-radius: 5px 0 0 0;
-	-moz-border-radius: 5px 0 0 0;
-}
+    .tree li:first-child::before, .tree li:last-child::after {
+        border: 0 none;
+    }
+    /*Adding back the vertical connector to the last nodes*/
+    .tree li:last-child::before {
+        border-right: 1px solid #ccc;
+        border-radius: 0 5px 0 0;
+        -webkit-border-radius: 0 5px 0 0;
+        -moz-border-radius: 0 5px 0 0;
+    }
+
+    .tree li:first-child::after {
+        border-radius: 5px 0 0 0;
+        -webkit-border-radius: 5px 0 0 0;
+        -moz-border-radius: 5px 0 0 0;
+    }
 
 /*Time to add downward connectors from parents*/
-.tree ul ul::before{
-	content: '';
-	position: absolute; top: 0; left: 50%;
-	border-left: 1px solid #ccc;
-	width: 0; height: 20px;
+.tree ul ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 1px solid #ccc;
+    width: 0;
+    height: 20px;
 }
 
-.tree li a{
-	border: 1px solid #ccc;
-	padding: 5px 10px;
-	text-decoration: none;
-	color: #666;
-	font-family: arial, verdana, tahoma;
-	font-size: 11px;
-	display: inline-block;
-	
-	border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
+.tree li a {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11px;
+    display: inline-block;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
 }
 
-/*Time for some hover effects*/
-/*We will apply the hover effect the the lineage of the element also*/
-.tree li a:hover, .tree li a:hover+ul li a {
-	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
-}
-/*Connector styles on hover*/
-.tree li a:hover+ul li::after, 
-.tree li a:hover+ul li::before, 
-.tree li a:hover+ul::before, 
-.tree li a:hover+ul ul::before{
-	border-color:  #94a0b4;
-}
+    /*Time for some hover effects*/
+    /*We will apply the hover effect the the lineage of the element also*/
+    .tree li a:hover, .tree li a:hover + ul li a {
+        background: #c8e4f8;
+        color: #000;
+        border: 1px solid #94a0b4;
+    }
+        /*Connector styles on hover*/
+        .tree li a:hover + ul li::after,
+        .tree li a:hover + ul li::before,
+        .tree li a:hover + ul::before,
+        .tree li a:hover + ul ul::before {
+            border-color: #94a0b4;
+        }
 
 /*Thats all. I hope you enjoyed it.
 Thanks :)*/
@@ -15491,14 +15514,12 @@ Thanks :)*/
     padding: 10px !important;
     float: left;
 }
+
 .project-hover {
     width: 100%;
     height: 100%;
     color: #fff;
-    background-image: url('../img/icon/karaoke-image.png');
-    background-size: cover;
-    background-position: center;
-    /*opacity: 0;*/s
+    /*opacity: 0;*/  
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -15506,35 +15527,40 @@ Thanks :)*/
     /*background-color: rgba(186, 232, 2, 0.7);*/
     padding: 5% 30px !important;
 }
-.project-hover hr {
-    height: 30px;
-    width: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    background-color: rgba(255, 255, 255, 1);
-    border: 0;
-}
-.project-hover a {
-    color: rgba(255, 255, 255, 1);
-    padding: 2px 22px;
-    line-height: 40px;
-    border: 2px solid rgba(255, 255, 255, 1);
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-}
-.project-hover a:hover {
-    border-color: rgba(51, 51, 51, 1);
-    color: rgba(51, 51, 51, 1);
-    background-color: #FFF;
-}
+
+    .project-hover hr {
+        height: 30px;
+        width: 0;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        background-color: rgba(255, 255, 255, 1);
+        border: 0;
+    }
+
+    .project-hover a {
+        color: rgba(255, 255, 255, 1);
+        padding: 2px 22px;
+        line-height: 40px;
+        border: 2px solid rgba(255, 255, 255, 1);
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+        .project-hover a:hover {
+            border-color: rgba(51, 51, 51, 1);
+            color: rgba(51, 51, 51, 1);
+            background-color: #FFF;
+        }
+
 .project:hover .project-hover {
     opacity: 1;
 }
-.project:hover .project-hover hr {
-    width: 100%;
-    height: 5px;
-}
+
+    .project:hover .project-hover hr {
+        width: 100%;
+        height: 5px;
+    }

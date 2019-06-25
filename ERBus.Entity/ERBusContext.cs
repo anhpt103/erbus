@@ -48,6 +48,7 @@ namespace ERBus.Entity
         public virtual DbSet<CAPMA_THEONGAY> CAPMA_THEONGAYs { get; set; }
         public virtual DbSet<PHONG> PHONGs { get; set; }
         public virtual DbSet<LOAIPHONG> LOAIPHONGs { get; set; }
+        public virtual DbSet<CAUHINH_LOAIPHONG> CAUHINH_LOAIPHONGs { get; set; }
 
         /// <summary>
         /// Knowledge
@@ -61,7 +62,10 @@ namespace ERBus.Entity
         public virtual DbSet<KHUYENMAI> KHUYENMAIs { get; set; }
         public virtual DbSet<KHUYENMAI_CHITIET> KHUYENMAI_CHITIETs { get; set; }
         public virtual DbSet<DATPHONG> DATPHONGs { get; set; }
-
+        public virtual DbSet<LICHSU_DATPHONG> LICHSU_DATPHONGs { get; set; }
+        public virtual DbSet<THANHTOAN_DATPHONG> THANHTOAN_DATPHONGs { get; set; }
+        public virtual DbSet<THANHTOAN_DATPHONG_CHITIET> THANHTOAN_DATPHONG_CHITIETs { get; set; }
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("ERBUS");

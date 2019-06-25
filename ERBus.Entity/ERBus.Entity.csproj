@@ -101,6 +101,7 @@
     <Compile Include="Database\Catalog\CAPMA_THEONGAY.cs" />
     <Compile Include="Database\Catalog\LICHSU_TANGHANG.cs" />
     <Compile Include="Database\Catalog\HANGKHACHHANG.cs" />
+    <Compile Include="Database\Catalog\CAUHINH_LOAIPHONG.cs" />
     <Compile Include="Database\Catalog\LOAIPHONG.cs" />
     <Compile Include="Database\Catalog\PHONG.cs" />
     <Compile Include="Database\Catalog\MATHANG_GIA.cs" />
@@ -117,8 +118,11 @@
     <Compile Include="Database\Catalog\THUE.cs" />
     <Compile Include="Database\Catalog\NHOMHANG.cs" />
     <Compile Include="Database\Catalog\LOAIHANG.cs" />
+    <Compile Include="Database\Knowledge\LICHSU_DATPHONG.cs" />
     <Compile Include="Database\Knowledge\DATPHONG.cs" />
+    <Compile Include="Database\Knowledge\THANHTOAN_DATPHONG.cs" />
     <Compile Include="Database\Knowledge\GIAODICH.cs" />
+    <Compile Include="Database\Knowledge\THANHTOAN_DATPHONG_CHITIET.cs" />
     <Compile Include="Database\Knowledge\GIAODICH_CHITIET.cs" />
     <Compile Include="Database\Knowledge\KHUYENMAI.cs" />
     <Compile Include="Database\Knowledge\KHUYENMAI_CHITIET.cs" />
@@ -171,6 +175,34 @@
     <Compile Include="Migrations\201906100733337_CreateTable_CAPMA_THEONGAY.Designer.cs">
       <DependentUpon>201906100733337_CreateTable_CAPMA_THEONGAY.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906140116175_UpdateTableLOAIPHONG_BACKGROUND_ICON.cs" />
+    <Compile Include="Migrations\201906140116175_UpdateTableLOAIPHONG_BACKGROUND_ICON.Designer.cs">
+      <DependentUpon>201906140116175_UpdateTableLOAIPHONG_BACKGROUND_ICON.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906171715551_CREATE_THANHTOAN_DATPHONG_ANHPT.cs" />
+    <Compile Include="Migrations\201906171715551_CREATE_THANHTOAN_DATPHONG_ANHPT.Designer.cs">
+      <DependentUpon>201906171715551_CREATE_THANHTOAN_DATPHONG_ANHPT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906201521309_ANHPT_UPDATE_TABLE_BOHANG_CHITIET.cs" />
+    <Compile Include="Migrations\201906201521309_ANHPT_UPDATE_TABLE_BOHANG_CHITIET.Designer.cs">
+      <DependentUpon>201906201521309_ANHPT_UPDATE_TABLE_BOHANG_CHITIET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906211754361_ANHPT_CREATE_CAUHINH_LOAIPHONG.cs" />
+    <Compile Include="Migrations\201906211754361_ANHPT_CREATE_CAUHINH_LOAIPHONG.Designer.cs">
+      <DependentUpon>201906211754361_ANHPT_CREATE_CAUHINH_LOAIPHONG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906250800020_UPDATE_UNITCODE_TO_TABLE_THANHTOAN_CHITIET.cs" />
+    <Compile Include="Migrations\201906250800020_UPDATE_UNITCODE_TO_TABLE_THANHTOAN_CHITIET.Designer.cs">
+      <DependentUpon>201906250800020_UPDATE_UNITCODE_TO_TABLE_THANHTOAN_CHITIET.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906250815190_UPDATE_FIELD_TO_TABLE_THANHTOAN_CHITIET_ANHPT.cs" />
+    <Compile Include="Migrations\201906250815190_UPDATE_FIELD_TO_TABLE_THANHTOAN_CHITIET_ANHPT.Designer.cs">
+      <DependentUpon>201906250815190_UPDATE_FIELD_TO_TABLE_THANHTOAN_CHITIET_ANHPT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.cs" />
+    <Compile Include="Migrations\201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.Designer.cs">
+      <DependentUpon>201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -192,6 +224,7 @@
     <Content Include="Script\BAOCAO_BANBUON_TONGHOP.sql" />
     <Content Include="Script\MATHANG_TONKHO_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_KHACHHANG.sql" />
+    <Content Include="Script\TIMKIEM_DATPHONG_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_KHUYENMAI_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_GIAODICHQUAY.sql" />
     <Content Include="Script\TIMKIEM_GIAODICH_PAGINATION.sql" />
@@ -251,6 +284,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906100733337_CreateTable_CAPMA_THEONGAY.resx">
       <DependentUpon>201906100733337_CreateTable_CAPMA_THEONGAY.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906140116175_UpdateTableLOAIPHONG_BACKGROUND_ICON.resx">
+      <DependentUpon>201906140116175_UpdateTableLOAIPHONG_BACKGROUND_ICON.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906171715551_CREATE_THANHTOAN_DATPHONG_ANHPT.resx">
+      <DependentUpon>201906171715551_CREATE_THANHTOAN_DATPHONG_ANHPT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906201521309_ANHPT_UPDATE_TABLE_BOHANG_CHITIET.resx">
+      <DependentUpon>201906201521309_ANHPT_UPDATE_TABLE_BOHANG_CHITIET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906211754361_ANHPT_CREATE_CAUHINH_LOAIPHONG.resx">
+      <DependentUpon>201906211754361_ANHPT_CREATE_CAUHINH_LOAIPHONG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906250800020_UPDATE_UNITCODE_TO_TABLE_THANHTOAN_CHITIET.resx">
+      <DependentUpon>201906250800020_UPDATE_UNITCODE_TO_TABLE_THANHTOAN_CHITIET.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906250815190_UPDATE_FIELD_TO_TABLE_THANHTOAN_CHITIET_ANHPT.resx">
+      <DependentUpon>201906250815190_UPDATE_FIELD_TO_TABLE_THANHTOAN_CHITIET_ANHPT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.resx">
+      <DependentUpon>201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

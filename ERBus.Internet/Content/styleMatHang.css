@@ -402,7 +402,7 @@ h3{
 .add-to-cart:before{
     content:"+ ";
     font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Times New Roman", Times, serif;
     font-weight: bold;
 }
 
@@ -587,7 +587,7 @@ p#details-total-price span{
 .buy:before{
     content: "+ ";
     font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Times New Roman", Times, serif;
     font-weight: bold;
 }
 

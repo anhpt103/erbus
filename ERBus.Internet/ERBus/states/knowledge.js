@@ -74,6 +74,20 @@
                 }
             },
             moduleUrl: controlUrl + "datPhongController.js"
+        },
+         // Knowledge Thanh toán đặt phòng
+        {
+            name: 'ThanhToanDatPhong',
+            url: '/dischargeRoom',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "ThanhToanDatPhong/index.html",
+                    controller: "ThanhToanDatPhong_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "thanhToanDatPhongController.js"
         }
     ];
     return states;

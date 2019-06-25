@@ -50,6 +50,70 @@
                     </small>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col col-md-6">
+                    <!--BACKGROUND-->
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">Background</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input id="file-input-background" onchange="angular.element(this).scope().uploadBackground(this)" accept="image/*" class="form-control-file" text="Chọn background" type="file" placeholder="Tải background" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-12">
+                            <div class="preview " ng-if="target.BACKGROUND" style="float: right; float: left; margin: 5px; height: 200px; width: 200px; border: 1px solid #000; border-radius: 5px;">
+                                <div style="width: 200px; height: 150px; overflow: hidden; border-bottom: 1px solid #000;">
+                                    <img ng-src="data:image/JPEG;base64,{{target.BACKGROUND}}" width="195" height="145" />
+                                </div>
+                                <div style="width: 200px; height: 50px; text-align: center; padding: 8px;">
+                                    <button class="form-control" style="margin: auto" ng-click="deleteBackground()">Xóa Background</button>
+                                </div>
+                            </div>
+                            <div class="preview " ng-if="fileBackground.SRC" style="float: right; float: left; margin: 5px; height: 200px; width: 200px; border: 1px solid #000; border-radius: 5px;">
+                                <div style="width: 200px; height: 150px; overflow: hidden; border-bottom: 1px solid #000;">
+                                    <img rel="popover" ng-src="{{fileBackground.SRC}}" width="195" height="145" />
+                                </div>
+                                <div style="width: 200px; height: 50px; text-align: center; padding: 8px;">
+                                    <button class="form-control" style="margin: auto" ng-click="deleteBackground()">Xóa Background</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <!--ICON-->
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-multiple-input" class="form-control-label">Icon</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input id="file-input-icon" onchange="angular.element(this).scope().uploadIcon(this)" accept="image/*" class="form-control-file" text="Chọn icon" type="file" placeholder="Tải icon" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-12">
+                            <div class="preview " ng-if="target.ICON" style="float: right; float: left; margin: 5px; height: 200px; width: 200px; border: 1px solid #000; border-radius: 5px;">
+                                <div style="width: 200px; height: 150px; overflow: hidden; border-bottom: 1px solid #000;">
+                                    <img ng-src="data:image/svg+xml;base64,{{target.ICON}}" width="195" height="145" />
+                                </div>
+                                <div style="width: 200px; height: 50px; text-align: center; padding: 8px;">
+                                    <button class="form-control" style="margin: auto" ng-click="deleteIcon()">Xóa Icon</button>
+                                </div>
+                            </div>
+                            <div class="preview " ng-if="fileIcon.SRC" style="float: right; float: left; margin: 5px; height: 200px; width: 200px; border: 1px solid #000; border-radius: 5px;">
+                                <div style="width: 200px; height: 150px; overflow: hidden; border-bottom: 1px solid #000;">
+                                    <img rel="popover" ng-src="{{fileIcon.SRC}}" width="195" height="145" />
+                                </div>
+                                <div style="width: 200px; height: 50px; text-align: center; padding: 8px;">
+                                    <button class="form-control" style="margin: auto" ng-click="deleteIcon()">Xóa Icon</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
     <div class="modal-footer">

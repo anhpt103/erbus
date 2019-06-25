@@ -25,6 +25,9 @@
             },
             delete: function (params) {
                 return $http.delete(serviceUrl + '/' + params.ID, params);
+            },
+            getStatusAllRoom: function () {
+                return $http.get(serviceUrl + '/GetStatusAllRoom');
             }
         }
         return result;

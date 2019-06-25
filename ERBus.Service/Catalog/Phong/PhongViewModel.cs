@@ -77,5 +77,21 @@ namespace ERBus.Service.Catalog.Phong
             public int? TANG { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
         }
+
+        public class StatusRoom
+        {
+            public string ID { get; set; }
+            public string MAPHONG { get; set; }
+            public string MALOAIPHONG { get; set; }
+            public string TENPHONG { get; set; }
+            public string VITRI { get; set; }
+            public int? TANG { get; set; }
+            public int? TRANGTHAI_DATPHONG { get; set; }
+            public DateTime? NGAY_DATPHONG { get; set; }
+            public string THOIGIAN_DATPHONG { get; set; }
+            public string MA_DATPHONG { get; set; }
+            public byte[] BACKGROUND { get; set; }
+            public byte[] ICON { get; set; }
+        }
     }
 }

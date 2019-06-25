@@ -67,7 +67,8 @@
                                     <th class="th customize"><span class="title">Tên hàng</span></th>
                                     <th class="th customize"><span class="title">Đơn vị</span></th>
                                     <th class="th customize"><span class="title">Số lượng</span></th>
-                                    <th class="th customize"><span class="title">Giá mua</span></th>
+                                    <th class="th customize"><span class="title">Giá bán lẻ(VAT)</span></th>
+                                    <th class="th customize"><span class="title">Tổng tiền</span></th>
                                     <th class="th customize"><span class="title">Chiết khấu</span></th>
                                     <th class="th customize"><span class="title">Thành tiền</span></th>
                                     <th class="th customize"><span class="title">#</span></th>
@@ -88,7 +89,10 @@
                                         <input enter type="text" awnum="number" id="_soLuongAddItem" name="_soLuongAddItem" onClick="this.select();" ng-model="addItem.SOLUONG" title="Số lượng: {{addItem.SOLUONG}}" ng-change="changedSoLuong(addItem);" class="form-control input-nhapMua number">
                                     </td>
                                     <td>
-                                        <input enter type="text" awnum="number" id="_giaMuaAddItem" name="_giaMuaAddItem" onClick="this.select();" ng-model="addItem.GIAMUA" title="Giá mua: {{addItem.GIAMUA}} VNĐ" class="form-control input-nhapMua number" readonly>
+                                        <input enter type="text" awnum="number" id="_giaBanLeVatAddItem" name="_giaBanLeVatAddItem" onClick="this.select();" ng-model="addItem.GIABANLE_VAT" title="Giá bán lẻ có VAT: {{addItem.GIABANLE_VAT}} VNĐ" class="form-control input-nhapMua number" readonly>
+                                    </td>
+                                    <td>
+                                        <input enter type="text" awnum="number" id="_tongTienTruocChietKhauAddItem" name="_tongTienTruocChietKhauAddItem" onClick="this.select();" ng-model="addItem.TONGTIEN_TRUOCCHIETKHAU" title="Tổng tiền : {{addItem.TONGTIEN_TRUOCCHIETKHAU}} VNĐ" class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td>
                                         <input enter type="text" awnum="number" id="_chietKhauAddItem" name="_chietKhauAddItem" onClick="this.select();" ng-model="addItem.CHIETKHAU" ng-change="changedChietKhau(addItem);" class="form-control input-nhapMua number" min="0" max="100">
@@ -121,7 +125,10 @@
                                         <input enter type="text" awnum="number" id="_soLuongDetail" name="_soLuongDetail" onClick="this.select();" ng-model="item.SOLUONG" title="Số lượng: {{item.SOLUONG}}" ng-change="changedSoLuong(item);" required class="form-control input-nhapMua number">
                                     </td>
                                     <td>
-                                        <input enter type="text" awnum="number" id="_giaMuaDetail" name="_giaMuaDetail" onClick="this.select();" ng-model="item.GIAMUA" title="Giá mua: {{item.GIAMUA}} VNĐ" required class="form-control input-nhapMua number" readonly>
+                                        <input enter type="text" awnum="number" id="_giaBanLeVatDetail" name="_giaBanLeVatDetail" onClick="this.select();" ng-model="item.GIABANLE_VAT" title="Giá bán lẻ có VAT: {{item.GIAMUA}} VNĐ" required class="form-control input-nhapMua number" readonly>
+                                    </td>
+                                    <td>
+                                        <input enter type="text" awnum="number" id="_tongTienTruocChietKhauDetail" name="_tongTienTruocChietKhauDetail" onClick="this.select();" ng-model="item.TONGTIEN_TRUOCCHIETKHAU" title="Tổng tiền: {{item.TONGTIEN_TRUOCCHIETKHAU}} VNĐ" required class="form-control input-nhapMua number" readonly>
                                     </td>
                                     <td>
                                         <input enter type="text" awnum="number" id="_chietKhauDetail" name="_chietKhauDetail" onClick="this.select();" ng-model="item.CHIETKHAU" ng-change="changedChietKhau(item);" class="form-control input-nhapMua number" min="0" max="100">

@@ -25,6 +25,9 @@
             },
             getDetails: function (ID) {
                 return $http.get(serviceUrl + '/GetDetails/' + ID);
+            },
+            getMatHangTrongBo: function (maBoHang) {
+                return $http.get(serviceUrl + '/GetMatHangTrongBo/' + maBoHang);
             }
         }
         return result;
@@ -109,7 +112,7 @@
                 var modalInstance = $uibModal.open({
                     backdrop: 'static',
                     animation: true,
-                    size: 'lg',
+                    windowClass: 'modal-matHang',
                     templateUrl: configService.buildUrl('catalog/BoHang', 'create'),
                     controller: 'boHangCreate_Ctrl',
                     resolve: {}
@@ -126,7 +129,7 @@
                 var modalInstance = $uibModal.open({
                     backdrop: 'static',
                     animation: true,
-                    size: 'lg',
+                    windowClass: 'modal-matHang',
                     templateUrl: configService.buildUrl('catalog/BoHang', 'detail'),
                     controller: 'boHangDetail_Ctrl',
                     resolve: {
@@ -147,7 +150,7 @@
                 var modalInstance = $uibModal.open({
                     backdrop: 'static',
                     animation: true,
-                    size: 'lg',
+                    windowClass: 'modal-matHang',
                     templateUrl: configService.buildUrl('catalog/BoHang', 'edit'),
                     controller: 'boHangEdit_Ctrl',
                     resolve: {
@@ -196,6 +199,7 @@
             $scope.target = {
                 TONGCHIETKHAU: 0,
                 TONGTIEN: 0,
+                TONGTIEN_TRUOCCHIETKHAU: 0,
                 TRANGTHAI: 10,
                 DataDetails: []
             };
@@ -263,12 +267,30 @@
 
             $scope.changedSoLuong = function (item) {
                 if (item) {
-                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                    if (!item.SOLUONG) item.SOLUONG = 1;
+                    if (!item.CHIETKHAU) item.CHIETKHAU = 0;
+                    item.TONGTIEN_TRUOCCHIETKHAU = item.SOLUONG * item.GIABANLE_VAT;
+                    if (item.CHIETKHAU <= 100) {
+                        //chiết khấu theo tỷ lệ
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - (item.GIABANLE_VAT * item.CHIETKHAU / 100));
+                    } else {
+                        //chiết khấu theo tiền
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - item.CHIETKHAU);
+                    }
                 }
             };
             $scope.changedChietKhau = function (item) {
                 if (item) {
-                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                    if (!item.SOLUONG) item.SOLUONG = 1;
+                    if (!item.CHIETKHAU) item.CHIETKHAU = 0;
+                    item.TONGTIEN_TRUOCCHIETKHAU = item.SOLUONG * item.GIABANLE_VAT;
+                    if (item.CHIETKHAU <= 100) {
+                        //chiết khấu theo tỷ lệ
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - (item.GIABANLE_VAT * item.CHIETKHAU / 100));
+                    } else {
+                        //chiết khấu theo tiền
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - item.CHIETKHAU);
+                    }
                 }
                 $scope.$watch("target.DataDetails", function (newValue, oldValue) {
                     $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
@@ -300,10 +322,11 @@
                                 MAHANG: refundedData.MAHANG,
                                 TENHANG: refundedData.TENHANG,
                                 MADONVITINH: refundedData.MADONVITINH,
-                                GIAMUA: refundedData.GIAMUA,
+                                GIABANLE_VAT: refundedData.GIABANLE_VAT,
                                 CHIETKHAU: 0,
                                 SOLUONG: 1,
-                                TONGTIEN: SOLUONG * (GIAMUA - (GIAMUA * CHIETKHAU / 100)),
+                                TONGTIEN: SOLUONG * (GIABANLE_VAT - (GIABANLE_VAT * CHIETKHAU / 100)),
+                                TONGTIEN_TRUOCCHIETKHAU: SOLUONG * GIABANLE_VAT,
                                 INDEX: 0
                             };
                             $scope.pageChanged();
@@ -326,10 +349,11 @@
                             $scope.addItem.MAHANG = successRes.data.Data.MAHANG;
                             $scope.addItem.TENHANG = successRes.data.Data.TENHANG;
                             $scope.addItem.MADONVITINH = successRes.data.Data.MADONVITINH;
-                            $scope.addItem.GIAMUA = successRes.data.Data.GIAMUA;
+                            $scope.addItem.GIABANLE_VAT = successRes.data.Data.GIABANLE_VAT;
                             $scope.addItem.CHIETKHAU = 0;
                             $scope.addItem.SOLUONG = 1;
-                            $scope.addItem.TONGTIEN = $scope.addItem.SOLUONG * ($scope.addItem.GIAMUA - ($scope.addItem.GIAMUA * $scope.addItem.CHIETKHAU / 100));
+                            $scope.addItem.TONGTIEN = $scope.addItem.SOLUONG * ($scope.addItem.GIABANLE_VAT - ($scope.addItem.GIABANLE_VAT * $scope.addItem.CHIETKHAU / 100));
+                            $scope.addItem.TONGTIEN_TRUOCCHIETKHAU = $scope.addItem.SOLUONG * $scope.addItem.GIABANLE_VAT;
                             document.getElementById('_soLuongAddItem').focus();
                             document.getElementById('_soLuongAddItem').select();
                         }
@@ -347,8 +371,9 @@
                     var exist = $filter('filter')($scope.target.DataDetails, { MAHANG: $scope.addItem.MAHANG }, true);
                     if (exist && exist.length == 1) {
                         exist[0].SOLUONG = exist[0].SOLUONG + $scope.addItem.SOLUONG;
-                        exist[0].GIAMUA = $scope.addItem.GIAMUA;
-                        exist[0].TONGTIEN = Math.round(100 * (exist[0].SOLUONG * exist[0].GIAMUA)) / 100;
+                        exist[0].GIABANLE_VAT = $scope.addItem.GIABANLE_VAT;
+                        exist[0].TONGTIEN = Math.round(100 * (exist[0].SOLUONG * exist[0].GIABANLE_VAT)) / 100;
+                        exist[0].TONGTIEN_TRUOCCHIETKHAU = exist[0].SOLUONG * exist[0].GIABANLE_VAT;
                         Lobibox.notify('success', {
                             title: 'Thông báo',
                             width: 400,
@@ -365,9 +390,10 @@
                         TENHANG: '',
                         MADONVITINH: '',
                         SOLUONG: 1,
-                        GIAMUA: 0,
+                        GIABANLE_VAT: 0,
                         CHIETKHAU: 0,
-                        TONGTIEN: 0
+                        TONGTIEN: 0,
+                        TONGTIEN_TRUOCCHIETKHAU: 0
                     };
                     focus('_maHangAddItem');
                     document.getElementById('_maHangAddItem').focus();
@@ -472,6 +498,19 @@
                 service.getDetails($scope.target.ID).then(function (sucessRes) {
                     if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
                         $scope.target = sucessRes.data.Data;
+                        if ($scope.target && $scope.target.DataDetails.length > 0) {
+                            angular.forEach($scope.target.DataDetails, function (v, k) {
+                                if (!v.CHIETKHAU) v.CHIETKHAU = 0;
+                                v.TONGTIEN_TRUOCCHIETKHAU = v.SOLUONG * v.GIABANLE_VAT;
+                                if (v.CHIETKHAU <= 100) {
+                                    //chiết khấu theo tỷ lệ
+                                    v.TONGTIEN = v.SOLUONG * (v.GIABANLE_VAT - (v.GIABANLE_VAT * v.CHIETKHAU / 100));
+                                }else {
+                                    //chiết khấu theo tiền
+                                    v.TONGTIEN = v.SOLUONG * (v.GIABANLE_VAT - v.CHIETKHAU);
+                                }
+                            });
+                        }
                         $scope.pageChanged();
                     }
                 });
@@ -555,12 +594,30 @@
 
             $scope.changedSoLuong = function (item) {
                 if (item) {
-                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                    if (!item.SOLUONG) item.SOLUONG = 1;
+                    if (!item.CHIETKHAU) item.CHIETKHAU = 0;
+                    item.TONGTIEN_TRUOCCHIETKHAU = item.SOLUONG * item.GIABANLE_VAT;
+                    if (item.CHIETKHAU <= 100) {
+                        //chiết khấu theo tỷ lệ
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - (item.GIABANLE_VAT * item.CHIETKHAU / 100));
+                    } else {
+                        //chiết khấu theo tiền
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - item.CHIETKHAU);
+                    }
                 }
             };
             $scope.changedChietKhau = function (item) {
                 if (item) {
-                    item.TONGTIEN = item.SOLUONG * (item.GIAMUA - (item.GIAMUA * item.CHIETKHAU / 100));
+                    if (!item.SOLUONG) item.SOLUONG = 1;
+                    if (!item.CHIETKHAU) item.CHIETKHAU = 0;
+                    item.TONGTIEN_TRUOCCHIETKHAU = item.SOLUONG * item.GIABANLE_VAT;
+                    if (item.CHIETKHAU <= 100) {
+                        //chiết khấu theo tỷ lệ
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - (item.GIABANLE_VAT * item.CHIETKHAU / 100));
+                    } else {
+                        //chiết khấu theo tiền
+                        item.TONGTIEN = item.SOLUONG * (item.GIABANLE_VAT - item.CHIETKHAU);
+                    }
                 }
                 $scope.$watch("target.DataDetails", function (newValue, oldValue) {
                     $scope.target.TONGCHIETKHAU = TinhTongTien($scope.target.DataDetails, 'CHIETKHAU');
@@ -592,10 +649,11 @@
                                 MAHANG: refundedData.MAHANG,
                                 TENHANG: refundedData.TENHANG,
                                 MADONVITINH: refundedData.MADONVITINH,
-                                GIAMUA: refundedData.GIAMUA,
+                                GIABANLE_VAT: refundedData.GIABANLE_VAT,
                                 CHIETKHAU: 0,
                                 SOLUONG: 1,
-                                TONGTIEN: SOLUONG * (GIAMUA - (GIAMUA * CHIETKHAU / 100)),
+                                TONGTIEN: SOLUONG * (GIABANLE_VAT - (GIABANLE_VAT * CHIETKHAU / 100)),
+                                TONGTIEN_TRUOCCHIETKHAU: SOLUONG * GIABANLE_VAT,
                                 INDEX: 0
                             };
                             $scope.pageChanged();
@@ -618,10 +676,11 @@
                             $scope.addItem.MAHANG = successRes.data.Data.MAHANG;
                             $scope.addItem.TENHANG = successRes.data.Data.TENHANG;
                             $scope.addItem.MADONVITINH = successRes.data.Data.MADONVITINH;
-                            $scope.addItem.GIAMUA = successRes.data.Data.GIAMUA;
+                            $scope.addItem.GIABANLE_VAT = successRes.data.Data.GIABANLE_VAT;
                             $scope.addItem.CHIETKHAU = 0;
                             $scope.addItem.SOLUONG = 1;
-                            $scope.addItem.TONGTIEN = $scope.addItem.SOLUONG * ($scope.addItem.GIAMUA - ($scope.addItem.GIAMUA * $scope.addItem.CHIETKHAU / 100));
+                            $scope.addItem.TONGTIEN = $scope.addItem.SOLUONG * ($scope.addItem.GIABANLE_VAT - ($scope.addItem.GIABANLE_VAT * $scope.addItem.CHIETKHAU / 100));
+                            $scope.addItem.TONGTIEN_TRUOCCHIETKHAU = $scope.addItem.SOLUONG * $scope.addItem.GIABANLE_VAT;
                             document.getElementById('_soLuongAddItem').focus();
                             document.getElementById('_soLuongAddItem').select();
                         }
@@ -639,8 +698,9 @@
                     var exist = $filter('filter')($scope.target.DataDetails, { MAHANG: $scope.addItem.MAHANG }, true);
                     if (exist && exist.length == 1) {
                         exist[0].SOLUONG = exist[0].SOLUONG + $scope.addItem.SOLUONG;
-                        exist[0].GIAMUA = $scope.addItem.GIAMUA;
-                        exist[0].TONGTIEN = Math.round(100 * (exist[0].SOLUONG * exist[0].GIAMUA)) / 100;
+                        exist[0].GIABANLE_VAT = $scope.addItem.GIABANLE_VAT;
+                        exist[0].TONGTIEN = Math.round(100 * (exist[0].SOLUONG * exist[0].GIABANLE_VAT)) / 100;
+                        exist[0].TONGTIEN_TRUOCCHIETKHAU = exist[0].SOLUONG * exist[0].GIABANLE_VAT;
                         Lobibox.notify('success', {
                             title: 'Thông báo',
                             width: 400,
@@ -657,9 +717,10 @@
                         TENHANG: '',
                         MADONVITINH: '',
                         SOLUONG: 1,
-                        GIAMUA: 0,
+                        GIABANLE_VAT: 0,
                         CHIETKHAU: 0,
-                        TONGTIEN: 0
+                        TONGTIEN: 0,
+                        TONGTIEN_TRUOCCHIETKHAU: 0
                     };
                     focus('_maHangAddItem');
                     document.getElementById('_maHangAddItem').focus();
@@ -680,6 +741,19 @@
                 service.getDetails($scope.target.ID).then(function (sucessRes) {
                     if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
                         $scope.target = sucessRes.data.Data;
+                        if ($scope.target && $scope.target.DataDetails.length > 0) {
+                            angular.forEach($scope.target.DataDetails, function (v, k) {
+                                if (!v.CHIETKHAU) v.CHIETKHAU = 0;
+                                v.TONGTIEN_TRUOCCHIETKHAU = v.SOLUONG * v.GIABANLE_VAT;
+                                if (v.CHIETKHAU <= 100) {
+                                    //chiết khấu theo tỷ lệ
+                                    v.TONGTIEN = v.SOLUONG * (v.GIABANLE_VAT - (v.GIABANLE_VAT * v.CHIETKHAU / 100));
+                                } else {
+                                    //chiết khấu theo tiền
+                                    v.TONGTIEN = v.SOLUONG * (v.GIABANLE_VAT - v.CHIETKHAU);
+                                }
+                            });
+                        }
                         $scope.pageChanged();
                     }
                 });

@@ -1,0 +1,28 @@
+﻿<style>
+    .img-smile{
+        width: 400px;
+    }
+</style>
+<div role="document" keyboard="keys">
+    <div class="modal-dialog modal-confirm">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="img-smile">
+                    <img src="/ERBus/img/icon/funny_smile.jpg" />
+                </div>
+                <h4 class="modal-title customize">Xác nhận thanh toán?</h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 16px;">Cảm ơn quý khách</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="font-size: 16px;font-weight: bold;" prevent-default class="btn btn-success" ng-disabled="isValid" ng-click="save()"><i class="zmdi zmdi-paypal-alt"></i>&nbsp;&nbsp;Thanh toán (Enter)</button>
+                <button type="button" style="font-size: 15px;font-weight: bold;" prevent-default class="btn btn-danger" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}} (Esc)</button>
+            </div>
+        </div>
+    </div>
+</div>

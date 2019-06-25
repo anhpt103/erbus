@@ -26,6 +26,7 @@ namespace ERBus.Service.Service
         string GetCurrentUnitCode();
         string PhysicalPathTemplate();
         string PhysicalPathUploadFile();
+        string PhysicalPathUploadLoaiPhong();
         ClaimsPrincipal GetClaimsPrincipal();
         string GetConnectionString();
         List<MatHangViewModel.VIEW_MODEL> GetDataMatHang(string ListMatHang, string UnitCode, string StringConnect);

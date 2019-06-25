@@ -12,6 +12,7 @@ using ERBus.Service.Authorize.NguoiDung;
 using ERBus.Service.Authorize.NhomQuyen;
 using ERBus.Service.Catalog.BaoBi;
 using ERBus.Service.Catalog.BoHang;
+using ERBus.Service.Catalog.CauHinhLoaiPhong;
 using ERBus.Service.Catalog.DonViTinh;
 using ERBus.Service.Catalog.HangKhachHang;
 using ERBus.Service.Catalog.KeHang;
@@ -27,6 +28,7 @@ using ERBus.Service.Catalog.ThamSoHeThong;
 using ERBus.Service.Catalog.Thue;
 using ERBus.Service.Knowledge.DatPhong;
 using ERBus.Service.Knowledge.NhapMua;
+using ERBus.Service.Knowledge.ThanhToanDatPhong;
 using ERBus.Service.Knowledge.XuatBan;
 using ERBus.Service.Knowledge.XuatBanLeThuNgan;
 using ERBus.Service.Promotion.GiamGiaLoaiHang;
@@ -102,6 +104,9 @@ namespace ERBus.Api.App_Start
             container.RegisterType<IRepository<LOAIPHONG>, Repository<LOAIPHONG>>(new HierarchicalLifetimeManager());
             container.RegisterType<ILoaiPhongService, LoaiPhongService>(new HierarchicalLifetimeManager());
 
+            container.RegisterType<IRepository<CAUHINH_LOAIPHONG>, Repository<CAUHINH_LOAIPHONG>>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICauHinhLoaiPhongService, CauHinhLoaiPhongService>(new HierarchicalLifetimeManager());
+
             //Authorize
             container.RegisterType<IRepository<THAMSOHETHONG>, Repository<THAMSOHETHONG>>(new HierarchicalLifetimeManager());
             container.RegisterType<IThamSoHeThongService, ThamSoHeThongService>(new HierarchicalLifetimeManager());
@@ -130,6 +135,9 @@ namespace ERBus.Api.App_Start
 
             container.RegisterType<IRepository<DATPHONG>, Repository<DATPHONG>>(new HierarchicalLifetimeManager());
             container.RegisterType<IDatPhongService, DatPhongService>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IRepository<THANHTOAN_DATPHONG>, Repository<THANHTOAN_DATPHONG>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IThanhToanDatPhongService, ThanhToanDatPhongService>(new HierarchicalLifetimeManager());
 
             //Promotion
             container.RegisterType<IRepository<KHUYENMAI>, Repository<KHUYENMAI>>(new HierarchicalLifetimeManager());

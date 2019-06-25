@@ -47,6 +47,51 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
+        [Route("GetMatHangTrongBo/{maBoHang}")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "BoHang")]
+        public IHttpActionResult GetMatHangTrongBo(string maBoHang)
+        {
+            var result = new TransferObj<List<ChoiceObject>>();
+            List<ChoiceObject> listResult = new List<ChoiceObject>();
+            if (!string.IsNullOrEmpty(maBoHang))
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+
+                var boHangChiTiet = _service.UnitOfWork.Repository<BOHANG_CHITIET>().DbSet.Where(x => x.MABOHANG.Equals(maBoHang) && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MAHANG).ToList();
+                if (boHangChiTiet.Count > 0)
+                {
+                    foreach (var dongHang in boHangChiTiet)
+                    {
+                        ChoiceObject obj = new ChoiceObject();
+                        obj.PARENT = dongHang.MABOHANG;
+                        obj.VALUE = dongHang.MAHANG;
+                        var matHang = _service.UnitOfWork.Repository<MATHANG>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(dongHang.MAHANG) && x.UNITCODE.Equals(unitCode));
+                        obj.TEXT = matHang != null ? matHang.TENHANG : "";
+                        listResult.Add(obj);
+                    }
+                }
+                if (listResult.Count > 0)
+                {
+                    result.Data = listResult;
+                    result.Status = true;
+                }
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                }
+            }
+            else
+            {
+                result.Data = null;
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+
+        
+
         [Route("PostQuery")]
         [HttpPost]
         [CustomAuthorize(Method = "XEM", State = "BoHang")]
@@ -233,7 +278,7 @@ namespace ERBus.Api.Controllers.Catalog
                             {
                                 row.TENHANG = hang.TENHANG;
                                 row.MADONVITINH = hang.MADONVITINH;
-                                row.GIAMUA = hang.GIAMUA;
+                                row.GIABANLE_VAT = hang.GIABANLE_VAT;
                             }
                         }
                     }
