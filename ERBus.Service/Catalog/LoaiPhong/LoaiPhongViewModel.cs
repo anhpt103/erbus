@@ -77,6 +77,7 @@ namespace ERBus.Service.Catalog.LoaiPhong
             public string TENLOAIPHONG { get; set; }
             public string MABOHANG { get; set; }
             public string MAHANG { get; set; }
+            public string MAHANG_DICHVU { get; set; }
             public int SOPHUT { get; set; }
             public string UNITCODE { get; set; }
         }

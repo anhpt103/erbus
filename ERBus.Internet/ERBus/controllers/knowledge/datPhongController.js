@@ -34,7 +34,6 @@
             $scope.filtered = angular.copy(configService.filterDefault);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Đặt phòng' };
-            $scope.data = [];
             var dateTimeBooking;
             $scope.setPage = function (pageNo) {
                 $scope.paged.CurrentPage = pageNo;
@@ -114,12 +113,16 @@
             };
             
             function filterData() {
-                $scope.data = [];
-                $scope.isLoading = true;
                 if ($scope.accessList.VIEW) {
                     phongService.getStatusAllRoom().then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status) {
                             $scope.data = successRes.data.Data;
+                            angular.forEach($scope.data, function (v, k) {
+                                v.dataHtml = '<hr/>';
+                                v.dataHtml += '<button class="btn btn-success" prevent-default ng-click=\"bookingRoom(item)\"><img style="width: 11px; height: 11px;" ng-src="data:image/svg+xml;base64,' + v.ICON + '">&nbsp;&nbsp;Đặt phòng</button>';
+                                if (v.TRANGTHAI_DATPHONG === 10) 
+                                    v.dataHtml += '<button class="btn btn-success" style="margin: 0 10px;" prevent-default ng-click=\"dischargeRoom(item)\"><i class="zmdi zmdi-paypal"></i>&nbsp;&nbsp;Thanh toán</button>';
+                            });
                         }
                     });
                 }

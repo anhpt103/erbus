@@ -249,9 +249,7 @@
                     }
                 });
                 modalInstance.result.then(function (refundedData) {
-                    if (refundedData) {
-                        $scope.refresh();
-                    }
+                    $scope.refresh();
                 }, function () {
                     $log.info('Modal dismissed at: ' + new Date());
                 });

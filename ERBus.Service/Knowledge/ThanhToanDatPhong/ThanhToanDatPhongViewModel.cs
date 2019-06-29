@@ -64,6 +64,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public string DIENGIAI { get; set; }
             public string MABOHANG { get; set; }
             public string MAHANG { get; set; }
+            public string MAHANG_DICHVU { get; set; }
             public List<DtoDetail> DtoDetails { get; set; }
         }
 

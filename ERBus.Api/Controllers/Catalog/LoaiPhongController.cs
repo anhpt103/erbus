@@ -65,6 +65,7 @@ namespace ERBus.Api.Controllers.Catalog
                     {
                         data.MAHANG = cauHinhLoaiPhong.MAHANG;
                         data.SOPHUT = cauHinhLoaiPhong.SOPHUT;
+                        data.MAHANG_DICHVU = cauHinhLoaiPhong.MAHANG_DICHVU;
                     }
                     result.Data = data;
                     result.Status = true;
@@ -308,7 +309,6 @@ namespace ERBus.Api.Controllers.Catalog
         }
 
         [Route("UploadBackground")]
-        [AllowAnonymous]
         [HttpPost]
         public IHttpActionResult UploadBackground()
         {
@@ -339,7 +339,6 @@ namespace ERBus.Api.Controllers.Catalog
         }
 
         [Route("UploadIcon")]
-        [AllowAnonymous]
         [HttpPost]
         public IHttpActionResult UploadIcon()
         {

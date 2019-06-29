@@ -12,6 +12,7 @@ namespace ERBus.Service.Catalog.CauHinhLoaiPhong
         {
             public string MALOAIPHONG { get; set; }
             public string MAHANG { get; set; }
+            public string MAHANG_DICHVU { get; set; }
             public int SOPHUT { get; set; }
             public string DefaultOrder
             {
@@ -60,6 +61,7 @@ namespace ERBus.Service.Catalog.CauHinhLoaiPhong
         {
             public string MALOAIPHONG { get; set; }
             public string MAHANG { get; set; }
+            public string MAHANG_DICHVU { get; set; }
             public int SOPHUT { get; set; }
             public string UNITCODE { get; set; }
         }

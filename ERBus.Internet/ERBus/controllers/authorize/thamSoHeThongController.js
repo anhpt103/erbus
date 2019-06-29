@@ -36,17 +36,6 @@
             $scope.title = function () { return 'Tham số hệ thống' };
             $scope.listThamSo = [
                 {
-                    MA_THAMSO: 'SPECIAL_MER',
-                    TEN_THAMSO: 'MÃ HÀNG ĐƯỢC PHÉP CÀI ĐẶT GIÁ',
-                    GIATRI_SO: 0,
-                    GIATRI_CHU: null,
-                    I_STATE: 'C', //NOT
-                    UNITCODE: userService.CurrentUser.unitCode,
-                    TRANGTHAI: 10,
-                    ISDIABLED_GIATRI_CHU: false,
-                    PLACEHOLDER: 'Giá trị theo mã hàng (các mã cách nhau bằng dấu [;])'
-                },
-                {
                      MA_THAMSO: 'SUDUNG_LCD',
                      TEN_THAMSO: 'SỬ DỤNG MÀN HÌNH HIỂN THỊ LCD CHỨC NĂNG BÁN LẺ',
                      GIATRI_SO: 0,

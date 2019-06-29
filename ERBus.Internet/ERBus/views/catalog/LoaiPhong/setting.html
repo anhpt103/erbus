@@ -41,6 +41,21 @@
             </div>
             <div class="row form-group">
                 <div class="col col-md-12">
+                    <label for="text-input" class="form-control-label">Cài đặt mã hàng dịch vụ (Mã này sẽ tự động cài đặt giá khi thanh toán)</label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã hàng dịch vụ</label>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input enter type="text" id="_maHangDichVu" name="_maHangDichVu" ng-model="target.MAHANG_DICHVU" placeholder="Nhập mã hàng dịch vụ" typeahead-editable="false"
+                           uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('matHangTrongBo') | filter:$viewValue | limitTo:5" typeahead-on-select=""
+                           typeahead-input-formatter="convertCodeToName($model, 'matHangTrongBo')" class="form-control" required />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-12">
                     <label for="text-input" class="form-control-label">Cài đặt mã hàng được tính theo thời gian sử dụng (Mã này là mã hàng trong danh mục hàng hóa thuộc bó hàng [ {{target.MABOHANG}} ])</label>
                 </div>
             </div>

@@ -203,6 +203,10 @@
     <Compile Include="Migrations\201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.Designer.cs">
       <DependentUpon>201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.cs" />
+    <Compile Include="Migrations\201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.Designer.cs">
+      <DependentUpon>201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -305,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.resx">
       <DependentUpon>201906250922494_CREATE_LICHSU_DATPHONG_ANHPT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.resx">
+      <DependentUpon>201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

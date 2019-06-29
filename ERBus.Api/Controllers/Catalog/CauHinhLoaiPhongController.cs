@@ -39,6 +39,7 @@ namespace ERBus.Api.Controllers.Catalog
                 if (exist != null)
                 {
                     exist.MAHANG = instance.MAHANG;
+                    exist.MAHANG_DICHVU = instance.MAHANG_DICHVU;
                     exist.SOPHUT = instance.SOPHUT;
                     exist.ObjectState = ObjectState.Modified;
                     _service.Update(exist);

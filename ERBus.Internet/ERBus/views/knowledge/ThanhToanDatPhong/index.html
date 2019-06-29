@@ -1,17 +1,32 @@
-﻿<script>
+﻿<style>
+    .table-data3 thead tr th {
+        padding: 15px 20px;
+    }
+
+    .selected {
+        color: blue;
+        background-color: #EEEEEE;
+    }
+</style>
+<script>
     $(document).ready(function () {
         $(".menu-sidebar3").css("height", $(".table-responsive").height());
     });
+    $(document).ready(function () {
+        $('#showPay').click(function () {
+            $('.infoPay').toggle("slide");
+        });
+    });
 </script>
 <section class="alert-wrap p-t-10 p-b-10"></section>
-<section style="height: 387px;" keyboard="keys">
+<section keyboard="keys">
     <div class="container">
         <div class="row">
             <div class="col-xl-3">
                 <aside class="menu-sidebar3 js-spe-sidebar">
                     <nav class="navbar-sidebar2 navbar-sidebar3">
                         <ul class="list-unstyled navbar__list">
-                            <li class="active has-sub">
+                            <li class="active has-sub" id="showPay">
                                 <a class="js-arrow" href="">
                                     <i class="zmdi zmdi-view-list"></i>Danh sách phòng đã đặt
                                     <span class="arrow">
@@ -20,14 +35,14 @@
                                 </a>
                             </li>
                             <li class="has-sub">
-                                <a class="js-arrow" ng-repeat="item in listBookingRoom track by $index" ng-click="dischargeRoom(item);">
+                                <a class="js-arrow" ng-repeat="item in listBookingRoom | orderBy:'TENPHONG':false track by $index " ng-click="dischargeRoom(item);" ng-class="{selected: item.MA_DATPHONG === selectedMaDatPhong}">
                                     <i class="{{item.ICON}}"></i>{{item.TENPHONG}} - Tầng {{item.TANG}}
                                 </a>
                             </li>
                         </ul>
                     </nav>
                 </aside>
-                <aside>
+                <aside class="infoPay" style="display: none;">
                     <nav class="navbar-sidebar2 navbar-sidebar3">
                         <ul class="list-unstyled navbar__list">
                             <li class="active has-sub">
@@ -107,9 +122,9 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in data.DtoDetails | orderBy:'MAHANG':true track by $index">
-                                            <td>{{$index + 1}}</td>
-                                            <td>{{item.MAHANG}}</td>
-                                            <td>{{item.TENHANG}}</td>
+                                            <td style="padding: 15px 10px;">{{$index + 1}}</td>
+                                            <td style="padding: 15px 10px;">{{item.MAHANG}}</td>
+                                            <td style="padding: 15px 10px;">{{item.TENHANG}}</td>
                                             <td>{{item.DONVITINH}}</td>
                                             <td style="padding: 12px 20px;">
                                                 <div class="input-group" style="width: 110%;">
@@ -129,8 +144,8 @@
                                             </td>
                                             <td><input type="text" ng-model="item.GIABANLE_VAT" ng-change="changeGiaBanLeVat(item);" ng-readonly="!item.IS_EDIT_VALUE" awnum="number"></td>
                                             <td>
-                                                <input ng-if="!item.IS_HOUR_SINGLE_MERCHANDISE" awnum="number" type="text" enter style="height: 30.5px;text-align: right;width: 100%;" ng-model="item.THANHTIEN">
-                                                <div ng-if="item.IS_HOUR_SINGLE_MERCHANDISE" ng-bind-html="item.textThanhTien"></div>
+                                                <input ng-if="!item.IS_HOUR_SINGLE_MERCHANDISE" awnum="number" type="text" enter style="height: 30.5px;text-align: right;width: 100%;" ng-model="item.THANHTIEN" readonly>
+                                                <div ng-if="item.IS_HOUR_SINGLE_MERCHANDISE" ng-bind-html="item.textThanhTien" readonly></div>
                                             </td>
                                         </tr>
                                     </tbody>

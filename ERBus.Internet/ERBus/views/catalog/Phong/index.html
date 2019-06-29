@@ -26,10 +26,10 @@
                                     <li>
                                         <a style="font-size: 16px;">Tòa nhà</a>
                                         <ul>
-                                            <li ng-repeat="parent in treeFloor">
+                                            <li ng-repeat="parent in treeFloor track by $index">
                                                 <a style="font-size: 15px;" ng-bind="parent.TENPHONG"></a>
                                                 <ul>
-                                                    <li ng-repeat="children in parent.CHILDREN">
+                                                    <li ng-repeat="children in parent.CHILDREN track by $index">
                                                         <a style="font-size: 14px;" ng-click="edit(children);" ng-dblclick="detail(children)" ng-bind="children.TENPHONG"></a>
                                                     </li>
                                                 </ul>

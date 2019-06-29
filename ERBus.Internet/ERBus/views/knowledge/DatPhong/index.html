@@ -24,12 +24,10 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 project wow animated animated3 fadeInLeft" ng-repeat="item in data">
-                                <div class="project-hover" ng-class="{IS_CLOSE: item.TRANGTHAI_DATPHONG == '10', IS_OPEN: !item.TRANGTHAI_DATPHONG }" title="{{!item.TRANGTHAI_DATPHONG ? 'Phòng này còn trống' : 'Phòng này đã đặt'}}">
-                                    <h4>{{item.TENPHONG}} - Tầng {{item.TANG}}</h4>
-                                    <hr/>
-                                    <button class="btn btn-success" prevent-default ng-click="bookingRoom(item);">Đặt phòng</button>
-                                    <button class="btn btn-success" prevent-default ng-click="dischargeRoom(item);" ng-if="item.TRANGTHAI_DATPHONG == 10">Thanh toán</button>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 project wow animated animated3 fadeInLeft" ng-class="{IS_CLOSE: item.TRANGTHAI_DATPHONG == '10', IS_OPEN: !item.TRANGTHAI_DATPHONG }" ng-repeat="item in data | orderBy:'TENPHONG':false track by $index" style="box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
+                                <h4>{{item.TENPHONG}}</h4>
+                                <div class="project-hover" title="{{!item.TRANGTHAI_DATPHONG ? 'Phòng này còn trống' : 'Phòng này đã đặt'}}" style="background-image: url('data:image/jpeg;charset=utf-8;base64,{{item.BACKGROUND}}'); background-repeat: no-repeat; background-size: 290px 160px;">
+                                    <dir content="item.dataHtml"></dir>
                                 </div>
                             </div>
                             <div class="clearfix"></div>

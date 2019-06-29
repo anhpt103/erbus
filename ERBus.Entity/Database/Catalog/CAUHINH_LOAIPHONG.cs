@@ -19,6 +19,11 @@ namespace ERBus.Entity.Database.Catalog
         [StringLength(50)]
         public string MAHANG { get; set; }
 
+        [Column("MAHANG_DICHVU")]
+        [Description("MÃ HÀNG DỊCH VỤ")]
+        [StringLength(10)]
+        public string MAHANG_DICHVU { get; set; }
+
         [Required]
         [Column("SOPHUT")]
         [Description("SỐ PHÚT TÍNH TIỀN")]

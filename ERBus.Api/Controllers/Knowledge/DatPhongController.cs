@@ -107,7 +107,7 @@ namespace ERBus.Api.Controllers.Knowledge
                 {
                     result.Status = true;
                     result.Data = item;
-                    result.Message = "Thêm mới thành công";
+                    result.Message = "Đặt phòng thành công";
                 }
                 else
                 {

@@ -86,7 +86,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
                             }
                             dataReader.Close();
                             command.CommandType = CommandType.Text;
-                            command.CommandText = @"SELECT C.MALOAIPHONG,D.MAHANG,NVL(D.SOPHUT,0) AS DONVI_THOIGIAN_TINHTIEN FROM (SELECT A.MALOAIPHONG,A.UNITCODE FROM LOAIPHONG A INNER JOIN PHONG B ON A.MALOAIPHONG = B.MALOAIPHONG AND A.UNITCODE = B.UNITCODE AND B.MAPHONG = '" + data.MAPHONG + "' AND A.UNITCODE = '" + unitCode + "') C LEFT JOIN CAUHINH_LOAIPHONG D ON C.MALOAIPHONG = D.MALOAIPHONG AND C.UNITCODE = D.UNITCODE ";
+                            command.CommandText = @"SELECT C.MALOAIPHONG, D.MAHANG, D.MAHANG_DICHVU, NVL(D.SOPHUT,0) AS DONVI_THOIGIAN_TINHTIEN FROM (SELECT A.MALOAIPHONG,A.UNITCODE FROM LOAIPHONG A INNER JOIN PHONG B ON A.MALOAIPHONG = B.MALOAIPHONG AND A.UNITCODE = B.UNITCODE AND B.MAPHONG = '" + data.MAPHONG + "' AND A.UNITCODE = '" + unitCode + "') C LEFT JOIN CAUHINH_LOAIPHONG D ON C.MALOAIPHONG = D.MALOAIPHONG AND C.UNITCODE = D.UNITCODE ";
                             OracleDataReader dataReaderCauHinh = command.ExecuteReader();
                             if (dataReaderCauHinh.HasRows)
                             {
@@ -95,6 +95,10 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
                                     if (dataReaderCauHinh["MAHANG"] != null)
                                     {
                                         thanhToanDto.MAHANG = dataReaderCauHinh["MAHANG"].ToString();
+                                    }
+                                    if (dataReaderCauHinh["MAHANG_DICHVU"] != null)
+                                    {
+                                        thanhToanDto.MAHANG_DICHVU = dataReaderCauHinh["MAHANG_DICHVU"].ToString();
                                     }
                                     if (dataReaderCauHinh["DONVI_THOIGIAN_TINHTIEN"] != null)
                                     {

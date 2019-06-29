@@ -238,9 +238,10 @@
 
         }]);
 
-    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, $timeout, upload) {
+    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, $timeout, upload, userService) {
             $scope.config = angular.copy(configService);
+            var currentUser = userService.GetCurrentUser();
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm loại phòng'; };
 
@@ -342,6 +343,9 @@
                     $scope.fileIcon.MALOAIPHONG = $scope.target.MALOAIPHONG;
                     upload.upload({
                         url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadIcon',
+                        headers: { 'Authorization': 'Bearer ' + currentUser.access_token },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
                         data: $scope.fileIcon
                     }).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
@@ -373,6 +377,9 @@
                         $scope.fileBackground.MALOAIPHONG = $scope.target.MALOAIPHONG;
                         upload.upload({
                             url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadBackground',
+                            headers: { 'Authorization': 'Bearer ' + currentUser.access_token },
+                            contentType: "application/json; charset=utf-8",
+                            dataType: 'json',
                             data: $scope.fileBackground
                         }).then(function (successRes) {
                             if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
@@ -417,8 +424,9 @@
             };
         }]);
 
-    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, $timeout, upload) {
+    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, $timeout, upload, userService) {
+            var currentUser = userService.GetCurrentUser();
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
@@ -497,6 +505,9 @@
                     $scope.fileIcon.MALOAIPHONG = $scope.target.MALOAIPHONG;
                     upload.upload({
                         url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadIcon',
+                        headers: { 'Authorization': 'Bearer ' + currentUser.access_token },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
                         data: $scope.fileIcon
                     }).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
@@ -515,11 +526,24 @@
                 }
             };
 
+            $scope.deleteIcon = function () {
+                if ($scope.target.ICON) {
+                    $scope.target.ICON = null;
+                }
+                if ($scope.fileIcon) {
+                    $scope.fileIcon = {};
+                    angular.element("#file-input-icon").val(null);
+                }
+            };
+
             $scope.save = function () {
                 if ($scope.fileBackground && $scope.fileBackground.SRC) {
                     $scope.fileBackground.MALOAIPHONG = $scope.target.MALOAIPHONG;
                     upload.upload({
                         url: configService.rootUrlWebApi + '/Catalog/LoaiPhong/UploadBackground',
+                        headers: { 'Authorization': 'Bearer ' + currentUser.access_token },
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
                         data: $scope.fileBackground
                     }).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {

@@ -18,9 +18,10 @@
         return result;
     }]);
     /* controller list */
-    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService) {
+    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService) {
             $scope.keys = keyCodes;
+            var currentUser = userService.GetCurrentUser();
             $scope.modalOpen = false;
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
@@ -31,6 +32,8 @@
                 TONGSOLUONG: 0,
                 TONGTIEN_THANHTOAN: 0,
                 TONGTIEN_BANGCHU: '',
+                USERNAME: currentUser.userName,
+                FULLNAME: currentUser.fullName,
                 DtoDetails: []
             };
             $scope.setPage = function (pageNo) {
@@ -80,18 +83,6 @@
             };
             loadDataLoaiPhong();
             //end
-
-            //load tham số các mã được phép cài đặt giá từ tham số hệ thống
-            var SPECIAL_MERCHANDISE = '';
-            thamSoHeThongService.getDataByMaThamSo().then(function (successRes) {
-                if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
-                    angular.forEach(successRes.data.Data, function (v, k) {
-                        if (v.MA_THAMSO === 'SPECIAL_MER' && v.GIATRI_SO === 10) {
-                            SPECIAL_MERCHANDISE = v.GIATRI_CHU;
-                        }
-                    });
-                }
-            });
 
             //Function load data catalog Phong
             function loadDataPhong() {
@@ -274,12 +265,15 @@
                 }
                 if (document.getElementById("_thoiGianHienTai") !== null) {
                     $("#_thoiGianHienTai").val('Thời gian hiện tại: ' + getTime());
+                    $scope.data.THOIGIAN_TINHTIEN = getTime();
                 }
                 action = setTimeout(caculateCountHour, 1000);
             };
 
+            $scope.selectedMaDatPhong = null;
             $scope.dischargeRoom = function (item) {
                 if (item) {
+                    $scope.selectedMaDatPhong = item.MA_DATPHONG;
                     service.getMerchandiseInBundleGoods(item).then(function (response) {
                         if (response && response.status === 200 && response.data && response.data.Status && response.data.Data) {
                             $scope.data = response.data.Data;
@@ -293,7 +287,7 @@
                                     v.SOLUONG = 0;
                                     v.THANHTIEN = v.SOLUONG * v.GIABANLE_VAT;
                                     v.SAPXEP = k;
-                                    if (SPECIAL_MERCHANDISE.includes(v.MAHANG)) v.IS_EDIT_VALUE = true
+                                    if (v.MAHANG === $scope.data.MAHANG_DICHVU) v.IS_EDIT_VALUE = true
                                     if (v.MAHANG === $scope.data.MAHANG) {
                                         v.IS_HOUR_SINGLE_MERCHANDISE = true;
                                         caculateCountHour();
@@ -302,6 +296,7 @@
                                 $scope.data.TONGSOLUONG = SumQuanlity($scope.data.DtoDetails, 'SOLUONG');
                                 $scope.data.TONGTIEN_THANHTOAN = SumQuanlity($scope.data.DtoDetails, 'THANHTIEN');
                             }
+                            $('.infoPay').toggle("slide");
                         }
                     });
                 }
@@ -364,9 +359,10 @@
             };
         }]);
 
-    app.controller('pay_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$uibModalInstance' , '$log', 'securityService', 'phongService', 'loaiPhongService', 'datPhongService', 'thamSoHeThongService', 'keyCodes', 'targetData','$sce',
-       function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $uibModalInstance, $log, securityService, phongService, loaiPhongService, datPhongService, thamSoHeThongService, keyCodes, targetData, $sce) {
+    app.controller('pay_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$uibModalInstance' , '$log', 'securityService', 'phongService', 'loaiPhongService', 'datPhongService', 'thamSoHeThongService', 'keyCodes', 'targetData','$sce','userService',
+       function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $uibModalInstance, $log, securityService, phongService, loaiPhongService, datPhongService, thamSoHeThongService, keyCodes, targetData, $sce, userService) {
            $scope.keys = keyCodes;
+           var currentUser = userService.GetCurrentUser();
            $scope.isValid = false;
            $scope.title = function () { return 'Xác nhận thanh toán phòng [' + targetData.TENPHONG + ' - Tầng ' + targetData.TANG + ']' };
            $scope.config = angular.copy(configService);
@@ -381,6 +377,267 @@
                    $uibModalInstance.close(false);
                }
            };
+           var sumTienMatHang = 0;
+           if ($scope.target.MAHANG && $scope.target.DtoDetails.length > 0) {
+               angular.forEach($scope.target.DtoDetails, function (v, k) {
+                   if (v.MAHANG !== $scope.target.MAHANG && v.MAHANG !== $scope.target.MAHANG_DICHVU) sumTienMatHang += parseFloat(v.THANHTIEN);
+               });
+           }
+
+           var sumTienDichVu = 0;
+           if ($scope.target.MAHANG_DICHVU && $scope.target.DtoDetails.length > 0) {
+               var tienDichVu = $filter('filter')($scope.target.DtoDetails, { MAHANG: $scope.target.MAHANG_DICHVU }, true)
+               if (tienDichVu && tienDichVu.length === 1) {
+                   sumTienDichVu = parseFloat(tienDichVu[0].THANHTIEN);
+               }
+           }
+
+           var default_numbers = ' hai ba bốn năm sáu bảy tám chín';
+           var units = ('1 một' + default_numbers).split(' ');
+           var ch = 'lẻ mười' + default_numbers;
+           var tr = 'không một' + default_numbers;
+           var tram = tr.split(' ');
+           var u = '2 nghìn triệu tỉ'.split(' ');
+           var chuc = ch.split(' ');
+           /**
+            * additional words 
+            * @param  {[type]} a [description]
+            * @return {[type]}   [description]
+            */
+
+           function tenth(a) {
+               var sl1 = units[a[1]];
+               var sl2 = chuc[a[0]];
+               var append = '';
+               if (a[0] > 0 && a[1] == 5)
+                   sl1 = 'lăm';
+               if (a[0] > 1) {
+                   append = ' mươi';
+                   if (a[1] == 1)
+                       sl1 = ' mốt';
+               }
+               var str = sl2 + '' + append + ' ' + sl1;
+               return str;
+           };
+
+           /**
+            * convert number in blocks of 3 
+            * @param  {[type]} d [description]
+            * @return {[type]}   [description]
+            */
+           function block_of_three(d) {
+               var _a = d + '';
+               if (d == '000') return '';
+               switch (_a.length) {
+                   case 0:
+                       return '';
+
+                   case 1:
+                       return units[_a];
+
+                   case 2:
+                       return tenth(_a);
+
+                   case 3:
+                       var sl12 = '';
+                       if (_a.slice(1, 3) != '00')
+                           sl12 = tenth(_a.slice(1, 3));
+                       var sl3 = tram[_a[0]] + ' trăm';
+                       return sl3 + ' ' + sl12;
+               }
+           };
+           /**
+            * Get number from unit, to string
+            * @param  {mixed} nStr input money
+            * @return {String}  money string, removed digits
+            */
+           function formatnumber(nStr) {
+               nStr += '';
+               var x = nStr.split('.');
+               var x1 = x[0];
+               var x2 = x.length > 1 ? '.' + x[1] : '';
+               var rgx = /(\d+)(\d{3})/;
+               while (rgx.test(x1)) {
+                   x1 = x1.replace(rgx, '$1' + ',' + '$2');
+               }
+               return x1 + x2;
+           };
+
+           function to_vietnamese(str, currency) {
+               var str = parseInt(str) + '';
+               //str=fixCurrency(a,1000);
+               var i = 0;
+               var arr = [];
+               var index = str.length;
+               var result = []
+               if (index == 0 || str == 'NaN')
+                   return '';
+               var string = '';
+
+               //explode number string into blocks of 3numbers and push to queue
+               while (index >= 0) {
+                   arr.push(str.substring(index, Math.max(index - 3, 0)));
+                   index -= 3;
+               }
+
+               //loop though queue and convert each block 
+               for (i = arr.length - 1; i >= 0; i--) {
+                   if (arr[i] != '' && arr[i] != '000') {
+                       result.push(block_of_three(arr[i]))
+                       if (u[i])
+                           result.push(u[i]);
+                   }
+               }
+               if (currency)
+                   result.push(currency)
+               string = result.join(' ')
+               //remove unwanted white space
+               return string.replace(/[0-9]/g, '').replace(/  /g, ' ').replace(/ $/, '');
+           };
+
+
+           var inVoice = '<html>';
+           //header
+           inVoice += '<head>';
+           inVoice += '<style>';
+           inVoice += '@media print {';
+           inVoice += '.page-break { display: block; page-break-before: always; }';
+           inVoice += '}';
+           // css invoice-POS
+           inVoice += '#invoice-POS {';
+           inVoice += 'box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);';
+           inVoice += 'padding: 2mm;';
+           inVoice += 'margin: 0 auto;';
+           inVoice += 'width: 75mm;';
+           inVoice += 'background: #FFF;';
+           inVoice += ' }';
+
+           inVoice += '#invoice-POS ::moz-selection {';
+           inVoice += 'background: #f31544;';
+           inVoice += 'color: #FFF;';
+           inVoice += ' }';
+
+           inVoice += '#invoice-POS ::selection {';
+           inVoice += 'background: #f31544;';
+           inVoice += 'color: #FFF;';
+           inVoice += ' }';
+           // end css invoice-POS
+           inVoice += 'table {';
+           inVoice += 'border-collapse: collapse;';
+           inVoice += ' }';
+           inVoice += '@media only screen and (max-width: 350px) {';
+           inVoice += 'body { font-family: "Times New Roman", Times, serif; }';
+           inVoice += '}';
+           inVoice += '</style>';
+           inVoice += '</head>';
+           //end header
+           //body
+           inVoice += '<body translate="no">';
+           //table
+           inVoice += '<div id="invoice-POS">';
+           inVoice += '<table>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="6" style="text-align: center;font-weight: bold; font-style: normal; font-size: 14px;">HÓA ĐƠN THANH TOÁN</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="6"><hr></td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Số HĐ: ' + $scope.target.MA_DATPHONG + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Phục vụ: ' + currentUser.fullName + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Số bàn: ' + $scope.target.TENPHONG + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Ngày: ' + $scope.config.moment(new Date()).format('DD-MM-YYYY') + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Giờ vào:' + $scope.target.THOIGIAN_DATPHONG + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Giờ ra: ' + $scope.target.THOIGIAN_TINHTIEN + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="6"><br/></td>';
+           inVoice += '</tr>';
+           inVoice += '<tr style="background-color: #808080;">';
+           inVoice += '<th style="text-align: center; font-style: normal; font-size: 14px; border: 1px solid black;">STT</th>';
+           inVoice += '<th style="text-align: center; font-style: normal; font-size: 14px; border: 1px solid black;">Thực đơn</th>';
+           inVoice += '<th style="text-align: center; font-style: normal; font-size: 14px; border: 1px solid black;">SLg</th>';
+           inVoice += '<th style="text-align: center; font-style: normal; font-size: 14px; border: 1px solid black;">ĐVT</th>';
+           inVoice += '<th style="text-align: center; font-style: normal; font-size: 14px; border: 1px solid black;">Đơn giá</th>';
+           inVoice += '<th style="text-align: center; font-style: normal; font-size: 14px; border: 1px solid black;">Thành tiền</th>';
+           inVoice += '</tr>';
+           //binding data
+           if ($scope.target.DtoDetails && $scope.target.DtoDetails.length > 0) {
+               angular.forEach($scope.target.DtoDetails, function(v,k){
+                   inVoice += '<tr>';
+                   inVoice += '<td style="text-align: center;font-weight: bold; font-style: normal; font-size: 13px; border: 1px solid black;">' + (k + 1) + '</td>';
+                   inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.TENHANG + '</td>';
+                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.SOLUONG + '</td>';
+                   inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.DONVITINH + '</td>';
+                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.GIABANLE_VAT + '</td>';
+                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.THANHTIEN + '</td>';
+                   inVoice += '</tr>';
+               });
+           }
+           inVoice += '<tr>';
+           inVoice += '<td colspan="2">Bằng chữ: </td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Tiền hàng</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + sumTienMatHang + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="2"><span style="font-style: italic;">' + to_vietnamese($scope.target.TONGTIEN_THANHTOAN) + '</span></td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Tiền hát</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + $scope.target.TIEN_GIOHAT + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="2"></td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Giảm giá</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">0</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="2"></td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Phí dịch vụ</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + sumTienDichVu + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="2"></td>';
+           inVoice += '<td colspan="4" style="text-align: right;"><hr></td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="2"></td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Thanh toán</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + $scope.target.TONGTIEN_THANHTOAN + '</td>';
+           inVoice += '</tr>';
+           inVoice += '<tr>';
+           inVoice += '<td colspan="6" style="text-align: center; font-style: italic; font-weight: bold;">Cảm ơn quý khách và hẹn gặp lại!</td>';
+           inVoice += '</tr>';
+           //end binding data
+           inVoice += '</table>';
+           inVoice += '</div>';
+           //end table
+           inVoice += '</body>';
+           //end body
+           inVoice += '</html>';
+
+           function printInvoice() {
+               var frame = document.createElement('iframe');
+               frame.name = "frameInvoice";
+               frame.style.position = "absolute";
+               //frame.style.top = "-1000000px";
+               document.body.appendChild(frame);
+               var frameDoc = frame.contentWindow ? frame.contentWindow : frame.contentDocument.document ? frame.contentDocument.document : frame.contentDocument;
+               frameDoc.document.open();
+               frameDoc.document.write(inVoice);
+               frameDoc.document.close();
+               setTimeout(function () {
+                   window.frames["frameInvoice"].focus();
+                   window.frames["frameInvoice"].print();
+                   document.body.removeChild(frame);
+               }, 100);
+               return false;
+               window.print();
+           };
+           printInvoice();
+
            $scope.save = function() {
                service.post($scope.target).then(function (successRes) {
                    $scope.isValid = true;
