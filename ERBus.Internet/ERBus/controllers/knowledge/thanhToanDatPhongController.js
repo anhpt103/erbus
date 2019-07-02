@@ -13,6 +13,9 @@
             },
             post: function (data) {
                 return $http.post(serviceUrl + '/Post', data);
+            },
+            senderGmail: function (body) {
+                return $http.post(serviceUrl + '/SenderGmail', body);
             }
         }
         return result;
@@ -636,34 +639,49 @@
                return false;
                window.print();
            };
-           printInvoice();
+          
+           function sendGmail() {
+               if (inVoice && inVoice !== '') {
+                   var obj = {
+                       MA_DATPHONG: $scope.target.MA_DATPHONG,
+                       MAPHONG: $scope.target.MAPHONG,
+                       UNITCODE: currentUser.unitCode,
+                       BODY: inVoice
+                   };
+                   service.senderGmail(obj).then(function (successRes) {
+                       console.log(successRes);
+                   });
+               }
+           };
 
-           $scope.save = function() {
-               service.post($scope.target).then(function (successRes) {
-                   $scope.isValid = true;
-                   if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
-                       Lobibox.notify('success', {
-                           title: 'Thông báo',
-                           width: 400,
-                           msg: successRes.data.Message,
-                           delay: 1500
-                       });
-                       isPayed = true;
-                       $scope.isValid = false;
-                       $uibModalInstance.close(isPayed);
-                   } else {
-                       Lobibox.notify('error', {
-                           title: 'Xảy ra lỗi',
-                           msg: 'Đã xảy ra lỗi! Thao tác không thành công',
-                           delay: 3000
-                       });
-                       $scope.isValid = false;
-                   }
-               },
-                function (errorRes) {
-                    console.log('errorRes', errorRes);
-                    $scope.isValid = false;
-                });
+           $scope.save = function () {
+               sendGmail();
+               //service.post($scope.target).then(function (successRes) {
+               //    $scope.isValid = true;
+               //    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+               //        Lobibox.notify('success', {
+               //            title: 'Thông báo',
+               //            width: 400,
+               //            msg: successRes.data.Message,
+               //            delay: 1500
+               //        });
+               //        isPayed = true;
+               //        $scope.isValid = false;
+               //        $uibModalInstance.close(isPayed);
+               //    } else {
+               //        Lobibox.notify('error', {
+               //            title: 'Xảy ra lỗi',
+               //            msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+               //            delay: 3000
+               //        });
+               //        $scope.isValid = false;
+               //    }
+               //},
+               //function (errorRes) {
+               //    console.log('errorRes', errorRes);
+               //    $scope.isValid = false;
+               //});
+               //printInvoice();
            };
            $scope.cancel = function () {
                $uibModalInstance.close(isPayed);

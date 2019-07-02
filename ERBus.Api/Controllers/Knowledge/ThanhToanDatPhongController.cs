@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using EASendMail;
 using ERBus.Entity.Database.Knowledge;
 using ERBus.Service;
 using ERBus.Service.Authorize.Utils;
@@ -41,6 +41,42 @@ namespace ERBus.Api.Controllers.Knowledge
             return Ok(result);
         }
 
+        [Route("SenderGmail")]
+        [ResponseType(typeof(THANHTOAN_DATPHONG))]
+        [CustomAuthorize(Method = "THEM", State = "DatPhong")]
+        public IHttpActionResult SenderGmail(ThanhToanDatPhongViewModel.ObjSendGmail obj)
+        {
+            var result = new TransferObj();
+            var mailTask = new SmtpMail("TryIt");
+            mailTask.Sender = "erbus.notification@gmail.com";
+            mailTask.From = "erbus.notification@gmail.com";
+            mailTask.To = "thuynguyentd11@gmail.com";
+            mailTask.Subject = "THANH TOÁN " + obj.MAPHONG + " (" + obj.MA_DATPHONG + ")";
+            mailTask.HtmlBody = obj.BODY.ToString();
+            try
+            {
+                var smtp = new SmtpClient();
+                var server = new SmtpServer("smtp.gmail.com");
+                server.Port = 587;
+                server.Protocol = ServerProtocol.SMTP;
+                server.ConnectType = SmtpConnectType.ConnectSSLAuto;
+                server.User = "erbus.notification@gmail.com";
+                server.Password = "1r0q5c3rewqASD!@#";
+                smtp.SendMail(server, mailTask);
+                result.Data = true;
+                result.Message = "Send Gmail successfull!";
+                result.Status = true;
+            }
+            catch
+            {
+                result.Data = false;
+                result.Message = "Send Gmail error!";
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+
+        [Route("Post")]
         [ResponseType(typeof(THANHTOAN_DATPHONG))]
         [CustomAuthorize(Method = "THEM", State = "DatPhong")]
         public async Task<IHttpActionResult> Post(ThanhToanDatPhongViewModel.Dto instance)

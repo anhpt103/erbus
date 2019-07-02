@@ -98,5 +98,13 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public string I_CREATE_BY { get; set; }
             public string UNITCODE { get; set; }
         }
+
+        public class ObjSendGmail
+        {
+            public string MA_DATPHONG { get; set; }
+            public string MAPHONG { get; set; }
+            public string UNITCODE { get; set; }
+            public string BODY { get; set; }
+        }
     }
 }
