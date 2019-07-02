@@ -27,8 +27,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce) {
+    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce','$timeout',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce, $timeout) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -200,10 +200,13 @@
                     });
                 }
             };
+            $scope.$on('$destroy', function () {
+                $timeout.cancel();
+            });
         }]);
 
-    app.controller('bookingRoom_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal','$sce',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $sce) {
+    app.controller('bookingRoom_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal','$sce','$timeout',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $sce, $timeout) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
@@ -300,7 +303,7 @@
                 if (seconds < 10) { seconds = "0" + seconds; }
                 return hours + ':' + minutes + ':' + seconds;
             };
-          
+            var action;
             function caculateCountHour() {
                 if ($scope.listBooking && $scope.listBooking.length > 0) {
                     angular.forEach($scope.listBooking, function (v, k) {
@@ -315,7 +318,7 @@
                         }
                     });
                 }
-                setTimeout(caculateCountHour, 1000);
+                action = setTimeout(caculateCountHour, 1000);
             };
 
             function filterData() {
@@ -409,6 +412,11 @@
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
+
+            $scope.$on('$destroy', function () {
+                clearTimeout(action);
+                $timeout.cancel();
+            });
 
             $scope.cancel = function () {
                 $uibModalInstance.close();

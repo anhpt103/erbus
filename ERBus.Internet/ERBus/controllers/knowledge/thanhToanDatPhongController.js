@@ -21,8 +21,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService) {
+    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService','$timeout',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService, $timeout) {
             $scope.keys = keyCodes;
             var currentUser = userService.GetCurrentUser();
             $scope.modalOpen = false;
@@ -153,7 +153,7 @@
                     angular.forEach(list, function (v, k) {
                         sum += parseFloat(v[field]);
                     });
-                    if (field === 'THANHTIEN' && $scope.data.TIEN_GIOHAT > 0) sum = sum + $scope.data.TIEN_GIOHAT;
+                    //if (field === 'THANHTIEN' && $scope.data.TIEN_GIOHAT > 0) sum = sum + $scope.data.TIEN_GIOHAT;
                 }
                 return sum;
             };
@@ -232,6 +232,18 @@
                 $scope.data.THOIGIAN_SUDUNG = minutes;
                 return minutes;
             };
+
+            function commafy(num) {
+                var str = num.toString().split('.');
+                if (str[0].length >= 5) {
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                }
+                if (str[1] && str[1].length >= 5) {
+                    str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+                }
+                return str.join('.');
+            };
+
             var action;
             function caculateCountHour() {
                 var hourSingle = $filter('filter')($scope.data.DtoDetails, { IS_HOUR_SINGLE_MERCHANDISE: true }, true);
@@ -249,8 +261,8 @@
                         hourSingle[0].textThanhTien = $sce.trustAsHtml('<input type="text" awnum="number" id = "' + hourSingle[0].MAHANG + '_' + hourSingle[0].SAPXEP + '"' + ' style="height: 30.5px;text-align: right;width: 100%;" />');
                         if (document.getElementById(hourSingle[0].MAHANG + '_' + hourSingle[0].SAPXEP) !== null) {
                             $scope.data.TIEN_GIOHAT = (Math.floor(hourSingle[0].GIABANLE_VAT / $scope.data.DONVI_THOIGIAN_TINHTIEN) * toMinus(timeRuning));
-                            $("#" + hourSingle[0].MAHANG + '_' + hourSingle[0].SAPXEP).val($scope.data.TIEN_GIOHAT);
-
+                            hourSingle[0].THANHTIEN = $scope.data.TIEN_GIOHAT;
+                            $("#" + hourSingle[0].MAHANG + '_' + hourSingle[0].SAPXEP).val(commafy($scope.data.TIEN_GIOHAT));
                         }
 
                         $scope.trustSOGIO = $sce.trustAsHtml('<input type="text" id="SOGIO" class="form-control" readonly style="height: 45px;border-bottom: 1px solid #f5f5f5;background: #fff;font-size: 14px;color: #808080;padding: 12px 40px;padding-right: 10px;" />');
@@ -259,10 +271,10 @@
                         }
 
                         $scope.trustTONGTIEN_THANHTOAN = $sce.trustAsHtml('<input type="text" awnum="number" id="TONGTIEN_THANHTOAN" class="form-control" readonly style="height: 45px;border-bottom: 1px solid #f5f5f5;background: #fff;font-size: 14px;color: #808080;padding: 12px 40px;padding-right: 10px;" />');
+                        var tongTienThanhToan = SumQuanlity($scope.data.DtoDetails, 'THANHTIEN');
+                        $scope.data.TONGTIEN_THANHTOAN = tongTienThanhToan;
                         if (document.getElementById('TONGTIEN_THANHTOAN') !== null) {
-                            var tongTienThanhToan = SumQuanlity($scope.data.DtoDetails, 'THANHTIEN');
-                            $scope.data.TONGTIEN_THANHTOAN = tongTienThanhToan;
-                            $("#TONGTIEN_THANHTOAN").val('Tổng tiền thanh toán: ' + tongTienThanhToan);
+                            $("#TONGTIEN_THANHTOAN").val('Tổng tiền thanh toán: ' + commafy(tongTienThanhToan));
                         }
                     }
                 }
@@ -284,6 +296,8 @@
                             $scope.data.TANG = item.TANG;
                             $scope.data.TENLOAIPHONG = item.TENLOAIPHONG;
                             $scope.data.TENPHONG = item.TENPHONG;
+                            $scope.data.TIEN_GIOHAT = 0;
+                            $scope.data.TONGTIEN_THANHTOAN = 0;
                             if ($scope.data && $scope.data.DtoDetails.length > 0) {
                                 angular.forEach($scope.data.DtoDetails, function (v, k) {
                                     //mặc định số lượng ban đầu là 0 để người sử dụng đánh
@@ -296,8 +310,8 @@
                                         caculateCountHour();
                                     }
                                 });
-                                $scope.data.TONGSOLUONG = SumQuanlity($scope.data.DtoDetails, 'SOLUONG');
-                                $scope.data.TONGTIEN_THANHTOAN = SumQuanlity($scope.data.DtoDetails, 'THANHTIEN');
+                                //$scope.data.TONGSOLUONG = SumQuanlity($scope.data.DtoDetails, 'SOLUONG');
+                                //$scope.data.TONGTIEN_THANHTOAN = SumQuanlity($scope.data.DtoDetails, 'THANHTIEN');
                             }
                             $('.infoPay').toggle("slide");
                         }
@@ -307,6 +321,13 @@
 
             $scope.payRoom = function () {
                 if ($scope.data && $scope.data.MAPHONG && !$scope.modalOpen) {
+                    var dataPost = angular.copy($scope.data);
+                    dataPost.DtoDetails = [];
+                    angular.forEach($scope.data.DtoDetails, function (v, k) {
+                        if (v.THANHTIEN && v.THANHTIEN !== 0) {
+                            dataPost.DtoDetails.push(v);
+                        }
+                    });
                     var modalInstance = $uibModal.open({
                         backdrop: 'static',
                         keyboard  : false,
@@ -316,7 +337,7 @@
                         controller: 'pay_Ctrl',
                         resolve: {
                             targetData: function () {
-                                return $scope.data;
+                                return dataPost;
                             }
                         }
                     });
@@ -357,9 +378,15 @@
             $scope.keys = {
                 F9: function (name, code) {
                     clearTimeout(action);
+                    $timeout.cancel();
                     $scope.payRoom();
                 }
             };
+
+            $scope.$on('$destroy', function () {
+                clearTimeout(action);
+                $timeout.cancel();
+            });
         }]);
 
     app.controller('pay_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$uibModalInstance' , '$log', 'securityService', 'phongService', 'loaiPhongService', 'datPhongService', 'thamSoHeThongService', 'keyCodes', 'targetData','$sce','userService',
@@ -498,6 +525,16 @@
                return string.replace(/[0-9]/g, '').replace(/  /g, ' ').replace(/ $/, '');
            };
 
+           function commafy(num) {
+               var str = num.toString().split('.');
+               if (str[0].length >= 5) {
+                   str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+               }
+               if (str[1] && str[1].length >= 5) {
+                   str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+               }
+               return str.join('.');
+           };
 
            var inVoice = '<html>';
            //header
@@ -546,16 +583,16 @@
            inVoice += '<td colspan="6"><hr></td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
-           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Số HĐ: ' + $scope.target.MA_DATPHONG + '</td>';
-           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Phục vụ: ' + currentUser.fullName + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Số HĐ: ' + $scope.target.MA_DATPHONG + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Phục vụ: ' + currentUser.fullName + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
-           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Số bàn: ' + $scope.target.TENPHONG + '</td>';
-           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Ngày: ' + $scope.config.moment(new Date()).format('DD-MM-YYYY') + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Số bàn: ' + $scope.target.TENPHONG + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Ngày: ' + $scope.config.moment(new Date()).format('DD-MM-YYYY') + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
-           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Giờ vào:' + $scope.target.THOIGIAN_DATPHONG + '</td>';
-           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 14px;">Giờ ra: ' + $scope.target.THOIGIAN_TINHTIEN + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Giờ vào:' + $scope.target.THOIGIAN_DATPHONG + '</td>';
+           inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Giờ ra: ' + $scope.target.THOIGIAN_TINHTIEN + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
            inVoice += '<td colspan="6"><br/></td>';
@@ -574,22 +611,26 @@
                    inVoice += '<tr>';
                    inVoice += '<td style="text-align: center;font-weight: bold; font-style: normal; font-size: 13px; border: 1px solid black;">' + (k + 1) + '</td>';
                    inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.TENHANG + '</td>';
-                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.SOLUONG + '</td>';
+                   if (v.MAHANG === $scope.target.MAHANG) {
+                       inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + $scope.target.THOIGIAN_SUDUNG + ' phút</td>';
+                   } else {
+                       inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.SOLUONG) + '</td>';
+                   }
                    inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.DONVITINH + '</td>';
-                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.GIABANLE_VAT + '</td>';
-                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.THANHTIEN + '</td>';
+                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.GIABANLE_VAT) + '</td>';
+                   inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.THANHTIEN) + '</td>';
                    inVoice += '</tr>';
                });
            }
            inVoice += '<tr>';
            inVoice += '<td colspan="2">Bằng chữ: </td>';
            inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Tiền hàng</td>';
-           inVoice += '<td colspan="1" style="text-align: right;">' + sumTienMatHang + '</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + commafy(sumTienMatHang) + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
            inVoice += '<td colspan="2"><span style="font-style: italic;">' + to_vietnamese($scope.target.TONGTIEN_THANHTOAN) + '</span></td>';
            inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Tiền hát</td>';
-           inVoice += '<td colspan="1" style="text-align: right;">' + $scope.target.TIEN_GIOHAT + '</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + commafy($scope.target.TIEN_GIOHAT) + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
            inVoice += '<td colspan="2"></td>';
@@ -599,7 +640,7 @@
            inVoice += '<tr>';
            inVoice += '<td colspan="2"></td>';
            inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Phí dịch vụ</td>';
-           inVoice += '<td colspan="1" style="text-align: right;">' + sumTienDichVu + '</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + commafy(sumTienDichVu) + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
            inVoice += '<td colspan="2"></td>';
@@ -608,7 +649,7 @@
            inVoice += '<tr>';
            inVoice += '<td colspan="2"></td>';
            inVoice += '<td colspan="3" style="text-align: left;font-weight: bold;">Thanh toán</td>';
-           inVoice += '<td colspan="1" style="text-align: right;">' + $scope.target.TONGTIEN_THANHTOAN + '</td>';
+           inVoice += '<td colspan="1" style="text-align: right;">' + commafy($scope.target.TONGTIEN_THANHTOAN) + '</td>';
            inVoice += '</tr>';
            inVoice += '<tr>';
            inVoice += '<td colspan="6" style="text-align: center; font-style: italic; font-weight: bold;">Cảm ơn quý khách và hẹn gặp lại!</td>';

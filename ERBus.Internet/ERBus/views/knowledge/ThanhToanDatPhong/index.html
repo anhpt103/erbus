@@ -35,8 +35,8 @@
                                 </a>
                             </li>
                             <li class="has-sub">
-                                <a class="js-arrow" ng-repeat="item in listBookingRoom | orderBy:'TENPHONG':false track by $index " ng-click="dischargeRoom(item);" ng-class="{selected: item.MA_DATPHONG === selectedMaDatPhong}">
-                                    <i class="{{item.ICON}}"></i>{{item.TENPHONG}} - Tầng {{item.TANG}}
+                                <a class="js-arrow" ng-repeat="item in ::listBookingRoom | orderBy:'TENPHONG':false track by $index " ng-click="dischargeRoom(item);" ng-class="{selected: item.MA_DATPHONG === selectedMaDatPhong}">
+                                    <i class="{{::item.ICON}}"></i>{{::item.TENPHONG}} - Tầng {{::item.TANG}}
                                 </a>
                             </li>
                         </ul>
@@ -142,9 +142,9 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td><input type="text" ng-model="item.GIABANLE_VAT" ng-change="changeGiaBanLeVat(item);" ng-readonly="!item.IS_EDIT_VALUE" awnum="number"></td>
+                                            <td><input type="text" ng-model="item.GIABANLE_VAT" ng-change="changeGiaBanLeVat(item);" ng-readonly="!item.IS_EDIT_VALUE" awnum="number-utc"></td>
                                             <td>
-                                                <input ng-if="!item.IS_HOUR_SINGLE_MERCHANDISE" awnum="number" type="text" enter style="height: 30.5px;text-align: right;width: 100%;" ng-model="item.THANHTIEN" readonly>
+                                                <input ng-if="!item.IS_HOUR_SINGLE_MERCHANDISE" awnum="number-utc" type="text" enter style="height: 30.5px;text-align: right;width: 100%;" ng-model="item.THANHTIEN" readonly>
                                                 <div ng-if="item.IS_HOUR_SINGLE_MERCHANDISE" ng-bind-html="item.textThanhTien" readonly></div>
                                             </td>
                                         </tr>
