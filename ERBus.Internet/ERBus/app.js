@@ -544,10 +544,12 @@ define([
     });
 
     //Auth - check role
-    app.service('securityService', ['$http', 'configService', function ($http, configService) {
+    app.service('securityService', ['$http', 'configService', 'userService', function ($http, configService, userService) {
+        var currentUser = userService.GetCurrentUser();
+        var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
         var result = {
             getAccessList: function (machucnang) {
-                return $http.get(configService.rootUrlWebApi + '/Authorize/Access/GetAccesslist/' + machucnang);
+                return $http.get(configService.rootUrlWebApi + '/Authorize/Access/GetAccesslist/' + machucnang + '/' + currentUser.userName + '/' + unitCodeParam);
             }
         };
         return result;

@@ -15,8 +15,8 @@ namespace ERBus.Api.Controllers.Authorize
     public class NguoiDungNhomQuyenController : ApiController
     {
         [HttpGet]
-        [Route("GetNhomQuyenByUsername/{userName}")]
-        public IHttpActionResult GetNhomQuyenByUsername(string userName)
+        [Route("GetNhomQuyenByUsername/{userName}/{unitCode}")]
+        public IHttpActionResult GetNhomQuyenByUsername(string userName, string unitCode)
         {
             var result = new TransferObj<List<NguoiDungNhomQuyenViewModel.ViewModel>>();
             List<NguoiDungNhomQuyenViewModel.ViewModel> listNguoiDungNhom = new List<NguoiDungNhomQuyenViewModel.ViewModel>();
@@ -44,8 +44,12 @@ namespace ERBus.Api.Controllers.Authorize
                                                                     NGUOIDUNG_NHOMQUYEN NN
                                                                     INNER JOIN NHOMQUYEN NQ ON NN.MANHOMQUYEN = NQ.MANHOMQUYEN
                                                                 WHERE
-                                                                    NN.USERNAME = :USERNAME");
+                                                                    NN.USERNAME = :USERNAME
+                                                                AND NN.UNITCODE = NQ.UNITCODE 
+                                                                AND NN.UNITCODE = :UNITCODE
+                                                                ");
                                 command.Parameters.Add(@"USERNAME", OracleDbType.NVarchar2, 50).Value = userName;
+                                command.Parameters.Add(@"UNITCODE", OracleDbType.NVarchar2, 10).Value = unitCode;
                                 OracleDataReader dataReader = command.ExecuteReader();
                                 if (dataReader.HasRows)
                                 {
@@ -142,10 +146,11 @@ namespace ERBus.Api.Controllers.Authorize
                                     foreach (var item in model.LstAdd)
                                     {
                                         command.Parameters.Clear();
-                                        command.CommandText = string.Format(@"INSERT INTO NGUOIDUNG_NHOMQUYEN(ID,USERNAME,MANHOMQUYEN) VALUES (:ID,:USERNAME,:MANHOMQUYEN)");
+                                        command.CommandText = string.Format(@"INSERT INTO NGUOIDUNG_NHOMQUYEN(ID,USERNAME,MANHOMQUYEN,UNITCODE) VALUES (:ID,:USERNAME,:MANHOMQUYEN,:UNITCODE)");
                                         command.Parameters.Add(@"ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid().ToString();
                                         command.Parameters.Add(@"USERNAME", OracleDbType.NVarchar2, 20).Value = item.USERNAME.Trim();
                                         command.Parameters.Add(@"MANHOMQUYEN", OracleDbType.NVarchar2, 50).Value = item.MANHOMQUYEN.Trim();
+                                        command.Parameters.Add(@"UNITCODE", OracleDbType.NVarchar2, 10).Value = model.UNITCODE;
                                         command.ExecuteNonQuery();
                                     }
                                 }

@@ -32,10 +32,10 @@ namespace ERBus.Service.Authorize.Menu
                         {
                             var pUserName = new OracleParameter("P_USERNAME", OracleDbType.Varchar2, username, ParameterDirection.Input);
                             var pUnitCode = new OracleParameter("P_UNITCODE", OracleDbType.Varchar2, unitCode, ParameterDirection.Input);
-                            var pReturnData = new OracleParameter("RETURN_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                            var str = "BEGIN TBNETERP.GET_MENU(:P_USERNAME,:P_UNITCODE, :RETURN_DATA); END;";
-                            ctx.Database.ExecuteSqlCommand(str, pUserName, pUnitCode, pReturnData);
-                            OracleDataReader reader = ((OracleRefCursor)pReturnData.Value).GetDataReader();
+                            var pCUR = new OracleParameter("CUR", OracleDbType.RefCursor, ParameterDirection.Output);
+                            var str = "BEGIN ERBUS.GET_MENU(:P_USERNAME,:P_UNITCODE, :CUR); END;";
+                            ctx.Database.ExecuteSqlCommand(str, pUserName, pUnitCode, pCUR);
+                            OracleDataReader reader = ((OracleRefCursor)pCUR.Value).GetDataReader();
                             while (reader.Read())
                             {
                                 var item = new MENU()
@@ -50,7 +50,7 @@ namespace ERBus.Service.Authorize.Menu
                             }
                             return result;
                         }
-                        catch
+                        catch(Exception ex)
                         {
                             throw new Exception("Xảy ra lỗi trong khi chạy Store_Procude. Tự động rollback!");
                         }

@@ -19,11 +19,12 @@ namespace ERBus.Service.Service
 
         TEntity Update(TEntity instance,
             Action<TEntity, TEntity> updateAction = null,
-            Func<TEntity, TEntity, bool> updateCondition = null);
+            Func<TEntity, TEntity, bool> updateCondition = null, bool withUnitCode = true);
 
         TEntity Delete(string id);
         TEntity AddUnit(TEntity instance);
         string GetCurrentUnitCode();
+        string GetParentUnitCode(string unitCode);
         string PhysicalPathTemplate();
         string PhysicalPathUploadFile();
         string PhysicalPathUploadLoaiPhong();

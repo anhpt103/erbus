@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap'], function () {
+﻿define([], function () {
     'use strict';
-    var app = angular.module('nhomQuyenModule', ['ui.bootstrap']);
+    var app = angular.module('nhomQuyenModule', []);
     app.factory('nhomQuyenService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Authorize/NhomQuyen';
         var result = {
@@ -58,7 +58,7 @@
             };
             function filterData() {
                 $scope.isLoading = true;
-                if ($scope.accessList.VIEW) {
+                if ($scope.accessList.XEM) {
                     var postdata = { paged: $scope.paged, filtered: $scope.filtered };
                     service.postQuery(postdata).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
@@ -77,7 +77,7 @@
                 securityService.getAccessList('NhomQuyen').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'

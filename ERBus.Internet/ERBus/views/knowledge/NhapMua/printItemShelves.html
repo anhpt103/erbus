@@ -76,7 +76,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in data | orderBy:sortType:sortReverse">
+                            <tr ng-repeat="item in data | orderBy:sortType:sortReverse track by $index">
                                 <td>
                                     <div class="form-group">
                                         <input enter type="text" id="_stt" name="_stt" ng-value="$index + 1" class="form-control">

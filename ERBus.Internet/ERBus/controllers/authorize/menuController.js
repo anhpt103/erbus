@@ -4,8 +4,8 @@
     app.factory('menuService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Authorize/Menu';
         var result = {
-            getMenu: function (data) {
-                return $http.get(serviceUrl + '/GetMenu/' + data);
+            getMenu: function (userName, unitCode) {
+                return $http.get(serviceUrl + '/GetMenu/' + userName + '/' + unitCode);
             },
             getAllNhomQuyenMenu: function (params) {
                 return $http.get(serviceUrl + '/GetAllNhomQuyenMenu/' + params);

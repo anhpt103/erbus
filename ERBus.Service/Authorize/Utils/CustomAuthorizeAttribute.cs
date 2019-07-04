@@ -31,8 +31,8 @@ namespace ERBus.Service.Authorize.Utils
             {
                 var currentUser = (HttpContext.Current.User as ClaimsPrincipal);
                 var unit = currentUser.Claims.FirstOrDefault(x => x.Type == "unitCode");
-                if (unit != null)
-                    _unitCode = unit.Value;
+                var parentUnitCode = currentUser.Claims.FirstOrDefault(x => x.Type == "parentUnitCode");
+                _unitCode = string.IsNullOrEmpty(parentUnitCode != null ? parentUnitCode.Value : "") ? (unit != null ? unit.Value : "") : (parentUnitCode != null ? parentUnitCode.Value : "");
             }
             string username = actionContext.RequestContext.Principal.Identity.Name;
             var authorize = base.IsAuthorized(actionContext);
@@ -44,19 +44,19 @@ namespace ERBus.Service.Authorize.Utils
                 switch (Method)
                 {
                     case "XEM":
-                        if (roleState.VIEW) check = true;
-                        break;
-                    case "SUA":
-                        if (roleState.EDIT) check = true;
+                        if (roleState.XEM) check = true;
                         break;
                     case "THEM":
-                        if (roleState.ADD) check = true;
+                        if (roleState.THEM) check = true;
+                        break;
+                    case "SUA":
+                        if (roleState.SUA) check = true;
                         break;
                     case "XOA":
-                        if (roleState.DELETE) check = true;
+                        if (roleState.XOA) check = true;
                         break;
                     case "DUYET":
-                        if (roleState.APPROVAL) check = true;
+                        if (roleState.DUYET) check = true;
                         break;
                 }
             }
@@ -72,12 +72,12 @@ namespace ERBus.Service.Authorize.Utils
             {
                 roleState = new RoleState()
                 {
-                    APPROVAL = true,
-                    DELETE = true,
-                    ADD = true,
+                    XEM = true,
+                    THEM = true,
+                    SUA = true,
+                    XOA = true,
+                    DUYET = true,
                     STATE = "all",
-                    EDIT = true,
-                    VIEW = true
                 };
             }
             else
@@ -92,10 +92,10 @@ namespace ERBus.Service.Authorize.Utils
                         {
                             command.CommandType = CommandType.Text;
                             command.CommandText =
-                                @"SELECT XEM,THEM,SUA,XOA,DUYET FROM AU_NHOMQUYEN_CHUCNANG WHERE UNITCODE='" + unitCode + "' AND MACHUCNANG='" + machucnang +
-                                "' AND MANHOMQUYEN IN (SELECT MANHOMQUYEN FROM AU_NGUOIDUNG_NHOMQUYEN WHERE UNITCODE='" + unitCode + "' AND USERNAME='" +
-                                username + "') UNION SELECT AU_NGUOIDUNG_QUYEN.XEM,AU_NGUOIDUNG_QUYEN.THEM,AU_NGUOIDUNG_QUYEN.SUA,AU_NGUOIDUNG_QUYEN.XOA,AU_NGUOIDUNG_QUYEN.DUYET " +
-                                "FROM AU_NGUOIDUNG_QUYEN WHERE AU_NGUOIDUNG_QUYEN.UNITCODE='" + unitCode + "' AND AU_NGUOIDUNG_QUYEN.MACHUCNANG='" + machucnang + "' AND AU_NGUOIDUNG_QUYEN.USERNAME='" + username + "'";
+                                @"SELECT XEM,THEM,SUA,XOA,DUYET FROM NHOMQUYEN_MENU WHERE UNITCODE LIKE '" + unitCode + "%' AND MA_MENU='" + machucnang +
+                                "' AND MANHOMQUYEN IN (SELECT MANHOMQUYEN FROM NGUOIDUNG_NHOMQUYEN WHERE UNITCODE LIKE '" + unitCode + "%' AND USERNAME='" +
+                                username + "') UNION SELECT NGUOIDUNG_MENU.XEM,NGUOIDUNG_MENU.THEM,NGUOIDUNG_MENU.SUA,NGUOIDUNG_MENU.XOA,NGUOIDUNG_MENU.DUYET " +
+                                "FROM NGUOIDUNG_MENU WHERE NGUOIDUNG_MENU.UNITCODE LIKE '" + unitCode + "%' AND NGUOIDUNG_MENU.MA_MENU='" + machucnang + "' AND NGUOIDUNG_MENU.USERNAME='" + username + "'";
                             using (OracleDataReader oracleDataReader = command.ExecuteReader())
                             {
                                 if (!oracleDataReader.HasRows)
@@ -103,11 +103,11 @@ namespace ERBus.Service.Authorize.Utils
                                     roleState = new RoleState()
                                     {
                                         STATE = string.Empty,
-                                        VIEW = false,
-                                        APPROVAL = false,
-                                        DELETE = false,
-                                        ADD = false,
-                                        EDIT = false
+                                        XEM = false,
+                                        THEM = false,
+                                        SUA = false,
+                                        XOA = false,
+                                        DUYET = false,
                                     };
                                 }
                                 else
@@ -118,27 +118,27 @@ namespace ERBus.Service.Authorize.Utils
                                         int objXem = Int32.Parse(oracleDataReader["XEM"].ToString());
                                         if (objXem == 1)
                                         {
-                                            roleState.VIEW = true;
+                                            roleState.XEM = true;
                                         }
                                         int objThem = Int32.Parse(oracleDataReader["THEM"].ToString());
                                         if (objThem == 1)
                                         {
-                                            roleState.ADD = true;
+                                            roleState.THEM = true;
                                         }
                                         int objSua = Int32.Parse(oracleDataReader["SUA"].ToString());
                                         if (objSua == 1)
                                         {
-                                            roleState.EDIT = true;
+                                            roleState.SUA = true;
                                         }
                                         int objXoa = Int32.Parse(oracleDataReader["XOA"].ToString());
                                         if (objXoa == 1)
                                         {
-                                            roleState.DELETE = true;
+                                            roleState.XOA = true;
                                         }
                                         int objDuyet = Int32.Parse(oracleDataReader["DUYET"].ToString());
                                         if (objDuyet == 1)
                                         {
-                                            roleState.APPROVAL = true;
+                                            roleState.DUYET = true;
                                         }
                                     }
                                     MemoryCacheHelper.Add(unitCode + "|" + machucnang + "|" + username, roleState,
@@ -151,7 +151,6 @@ namespace ERBus.Service.Authorize.Utils
                 else
                 {
                     roleState = (RoleState)cacheData;
-
                 }
             }
             return roleState;

@@ -29,12 +29,12 @@ namespace ERBus.Api.Controllers.Authorize
 
         [Route("GetAllData")]
         [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "ThongTinCuaHang")]
+        [CustomAuthorize(Method = "XEM", State = "CuaHang")]
         public IHttpActionResult GetAllData()
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            result.Data = _service.Repository.DbSet.Where(x => x.MA_CUAHANG.Equals(unitCode)).OrderBy(x => x.MA_CUAHANG).Select(x => new ChoiceObject { VALUE = x.MA_CUAHANG, TEXT = x.MA_CUAHANG + " | " + x.TEN_CUAHANG, DESCRIPTION = x.TEN_CUAHANG, EXTEND_VALUE = x.DIACHI, ID = x.ID }).ToList();
+            result.Data = _service.Repository.DbSet.Where(x => x.MA_CUAHANG.StartsWith(unitCode)).OrderBy(x => x.MA_CUAHANG).Select(x => new ChoiceObject { VALUE = x.MA_CUAHANG, TEXT = x.MA_CUAHANG + " | " + x.TEN_CUAHANG, DESCRIPTION = x.TEN_CUAHANG, EXTEND_VALUE = x.DIACHI, ID = x.ID }).ToList();
             if (result.Data.Count > 0)
             {
                 result.Status = true;
@@ -46,9 +46,63 @@ namespace ERBus.Api.Controllers.Authorize
             return Ok(result);
         }
 
+        [Route("GetAllChildren/{maCuaHangCha}")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "CuaHang")]
+        public IHttpActionResult GetAllChildren(string maCuaHangCha)
+        {
+            var result = new TransferObj<List<CUAHANG>>();
+            if (!string.IsNullOrEmpty(maCuaHangCha))
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+                result.Data = _service.Repository.DbSet.Where(x => x.MA_CUAHANG_CHA.Equals(maCuaHangCha)).OrderBy(x => x.MA_CUAHANG).ToList();
+                if (result.Data.Count > 0)
+                {
+                    result.Status = true;
+                }
+                else
+                {
+                    result.Status = false;
+                }
+            }
+            else
+            {
+                result.Data = null;
+                result.Status = false;
+            }
+
+            return Ok(result);
+        }
+
+        [Route("GetAllDataByUniCode/{unitCode}")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "CuaHang")]
+        public IHttpActionResult GetAllDataByUniCode(string unitCode)
+        {
+            var result = new TransferObj<List<ChoiceObject>>();
+            if (!string.IsNullOrEmpty(unitCode))
+            {
+                result.Data = _service.Repository.DbSet.Where(x => x.UNITCODE.StartsWith(unitCode)).OrderBy(x => x.MA_CUAHANG).Select(x => new ChoiceObject { VALUE = x.MA_CUAHANG, TEXT = x.MA_CUAHANG + " | " + x.TEN_CUAHANG, DESCRIPTION = x.TEN_CUAHANG, EXTEND_VALUE = x.DIACHI, ID = x.ID }).ToList();
+                if (result.Data.Count > 0)
+                {
+                    result.Status = true;
+                }
+                else
+                {
+                    result.Status = false;
+                }
+            }
+            else
+            {
+                result.Data = null;
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+
         [Route("PostQuery")]
         [HttpPost]
-        [CustomAuthorize(Method = "XEM", State = "ThongTinCuaHang")]
+        [CustomAuthorize(Method = "XEM", State = "CuaHang")]
         public IHttpActionResult PostQuery(JObject jsonData)
         {
             var result = new TransferObj();
@@ -99,8 +153,17 @@ namespace ERBus.Api.Controllers.Authorize
             return _service.BuildCode();
         }
 
+        [Route("BuildNewCodeChildren/{maCuaHang}")]
+        [HttpGet]
+        public string BuildNewCodeChildren(string maCuaHang)
+        {
+            return _service.BuildCodeChildren(maCuaHang);
+        }
+
+        [Route("Post")]
+        [HttpPost]
         [ResponseType(typeof(CUAHANG))]
-        [CustomAuthorize(Method = "THEM", State = "ThongTinCuaHang")]
+        [CustomAuthorize(Method = "THEM", State = "CuaHang")]
         public async Task<IHttpActionResult> Post (CuaHangViewModel.Dto instance)
         {
             var result = new TransferObj<CUAHANG>();
@@ -117,7 +180,7 @@ namespace ERBus.Api.Controllers.Authorize
                 if (exist != null)
                 {
                     result.Status = false;
-                    result.Message = "Đã tồn tại mã kệ hàng này";
+                    result.Message = "Đã tồn tại mã cửa hàng này";
                     return Ok(result);
                 }
             }
@@ -149,56 +212,86 @@ namespace ERBus.Api.Controllers.Authorize
             return Ok(result);
         }
 
-
-        [ResponseType(typeof(void))]
-        [CustomAuthorize(Method = "SUA", State = "ThongTinCuaHang")]
-        public async Task<IHttpActionResult> Put (string id, CUAHANG instance)
+        [Route("Update")]
+        [HttpPost]
+        [CustomAuthorize(Method = "SUA", State = "CuaHang")]
+        public async Task<IHttpActionResult> Update(CuaHangViewModel.PARAMOBJ_UPDATE paramObj)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var result = new TransferObj();
+            if(paramObj.LST_EDIT.Count > 0)
+            {
+                foreach(var recordEdit in paramObj.LST_EDIT)
+                {
+                    var recordId = _service.Repository.DbSet.FirstOrDefault(x => x.ID.Equals(recordEdit.ID));
+                    if (recordId == null)
+                    {
+                        result.Status = false;
+                        result.Data = false;
+                        result.Message = "Mã ID không hợp lệ";
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        recordId.MA_CUAHANG = recordEdit.MA_CUAHANG;
+                        recordId.MA_CUAHANG_CHA = recordEdit.MA_CUAHANG_CHA;
+                        recordId.TEN_CUAHANG = recordEdit.TEN_CUAHANG;
+                        recordId.SODIENTHOAI = recordEdit.SODIENTHOAI;
+                        recordId.DIACHI = recordEdit.DIACHI;
+                        recordId.UNITCODE = recordEdit.UNITCODE;
+                        recordId.ObjectState = ObjectState.Modified;
+                    }
+                    _service.Update(recordId, null, null, false);
+                }
+            }
+            if (paramObj.LST_DELETE.Count > 0)
+            {
+                foreach (var recordDelete in paramObj.LST_DELETE)
+                {
+                    var recordId = _service.Repository.DbSet.FirstOrDefault(x => x.ID.Equals(recordDelete.ID));
+                    if (recordId == null)
+                    {
+                        result.Status = false;
+                        result.Data = false;
+                        result.Message = "Mã ID không hợp lệ";
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        _service.Delete(recordId.ID);
+                    }
+                }
+            }
 
-            if (id != instance.ID)
+            if (paramObj.RECORD_ADD != null && !string.IsNullOrEmpty(paramObj.RECORD_ADD.MA_CUAHANG) && !string.IsNullOrEmpty(paramObj.RECORD_ADD.MA_CUAHANG_CHA))
             {
-                return BadRequest();
+                paramObj.RECORD_ADD.MA_CUAHANG = _service.SaveCodeChildren(paramObj.RECORD_ADD.MA_CUAHANG_CHA);
+                var data = Mapper.Map<CuaHangViewModel.Dto, CUAHANG>(paramObj.RECORD_ADD);
+                data.UNITCODE = data.MA_CUAHANG;
+                _service.Insert(data, false);
             }
-            var result = new TransferObj<CUAHANG>();
-            if (id != instance.ID)
+
+            int upd = await _service.UnitOfWork.SaveAsync();
+            if (upd > 0)
+            {
+                result.Status = true;
+                result.Data = true;
+                result.Message = "Cập nhật thành công";
+            }
+            else
             {
                 result.Status = false;
-                result.Message = "Mã ID không hợp lệ";
-                return Ok(result);
-            }
-            try
-            {
-                var item = _service.Update(instance);
-                int upd = await _service.UnitOfWork.SaveAsync();
-                if (upd > 0)
-                {
-                    result.Status = true;
-                    result.Data = item;
-                    result.Message = "Cập nhật thành công";
-                }
-                else
-                {
-                    result.Status = false;
-                    result.Data = null;
-                    result.Message = "Thao tác không thành công";
-                }
-            }
-            catch (Exception e)
-            {
-                result.Data = null;
-                result.Status = false;
-                result.Message = e.Message;
+                result.Data = false;
+                result.Message = "Thao tác không thành công";
             }
             return Ok(result);
         }
 
-
         [ResponseType(typeof(CUAHANG))]
-        [CustomAuthorize(Method = "XOA", State = "ThongTinCuaHang")]
+        [CustomAuthorize(Method = "XOA", State = "CuaHang")]
         public async Task<IHttpActionResult> Delete(string id)
         {
             var result = new TransferObj<bool>();

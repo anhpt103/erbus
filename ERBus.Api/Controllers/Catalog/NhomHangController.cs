@@ -73,7 +73,7 @@ namespace ERBus.Api.Controllers.Catalog
             var postData = ((dynamic)jsonData);
             var filtered = ((JObject)postData.filtered).ToObject<FilterObj<NhomHangViewModel.Search>>();
             var paged = ((JObject)postData.paged).ToObject<PagedObj<NHOMHANG>>();
-            var unitCode = _service.GetCurrentUnitCode();
+            var unitCode = string.IsNullOrEmpty(filtered.PARENT_UNITCODE) ? filtered.UNITCODE : filtered.PARENT_UNITCODE;
             try
             {
                 PagedObj<NHOMHANG> tempData = _service.QueryPageNhomHang(_service.GetConnectionString(), paged, filtered.Summary, unitCode);

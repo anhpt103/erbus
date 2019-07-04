@@ -169,13 +169,13 @@
             function filterData() {
                 $scope.data = [];
                 $scope.isLoading = true;
-                if ($scope.accessList.VIEW) {
+                if ($scope.accessList.XEM) {
                     var postdata = { paged: $scope.paged, filtered: $scope.filtered };
                     service.postQuery(postdata).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
                             $scope.isLoading = false;
                             $scope.data = successRes.data.Data.Data;
-                            if ($scope.listThamSo && $scope.listThamSo.length > 0) {
+                            if ($scope.listThamSo && $scope.listThamSo.length > 0 && userService.CurrentUser.parentUnitCode === userService.CurrentUser.unitCode) {
                                 angular.forEach($scope.listThamSo, function (v, k) {
                                     if (successRes.data.Data.Data.length > 0) {
                                         var checkExist = $filter('filter')(successRes.data.Data.Data, { MA_THAMSO: v.MA_THAMSO }, true)
@@ -201,7 +201,7 @@
                 securityService.getAccessList('ThamSoHeThong').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'

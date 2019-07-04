@@ -15,11 +15,10 @@ namespace ERBus.Api.Controllers.Authorize
             _service = service;
         }
         [HttpGet]
-        [Route("GetAccesslist/{machucnang}")]
-        public RoleState GetAccesslist(string machucnang)
+        [Route("GetAccesslist/{machucnang}/{userName}/{unitCode}")]
+        public RoleState GetAccesslist(string machucnang, string userName, string unitCode)
         {
-            var _unitCode = _service.GetCurrentUnitCode();
-            RoleState roleState = _service.GetRoleStateByMaChucNang(_unitCode, RequestContext.Principal.Identity.Name, machucnang);
+            RoleState roleState = _service.GetRoleStateByMaChucNang(unitCode, userName, machucnang);
             return roleState;
         }
     }

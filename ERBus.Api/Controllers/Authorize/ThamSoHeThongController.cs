@@ -29,7 +29,7 @@ namespace ERBus.Api.Controllers.Authorize
         }
         [Route("GetDataByMaThamSo")]
         [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "ThamSoHeThong")]
+        //[CustomAuthorize(Method = "XEM", State = "ThamSoHeThong")]
         public IHttpActionResult GetDataByMaThamSo()
         {
             var result = new TransferObj<List<THAMSOHETHONG>>();

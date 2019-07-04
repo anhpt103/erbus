@@ -77,7 +77,7 @@
                                     <tr ng-show="isLoading">
                                         <td colspan="7"><my-loading></my-loading></td>
                                     </tr>
-                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse" ng-dblclick="detail(item)">
+                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse track by $index" ng-dblclick="detail(item)">
                                         <td>{{$index + 1}}</td>
                                         <td>{{item.MA_GIAODICH}}</td>
                                         <td>{{item.LOAI_GIAODICH}}</td>
@@ -85,10 +85,10 @@
                                         <td>{{item.TIENKHACH_TRA | number}}</td>
                                         <td>{{item.TIEN_TRALAI_KHACH | number}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" ng-if="accessList.VIEW" ng-click="detail(item);">
+                                            <button type="button" class="btn btn-primary btn-sm" ng-if="accessList.XEM" ng-click="detail(item);">
                                                 <i class="fa fa-info-circle"></i>&nbsp; {{config.label.btnDetail}}
                                             </button>
-                                            <button type="button" class="btn btn-success btn-sm" ng-if="accessList.EDIT" ng-click="edit(item);">
+                                            <button type="button" class="btn btn-success btn-sm" ng-if="accessList.SUA" ng-click="edit(item);">
                                                 <i class="fa fa-edit"></i>&nbsp; {{config.label.btnEdit}}
                                             </button>
                                         </td>

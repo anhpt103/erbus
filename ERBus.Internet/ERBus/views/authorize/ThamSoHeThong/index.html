@@ -70,7 +70,7 @@
                                     <tr ng-show="isLoading">
                                         <td colspan="5"><my-loading></my-loading></td>
                                     </tr>
-                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse" ng-dblclick="detail(item)">
+                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse track by $index" ng-dblclick="detail(item)">
                                         <td>{{$index + 1}}</td>
                                         <td>{{item.MA_THAMSO}}</td>
                                         <td>{{item.TEN_THAMSO}}</td>

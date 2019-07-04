@@ -62,7 +62,22 @@ namespace ERBus.Service.Authorize.CuaHang
             public string MA_CUAHANG { get; set; }
             public string TEN_CUAHANG { get; set; }
             public string DIACHI { get; set; }
+            public string SODIENTHOAI { get; set; }
             public string MA_CUAHANG_CHA { get; set; }
+            public string UNITCODE { get; set; }
+        }
+
+        public class PARAMOBJ_UPDATE
+        {
+            public PARAMOBJ_UPDATE()
+            {
+                LST_EDIT = new List<Dto>();
+                LST_DELETE = new List<Dto>();
+                RECORD_ADD = new Dto();
+            }
+            public List<Dto> LST_EDIT { get; set; }
+            public List<Dto> LST_DELETE { get; set; }
+            public Dto RECORD_ADD { get; set; }
         }
     }
 }

@@ -91,7 +91,7 @@ namespace ERBus.Service.Service
 
         public virtual TEntity Update(TEntity instance,
            Action<TEntity, TEntity> updateAction = null,
-           Func<TEntity, TEntity, bool> updateCondition = null)
+           Func<TEntity, TEntity, bool> updateCondition = null, bool withUnitCode = true)
         {
             Mapper.CreateMap<TEntity, TEntity>();
             var entity = Find(instance, false);
@@ -109,7 +109,7 @@ namespace ERBus.Service.Service
                     var currentUser = (HttpContext.Current.User as ClaimsPrincipal);
                     entity.I_UPDATE_DATE = DateTime.Now;
                     entity.I_UPDATE_BY = currentUser.Identity.Name;
-                    entity.UNITCODE = GetCurrentUnitCode();
+                    if(withUnitCode) entity.UNITCODE = GetCurrentUnitCode();
                 }
                 else
                 {
@@ -142,6 +142,13 @@ namespace ERBus.Service.Service
                 var unit = currentUser.Claims.FirstOrDefault(x => x.Type == "unitCode");
                 if (unit != null) return unit.Value;
             }
+            return "";
+        }
+
+        public virtual string GetParentUnitCode(string unitCode)
+        {
+            var parent = UnitOfWork.Repository<CUAHANG>().DbSet.FirstOrDefault(x => x.MA_CUAHANG.Equals(unitCode));
+            if (parent != null) return parent.MA_CUAHANG_CHA;
             return "";
         }
 

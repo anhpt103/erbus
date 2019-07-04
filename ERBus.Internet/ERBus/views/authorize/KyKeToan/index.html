@@ -68,7 +68,7 @@
                                     <tr ng-show="isLoading">
                                         <td colspan="5"><my-loading></my-loading></td>
                                     </tr>
-                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse" ng-dblclick="detail(item)">
+                                    <tr ng-repeat="item in data | orderBy:sortType:sortReverse track by $index" ng-dblclick="detail(item)">
                                         <td>{{item.KY}}</td>
                                         <td>{{item.TENKY}}</td>
                                         <td>{{config.moment(item.TUNGAY).format('DD/MM/YYYY')}}</td>
@@ -86,13 +86,13 @@
                                             </button>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" ng-if="accessList.VIEW" ng-click="detail(item);">
+                                            <button type="button" class="btn btn-primary btn-sm" ng-if="accessList.XEM" ng-click="detail(item);">
                                                 <i class="fa fa-info-circle"></i>&nbsp; {{config.label.btnDetail}}
                                             </button>
-                                            <button type="button" class="btn btn-info btn-sm" ng-if="accessList.APPROVAL && item.TRANGTHAI === 10" ng-click="edit(item);">
+                                            <button type="button" class="btn btn-info btn-sm" ng-if="accessList.DUYET && item.TRANGTHAI === 10" ng-click="edit(item);">
                                                 <i class="fa fa-info-circle"></i>&nbsp; {{config.label.btnEdit}}
                                             </button>
-                                            <button type="button" class="btn btn-success btn-sm" ng-if="accessList.APPROVAL && item.TRANGTHAI === 0" ng-click="closingOut(item);">
+                                            <button type="button" class="btn btn-success btn-sm" ng-if="accessList.DUYET && item.TRANGTHAI === 0" ng-click="closingOut(item);">
                                                 <i class="fa fa-edit"></i>&nbsp; {{config.label.btnClosing}}
                                             </button>
                                         </td>

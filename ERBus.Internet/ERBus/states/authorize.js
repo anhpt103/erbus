@@ -46,7 +46,7 @@
             moduleUrl: controlUrl + "kyKeToanController.js"
         },
         {
-            name: 'ThongTinCuaHang',
+            name: 'CuaHang',
             url: '/store',
             parent: 'layout',
             abstract: false,
@@ -60,7 +60,7 @@
         },
         {
             name: 'NhomQuyen',
-            url: '/group',
+            url: '/groupAu',
             parent: 'layout',
             abstract: false,
             views: {

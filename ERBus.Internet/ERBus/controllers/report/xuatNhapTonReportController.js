@@ -21,8 +21,8 @@
             $scope.title = function () { return 'Báo cáo xuất nhập tồn' };
             $scope.target = {
                 MA_BAOCAO: '',
-                MA_CUHANG: '',
-                TEN_CUHANG: '',
+                MA_CUAHANG: currentUser.unitCode,
+                TEN_CUAHANG: '',
                 UNITCODE: '',
                 USERNAME: '',
                 FULLNAME: ''
@@ -31,8 +31,6 @@
             $scope.target.DIEUKIEN_NHOM = 'KHOHANG';
             //end
             $scope.target.MA_BAOCAO = "BAOCAO_XUATNHAPTON";
-            $scope.target.MA_CUHANG = currentUser.unitCode;
-           
             $scope.target.UNITCODE = currentUser.unitCode;
             $scope.target.USERNAME = currentUser.userName;
             $scope.target.FULLNAME = currentUser.fullName;
@@ -44,7 +42,7 @@
                 securityService.getAccessList('BaoCaoXuatNhapTon').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'
@@ -178,12 +176,12 @@
             function loadDataCuaHang() {
                 $scope.cuaHang = [];
                 if (!tempDataService.tempData('cuaHang')) {
-                    cuaHangService.getAllData().then(function (successRes) {
+                    cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
                             tempDataService.putTempData('cuaHang', successRes.data.Data);
                             $scope.cuaHang = successRes.data.Data;
                             if ($scope.cuaHang && $scope.cuaHang.length === 1) {
-                                $scope.target.TEN_CUHANG = $scope.cuaHang[0].DESCRIPTION;
+                                $scope.target.TEN_CUAHANG = $scope.cuaHang[0].DESCRIPTION;
                             }
                         }
                     }, function (errorRes) {
@@ -192,10 +190,10 @@
                 } else {
                     $scope.cuaHang = tempDataService.tempData('cuaHang');
                     if ($scope.cuaHang && $scope.cuaHang.length === 1) {
-                        $scope.target.TEN_CUHANG = $scope.cuaHang[0].DESCRIPTION;
+                        $scope.target.TEN_CUAHANG = $scope.cuaHang[0].DESCRIPTION;
                     }
                 }
-                
+
             };
             loadDataCuaHang();
             //end
@@ -420,7 +418,7 @@
             //end 
 
             $scope.report = function () {
-                if (!$scope.target.TEN_CUHANG || $scope.target.TEN_CUHANG == "") {
+                if (!$scope.target.TEN_CUAHANG || $scope.target.TEN_CUAHANG == "") {
                     Lobibox.notify('error', {
                         title: 'Thiếu dữ liệu',
                         msg: 'Thiếu thông tin cửa hàng',
@@ -463,7 +461,7 @@
             };
 
             $scope.reportDetail = function () {
-                if (!$scope.target.TEN_CUHANG || $scope.target.TEN_CUHANG == "") {
+                if (!$scope.target.TEN_CUAHANG || $scope.target.TEN_CUAHANG == "") {
                     Lobibox.notify('error', {
                         title: 'Thiếu dữ liệu',
                         msg: 'Thiếu thông tin cửa hàng',

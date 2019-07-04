@@ -93,7 +93,7 @@ namespace ERBus.Api.Controllers.Catalog
             var postData = ((dynamic)jsonData);
             var filtered = ((JObject)postData.filtered).ToObject<FilterObj<LoaiPhongViewModel.Search>>();
             var paged = ((JObject)postData.paged).ToObject<PagedObj<LOAIPHONG>>();
-            var unitCode = _service.GetCurrentUnitCode();
+            var unitCode = string.IsNullOrEmpty(filtered.PARENT_UNITCODE) ? filtered.UNITCODE : filtered.PARENT_UNITCODE;
             var query = new QueryBuilder
             {
                 Take = paged.ItemsPerPage,

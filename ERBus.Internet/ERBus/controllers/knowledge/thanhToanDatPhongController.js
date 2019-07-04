@@ -121,7 +121,7 @@
                 securityService.getAccessList('ThanhToanDatPhong').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'

@@ -1,6 +1,8 @@
-﻿define(['angular'], function () {
-    var app = angular.module('configModule', []);
-    app.factory('configService', function () {
+﻿define(['angular', 'controllers/authorize/authController'], function () {
+    'use strict';
+    var app = angular.module('configModule', ['authModule']);
+    app.factory('configService', ['userService', function (userService) {
+        var currentUser = userService.GetCurrentUser();
         var hostname = window.location.hostname;
         var port = window.location.port;
         var rootUrl = 'http://' + hostname + ':' + port;
@@ -36,6 +38,8 @@
             advanceData: {},
             orderBy: '',
             orderType: 'ASC',
+            UNITCODE: currentUser.unitCode,
+            PARENT_UNITCODE: currentUser.parentUnitCode
         };
         result.saveExcel = function (data, fileName) {
             var fileName = fileName + ".xls"
@@ -123,7 +127,7 @@
         };
         result.label = label;
         return result;
-    }
+    }]
     );
     return app;
 });

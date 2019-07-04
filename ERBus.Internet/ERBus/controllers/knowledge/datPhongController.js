@@ -113,7 +113,7 @@
             };
             
             function filterData() {
-                if ($scope.accessList.VIEW) {
+                if ($scope.accessList.XEM) {
                     phongService.getStatusAllRoom().then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status) {
                             $scope.data = successRes.data.Data;
@@ -132,7 +132,7 @@
                 securityService.getAccessList('DatPhong').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'

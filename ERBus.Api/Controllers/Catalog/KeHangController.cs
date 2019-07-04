@@ -29,7 +29,6 @@ namespace ERBus.Api.Controllers.Catalog
 
         [Route("GetAllData")]
         [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "KeHang")]
         public IHttpActionResult GetAllData()
         {
             var result = new TransferObj<List<ChoiceObject>>();

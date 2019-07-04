@@ -23,5 +23,6 @@ namespace ERBus.Entity.Database.Authorize
         [Description("DIỄN GIẢI NHÓM QUYỀN")]
         [StringLength(300)]
         public string DIENGIAI { get; set; }
+
     }
 }

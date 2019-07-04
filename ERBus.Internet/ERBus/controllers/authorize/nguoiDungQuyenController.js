@@ -7,18 +7,19 @@
             postNguoiDungQuyen: function (data) {
                 return $http.post(serviceUrl + '/PostNguoiDungQuyen', data);
             },
-            getAllQuyenByUsername: function (data) {
-                return $http.get(serviceUrl + '/GetAllQuyenByUsername/' + data);
+            getAllQuyenByUsername: function (userName, unitCode) {
+                return $http.get(serviceUrl + '/GetAllQuyenByUsername/' + userName + '/' + unitCode);
             }
         }
         return result;
     }]);
 
-    app.controller('AddNguoiDungQuyen_ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungQuyenService', 'menuService', 'tempDataService', '$filter', '$uibModal', 'targetData',
-        function ($scope, $uibModalInstance, $http, configService, service, menuService, tempDataService, $filter, $uibModal, targetData) {
+    app.controller('AddNguoiDungQuyen_ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungQuyenService', 'menuService', 'tempDataService', '$filter', '$uibModal', 'targetData', 'userService',
+        function ($scope, $uibModalInstance, $http, configService, service, menuService, tempDataService, $filter, $uibModal, targetData, userService) {
             $scope.config = {
                 label: angular.copy(configService.label)
             };
+            var currentUser = userService.GetCurrentUser();
             $scope.title = function () { return 'Phân quyền người dùng [ ' + targetData.USERNAME + ' ]' };
             $scope.data = [];
             $scope.listMenu = [];
@@ -27,7 +28,7 @@
             $scope.lstDelete = [];
 
             function loadQuyen() {
-                service.getAllQuyenByUsername(targetData.USERNAME).then(function (successRes) {
+                service.getAllQuyenByUsername(targetData.USERNAME, currentUser.unitCode).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data.Status && successRes.data.Data) {
                         $scope.data = successRes.data.Data;
                     } 
@@ -127,6 +128,7 @@
             $scope.save = function () {
                 var obj = {
                     USERNAME: targetData.USERNAME,
+                    UNITCODE: currentUser.unitCode,
                     LstAdd: $scope.lstAdd,
                     LstEdit: $scope.lstEdit,
                     LstDelete: $scope.lstDelete

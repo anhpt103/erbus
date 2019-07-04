@@ -23,7 +23,7 @@
                     <label for="text-input" class="form-control-label">Tên cửa hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                 </div>
                 <div class="col-12 col-md-9">
-                    <input type="text" id="_tenCuaHang" name="_tenCuaHang" ng-model="target.TEN_CUAHANG" required placeholder="Nhập tên cửa hàng" class="form-control">
+                    <input type="text" id="_tenCuaHang" name="_tenCuaHang" ng-model="target.TEN_CUAHANG" required placeholder="Nhập tên cửa hàng" class="form-control" ng-change="changed(target);" />
                     <small class="form-text text-muted" ng-show="_form._tenCuaHang.$dirty && _form._tenCuaHang.$invalid">
                         <span ng-show="_form._tenCuaHang.$error.required">Tên cửa hàng không được để trống</span>
                     </small>
@@ -34,7 +34,7 @@
                     <label for="text-input" class="form-control-label">Số điện thoại</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                 </div>
                 <div class="col-12 col-md-9">
-                    <input type="text" id="_soDienThoai" name="_soDienThoai" ng-model="target.SODIENTHOAI" required placeholder="Nhập số điện thoại cửa hàng" class="form-control">
+                    <input type="text" id="_soDienThoai" name="_soDienThoai" ng-model="target.SODIENTHOAI" required placeholder="Nhập số điện thoại cửa hàng" class="form-control" ng-change="changed(target);" />
                     <small class="form-text text-muted" ng-show="_form._soDienThoai.$dirty && _form._soDienThoai.$invalid">
                         <span ng-show="_form._soDienThoai.$error.required">Số điện thoại cửa hàng không được để trống</span>
                     </small>
@@ -45,16 +45,128 @@
                     <label for="text-input" class="form-control-label">Địa chỉ</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                 </div>
                 <div class="col-12 col-md-9">
-                    <input type="text" id="_diaChi" name="_diaChi" ng-model="target.DIACHI" required placeholder="Nhập địa chỉ cửa hàng" class="form-control">
+                    <input type="text" id="_diaChi" name="_diaChi" ng-model="target.DIACHI" required placeholder="Nhập địa chỉ cửa hàng" class="form-control" ng-change="changed(target);" />
                     <small class="form-text text-muted" ng-show="_form._diaChi.$dirty && _form._diaChi.$invalid">
                         <span ng-show="_form._diaChi.$error.required">Địa chỉ cửa hàng không được để trống</span>
                     </small>
                 </div>
             </div>
         </form>
+        <div class="row form-group" ng-show="listChildren && listChildren.length > 0">
+            <br />
+            <div class="col col-md-12" style="text-align: center;">
+                <span><b>Danh sách chi nhánh</b></span>
+            </div>
+            <br />
+        </div>
+        <form class="form-horizontal" role="form" name="_formDetailsChildren" ng-show="listChildren && listChildren.length > 0" ng-repeat="item in listChildren track by $index">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã cửa hàng chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maCuaHangChiNhanh" name="_maCuaHangChiNhanh" ng-model="item.MA_CUAHANG" required placeholder="Nhập mã cửa hàng chi nhánh" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_formDetailsChildren._maCuaHangChiNhanh.$dirty && _formDetailsChildren._maCuaHangChiNhanh.$invalid">
+                        <span ng-show="_formDetailsChildren._maCuaHangChiNhanh.$error.required">Mã cửa hàng chi nhánh không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên cửa hàng chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenCuaHangChiNhanh" name="_tenCuaHangChiNhanh" ng-model="item.TEN_CUAHANG" required placeholder="Nhập tên cửa hàng chi nhánh" class="form-control" ng-change="changed(item);" />
+                    <small class="form-text text-muted" ng-show="_formDetailsChildren._tenCuaHangChiNhanh.$dirty && _formDetailsChildren._tenCuaHangChiNhanh.$invalid">
+                        <span ng-show="_formDetailsChildren._tenCuaHangChiNhanh.$error.required">Tên cửa hàng chi nhánh không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Số điện thoại chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_soDienThoaiChiNhanh" name="_soDienThoaiChiNhanh" ng-model="item.SODIENTHOAI" required placeholder="Nhập số điện thoại cửa hàng chi nhánh" class="form-control" ng-change="changed(item);" />
+                    <small class="form-text text-muted" ng-show="_formDetailsChildren._soDienThoaiChiNhanh.$dirty && _formDetailsChildren._soDienThoaiChiNhanh.$invalid">
+                        <span ng-show="_formDetailsChildren._soDienThoaiChiNhanh.$error.required">Số điện thoại cửa hàng chi nhánh  không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Địa chỉ chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_diaChiChiNhanh" name="_diaChiChiNhanh" ng-model="item.DIACHI" required placeholder="Nhập địa chỉ cửa hàng chi nhánh" class="form-control" ng-change="changed(item);" />
+                    <small class="form-text text-muted" ng-show="_formDetailsChildren._diaChiChiNhanh.$dirty && _formDetailsChildren._diaChiChiNhanh.$invalid">
+                        <span ng-show="_formDetailsChildren._diaChiChiNhanh.$error.required">Địa chỉ cửa hàng chi nhánh không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group" >
+                <div class="col col-md-9"></div>
+                <div class="col col-md-3">
+                    <button type="button" style="float: right;" prevent-default class="btn btn-warning" ng-click="removeChildren(item);"><i class="zmdi zmdi-delete"></i>&nbsp;&nbsp;Xóa chi nhánh {{item.MA_CUAHANG}}</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row form-group">
+            <div class="col col-md-3">
+                <button type="button" prevent-default class="btn btn-info" ng-click="addChildren();"><i class="zmdi zmdi-share"></i>&nbsp;&nbsp;Thêm chi nhánh</button>
+            </div>
+        </div>
+        <br />
+        <form class="form-horizontal" role="form" name="_formCreateChildren" ng-show="isAddChildren">
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Mã cửa hàng chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_maCuaHangChiNhanh" name="_maCuaHangChiNhanh" ng-model="targetChildren.MA_CUAHANG" required placeholder="Nhập mã cửa hàng chi nhánh" class="form-control" disabled>
+                    <small class="form-text text-muted" ng-show="_formCreateChildren._maCuaHangChiNhanh.$dirty && _formCreateChildren._maCuaHangChiNhanh.$invalid">
+                        <span ng-show="_formCreateChildren._maCuaHangChiNhanh.$error.required">Mã cửa hàng chi nhánh không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Tên cửa hàng chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_tenCuaHangChiNhanh" name="_tenCuaHangChiNhanh" ng-model="targetChildren.TEN_CUAHANG" required placeholder="Nhập tên cửa hàng chi nhánh" class="form-control">
+                    <small class="form-text text-muted" ng-show="_formCreateChildren._tenCuaHangChiNhanh.$dirty && _formCreateChildren._tenCuaHangChiNhanh.$invalid">
+                        <span ng-show="_formCreateChildren._tenCuaHangChiNhanh.$error.required">Tên cửa hàng chi nhánh không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Số điện thoại chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_soDienThoaiChiNhanh" name="_soDienThoaiChiNhanh" ng-model="targetChildren.SODIENTHOAI" required placeholder="Nhập số điện thoại cửa hàng chi nhánh" class="form-control">
+                    <small class="form-text text-muted" ng-show="_formCreateChildren._soDienThoaiChiNhanh.$dirty && _formCreateChildren._soDienThoaiChiNhanh.$invalid">
+                        <span ng-show="_formCreateChildren._soDienThoaiChiNhanh.$error.required">Số điện thoại cửa hàng chi nhánh  không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Địa chỉ chi nhánh</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <input type="text" id="_diaChiChiNhanh" name="_diaChiChiNhanh" ng-model="targetChildren.DIACHI" required placeholder="Nhập địa chỉ cửa hàng chi nhánh" class="form-control">
+                    <small class="form-text text-muted" ng-show="_formCreateChildren._diaChiChiNhanh.$dirty && _formCreateChildren._diaChiChiNhanh.$invalid">
+                        <span ng-show="_formCreateChildren._diaChiChiNhanh.$error.required">Địa chỉ cửa hàng chi nhánh không được để trống</span>
+                    </small>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="modal-footer">
-        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
+        <button type="button" prevent-default class="btn btn-primary" ng-disabled="_form.$invalid || (isAddChildren && _formCreateChildren.$invalid)" ng-click="save()"><i class="fa fa-save"></i>&nbsp;&nbsp;{{config.label.btnSubmit}}</button>
         <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
     </div>
 </div>

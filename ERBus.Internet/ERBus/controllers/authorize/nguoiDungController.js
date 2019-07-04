@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/authorize/nguoiDungNhomQuyenController', 'controllers/authorize/nguoiDungQuyenController'], function () {
+﻿define(['ui-bootstrap', 'controllers/authorize/nguoiDungNhomQuyenController', 'controllers/authorize/nguoiDungQuyenController', 'controllers/authorize/cuaHangController'], function () {
     'use strict';
-    var app = angular.module('nguoiDungModule', ['ui.bootstrap', 'nguoiDungNhomQuyenModule', 'nguoiDungQuyenModule']);
+    var app = angular.module('nguoiDungModule', ['ui.bootstrap', 'nguoiDungNhomQuyenModule', 'nguoiDungQuyenModule', 'cuaHangModule']);
     app.factory('nguoiDungService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Authorize/NguoiDung';
         var selectedData = [];
@@ -62,7 +62,7 @@
             };
             function filterData() {
                 $scope.isLoading = true;
-                if ($scope.accessList.VIEW) {
+                if ($scope.accessList.XEM) {
                     var postdata = { paged: $scope.paged, filtered: $scope.filtered };
                     service.postQuery(postdata).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
@@ -81,7 +81,7 @@
                 securityService.getAccessList('NguoiDung').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'
@@ -222,19 +222,40 @@
             };
         }]);
 
-    app.controller('nguoiDungCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungService', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
+    app.controller('nguoiDungCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungService', 'tempDataService', '$filter', '$uibModal', '$log','cuaHangService','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, cuaHangService, userService) {
             $scope.config = angular.copy(configService);
+            var currentUser = userService.GetCurrentUser();
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm tài khoản người dùng'; };
-            $scope.target = {};
-            //Tạo mới mã loại
+            $scope.target = { UNITCODE: currentUser.unitCode};
+            //Tạo mới mã nhân viên
             service.buildNewCode().then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
                     $scope.target.MANHANVIEN = successRes.data;
                 }
             });
             //end
+
+            //Function load data authorize CuaHang
+            function loadDataCuaHang() {
+                $scope.cuaHang = [];
+                if (!tempDataService.tempData('cuaHang')) {
+                    cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('cuaHang', successRes.data.Data);
+                            $scope.cuaHang = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.cuaHang = tempDataService.tempData('cuaHang');
+                }
+            };
+            loadDataCuaHang();
+            //end
+
             //check exists username
             $scope.checkExistsUsername = function (userName) {
                 if (userName) {
@@ -260,7 +281,7 @@
             };
             //end check
             $scope.save = function () {
-                if (!$scope.target.USERNAME || !$scope.target.MANHANVIEN) {
+                if (!$scope.target.USERNAME || !$scope.target.MANHANVIEN || !$scope.target.UNITCODE) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
@@ -304,16 +325,33 @@
                 $uibModalInstance.close();
             };
         }]);
-    app.controller('nguoiDungEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log) {
+    app.controller('nguoiDungEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log','cuaHangService','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, cuaHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
-            $scope.target = {};
+            var currentUser = userService.GetCurrentUser();
             $scope.target = angular.copy(targetData);
-            console.log($scope.target);
+            //Function load data authorize CuaHang
+            function loadDataCuaHang() {
+                $scope.cuaHang = [];
+                if (!tempDataService.tempData('cuaHang')) {
+                    cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('cuaHang', successRes.data.Data);
+                            $scope.cuaHang = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.cuaHang = tempDataService.tempData('cuaHang');
+                }
+            };
+            loadDataCuaHang();
+            //end
             $scope.title = function () { return 'Chỉnh sửa tài khoản người dùng'; };
             $scope.save = function () {
-                if (!$scope.target.USERNAME || !$scope.target.MANHANVIEN) {
+                if (!$scope.target.USERNAME || !$scope.target.MANHANVIEN || !$scope.target.UNITCODE) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',

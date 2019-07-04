@@ -24,5 +24,10 @@ namespace ERBus.Entity.Database.Authorize
         [Description("MÃ NHÓM QUYỀN")]
         [StringLength(10)]
         public string MANHOMQUYEN { get; set; }
+
+        [Column("UNITCODE")]
+        [Description("MÃ ĐƠN VỊ SỬ DỤNG")]
+        [StringLength(10)]
+        public string UNITCODE { get; set; }
     }
 }

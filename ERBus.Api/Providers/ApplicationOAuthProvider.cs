@@ -25,7 +25,7 @@ namespace ERBus.Api.Providers
                     using (var command = connection.CreateCommand())
                     {
                         command.CommandType = CommandType.Text;
-                        command.CommandText = string.Format(@"SELECT ID,USERNAME,TENNHANVIEN,SODIENTHOAI,CHUNGMINHTHU,UNITCODE,GIOITINH FROM NGUOIDUNG WHERE USERNAME = '" + context.UserName + "' AND PASSWORD = '" + MD5Encrypt.MD5Hash(context.Password) + "' AND TRANGTHAI = 10 ");
+                        command.CommandText = string.Format(@"SELECT ID,USERNAME,TENNHANVIEN,SODIENTHOAI,CHUNGMINHTHU,UNITCODE,PARENT_UNITCODE,GIOITINH FROM NGUOIDUNG WHERE USERNAME = '" + context.UserName + "' AND PASSWORD = '" + MD5Encrypt.MD5Hash(context.Password) + "' AND TRANGTHAI = 10 ");
                         using (var oracleDataReader = command.ExecuteReaderAsync(CommandBehavior.CloseConnection))
                         {
                             if (!oracleDataReader.Result.HasRows)
@@ -42,6 +42,7 @@ namespace ERBus.Api.Providers
                                     user.SODIENTHOAI = oracleDataReader.Result["SODIENTHOAI"]?.ToString();
                                     user.CHUNGMINHTHU = oracleDataReader.Result["CHUNGMINHTHU"]?.ToString();
                                     user.UNITCODE = oracleDataReader.Result["UNITCODE"]?.ToString();
+                                    user.PARENT_UNITCODE = oracleDataReader.Result["PARENT_UNITCODE"]?.ToString();
                                     int GIOITINH = 0;
                                     int.TryParse(oracleDataReader.Result["GIOITINH"]?.ToString(), out GIOITINH);
                                     user.GIOITINH = GIOITINH;
@@ -60,6 +61,7 @@ namespace ERBus.Api.Providers
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 addClaim.Invoke(identity, user.USERNAME);
                 identity.AddClaim(new Claim("unitCode", user.UNITCODE));
+                identity.AddClaim(new Claim("parentUnitCode", user.PARENT_UNITCODE));
                 AuthenticationProperties properties = new AuthenticationProperties(new Dictionary<string, string>
                     {
                     {
@@ -79,6 +81,9 @@ namespace ERBus.Api.Providers
                     },
                     {
                         "unitCode", string.IsNullOrEmpty(user.UNITCODE)?string.Empty:user.UNITCODE
+                    },
+                    {
+                        "parentUnitCode", string.IsNullOrEmpty(user.PARENT_UNITCODE)?string.Empty:user.PARENT_UNITCODE
                     },
                     {
                         "sex", string.IsNullOrEmpty(user.GIOITINH.ToString())?string.Empty:user.GIOITINH.ToString()

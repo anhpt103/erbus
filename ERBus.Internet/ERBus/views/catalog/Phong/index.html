@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <button type="button" class="btn btn-primary customize" ng-click="create();"><i class="fa fa-plus"></i>&ensp;{{config.label.btnCreate}}</button>
+                            <button type="button" ng-if="accessList.THEM" class="btn btn-primary customize" ng-click="create();"><i class="fa fa-plus"></i>&ensp;{{config.label.btnCreate}}</button>
                             <input class="au-input au-input--xl customize" type="text" name="search" placeholder="Tìm kiếm thông tin trong {{title();}}" ng-model="filtered.summary" ng-enter="doSearch()" />
                             <button class="au-btn--submit" type="submit" ng-click="doSearch()">
                                 <i class="zmdi zmdi-search"></i>

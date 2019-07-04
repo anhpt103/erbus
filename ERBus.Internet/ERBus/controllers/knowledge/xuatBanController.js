@@ -144,7 +144,7 @@
 
             function filterData() {
                 $scope.isLoading = true;
-                if ($scope.accessList.VIEW) {
+                if ($scope.accessList.XEM) {
                     var postdata = { paged: $scope.paged, filtered: $scope.filtered };
                     service.postQuery(postdata).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
@@ -163,7 +163,7 @@
                 securityService.getAccessList('XuatBan').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'

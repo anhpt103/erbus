@@ -84,5 +84,10 @@ namespace ERBus.Entity.Database.Authorize
         [Column("BANTRALAI")]
         [Description("QUYỀN ĐƯỢC BÁN TRẢ LẠI")]
         public bool BANTRALAI { get; set; }
+
+        [Column("UNITCODE")]
+        [Description("MÃ ĐƠN VỊ SỬ DỤNG")]
+        [StringLength(10)]
+        public string UNITCODE { get; set; }
     }
 }

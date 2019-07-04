@@ -24,21 +24,20 @@ namespace ERBus.Api.Controllers.Authorize
         }
 
         [HttpGet]
-        [Route("GetMenu/{username}")]
-        public IHttpActionResult GetMenu(string username)
+        [Route("GetMenu/{username}/{unitCode}")]
+        public IHttpActionResult GetMenu(string username, string unitCode)
         {
             var result = new TransferObj<List<ChoiceObject>>();
             try
             {
-                var _unitCode = _service.GetCurrentUnitCode();
                 List<MENU> lstMenu = new List<MENU>();
                 if (username.Equals("admin"))
                 {
-                    lstMenu = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE == _unitCode).OrderBy(x => x.SAPXEP).ToList();
+                    lstMenu = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE == unitCode).OrderBy(x => x.SAPXEP).ToList();
                 }
                 else
                 {
-                    lstMenu = _service.GetAllForStarting(username, _unitCode);
+                    lstMenu = _service.GetAllForStarting(username, unitCode);
                 }
                 result.Data = new List<ChoiceObject>();
                 if (lstMenu != null)

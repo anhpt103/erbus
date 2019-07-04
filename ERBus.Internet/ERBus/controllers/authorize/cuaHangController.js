@@ -8,17 +8,26 @@
             getAllData: function () {
                 return $http.get(serviceUrl + '/GetAllData');
             },
+            getAllDataByUniCode: function (unitCode) {
+                return $http.get(serviceUrl + '/GetAllDataByUniCode/' + unitCode);
+            },
+            getAllChildren: function (maCuaHangCha) {
+                return $http.get(serviceUrl + '/GetAllChildren/' + maCuaHangCha);
+            },
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
             },
             buildNewCode: function () {
                 return $http.get(serviceUrl + '/BuildNewCode');
             },
+            buildNewCodeChildren: function (maCuaHang) {
+                return $http.get(serviceUrl + '/BuildNewCodeChildren/' + maCuaHang);
+            },
             post: function (data) {
                 return $http.post(serviceUrl + '/Post', data);
             },
             update: function (params) {
-                return $http.put(serviceUrl + '/' + params.ID, params);
+                return $http.post(serviceUrl + '/Update', params);
             },
             delete: function (params) {
                 return $http.delete(serviceUrl + '/' + params.ID, params);
@@ -56,7 +65,7 @@
             };
             function filterData() {
                 $scope.isLoading = true;
-                if ($scope.accessList.VIEW) {
+                if ($scope.accessList.XEM) {
                     var postdata = { paged: $scope.paged, filtered: $scope.filtered };
                     service.postQuery(postdata).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.Data) {
@@ -75,7 +84,7 @@
                 securityService.getAccessList('CuaHang').then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
-                        if (!$scope.accessList.VIEW) {
+                        if (!$scope.accessList.XEM) {
                             Lobibox.notify('error', {
                                 position: 'bottom left',
                                 msg: 'Không có quyền truy cập !'
@@ -203,7 +212,7 @@
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Đăng ký cửa hàng'; };
             $scope.target = {};
-            //Tạo mới mã loại
+            //Tạo mới mã cửa hàng
             service.buildNewCode().then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
                     $scope.target.MA_CUAHANG = successRes.data;
@@ -211,7 +220,7 @@
             });
             //end
             $scope.save = function () {
-                if (!$scope.target.MA_CUAHANG || !$scope.target.TEN_CUAHANG ) {
+                if (!$scope.target.MA_CUAHANG || !$scope.target.TEN_CUAHANG) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
@@ -260,17 +269,107 @@
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
+            $scope.targetChildren = {};
+            $scope.LST_EDIT = [];
+            $scope.LST_DELETE = [];
             $scope.target = angular.copy(targetData);
+            //thêm cửa hàng con
+            $scope.isAddChildren = false;
+            $scope.addChildren = function () {
+                if ($scope.isAddChildren) {
+                    $scope.isAddChildren = false;
+                    $scope.targetChildren.MA_CUAHANG = '';
+                }
+                else {
+                    $scope.isAddChildren = true;
+                    //sinh mã cửa hàng chi nhánh
+                    service.buildNewCodeChildren($scope.target.MA_CUAHANG).then(function (successRes) {
+                        if (successRes && successRes.status == 200 && successRes.data) {
+                            $scope.targetChildren.MA_CUAHANG = successRes.data;
+                            $scope.targetChildren.MA_CUAHANG_CHA = $scope.target.MA_CUAHANG;
+                        }
+                    });
+                    //end
+                }
+            };
+            //end
+
+            //get thông tin cửa hàng con
+            $scope.listChildren = [];
+            service.getAllChildren($scope.target.MA_CUAHANG).then(function (successRes) {
+                if (successRes && successRes.status == 200 && successRes.data && successRes.data.Data.length > 0) {
+                    $scope.listChildren = successRes.data.Data;
+                }
+            });
+            //end
             $scope.title = function () { return 'Cập nhật thông tin cửa hàng'; };
+
+            $scope.changed = function (item) {
+                if (item) {
+                    var edit = $filter('filter')($scope.LST_EDIT, { MA_CUAHANG: item.MA_CUAHANG }, true);
+                    if (edit && edit.length === 1) {
+                        edit.MA_CUAHANG_CHA = item.MA_CUAHANG_CHA;
+                        edit.MA_CUAHANG = item.MA_CUAHANG;
+                        edit.TEN_CUAHANG = item.TEN_CUAHANG;
+                        edit.SODIENTHOAI = item.SODIENTHOAI;
+                        edit.DIACHI = item.DIACHI;
+                    } else {
+                        $scope.LST_EDIT.push(item);
+                    }
+                }
+            };
+
+            $scope.removeChildren = function (item) {
+                if (item) {
+                    var confirmDelete = confirm("Bạn có muốn xóa cửa hàng chi nhánh " + item.MA_CUAHANG + " !" );
+                    if (confirmDelete) {
+                        var index = $scope.listChildren.findIndex(x => x.MA_CUAHANG === item.MA_CUAHANG);
+                        if (index !== -1) {
+                            $scope.LST_DELETE.push(item);
+                            $scope.listChildren.splice(index, 1);
+                        }
+                    }
+                }
+            };
+
             $scope.save = function () {
-                if (!$scope.target.MA_CUAHANG || !$scope.target.TEN_CUAHANG ) {
+                if (!$scope.target.MA_CUAHANG || !$scope.target.TEN_CUAHANG) {
                     Lobibox.notify('warning', {
                         title: 'Thiếu thông tin',
                         msg: 'Thông tin đầu vào không hợp lệ! Dữ liệu (*) không được để trống',
                         delay: 4000
                     });
+                } else if ($scope.isAddChildren && !$scope.targetChildren.MA_CUAHANG) {
+                    Lobibox.notify('warning', {
+                        title: 'Thiếu thông tin',
+                        msg: 'Thiếu mã cửa hàng chi nhánh! Dữ liệu (*) không được để trống',
+                        delay: 3000
+                    });
+                } else if ($scope.isAddChildren && !$scope.targetChildren.TEN_CUAHANG) {
+                    Lobibox.notify('warning', {
+                        title: 'Thiếu thông tin',
+                        msg: 'Thiếu tên cửa hàng chi nhánh! Dữ liệu (*) không được để trống',
+                        delay: 3000
+                    });
+                } else if ($scope.isAddChildren && !$scope.targetChildren.SODIENTHOAI) {
+                    Lobibox.notify('warning', {
+                        title: 'Thiếu thông tin',
+                        msg: 'Thiếu số điện thoại cửa hàng chi nhánh! Dữ liệu (*) không được để trống',
+                        delay: 3000
+                    });
+                } else if ($scope.isAddChildren && !$scope.targetChildren.DIACHI) {
+                    Lobibox.notify('warning', {
+                        title: 'Thiếu thông tin',
+                        msg: 'Thiếu địa chỉ cửa hàng chi nhánh! Dữ liệu (*) không được để trống',
+                        delay: 3000
+                    });
                 } else {
-                    service.update($scope.target).then(function (successRes) {
+                    var obj = {
+                        LST_EDIT: $scope.LST_EDIT,
+                        LST_DELETE: $scope.LST_DELETE,
+                        RECORD_ADD: $scope.targetChildren
+                    };
+                    service.update(obj).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
                             Lobibox.notify('success', {
                                 title: 'Thông báo',

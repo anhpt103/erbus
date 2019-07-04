@@ -54,7 +54,7 @@ namespace ERBus.Api.Controllers.Catalog
             var postData = ((dynamic)jsonData);
             var filtered = ((JObject)postData.filtered).ToObject<FilterObj<NhaCungCapViewModel.Search>>();
             var paged = ((JObject)postData.paged).ToObject<PagedObj<NHACUNGCAP>>();
-            var unitCode = _service.GetCurrentUnitCode();
+            var unitCode = string.IsNullOrEmpty(filtered.PARENT_UNITCODE) ? filtered.UNITCODE : filtered.PARENT_UNITCODE;
             try
             {
                 PagedObj<NHACUNGCAP> tempData = _service.QueryPageNhaCungCap(_service.GetConnectionString(), paged, filtered.Summary, unitCode);

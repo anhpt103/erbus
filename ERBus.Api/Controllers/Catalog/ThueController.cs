@@ -29,7 +29,6 @@ namespace ERBus.Api.Controllers.Catalog
 
         [Route("GetAllData")]
         [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "Thue")]
         public IHttpActionResult GetAllData()
         {
             var result = new TransferObj<List<ChoiceObject>>();
@@ -48,7 +47,6 @@ namespace ERBus.Api.Controllers.Catalog
 
         [Route("GetDataByMaThue/{maThueSelected}")]
         [HttpGet]
-        [CustomAuthorize(Method = "XEM", State = "Thue")]
         public IHttpActionResult GetDataByMaThue(string maThueSelected)
         {
             var result = new TransferObj<ChoiceObject>();
@@ -79,7 +77,7 @@ namespace ERBus.Api.Controllers.Catalog
             var postData = ((dynamic)jsonData);
             var filtered = ((JObject)postData.filtered).ToObject<FilterObj<ThueViewModel.Search>>();
             var paged = ((JObject)postData.paged).ToObject<PagedObj<THUE>>();
-            var unitCode = _service.GetCurrentUnitCode();
+            var unitCode = string.IsNullOrEmpty(filtered.PARENT_UNITCODE) ? filtered.UNITCODE : filtered.PARENT_UNITCODE;
             var query = new QueryBuilder
             {
                 Take = paged.ItemsPerPage,

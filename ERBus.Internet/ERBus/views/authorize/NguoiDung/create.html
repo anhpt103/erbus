@@ -77,6 +77,17 @@
             </div>
             <div class="row form-group">
                 <div class="col col-md-3">
+                    <label for="select" class="form-control-label">Cửa hàng</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="_cuaHang" name="_cuaHang" ng-model="target.UNITCODE" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('cuaHang')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form._cuaHang.$dirty && _form._cuaHang.$invalid">
+                        <span ng-show="_form._cuaHang.$error.required">Cửa hàng không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
                     <label for="select" class="form-control-label">Trạng thái</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
                 </div>
                 <div class="col-12 col-md-9">

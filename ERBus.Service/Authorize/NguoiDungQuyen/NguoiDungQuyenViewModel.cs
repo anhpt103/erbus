@@ -44,6 +44,7 @@ namespace ERBus.Service.Authorize.NguoiDungNhomQuyen
         public class ConfigModel
         {
             public string USERNAME { get; set; }
+            public string UNITCODE { get; set; }
             public List<ViewModel> LstAdd { get; set; }
             public List<ViewModel> LstEdit { get; set; }
             public List<ViewModel> LstDelete { get; set; }

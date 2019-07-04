@@ -74,6 +74,7 @@ namespace ERBus.Service.Authorize.NguoiDung
             public Nullable<int> GIOITINH { get; set; }
             public Nullable<int> VAITRO { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
+            public string UNITCODE { get; set; }
             public string PARENT_UNITCODE { get; set; }
         }
     }

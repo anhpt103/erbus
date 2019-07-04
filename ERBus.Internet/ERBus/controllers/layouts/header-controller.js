@@ -64,7 +64,8 @@
             if (!$scope.currentUser) {
                 $state.go('login');
             } else {
-                menuService.getMenu($scope.currentUser.userName).then(function (response) {
+                var unitCodeParam = !$scope.currentUser.parentUnitCode ? $scope.currentUser.unitCode : $scope.currentUser.parentUnitCode;
+                menuService.getMenu($scope.currentUser.userName, unitCodeParam).then(function (response) {
                     if (response && response.status === 200 && response.data && response.data.Data && response.data.Data.length > 0) {
                         $scope.treeMenu = treeify(response.data.Data);
                     }

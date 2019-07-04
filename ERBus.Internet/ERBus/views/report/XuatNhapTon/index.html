@@ -31,7 +31,7 @@
                                         <td class="text-title-report">Cửa hàng</td>
                                         <td></td>
                                         <td>
-                                            <input enter type="text" id="_maCuaHang" name="_maCuaHang" ng-model="target.TEN_CUHANG" required class="form-control" disabled>
+                                            <select id="_maCuaHang" name="_maCuaHang" ng-model="target.MA_CUAHANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('cuaHang')" class="form-control"></select>
                                         </td>
                                         <td>
                                         </td>

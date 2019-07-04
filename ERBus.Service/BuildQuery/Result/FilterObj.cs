@@ -17,5 +17,7 @@ namespace ERBus.Service.BuildQuery
         public string OrderBy { get; set; }
         public string OrderType { get; set; }
         public T AdvanceData { get; set; }
+        public string UNITCODE { get; set; }
+        public string PARENT_UNITCODE { get; set; }
     }
 }

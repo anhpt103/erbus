@@ -6,8 +6,6 @@ using Oracle.ManagedDataAccess.Client;
 using ERBus.Service;
 using System.Configuration;
 using ERBus.Service.Authorize.NguoiDungNhomQuyen;
-using ERBus.Entity.Database.Authorize;
-using ERBus.Entity;
 
 namespace ERBus.Api.Controllers.Authorize
 {
@@ -17,8 +15,8 @@ namespace ERBus.Api.Controllers.Authorize
     public class NguoiDungQuyenController : ApiController
     {
         [HttpGet]
-        [Route("GetAllQuyenByUsername/{userName}")]
-        public IHttpActionResult GetAllQuyenByUsername(string userName)
+        [Route("GetAllQuyenByUsername/{userName}/{unitCode}")]
+        public IHttpActionResult GetAllQuyenByUsername(string userName, string unitCode)
         {
             var result = new TransferObj<List<NguoiDungQuyenViewModel.ViewModel>>();
             List<NguoiDungQuyenViewModel.ViewModel> listNguoiDungQuyen = new List<NguoiDungQuyenViewModel.ViewModel>();
@@ -59,8 +57,9 @@ namespace ERBus.Api.Controllers.Authorize
                                                                     NGUOIDUNG_MENU A
                                                                     INNER JOIN MENU B ON A.MA_MENU = B.MA_MENU
                                                                 WHERE
-                                                                    A.USERNAME = :USERNAME");
+                                                                    A.USERNAME = :USERNAME AND A.UNITCODE = :UNITCODE");
                                 command.Parameters.Add(@"USERNAME", OracleDbType.NVarchar2, 50).Value = userName;
+                                command.Parameters.Add(@"UNITCODE", OracleDbType.NVarchar2, 10).Value = unitCode;
                                 OracleDataReader dataReader = command.ExecuteReader();
                                 if (dataReader.HasRows)
                                 {
@@ -212,7 +211,7 @@ namespace ERBus.Api.Controllers.Authorize
                                     {
                                         command.Parameters.Clear();
                                         command.CommandType = CommandType.Text;
-                                        command.CommandText = string.Format(@"INSERT INTO NGUOIDUNG_MENU(ID,MA_MENU,USERNAME,XEM,THEM,SUA,XOA,DUYET,GIAMUA,GIABAN,GIAVON,TYLELAI,BANCHIETKHAU,BANBUON,BANTRALAI) VALUES (:ID,:MA_MENU,:USERNAME,:XEM,:THEM,:SUA,:XOA,:DUYET,:GIAMUA,:GIABAN,:GIAVON,:TYLELAI,:BANCHIETKHAU,:BANBUON,:BANTRALAI)");
+                                        command.CommandText = string.Format(@"INSERT INTO NGUOIDUNG_MENU(ID,MA_MENU,USERNAME,XEM,THEM,SUA,XOA,DUYET,GIAMUA,GIABAN,GIAVON,TYLELAI,BANCHIETKHAU,BANBUON,BANTRALAI,UNITCODE) VALUES (:ID,:MA_MENU,:USERNAME,:XEM,:THEM,:SUA,:XOA,:DUYET,:GIAMUA,:GIABAN,:GIAVON,:TYLELAI,:BANCHIETKHAU,:BANBUON,:BANTRALAI,:UNITCODE)");
                                         command.Parameters.Add(@"ID", OracleDbType.NVarchar2, 50).Value = Guid.NewGuid().ToString();
                                         command.Parameters.Add(@"MA_MENU", OracleDbType.NVarchar2, 20).Value = item.MA_MENU.Trim();
                                         command.Parameters.Add(@"USERNAME", OracleDbType.NVarchar2, 50).Value = item.USERNAME.Trim();
@@ -228,6 +227,7 @@ namespace ERBus.Api.Controllers.Authorize
                                         command.Parameters.Add(@"BANCHIETKHAU", OracleDbType.Int32).Value = item.BANCHIETKHAU;
                                         command.Parameters.Add(@"BANBUON", OracleDbType.Int32).Value = item.BANBUON;
                                         command.Parameters.Add(@"BANTRALAI", OracleDbType.Int32).Value = item.BANTRALAI;
+                                        command.Parameters.Add(@"UNITCODE", OracleDbType.NVarchar2, 10).Value = model.UNITCODE;
                                         int countInsert = command.ExecuteNonQuery();
                                     }
                                 }

@@ -75,7 +75,7 @@ namespace ERBus.Api.Controllers.Authorize
                 Filter = new QueryFilterLinQ()
                 {
                     Property = ClassHelper.GetProperty(() => new NGUOIDUNG().UNITCODE),
-                    Method = FilterMethod.EqualTo,
+                    Method = FilterMethod.StartsWith,
                     Value = unitCode
                 },
                 Orders = new List<IQueryOrder>()
@@ -125,7 +125,7 @@ namespace ERBus.Api.Controllers.Authorize
             }
             else
             {
-                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MANHANVIEN == instance.MANHANVIEN && x.UNITCODE.Equals(curentUnitCode));
+                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MANHANVIEN == instance.MANHANVIEN && x.UNITCODE.StartsWith(curentUnitCode));
                 if (exist != null)
                 {
                     result.Status = false;
@@ -136,20 +136,44 @@ namespace ERBus.Api.Controllers.Authorize
             try
             {
                 instance.MANHANVIEN = _service.SaveCode();
+                instance.I_STATE = "C";
+                instance.PASSWORD = MD5Encrypt.MD5Hash(instance.PASSWORD);
                 var data = Mapper.Map<NguoiDungViewModel.Dto, NGUOIDUNG>(instance);
-                var item = _service.Insert(data);
-                int inst = await _service.UnitOfWork.SaveAsync();
-                if (inst > 0)
+                if (!string.IsNullOrEmpty(instance.UNITCODE) && instance.UNITCODE.Equals(curentUnitCode))
                 {
-                    result.Status = true;
-                    result.Data = item;
-                    result.Message = "Thêm mới thành công";
+                    data.PARENT_UNITCODE = curentUnitCode;
+                    var item = _service.Insert(data);
+                    int inst = await _service.UnitOfWork.SaveAsync();
+                    if (inst > 0)
+                    {
+                        result.Status = true;
+                        result.Data = item;
+                        result.Message = "Thêm mới thành công";
+                    }
+                    else
+                    {
+                        result.Status = false;
+                        result.Data = null;
+                        result.Message = "Thao tác không thành công";
+                    }
                 }
                 else
                 {
-                    result.Status = false;
-                    result.Data = null;
-                    result.Message = "Thao tác không thành công";
+                    data.PARENT_UNITCODE = _service.GetParentUnitCode(data.UNITCODE);
+                    var item = _service.Insert(data, false);
+                    int inst = await _service.UnitOfWork.SaveAsync();
+                    if (inst > 0)
+                    {
+                        result.Status = true;
+                        result.Data = item;
+                        result.Message = "Thêm mới thành công";
+                    }
+                    else
+                    {
+                        result.Status = false;
+                        result.Data = null;
+                        result.Message = "Thao tác không thành công";
+                    }
                 }
             }
             catch (Exception e)
@@ -170,7 +194,7 @@ namespace ERBus.Api.Controllers.Authorize
             {
                 return BadRequest(ModelState);
             }
-
+            var curentUnitCode = _service.GetCurrentUnitCode();
             if (id != instance.ID)
             {
                 return BadRequest();
@@ -184,20 +208,43 @@ namespace ERBus.Api.Controllers.Authorize
             }
             try
             {
-                var item = _service.Update(instance);
-                int upd = await _service.UnitOfWork.SaveAsync();
-                if (upd > 0)
+                instance.I_STATE = "U";
+                if (!string.IsNullOrEmpty(instance.UNITCODE) && instance.UNITCODE.Equals(curentUnitCode))
                 {
-                    result.Status = true;
-                    result.Data = item;
-                    result.Message = "Cập nhật thành công";
+                    var item = _service.Update(instance);
+                    int upd = await _service.UnitOfWork.SaveAsync();
+                    if (upd > 0)
+                    {
+                        result.Status = true;
+                        result.Data = item;
+                        result.Message = "Cập nhật thành công";
+                    }
+                    else
+                    {
+                        result.Status = false;
+                        result.Data = null;
+                        result.Message = "Thao tác không thành công";
+                    }
                 }
                 else
                 {
-                    result.Status = false;
-                    result.Data = null;
-                    result.Message = "Thao tác không thành công";
+                    instance.PARENT_UNITCODE = _service.GetParentUnitCode(instance.UNITCODE);
+                    var item = _service.Update(instance, null, null, false);
+                    int upd = await _service.UnitOfWork.SaveAsync();
+                    if (upd > 0)
+                    {
+                        result.Status = true;
+                        result.Data = item;
+                        result.Message = "Cập nhật thành công";
+                    }
+                    else
+                    {
+                        result.Status = false;
+                        result.Data = null;
+                        result.Message = "Thao tác không thành công";
+                    }
                 }
+                
             }
             catch (Exception e)
             {

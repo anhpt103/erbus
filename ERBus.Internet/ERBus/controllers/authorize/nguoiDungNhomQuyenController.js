@@ -10,18 +10,19 @@
             postNguoiDungNhomQuyen: function (data) {
                 return $http.post(serviceUrl + '/PostNguoiDungNhomQuyen', data);
             },
-            getNhomQuyenByUsername: function (data) {
-                return $http.get(serviceUrl + '/GetNhomQuyenByUsername/' + data);
+            getNhomQuyenByUsername: function (userName, unitCode) {
+                return $http.get(serviceUrl + '/GetNhomQuyenByUsername/' + userName + '/' + unitCode);
             }
         }
         return result;
     }]);
 
-    app.controller('AddNguoiDungNhomQuyen_ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungNhomQuyenService', 'menuService', 'tempDataService', '$filter', '$uibModal', 'targetData','nhomQuyenService',
-        function ($scope, $uibModalInstance, $http, configService, service, menuService, tempDataService, $filter, $uibModal, targetData, nhomQuyenService) {
+    app.controller('AddNguoiDungNhomQuyen_ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nguoiDungNhomQuyenService', 'menuService', 'tempDataService', '$filter', '$uibModal', 'targetData','nhomQuyenService','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, menuService, tempDataService, $filter, $uibModal, targetData, nhomQuyenService, userService) {
             $scope.config = {
                 label: angular.copy(configService.label)
             };
+            var currentUser = userService.GetCurrentUser();
             $scope.title = function () { return 'Thêm phân quyền nhóm người dùng'; };
             $scope.data = [];
             $scope.lstNhomQuyen = [];
@@ -29,7 +30,7 @@
             $scope.lstEdit = [];
             $scope.lstDelete = [];
             function loadNhomQuyenByUser() {
-                service.getNhomQuyenByUsername(targetData.USERNAME).then(function (successRes) {
+                service.getNhomQuyenByUsername(targetData.USERNAME, currentUser.unitCode).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data.Status && successRes.data.Data) {
                         $scope.data = successRes.data.Data;
                     }
@@ -113,6 +114,7 @@
             $scope.save = function () {
                 var obj = {
                     USERNAME: targetData.USERNAME,
+                    UNITCODE: currentUser.unitCode,
                     LstAdd: $scope.lstAdd,
                     LstDelete: $scope.lstDelete
                 }

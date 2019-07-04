@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.Designer.cs">
       <DependentUpon>201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.cs" />
+    <Compile Include="Migrations\201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.Designer.cs">
+      <DependentUpon>201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -226,6 +230,8 @@
     <Content Include="Desciption\KeywordUsed.txt" />
     <Content Include="Script\BAOCAO_BANBUON_CHITIET.sql" />
     <Content Include="Script\BAOCAO_BANBUON_TONGHOP.sql" />
+    <Content Include="Script\GET_MENU.sql" />
+    <Content Include="Script\ERBUS.sql" />
     <Content Include="Script\MATHANG_TONKHO_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_KHACHHANG.sql" />
     <Content Include="Script\TIMKIEM_DATPHONG_PAGINATION.sql" />
@@ -312,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.resx">
       <DependentUpon>201906271636291_ANHPT_ADD_FIELD_MAHANG_DICHVU_CAUHINH.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.resx">
+      <DependentUpon>201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

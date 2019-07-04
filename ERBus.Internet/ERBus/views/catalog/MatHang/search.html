@@ -70,7 +70,7 @@
                         <tr ng-show="isLoading">
                             <td colspan="5"><my-loading></my-loading></td>
                         </tr>
-                        <tr ng-repeat="item in data | orderBy:sortType:sortReverse" ng-dblclick="selecteItem(item)">
+                        <tr ng-repeat="item in data | orderBy:sortType:sortReverse track by $index" ng-dblclick="selecteItem(item)">
                             <td>
                                 <label class="au-checkbox">
                                     <input type="checkbox" ng-model="item.ISSELECT" ng-change="doCheck(item);">

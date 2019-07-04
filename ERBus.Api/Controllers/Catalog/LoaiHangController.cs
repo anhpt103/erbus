@@ -55,7 +55,7 @@ namespace ERBus.Api.Controllers.Catalog
             var postData = ((dynamic)jsonData);
             var filtered = ((JObject)postData.filtered).ToObject<FilterObj<LoaiHangViewModel.Search>>();
             var paged = ((JObject)postData.paged).ToObject<PagedObj<LOAIHANG>>();
-            var unitCode = _service.GetCurrentUnitCode();
+            var unitCode = string.IsNullOrEmpty(filtered.PARENT_UNITCODE) ? filtered.UNITCODE : filtered.PARENT_UNITCODE;
             try
             {
                 PagedObj<LOAIHANG> tempData = _service.QueryPageLoaiHang(_service.GetConnectionString(), paged, filtered.Summary, unitCode);

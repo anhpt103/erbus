@@ -32,7 +32,7 @@ namespace ERBus.Service.Authorize.NguoiDung
             var type = TypeBuildCode.NGUOIDUNG.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE.StartsWith(unitCode));
             if (config == null)
             {
                 config = new CAPMA
@@ -56,7 +56,7 @@ namespace ERBus.Service.Authorize.NguoiDung
             var type = TypeBuildCode.NGUOIDUNG.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE.StartsWith(unitCode));
             if (config == null)
             {
                 config = new CAPMA
