@@ -30,8 +30,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('Thue_Ctrl', ['$scope', '$http', 'configService', 'thueService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService) {
+    app.controller('Thue_Ctrl', ['$scope', '$http', 'configService', 'thueService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -75,7 +75,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('Thue').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('Thue', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

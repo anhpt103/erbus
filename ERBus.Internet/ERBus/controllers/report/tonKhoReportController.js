@@ -39,7 +39,9 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('BaoCaoTonKho').then(function (successRes) {
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('BaoCaoTonKho', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

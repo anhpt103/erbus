@@ -136,11 +136,11 @@ namespace ERBus.Api.Controllers.Catalog
             }
         }
 
-        [Route("BuildNewCode/{maLoaiSelected}")]
+        [Route("BuildNewCode/{maLoaiSelected}/{unitCode}")]
         [HttpGet]
-        public string BuildNewCode(string maLoaiSelected)
+        public string BuildNewCode(string maLoaiSelected, string UnitCode)
         {
-            return _service.BuildCode(maLoaiSelected);
+            return _service.BuildCode(maLoaiSelected, UnitCode);
         }
 
         [Route("GetDetails/{ID}")]
@@ -155,13 +155,15 @@ namespace ERBus.Api.Controllers.Catalog
             }
             else
             {
-                var unitCode = _service.GetCurrentUnitCode();
-                var matHang = _service.Repository.DbSet.FirstOrDefault(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode) && x.ID.Equals(ID));
+                var CurentUnitCode = _service.GetCurrentUnitCode();
+                string ParenUnitCode = _service.GetParentUnitCode(CurentUnitCode);
+                string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? CurentUnitCode : ParenUnitCode;
+                var matHang = _service.Repository.DbSet.FirstOrDefault(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.StartsWith(UnitCodeParam) && x.ID.Equals(ID));
                 if (matHang != null)
                 {
                     dto = Mapper.Map<MATHANG, MatHangViewModel.Dto>(matHang);
                     dto.DUONGDAN = Request.RequestUri.GetLeftPart(UriPartial.Authority) + "/" + dto.DUONGDAN;
-                    var matHangGia = _service.UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode) && x.MAHANG.Equals(matHang.MAHANG));
+                    var matHangGia = _service.UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.StartsWith(UnitCodeParam) && x.MAHANG.Equals(matHang.MAHANG));
                     if (matHangGia != null)
                     {
                         dto.GIAMUA = matHangGia.GIAMUA;
@@ -425,7 +427,7 @@ namespace ERBus.Api.Controllers.Catalog
         public async Task<IHttpActionResult> Post(MatHangViewModel.Dto instance)
         {
             var result = new TransferObj<MATHANG>();
-            var curentUnitCode = _service.GetCurrentUnitCode();
+            var CurentUnitCode = _service.GetCurrentUnitCode();
             if (instance.MAHANG == "")
             {
                 result.Status = false;
@@ -434,7 +436,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             else
             {
-                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MAHANG == instance.MAHANG && x.UNITCODE.Equals(curentUnitCode));
+                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MAHANG == instance.MAHANG && x.UNITCODE.Equals(CurentUnitCode));
                 if (exist != null)
                 {
                     result.Status = false;
@@ -444,7 +446,9 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                instance.MAHANG = _service.SaveCode(instance.MALOAI);
+                string ParenUnitCode = _service.GetParentUnitCode(CurentUnitCode);
+                string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? CurentUnitCode : ParenUnitCode;
+                instance.MAHANG = _service.SaveCode(instance.MALOAI, UnitCodeParam);
                 var item = _service.InsertDto(instance);
                 int inst = await _service.UnitOfWork.SaveAsync();
                 if (inst > 0)

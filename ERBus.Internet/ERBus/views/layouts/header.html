@@ -1,11 +1,4 @@
-﻿<script>
-    $("#showDetailUser").on("mouseenter", function () {
-        $("#detailUser").show();
-    }).on("mouseleave", function () {
-        $("#detailUser").hide();
-    });
-</script> 
-<!-- HEADER DESKTOP-->
+﻿ <!-- HEADER DESKTOP-->
 <header class="header-desktop3 d-none d-lg-block">
     <div class="section__content section__content--p35">
         <div class="header3-wrap">
@@ -134,35 +127,35 @@
                             </div>
                             <div class="account-dropdown__body">
                                 <div class="account-dropdown__item">
-                                    <a id="showDetailUser">
+                                    <a ng-click="detailInfoUser();">
                                         <i class="zmdi zmdi-account"></i>Tài khoản
                                     </a>
-                                    <div id="detailUser" class="header-button-item js-item-menu">
+                                    <div ng-show="showInfoUser" class="header-button-item js-item-menu">
                                         <div class="setting-dropdown js-dropdown" style="top:0;left:0;border:none;">
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a>
-                                                        <i class="zmdi zmdi-account"></i>Tài khoản: {{detailCurrentUser.USERNAME}}
+                                                        <i class="zmdi zmdi-shield-security"></i>Tài khoản: {{detailCurrentUser.USERNAME}}
                                                     </a>
                                                 </div>
                                                 <div class="account-dropdown__item">
                                                     <a>
-                                                        <i class="zmdi zmdi-account"></i>Mã: {{detailCurrentUser.MANHANVIEN}}
+                                                        <i class="zmdi zmdi-code-smartphone"></i>Mã: {{detailCurrentUser.MANHANVIEN}}
                                                     </a>
                                                 </div>
                                                 <div class="account-dropdown__item">
                                                     <a>
-                                                        <i class="zmdi zmdi-account"></i>Tên: {{detailCurrentUser.TENNHANVIEN}}
+                                                        <i class="zmdi zmdi-reddit"></i>Tên: {{detailCurrentUser.TENNHANVIEN}}
                                                     </a>
                                                 </div>
                                                 <div class="account-dropdown__item">
                                                     <a>
-                                                        <i class="zmdi zmdi-account"></i>Điện thoại: {{detailCurrentUser.SODIENTHOAI}}
+                                                        <i class="zmdi zmdi-phone-setting"></i>Điện thoại: {{detailCurrentUser.SODIENTHOAI}}
                                                     </a>
                                                 </div>
                                                 <div class="account-dropdown__item">
                                                     <a>
-                                                        <i class="zmdi zmdi-account"></i>Giới tính: {{detailCurrentUser.GIOITINH == 1 ? 'Nam' : 'Nữ'}}
+                                                        <i class="zmdi zmdi-male-female"></i>Giới tính: {{detailCurrentUser.GIOITINH == 1 ? 'Nam' : 'Nữ'}}
                                                     </a>
                                                 </div>
                                             </div>

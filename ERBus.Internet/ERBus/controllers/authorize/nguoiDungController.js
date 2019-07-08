@@ -33,8 +33,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('NguoiDung_Ctrl', ['$scope', '$http', 'configService', 'nguoiDungService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nguoiDungNhomQuyenService','nguoiDungQuyenService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nguoiDungNhomQuyenService, nguoiDungQuyenService) {
+    app.controller('NguoiDung_Ctrl', ['$scope', '$http', 'configService', 'nguoiDungService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nguoiDungNhomQuyenService','nguoiDungQuyenService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nguoiDungNhomQuyenService, nguoiDungQuyenService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -78,7 +78,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('NguoiDung').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('NguoiDung', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {
@@ -241,14 +244,26 @@
             function loadDataCuaHang() {
                 $scope.cuaHang = [];
                 if (!tempDataService.tempData('cuaHang')) {
-                    cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
-                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
-                            tempDataService.putTempData('cuaHang', successRes.data.Data);
-                            $scope.cuaHang = successRes.data.Data;
-                        }
-                    }, function (errorRes) {
-                        console.log('errorRes', errorRes);
-                    });
+                    if (currentUser.userName === 'admin') {
+                        cuaHangService.getAllData().then(function (successRes) {
+                            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                                tempDataService.putTempData('cuaHang', successRes.data.Data);
+                                $scope.cuaHang = successRes.data.Data;
+                            }
+                        }, function (errorRes) {
+                            console.log('errorRes', errorRes);
+                        });
+                    }
+                    else {
+                        cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
+                            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                                tempDataService.putTempData('cuaHang', successRes.data.Data);
+                                $scope.cuaHang = successRes.data.Data;
+                            }
+                        }, function (errorRes) {
+                            console.log('errorRes', errorRes);
+                        });
+                    }
                 } else {
                     $scope.cuaHang = tempDataService.tempData('cuaHang');
                 }
@@ -335,14 +350,26 @@
             function loadDataCuaHang() {
                 $scope.cuaHang = [];
                 if (!tempDataService.tempData('cuaHang')) {
-                    cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
-                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
-                            tempDataService.putTempData('cuaHang', successRes.data.Data);
-                            $scope.cuaHang = successRes.data.Data;
-                        }
-                    }, function (errorRes) {
-                        console.log('errorRes', errorRes);
-                    });
+                    if (currentUser.userName === 'admin') {
+                        cuaHangService.getAllData().then(function (successRes) {
+                            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                                tempDataService.putTempData('cuaHang', successRes.data.Data);
+                                $scope.cuaHang = successRes.data.Data;
+                            }
+                        }, function (errorRes) {
+                            console.log('errorRes', errorRes);
+                        });
+                    }
+                    else {
+                        cuaHangService.getAllDataByUniCode(currentUser.unitCode).then(function (successRes) {
+                            if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                                tempDataService.putTempData('cuaHang', successRes.data.Data);
+                                $scope.cuaHang = successRes.data.Data;
+                            }
+                        }, function (errorRes) {
+                            console.log('errorRes', errorRes);
+                        });
+                    }
                 } else {
                     $scope.cuaHang = tempDataService.tempData('cuaHang');
                 }

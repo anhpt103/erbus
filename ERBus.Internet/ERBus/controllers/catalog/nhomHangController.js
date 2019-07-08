@@ -14,8 +14,8 @@
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
             },
-            buildNewCode: function () {
-                return $http.get(serviceUrl + '/BuildNewCode');
+            buildNewCode: function (unitCode) {
+                return $http.get(serviceUrl + '/BuildNewCode/' + unitCode);
             },
             post: function (data) {
                 return $http.post(serviceUrl + '/Post', data);
@@ -30,8 +30,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('NhomHang_Ctrl', ['$scope', '$http', 'configService', 'nhomHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','loaiHangService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiHangService) {
+    app.controller('NhomHang_Ctrl', ['$scope', '$http', 'configService', 'nhomHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','loaiHangService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -103,7 +103,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('NhomHang').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('NhomHang', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {
@@ -214,14 +217,16 @@
             };
         }]);
 
-    app.controller('nhomHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nhomHangService', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
+    app.controller('nhomHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'nhomHangService', 'tempDataService', '$filter', '$uibModal', '$log','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, userService) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm nhóm sản phẩm'; };
             $scope.target = {};
-            //Tạo mới mã loại
-            service.buildNewCode().then(function (successRes) {
+            //Tạo mới mã nhóm hàng
+            var currentUser = userService.GetCurrentUser();
+            var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+            service.buildNewCode(unitCodeParam).then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
                     $scope.target.MANHOM = successRes.data;
                 }

@@ -4,7 +4,6 @@ using ERBus.Entity.Database.Catalog;
 using ERBus.Service;
 using ERBus.Service.Authorize.Utils;
 using ERBus.Service.BuildQuery;
-using ERBus.Service.BuildQuery.Query.Types;
 using ERBus.Service.Catalog.LoaiHang;
 using Newtonsoft.Json.Linq;
 using System;
@@ -34,7 +33,9 @@ namespace ERBus.Api.Controllers.Catalog
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MALOAI).Select(x => new ChoiceObject { VALUE = x.MALOAI, TEXT = x.MALOAI + " | " + x.TENLOAI, DESCRIPTION = x.TENLOAI, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
+            string ParenUnitCode = _service.GetParentUnitCode(unitCode);
+            string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? unitCode : ParenUnitCode;
+            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.StartsWith(UnitCodeParam)).OrderBy(x => x.MALOAI).Select(x => new ChoiceObject { VALUE = x.MALOAI, TEXT = x.MALOAI + " | " + x.TENLOAI, DESCRIPTION = x.TENLOAI, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
             if(result.Data.Count > 0)
             {
                 result.Status = true;
@@ -69,11 +70,11 @@ namespace ERBus.Api.Controllers.Catalog
             }
         }
 
-        [Route("BuildNewCode")]
+        [Route("BuildNewCode/{UnitCode}")]
         [HttpGet]
-        public string BuildNewCode()
+        public string BuildNewCode(string UnitCode)
         {
-            return _service.BuildCode();
+            return _service.BuildCode(UnitCode);
         }
 
         [ResponseType(typeof(LOAIHANG))]
@@ -81,7 +82,7 @@ namespace ERBus.Api.Controllers.Catalog
         public async Task<IHttpActionResult> Post (LoaiHangViewModel.Dto instance)
         {
             var result = new TransferObj<LOAIHANG>();
-            var curentUnitCode = _service.GetCurrentUnitCode();
+            var CurentUnitCode = _service.GetCurrentUnitCode();
             if (instance.MALOAI == "")
             {
                 result.Status = false;
@@ -90,7 +91,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             else
             {
-                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MALOAI == instance.MALOAI && x.UNITCODE.Equals(curentUnitCode));
+                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MALOAI == instance.MALOAI && x.UNITCODE.Equals(CurentUnitCode));
                 if (exist != null)
                 {
                     result.Status = false;
@@ -100,7 +101,9 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                instance.MALOAI = _service.SaveCode();
+                string ParenUnitCode = _service.GetParentUnitCode(CurentUnitCode);
+                string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? CurentUnitCode : ParenUnitCode;
+                instance.MALOAI = _service.SaveCode(UnitCodeParam);
                 var data = Mapper.Map<LoaiHangViewModel.Dto, LOAIHANG>(instance);
                 var item = _service.Insert(data);
                 int inst = await _service.UnitOfWork.SaveAsync();
@@ -149,7 +152,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                var item = _service.Update(instance);
+                var item = _service.Update(instance, null, null, false);
                 int upd = await _service.UnitOfWork.SaveAsync();
                 if (upd > 0)
                 {

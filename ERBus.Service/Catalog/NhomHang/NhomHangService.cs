@@ -13,8 +13,8 @@ namespace ERBus.Service.Catalog.NhomHang
 {
     public interface INhomHangService : IDataInfoService<NHOMHANG>
     {
-        string BuildCode();
-        string SaveCode();
+        string BuildCode(string UnitCode);
+        string SaveCode(string UnitCodeParam);
         PagedObj<NHOMHANG> QueryPageNhomHang(string stringConnect, PagedObj<NHOMHANG> page, string strKey, string maDonVi);
     }
     public class NhomHangService : DataInfoServiceBase<NHOMHANG>, INhomHangService
@@ -24,17 +24,15 @@ namespace ERBus.Service.Catalog.NhomHang
         }
         protected override Expression<Func<NHOMHANG, bool>> GetKeyFilter(NHOMHANG instance)
         {
-            var unitCode = GetCurrentUnitCode();
-            return x => x.MANHOM == instance.MANHOM && x.UNITCODE.Equals(unitCode);
+            return x => x.MANHOM == instance.MANHOM && x.UNITCODE.StartsWith(instance.UNITCODE);
         }
 
-        public string BuildCode()
+        public string BuildCode(string UnitCode)
         {
-            var unitCode = GetCurrentUnitCode();
             var type = TypeBuildCode.N.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == UnitCode);
             if (config == null)
             {
                 config = new CAPMA
@@ -43,7 +41,7 @@ namespace ERBus.Service.Catalog.NhomHang
                     LOAIMA = type,
                     NHOMMA = "NHOMHANG",
                     GIATRI = "0",
-                    UNITCODE = unitCode
+                    UNITCODE = UnitCode
                 };
             }
             var newNumber = config.GenerateNumber();
@@ -52,13 +50,12 @@ namespace ERBus.Service.Catalog.NhomHang
             return result;
         }
 
-        public string SaveCode()
+        public string SaveCode(string UnitCodeParam)
         {
-            var unitCode = GetCurrentUnitCode();
             var type = TypeBuildCode.N.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == UnitCodeParam);
             if (config == null)
             {
                 config = new CAPMA
@@ -67,7 +64,7 @@ namespace ERBus.Service.Catalog.NhomHang
                     LOAIMA = type,
                     NHOMMA = "NHOMHANG",
                     GIATRI = "0",
-                    UNITCODE = unitCode
+                    UNITCODE = UnitCodeParam
                 };
                 result = config.GenerateNumber();
                 config.GIATRI = result;

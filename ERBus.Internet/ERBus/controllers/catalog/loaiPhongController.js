@@ -30,8 +30,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'boHangService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, boHangService) {
+    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'boHangService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, boHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -106,7 +106,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('LoaiPhong').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('LoaiPhong', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

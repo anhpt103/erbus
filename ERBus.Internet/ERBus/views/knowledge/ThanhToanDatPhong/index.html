@@ -35,8 +35,8 @@
                                 </a>
                             </li>
                             <li class="has-sub">
-                                <a class="js-arrow" ng-repeat="item in ::listBookingRoom | orderBy:'TENPHONG':false track by $index " ng-click="dischargeRoom(item);" ng-class="{selected: item.MA_DATPHONG === selectedMaDatPhong}">
-                                    <i class="{{::item.ICON}}"></i>{{::item.TENPHONG}} - Tầng {{::item.TANG}}
+                                <a class="js-arrow" ng-repeat="item in listBookingRoom | orderBy:'TENPHONG':false track by $index " ng-click="dischargeRoom(item);" ng-class="{selected: item.MA_DATPHONG === selectedMaDatPhong}">
+                                    <i class="{{item.ICON}}"></i>{{item.TENPHONG}} - Tầng {{item.TANG}}
                                 </a>
                             </li>
                         </ul>

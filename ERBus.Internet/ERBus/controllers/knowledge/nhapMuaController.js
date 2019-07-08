@@ -36,8 +36,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('NhapMua_Ctrl', ['$scope', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nhaCungCapService', 'thueService', 'khoHangService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nhaCungCapService, thueService, khoHangService) {
+    app.controller('NhapMua_Ctrl', ['$scope', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nhaCungCapService', 'thueService', 'khoHangService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nhaCungCapService, thueService, khoHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -146,7 +146,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('NhapMua').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('NhapMua', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

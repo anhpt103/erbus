@@ -17,6 +17,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
         ThanhToanDatPhongViewModel.Dto GetMerchandiseInBundleGoods(string unitCode, string stringConnect, DatPhongViewModel.DatPhongPayDto data);
         THANHTOAN_DATPHONG InsertThanhToan(ThanhToanDatPhongViewModel.Dto instance);
         bool UpdateTrangThaiDatPhong(THANHTOAN_DATPHONG instance);
+        bool Approval(string ID, string StringConnection, string UnitCode);
     }
     public class ThanhToanDatPhongService : DataInfoServiceBase<THANHTOAN_DATPHONG>, IThanhToanDatPhongService
     {
@@ -25,13 +26,69 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
 
         }
 
+        public bool Approval(string ID, string StringConnection, string UnitCode)
+        {
+            if (string.IsNullOrEmpty(ID)) return false;
+            var result = false;
+            var period = GetLastestPeriod(UnitCode, StringConnection);
+            if (period != null && period.KY > 0 && period.NAM > 0)
+            {
+                var TableName = Get_TableName_XNT(period.NAM, period.KY);
+                using (OracleConnection connection = new OracleConnection(StringConnection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            OracleTransaction transaction;
+                            OracleCommand command = new OracleCommand();
+                            command.Connection = connection;
+                            // Start a local transaction
+                            transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+                            // Assign transaction object for a pending local transaction
+                            command.Transaction = transaction;
+                            try
+                            {
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.CommandText = "ERBUS.XUATNHAPTON.XNT_THANHTOAN_DATPHONG";
+                                command.Parameters.Add("P_TABLENAME", OracleDbType.Varchar2, 50, TableName, ParameterDirection.Input);
+                                command.Parameters.Add("P_NAM", OracleDbType.Int32, period.NAM, ParameterDirection.Input);
+                                command.Parameters.Add("P_KY", OracleDbType.Int32, period.KY, ParameterDirection.Input);
+                                command.Parameters.Add("P_ID", OracleDbType.Varchar2, 50, ID, ParameterDirection.Input);
+                                command.ExecuteNonQuery();
+                                transaction.Commit();
+                                result = true;
+                            }
+                            catch
+                            {
+                                transaction.Rollback();
+                                result = false;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        result = false;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        connection.Dispose();
+                    }
+                }
+                result = true;
+            }
+            return result;
+        }
+
         public ThanhToanDatPhongViewModel.Dto GetMerchandiseInBundleGoods(string unitCode, string stringConnect, DatPhongViewModel.DatPhongPayDto data)
         {
             ThanhToanDatPhongViewModel.Dto thanhToanDto = new ThanhToanDatPhongViewModel.Dto();
             List<ThanhToanDatPhongViewModel.DtoDetail> listDetails = new List<ThanhToanDatPhongViewModel.DtoDetail>();
             using (OracleConnection connection = new OracleConnection(stringConnect))
             {
-                if(data != null)
+                if (data != null)
                 {
                     try
                     {
@@ -167,7 +224,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             var result = false;
             DateTime ngayDatPhong = new DateTime(instance.NGAY_DATPHONG.Year, instance.NGAY_DATPHONG.Month, instance.NGAY_DATPHONG.Day, 0, 0, 0);
             var phieuDatPhong = UnitOfWork.Repository<DATPHONG>().DbSet.FirstOrDefault(x => x.MA_DATPHONG.Equals(instance.MA_DATPHONG) && x.MAPHONG.Equals(instance.MAPHONG));
-            if(phieuDatPhong != null)
+            if (phieuDatPhong != null)
             {
                 var LichSuDatPhong = Mapper.Map<DATPHONG, LICHSU_DATPHONG>(phieuDatPhong);
                 UnitOfWork.Repository<LICHSU_DATPHONG>().Insert(LichSuDatPhong);

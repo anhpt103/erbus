@@ -34,7 +34,7 @@ namespace ERBus.Api.Controllers.Authorize
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            result.Data = _service.Repository.DbSet.Where(x => x.MA_CUAHANG.StartsWith(unitCode)).OrderBy(x => x.MA_CUAHANG).Select(x => new ChoiceObject { VALUE = x.MA_CUAHANG, TEXT = x.MA_CUAHANG + " | " + x.TEN_CUAHANG, DESCRIPTION = x.TEN_CUAHANG, EXTEND_VALUE = x.DIACHI, ID = x.ID }).ToList();
+            result.Data = _service.Repository.DbSet.OrderBy(x => x.MA_CUAHANG).Select(x => new ChoiceObject { VALUE = x.MA_CUAHANG, TEXT = x.MA_CUAHANG + " | " + x.TEN_CUAHANG, DESCRIPTION = x.TEN_CUAHANG, EXTEND_VALUE = x.DIACHI, ID = x.ID }).ToList();
             if (result.Data.Count > 0)
             {
                 result.Status = true;

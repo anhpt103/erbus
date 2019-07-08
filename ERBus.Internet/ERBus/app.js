@@ -544,12 +544,10 @@ define([
     });
 
     //Auth - check role
-    app.service('securityService', ['$http', 'configService', 'userService', function ($http, configService, userService) {
-        var currentUser = userService.GetCurrentUser();
-        var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+    app.service('securityService', ['$http', 'configService', function ($http, configService) {
         var result = {
-            getAccessList: function (machucnang) {
-                return $http.get(configService.rootUrlWebApi + '/Authorize/Access/GetAccesslist/' + machucnang + '/' + currentUser.userName + '/' + unitCodeParam);
+            getAccessList: function (machucnang, userName, unitCodeParam) {
+                return $http.get(configService.rootUrlWebApi + '/Authorize/Access/GetAccesslist/' + machucnang + '/' + userName + '/' + unitCodeParam);
             }
         };
         return result;
@@ -666,7 +664,7 @@ define([
 		                    var deferred = $q.defer();
 		                    require([state.moduleUrl], function (module) {
 		                        deferred.resolve();
-		                        $ocLazyLoad.inject(module.name);
+		                        if (module) $ocLazyLoad.inject(module.name);
 		                    });
 		                    return deferred.promise;
 		                }]

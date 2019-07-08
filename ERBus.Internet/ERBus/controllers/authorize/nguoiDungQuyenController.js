@@ -44,12 +44,6 @@
                         menuService.getAllQuyenMenu(targetData.USERNAME).then(function (successRes) {
                             if (successRes && successRes.status == 200 && successRes.data.Status && successRes.data.Data) {
                                 $scope.listMenu = successRes.data.Data;
-                            } else {
-                                Lobibox.notify('error', {
-                                    title: 'Xảy ra lỗi',
-                                    msg: successRes.data.Message,
-                                    delay: 3000
-                                });
                             }
                         }, function (errorRes) {
                             Lobibox.notify('error', {

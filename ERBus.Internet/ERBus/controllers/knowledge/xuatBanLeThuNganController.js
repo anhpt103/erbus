@@ -20,8 +20,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('XuatBanLeThuNgan_Ctrl', ['$scope', '$http', 'configService', 'xuatBanLeThuNganService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'khachHangService', 'thueService', 'khoHangService','donViTinhService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, khachHangService, thueService, khoHangService, donViTinhService) {
+    app.controller('XuatBanLeThuNgan_Ctrl', ['$scope', '$http', 'configService', 'xuatBanLeThuNganService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'khachHangService', 'thueService', 'khoHangService','donViTinhService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, khachHangService, thueService, khoHangService, donViTinhService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -149,7 +149,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('XuatBanLeThuNgan').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('XuatBanLeThuNgan', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

@@ -30,8 +30,9 @@ namespace ERBus.Api.Controllers.Knowledge
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            var dayOfTenBefore = DateTime.Now.AddDays(-10);
-            result.Data = _service.Repository.DbSet.Where(x => x.UNITCODE.Equals(unitCode) && x.NGAY_GIAODICH > dayOfTenBefore).OrderByDescending(x => x.NGAY_GIAODICH).Select(x => new ChoiceObject { VALUE = x.MA_GIAODICH, TEXT = x.MA_GIAODICH + " | " + x.LOAI_GIAODICH, DESCRIPTION = x.LOAI_GIAODICH, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
+            //var dayOfTenBefore = DateTime.Now.AddDays(-10);
+            //result.Data = _service.Repository.DbSet.Where(x => x.UNITCODE.Equals(unitCode) && x.NGAY_GIAODICH > dayOfTenBefore).OrderByDescending(x => x.NGAY_GIAODICH).Select(x => new ChoiceObject { VALUE = x.MA_GIAODICH, TEXT = x.MA_GIAODICH + " | " + x.LOAI_GIAODICH, DESCRIPTION = x.LOAI_GIAODICH, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
+            result.Data = _service.Repository.DbSet.Where(x => x.UNITCODE.Equals(unitCode)).OrderByDescending(x => x.NGAY_GIAODICH).Select(x => new ChoiceObject { VALUE = x.MA_GIAODICH, TEXT = x.MA_GIAODICH , DESCRIPTION = x.LOAI_GIAODICH, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
             if (result.Data.Count > 0)
             {
                 result.Status = true;

@@ -34,7 +34,9 @@ namespace ERBus.Api.Controllers.Catalog
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MALOAI).Select(x => new ChoiceObject { VALUE = x.MANHOM, TEXT = x.MANHOM + " | " + x.TENNHOM, DESCRIPTION = x.TENNHOM, PARENT = x.MALOAI, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
+            string ParenUnitCode = _service.GetParentUnitCode(unitCode);
+            string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? unitCode : ParenUnitCode;
+            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.StartsWith(UnitCodeParam)).OrderBy(x => x.MALOAI).Select(x => new ChoiceObject { VALUE = x.MANHOM, TEXT = x.MANHOM + " | " + x.TENNHOM, DESCRIPTION = x.TENNHOM, PARENT = x.MALOAI, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
             if (result.Data.Count > 0)
             {
                 result.Status = true;
@@ -52,7 +54,9 @@ namespace ERBus.Api.Controllers.Catalog
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.MALOAI.Equals(maLoaiSelected) && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MALOAI).Select(x => new ChoiceObject { VALUE = x.MANHOM, TEXT = x.MANHOM + " | " + x.TENNHOM, DESCRIPTION = x.TENNHOM, PARENT = x.MALOAI, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
+            string ParenUnitCode = _service.GetParentUnitCode(unitCode);
+            string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? unitCode : ParenUnitCode;
+            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.MALOAI.Equals(maLoaiSelected) && x.UNITCODE.StartsWith(UnitCodeParam)).OrderBy(x => x.MALOAI).Select(x => new ChoiceObject { VALUE = x.MANHOM, TEXT = x.MANHOM + " | " + x.TENNHOM, DESCRIPTION = x.TENNHOM, PARENT = x.MALOAI, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
             if (result.Data.Count > 0)
             {
                 result.Status = true;
@@ -87,11 +91,11 @@ namespace ERBus.Api.Controllers.Catalog
             }
         }
 
-        [Route("BuildNewCode")]
+        [Route("BuildNewCode/{UnitCode}")]
         [HttpGet]
-        public string BuildNewCode()
+        public string BuildNewCode(string UnitCode)
         {
-            return _service.BuildCode();
+            return _service.BuildCode(UnitCode);
         }
 
         [ResponseType(typeof(NHOMHANG))]
@@ -99,7 +103,7 @@ namespace ERBus.Api.Controllers.Catalog
         public async Task<IHttpActionResult> Post (NhomHangViewModel.Dto instance)
         {
             var result = new TransferObj<NHOMHANG>();
-            var curentUnitCode = _service.GetCurrentUnitCode();
+            var CurentUnitCode = _service.GetCurrentUnitCode();
             if (instance.MANHOM == "")
             {
                 result.Status = false;
@@ -108,7 +112,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             else
             {
-                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MANHOM == instance.MANHOM && x.UNITCODE.Equals(curentUnitCode));
+                var exist = _service.Repository.DbSet.FirstOrDefault(x => x.MANHOM == instance.MANHOM && x.UNITCODE.Equals(CurentUnitCode));
                 if (exist != null)
                 {
                     result.Status = false;
@@ -118,7 +122,9 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                instance.MANHOM = _service.SaveCode();
+                string ParenUnitCode = _service.GetParentUnitCode(CurentUnitCode);
+                string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? CurentUnitCode : ParenUnitCode;
+                instance.MANHOM = _service.SaveCode(UnitCodeParam);
                 var data = Mapper.Map<NhomHangViewModel.Dto, NHOMHANG>(instance);
                 var item = _service.Insert(data);
                 int inst = await _service.UnitOfWork.SaveAsync();
@@ -167,7 +173,7 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                var item = _service.Update(instance);
+                var item = _service.Update(instance, null, null, false);
                 int upd = await _service.UnitOfWork.SaveAsync();
                 if (upd > 0)
                 {

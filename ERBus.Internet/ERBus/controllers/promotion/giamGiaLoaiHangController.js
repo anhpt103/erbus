@@ -33,8 +33,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('GiamGiaLoaiHang_Ctrl', ['$scope', '$http', 'configService', 'giamGiaLoaiHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'khoHangService','loaiHangService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, khoHangService, loaiHangService) {
+    app.controller('GiamGiaLoaiHang_Ctrl', ['$scope', '$http', 'configService', 'giamGiaLoaiHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'khoHangService','loaiHangService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, khoHangService, loaiHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -124,7 +124,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('GiamGiaLoaiHang').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('GiamGiaLoaiHang', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

@@ -28,8 +28,8 @@
             postQueryInventory: function (data) {
                 return $http.post(serviceUrl + '/PostQueryInventory', data);
             },
-            buildNewCode: function (maLoaiSelected) {
-                return $http.get(serviceUrl + '/BuildNewCode/' + maLoaiSelected);
+            buildNewCode: function (maLoaiSelected, unitCode) {
+                return $http.get(serviceUrl + '/BuildNewCode/' + maLoaiSelected + '/' + unitCode);
             },
             post: function (data) {
                 return $http.post(serviceUrl + '/Post', data);
@@ -258,7 +258,9 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('MatHang').then(function (successRes) {
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('MatHang', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {
@@ -424,10 +426,11 @@
             //end read data from Excel file
         }]);
 
-    app.controller('matHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'matHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'nhomHangService', 'thueService', '$timeout', 'Upload', 'thamSoHeThongService',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, nhomHangService, thueService, $timeout, upload, thamSoHeThongService) {
+    app.controller('matHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'matHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'nhomHangService', 'thueService', '$timeout', 'Upload', 'thamSoHeThongService','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, nhomHangService, thueService, $timeout, upload, thamSoHeThongService, userService) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
+            var currentUser = userService.GetCurrentUser();
             $scope.title = function () { return 'Thêm mặt hàng'; };
             $scope.target = {};
             $scope.target.GIAMUA = 0;
@@ -469,7 +472,8 @@
             $scope.changeMaLoai = function (maLoaiSelected) {
                 $scope.listMaNhom = [];
                 if (maLoaiSelected) {
-                    service.buildNewCode(maLoaiSelected).then(function (successRes) {
+                    var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                    service.buildNewCode(maLoaiSelected, unitCodeParam).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data) {
                             $scope.target.MAHANG = successRes.data;
                         }
@@ -1057,9 +1061,10 @@
                 $uibModalInstance.close();
             };
         }]);
-    app.controller('matHangEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'matHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', 'nhomHangService', 'thueService', '$timeout', 'Upload', 'thamSoHeThongService',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, nhomHangService, thueService, $timeout, upload, thamSoHeThongService) {
+    app.controller('matHangEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'matHangService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', 'nhomHangService', 'thueService', '$timeout', 'Upload', 'thamSoHeThongService','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, nhomHangService, thueService, $timeout, upload, thamSoHeThongService, userService) {
             $scope.config = angular.copy(configService);
+            var currentUser = userService.GetCurrentUser();
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
             $scope.target = angular.copy(targetData);
@@ -1089,7 +1094,8 @@
 
             $scope.listMaNhom = [];
             if ($scope.target.MALOAI) {
-                service.buildNewCode($scope.target.MALOAI).then(function (successRes) {
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                service.buildNewCode($scope.target.MALOAI, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status === 200 && successRes.data) {
                         $scope.target.MAHANG = successRes.data;
                     }

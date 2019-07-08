@@ -32,6 +32,11 @@
     app.controller('Header_Ctrl', ['$scope', '$uibModal', 'configService', '$state', 'accountService', '$log', 'userService', 'menuService', 'nguoiDungService',
     function ($scope, $uibModal, configService, $state, accountService, $log, userService, menuService, nguoiDungService) {
         $scope.rootUrlHome = configService.rootUrl;
+        $scope.currentUser = userService.GetCurrentUser();
+        //khởi tạo configService UNITCODE; PARENT_UNITCODE
+        configService.filterDefault.UNITCODE = $scope.currentUser.unitCode;
+        configService.filterDefault.PARENT_UNITCODE = $scope.currentUser.parentUnitCode;
+        //end
         function treeify(list, idAttr, parentAttr, childrenAttr) {
             if (!idAttr) idAttr = 'VALUE';
             if (!parentAttr) parentAttr = 'PARENT';
@@ -60,7 +65,7 @@
             $state.go('home');
         };
         function loadUser() {
-            $scope.currentUser = userService.GetCurrentUser();
+            
             if (!$scope.currentUser) {
                 $state.go('login');
             } else {
@@ -73,6 +78,12 @@
             }
         };
         loadUser();
+
+        $scope.showInfoUser = false;
+        $scope.detailInfoUser = function () {
+            if ($scope.showInfoUser) $scope.showInfoUser = false;
+            else $scope.showInfoUser = true;
+        }
 
         $scope.detailAccount = function (currentUser) {
             nguoiDungService.getDetails(currentUser.id).then(function (response) {

@@ -105,8 +105,10 @@ namespace ERBus.Api.Controllers.Knowledge
                 int inst = await _service.UnitOfWork.SaveAsync();
                 if (inst > 0)
                 {
+                    //TRỪ TỒN PHIẾU ĐẶT PHÒNG
+                    _service.Approval(item.ID, _service.GetConnectionString(), curentUnitCode);
                     //Chuyển phiếu đặt phòng về bảng lịch sử và xóa phiếu đặt phòng vừa thanh toán
-                    if(_service.UpdateTrangThaiDatPhong(item))
+                    if (_service.UpdateTrangThaiDatPhong(item))
                     {
                         result.Status = true;
                         result.Data = item;

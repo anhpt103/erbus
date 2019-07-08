@@ -33,7 +33,9 @@ namespace ERBus.Api.Controllers.Catalog
         {
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
-            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MANHACUNGCAP).Select(x => new ChoiceObject { VALUE = x.MANHACUNGCAP, TEXT = x.MANHACUNGCAP + " | " + x.TENNHACUNGCAP, DESCRIPTION = x.TENNHACUNGCAP, EXTEND_VALUE = x.DIACHI, PARENT = x.DIENTHOAI, ID = x.ID }).ToList();
+            string ParenUnitCode = _service.GetParentUnitCode(unitCode);
+            string UnitCodeParam = string.IsNullOrEmpty(ParenUnitCode) ? unitCode : ParenUnitCode;
+            result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.StartsWith(UnitCodeParam)).OrderBy(x => x.MANHACUNGCAP).Select(x => new ChoiceObject { VALUE = x.MANHACUNGCAP, TEXT = x.MANHACUNGCAP + " | " + x.TENNHACUNGCAP, DESCRIPTION = x.TENNHACUNGCAP, EXTEND_VALUE = x.DIACHI, PARENT = x.DIENTHOAI, ID = x.ID }).ToList();
             if (result.Data.Count > 0)
             {
                 result.Status = true;

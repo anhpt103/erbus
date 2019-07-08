@@ -16,8 +16,8 @@ namespace ERBus.Service.Catalog.MatHang
 {
     public interface IMatHangService : IDataInfoService<MATHANG>
     {
-        string BuildCode(string maLoaiSelected);
-        string SaveCode(string maLoaiSelected);
+        string BuildCode(string maLoaiSelected, string UnitCode);
+        string SaveCode(string maLoaiSelected, string UnitCodeParam);
         MatHangViewModel.InfoUpload UploadImage(bool isAvatar);
         MATHANG InsertDto(MatHangViewModel.Dto instance);
         MATHANG UpdateDto(MatHangViewModel.Dto instance);
@@ -34,19 +34,18 @@ namespace ERBus.Service.Catalog.MatHang
         public MatHangService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
         protected override Expression<Func<MATHANG, bool>> GetKeyFilter(MATHANG instance)
         {
-            var unitCode = GetCurrentUnitCode();
-            return x => x.MAHANG == instance.MAHANG && x.UNITCODE.Equals(unitCode);
+            return x => x.MAHANG == instance.MAHANG && x.UNITCODE.StartsWith(instance.UNITCODE);
         }
 
-        public string BuildCode(string maLoaiSelected)
+        public string BuildCode(string maLoaiSelected, string UnitCode)
         {
-            var unitCode = GetCurrentUnitCode();
             var type = TypeBuildCode.MATHANG.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.NHOMMA == maLoaiSelected && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.NHOMMA == maLoaiSelected && x.UNITCODE == UnitCode);
             if (config == null)
             {
                 config = new CAPMA
@@ -55,7 +54,7 @@ namespace ERBus.Service.Catalog.MatHang
                     LOAIMA = type,
                     NHOMMA = maLoaiSelected,
                     GIATRI = "000000",
-                    UNITCODE = unitCode
+                    UNITCODE = UnitCode
                 };
             }
             var newNumber = config.GenerateNumber();
@@ -64,13 +63,12 @@ namespace ERBus.Service.Catalog.MatHang
             return result;
         }
 
-        public string SaveCode(string maLoaiSelected)
+        public string SaveCode(string maLoaiSelected, string UnitCodeParam)
         {
-            var unitCode = GetCurrentUnitCode();
             var type = TypeBuildCode.MATHANG.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.NHOMMA == maLoaiSelected && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.NHOMMA == maLoaiSelected && x.UNITCODE == UnitCodeParam);
             if (config == null)
             {
                 config = new CAPMA
@@ -79,7 +77,7 @@ namespace ERBus.Service.Catalog.MatHang
                     LOAIMA = type,
                     NHOMMA = maLoaiSelected,
                     GIATRI = "000000",
-                    UNITCODE = unitCode
+                    UNITCODE = UnitCodeParam
                 };
                 result = config.GenerateNumber();
                 config.GIATRI = result;
@@ -464,7 +462,6 @@ namespace ERBus.Service.Catalog.MatHang
         public MATHANG UpdateDto(MatHangViewModel.Dto instance)
         {
             MATHANG result = new MATHANG();
-            string unitCode = GetCurrentUnitCode();
             MATHANG existItem = FindById(instance.ID);
             if (existItem == null)
             {
@@ -479,7 +476,7 @@ namespace ERBus.Service.Catalog.MatHang
                 matHang.I_CREATE_DATE = existItem.I_CREATE_DATE;
                 matHang.I_UPDATE_BY = GetClaimsPrincipal().Identity.Name;
                 matHang.I_UPDATE_DATE = DateTime.Now;
-                matHang.UNITCODE = unitCode;
+                matHang.UNITCODE = instance.UNITCODE;
                 if (!string.IsNullOrEmpty(instance.AVATAR_NAME) && !string.IsNullOrEmpty(matHang.DUONGDAN))
                 {
                     FileStream fs = new FileStream(PhysicalPathUploadFile() + instance.MAHANG + "\\" + instance.AVATAR_NAME, FileMode.Open, FileAccess.Read);
@@ -488,7 +485,7 @@ namespace ERBus.Service.Catalog.MatHang
                     fs.Close();
                     matHang.AVATAR = ImageBytes;
                 }
-                var matHangGia = UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(existItem.MAHANG) && x.UNITCODE.Equals(unitCode) && x.TRANGTHAI == (int)TypeState.USED);
+                var matHangGia = UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(existItem.MAHANG) && x.UNITCODE.Equals(instance.UNITCODE) && x.TRANGTHAI == (int)TypeState.USED);
                 if (matHangGia != null)
                 {
                     if (matHang.TRANGTHAI == 0) matHangGia.TRANGTHAI = 0;
@@ -502,7 +499,7 @@ namespace ERBus.Service.Catalog.MatHang
                     matHangGia.TYLE_LAIBUON = instance.TYLE_LAIBUON;
                     matHangGia.ObjectState = ObjectState.Modified;
                 }
-                result = Update(matHang);
+                result = Update(matHang, null, null, false);
                 //UnitOfWork.Repository<MATHANG_GIA>().Update(matHangGia);
             }
             return result;

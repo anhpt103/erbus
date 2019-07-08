@@ -36,8 +36,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('KyKeToan_Ctrl', ['$scope', '$http', 'configService', 'kyKeToanService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService) {
+    app.controller('KyKeToan_Ctrl', ['$scope', '$http', 'configService', 'kyKeToanService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -83,7 +83,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('KyKeToan').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('KyKeToan', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

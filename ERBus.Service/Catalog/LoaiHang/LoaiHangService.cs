@@ -13,8 +13,8 @@ namespace ERBus.Service.Catalog.LoaiHang
 {
     public interface ILoaiHangService : IDataInfoService<LOAIHANG>
     {
-        string BuildCode();
-        string SaveCode();
+        string BuildCode(string UnitCode);
+        string SaveCode(string UnitCodeParam);
         PagedObj<LOAIHANG> QueryPageLoaiHang(string stringConnect, PagedObj<LOAIHANG> page, string strKey, string maDonVi);
     }
     public class LoaiHangService : DataInfoServiceBase<LOAIHANG>, ILoaiHangService
@@ -24,17 +24,16 @@ namespace ERBus.Service.Catalog.LoaiHang
         }
         protected override Expression<Func<LOAIHANG, bool>> GetKeyFilter(LOAIHANG instance)
         {
-            var unitCode = GetCurrentUnitCode();
-            return x => x.MALOAI == instance.MALOAI && x.UNITCODE.Equals(unitCode);
+            return x => x.MALOAI == instance.MALOAI && x.UNITCODE.StartsWith(instance.UNITCODE);
         }
 
-        public string BuildCode()
+        public string BuildCode(string UnitCode)
         {
-            var unitCode = GetCurrentUnitCode();
+            if (string.IsNullOrEmpty(UnitCode)) return "";
             var type = TypeBuildCode.LOAIHANG.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == UnitCode);
             if (config == null)
             {
                 config = new CAPMA
@@ -43,7 +42,7 @@ namespace ERBus.Service.Catalog.LoaiHang
                     LOAIMA = type,
                     NHOMMA = "LOAIHANG",
                     GIATRI = ((char)64).ToString(),
-                    UNITCODE = unitCode
+                    UNITCODE = UnitCode
                 };
             }
             result = config.GenerateChar();
@@ -51,13 +50,13 @@ namespace ERBus.Service.Catalog.LoaiHang
             return result;
         }
 
-        public string SaveCode()
+        public string SaveCode(string UnitCodeParam)
         {
-            var unitCode = GetCurrentUnitCode();
+            if (string.IsNullOrEmpty(UnitCodeParam)) return "";
             var type = TypeBuildCode.LOAIHANG.ToString();
             var result = "";
             var idRepo = UnitOfWork.Repository<CAPMA>();
-            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == unitCode);
+            var config = idRepo.DbSet.FirstOrDefault(x => x.LOAIMA == type && x.UNITCODE == UnitCodeParam);
             if (config == null)
             {
                 config = new CAPMA
@@ -66,7 +65,7 @@ namespace ERBus.Service.Catalog.LoaiHang
                     LOAIMA = type,
                     NHOMMA = "LOAIHANG",
                     GIATRI = ((char)64).ToString(),
-                    UNITCODE = unitCode
+                    UNITCODE = UnitCodeParam
                 };
                 result = config.GenerateChar();
                 config.GIATRI = result;

@@ -104,6 +104,7 @@ namespace ERBus.Service.Catalog.MatHang
             public decimal GIABANBUON_VAT { get; set; }
             public decimal TYLE_LAILE { get; set; }
             public decimal TYLE_LAIBUON { get; set; }
+            public string UNITCODE { get; set; }
         }
         public class PARAM_NHAPMUA_OBJ
         {

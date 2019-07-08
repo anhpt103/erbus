@@ -52,9 +52,10 @@ namespace ERBus.Api.Controllers.Authorize
             if (!string.IsNullOrEmpty(userName))
             {
                 var unitCode = _service.GetCurrentUnitCode();
-                var data = _service.Repository.DbSet.FirstOrDefault(x=>x.USERNAME.Equals(userName.Trim()));
+                var data = _service.Repository.DbSet.FirstOrDefault(x => x.USERNAME.Equals(userName.Trim()));
                 if (data != null) result = true;
-            } else result = true;
+            }
+            else result = true;
             return result;
         }
 
@@ -74,9 +75,22 @@ namespace ERBus.Api.Controllers.Authorize
                 Skip = paged.FromItem - 1,
                 Filter = new QueryFilterLinQ()
                 {
-                    Property = ClassHelper.GetProperty(() => new NGUOIDUNG().UNITCODE),
-                    Method = FilterMethod.StartsWith,
-                    Value = unitCode
+                    SubFilters = new List<IQueryFilter>()
+                    {
+                        new QueryFilterLinQ()
+                        {
+                            Property = ClassHelper.GetProperty(() => new NGUOIDUNG().UNITCODE),
+                            Method = FilterMethod.StartsWith,
+                            Value = unitCode
+                        },
+                        new QueryFilterLinQ()
+                        {
+                            Property = ClassHelper.GetProperty(() => new NGUOIDUNG().USERNAME),
+                            Method = FilterMethod.NotEqualTo,
+                            Value = "admin"
+                        }
+                    },
+                    Method = FilterMethod.And
                 },
                 Orders = new List<IQueryOrder>()
                 {
@@ -244,7 +258,7 @@ namespace ERBus.Api.Controllers.Authorize
                         result.Message = "Thao tác không thành công";
                     }
                 }
-                
+
             }
             catch (Exception e)
             {

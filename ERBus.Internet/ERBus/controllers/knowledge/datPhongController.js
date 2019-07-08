@@ -27,8 +27,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce','$timeout',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce, $timeout) {
+    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce','$timeout','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce, $timeout, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -129,7 +129,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('DatPhong').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('DatPhong', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {

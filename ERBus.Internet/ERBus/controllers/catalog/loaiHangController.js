@@ -11,8 +11,8 @@
             postQuery: function (data) {
                 return $http.post(serviceUrl + '/PostQuery', data);
             },
-            buildNewCode: function () {
-                return $http.get(serviceUrl + '/BuildNewCode');
+            buildNewCode: function (unitCode) {
+                return $http.get(serviceUrl + '/BuildNewCode/' + unitCode);
             },
             post: function (data) {
                 return $http.post(serviceUrl + '/Post', data);
@@ -27,8 +27,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('LoaiHang_Ctrl', ['$scope', '$http', 'configService', 'loaiHangService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','$rootScope',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, $rootScope) {
+    app.controller('LoaiHang_Ctrl', ['$scope', '$http', 'configService', 'loaiHangService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','$rootScope','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, $rootScope, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -72,7 +72,10 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('LoaiHang').then(function (successRes) {
+                var currentUser = userService.GetCurrentUser();
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('LoaiHang', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {
@@ -182,14 +185,16 @@
             };
         }]);
 
-    app.controller('loaiHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiHangService', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
+    app.controller('loaiHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiHangService', 'tempDataService', '$filter', '$uibModal', '$log','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, userService) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm loại sản phẩm'; };
             $scope.target = {};
             //Tạo mới mã loại
-            service.buildNewCode().then(function (successRes) {
+            var currentUser = userService.GetCurrentUser();
+            var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+            service.buildNewCode(unitCodeParam).then(function (successRes) {
                 if (successRes && successRes.status == 200 && successRes.data) {
                     $scope.target.MALOAI = successRes.data;
                 }

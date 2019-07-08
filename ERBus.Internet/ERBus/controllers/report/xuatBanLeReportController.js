@@ -39,7 +39,9 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('BaoCaoXuatBanLe').then(function (successRes) {
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('BaoCaoXuatBanLe', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {
@@ -248,7 +250,7 @@
                         angular.forEach(updatedData, function (v, k) {
                             var obj = {
                                 VALUE: v.MA_GIAODICH,
-                                TEXT: v.LOAI_GIAODICH + ' | ' + v.MA_GIAODICH,
+                                TEXT: v.MA_GIAODICH,
                                 DESCRIPTION: v.MA_GIAODICH,
                                 ID: v.ID
                             };
@@ -651,6 +653,10 @@
             if (paramsReport.MAHANG && paramsReport.MAHANG.length > 0)
                 paramsReport.MAHANG = convertArrayToString(paramsReport.MAHANG);
             else paramsReport.MAHANG = '';
+
+            if (paramsReport.MA_GIAODICH && paramsReport.MA_GIAODICH.length > 0)
+                paramsReport.MA_GIAODICH = convertArrayToString(paramsReport.MA_GIAODICH);
+            else paramsReport.MA_GIAODICH = '';
             $scope.report = {
                 name: "ERBus.Api.Reports.XuatBanLe.XUATBANLE_TRONGNGAY,ERBus.Api",
                 title: "Báo cáo xuất bán lẻ tổng hợp",
@@ -701,6 +707,10 @@
             if (paramsReport.MAHANG && paramsReport.MAHANG.length > 0)
                 paramsReport.MAHANG = convertArrayToString(paramsReport.MAHANG);
             else paramsReport.MAHANG = '';
+
+            if (paramsReport.MA_GIAODICH && paramsReport.MA_GIAODICH.length > 0)
+                paramsReport.MA_GIAODICH = convertArrayToString(paramsReport.MA_GIAODICH);
+            else paramsReport.MA_GIAODICH = '';
             $scope.report = {
                 name: "ERBus.Api.Reports.XuatBanLe.XBANLE_TONGHOP,ERBus.Api",
                 title: "Báo cáo xuất bán lẻ tổng hợp",
@@ -751,6 +761,10 @@
             if (paramsReport.MAHANG && paramsReport.MAHANG.length > 0)
                 paramsReport.MAHANG = convertArrayToString(paramsReport.MAHANG);
             else paramsReport.MAHANG = '';
+
+            if (paramsReport.MA_GIAODICH && paramsReport.MA_GIAODICH.length > 0)
+                paramsReport.MA_GIAODICH = convertArrayToString(paramsReport.MA_GIAODICH);
+            else paramsReport.MA_GIAODICH = '';
             $scope.report = {
                 name: "ERBus.Api.Reports.XuatBanLe.XBANLE_CHITIET,ERBus.Api",
                 title: "Báo cáo xuất bán lẻ chi tiết",

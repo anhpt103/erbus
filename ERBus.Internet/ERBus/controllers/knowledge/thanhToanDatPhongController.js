@@ -118,7 +118,9 @@
             };
             //check authorize
             function loadAccessList() {
-                securityService.getAccessList('ThanhToanDatPhong').then(function (successRes) {
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('ThanhToanDatPhong', userName, unitCodeParam).then(function (successRes) {
                     if (successRes && successRes.status == 200 && successRes.data) {
                         $scope.accessList = successRes.data;
                         if (!$scope.accessList.XEM) {
@@ -321,6 +323,13 @@
 
             $scope.payRoom = function () {
                 if ($scope.data && $scope.data.MAPHONG && !$scope.modalOpen) {
+                    if ($scope.data.DtoDetails.length === 0) {
+                        Lobibox.notify('warning', {
+                            position: 'bottom left',
+                            msg: 'Không có dòng hàng! Không thể thanh toán'
+                        });
+                        return;
+                    }
                     var dataPost = angular.copy($scope.data);
                     dataPost.DtoDetails = [];
                     angular.forEach($scope.data.DtoDetails, function (v, k) {
@@ -696,32 +705,33 @@
            };
 
            $scope.save = function () {
-               sendGmail();
-               //service.post($scope.target).then(function (successRes) {
-               //    $scope.isValid = true;
-               //    if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
-               //        Lobibox.notify('success', {
-               //            title: 'Thông báo',
-               //            width: 400,
-               //            msg: successRes.data.Message,
-               //            delay: 1500
-               //        });
-               //        isPayed = true;
-               //        $scope.isValid = false;
-               //        $uibModalInstance.close(isPayed);
-               //    } else {
-               //        Lobibox.notify('error', {
-               //            title: 'Xảy ra lỗi',
-               //            msg: 'Đã xảy ra lỗi! Thao tác không thành công',
-               //            delay: 3000
-               //        });
-               //        $scope.isValid = false;
-               //    }
-               //},
-               //function (errorRes) {
-               //    console.log('errorRes', errorRes);
-               //    $scope.isValid = false;
-               //});
+               //sendGmail();
+               $scope.target.NGAY_DATPHONG = $scope.config.moment($scope.target.NGAY_DATPHONG).format();
+               service.post($scope.target).then(function (successRes) {
+                   $scope.isValid = true;
+                   if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                       Lobibox.notify('success', {
+                           title: 'Thông báo',
+                           width: 400,
+                           msg: successRes.data.Message,
+                           delay: 1500
+                       });
+                       isPayed = true;
+                       $scope.isValid = false;
+                       $uibModalInstance.close(isPayed);
+                   } else {
+                       Lobibox.notify('error', {
+                           title: 'Xảy ra lỗi',
+                           msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                           delay: 3000
+                       });
+                       $scope.isValid = false;
+                   }
+               },
+               function (errorRes) {
+                   console.log('errorRes', errorRes);
+                   $scope.isValid = false;
+               });
                //printInvoice();
            };
            $scope.cancel = function () {
