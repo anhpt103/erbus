@@ -14,6 +14,7 @@ namespace ERBus.Service.Catalog.Phong
             public string MALOAIPHONG { get; set; }
             public string TENPHONG { get; set; }
             public string VITRI { get; set; }
+            public string MAKHO { get; set; }
             public int? TANG { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
             public string DefaultOrder
@@ -74,6 +75,7 @@ namespace ERBus.Service.Catalog.Phong
             public string MALOAIPHONG { get; set; }
             public string TENPHONG { get; set; }
             public string VITRI { get; set; }
+            public string MAKHO { get; set; }
             public int? TANG { get; set; }
             public Nullable<int> TRANGTHAI { get; set; }
         }
@@ -85,6 +87,7 @@ namespace ERBus.Service.Catalog.Phong
             public string MALOAIPHONG { get; set; }
             public string TENPHONG { get; set; }
             public string VITRI { get; set; }
+            public string MAKHO { get; set; }
             public int? TANG { get; set; }
             public int? TRANGTHAI_DATPHONG { get; set; }
             public DateTime? NGAY_DATPHONG { get; set; }

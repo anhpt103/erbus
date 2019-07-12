@@ -53,6 +53,17 @@
             </div>
             <div class="row form-group">
                 <div class="col col-md-3">
+                    <label for="text-input" class="form-control-label">Kho tính tồn</label><span style="color: red" title="Bắt buộc phải nhập"> (*)</span>
+                </div>
+                <div class="col-12 col-md-9">
+                    <select id="maKho" name="maKho" ng-model="target.MAKHO" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('khoHang')" class="form-control"></select>
+                    <small class="form-text text-muted" ng-show="_form.maKho.$dirty && _form.maKho.$invalid">
+                        <span ng-show="_form.maKho.$error.required">Kho tính tồn không được để trống</span>
+                    </small>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">
                     <label for="text-input" class="form-control-label">Vị trí</label>
                 </div>
                 <div class="col-12 col-md-9">

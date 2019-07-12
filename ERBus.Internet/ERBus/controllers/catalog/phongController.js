@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController', 'controllers/catalog/khoHangController'], function () {
     'use strict';
-    var app = angular.module('phongModule', ['ui.bootstrap', 'loaiPhongModule']);
+    var app = angular.module('phongModule', ['ui.bootstrap', 'loaiPhongModule', 'khoHangModule']);
     app.factory('phongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Catalog/Phong';
         var selectedData = [];
@@ -33,8 +33,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('Phong_Ctrl', ['$scope', '$http', 'configService', 'phongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','loaiPhongService','userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiPhongService, userService) {
+    app.controller('Phong_Ctrl', ['$scope', '$http', 'configService', 'phongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','loaiPhongService','userService','khoHangService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiPhongService, userService, khoHangService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -79,6 +79,25 @@
                 $scope.listFloor = tempDataService.tempData('floor');
             }
             //
+
+            //Function load data catalog KhoHang
+            function loadDataKhoHang() {
+                $scope.khoHang = [];
+                if (!tempDataService.tempData('khoHang')) {
+                    khoHangService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('khoHang', successRes.data.Data);
+                            $scope.khoHang = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.khoHang = tempDataService.tempData('khoHang');
+                }
+            };
+            loadDataKhoHang();
+            //end
 
             //Function load data catalog LoaiHang
             function loadDataLoaiPhong() {
@@ -259,8 +278,8 @@
             };
         }]);
 
-    app.controller('phongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'phongService', 'tempDataService', '$filter', '$uibModal', '$log',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log) {
+    app.controller('phongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'phongService', 'tempDataService', '$filter', '$uibModal', '$log','khoHangService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, khoHangService) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm phòng'; };
@@ -271,6 +290,25 @@
                     $scope.target.MAPHONG = successRes.data;
                 }
             });
+
+            //Function load data catalog KhoHang
+            function loadDataKhoHang() {
+                $scope.khoHang = [];
+                if (!tempDataService.tempData('khoHang')) {
+                    khoHangService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('khoHang', successRes.data.Data);
+                            $scope.khoHang = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.khoHang = tempDataService.tempData('khoHang');
+                }
+            };
+            loadDataKhoHang();
+            //end
 
             //Tạo mới mã phòng
             $scope.changeFloor = function (maTang) {

@@ -44,7 +44,6 @@ namespace ERBus.Entity.Database.Knowledge
         [StringLength(12)]
         public string THOIGIAN_THANHTOAN { get; set; }
 
-
         [Required]
         [Column("THOIGIAN_SUDUNG")]
         [Description("THỜI GIAN SỬ DỤNG DỊCH VỤ")]
@@ -79,5 +78,10 @@ namespace ERBus.Entity.Database.Knowledge
         [StringLength(50)]
         public string MABOHANG { get; set; }
 
+        [Required]
+        [Column("MAKHO")]
+        [Description("MÃ KHO HÀNG")]
+        [StringLength(50)]
+        public string MAKHO { get; set; }
     }
 }

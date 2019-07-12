@@ -103,7 +103,7 @@ namespace ERBus.Service.Catalog.Phong
                         OracleCommand command = new OracleCommand();
                         command.Connection = connection;
                         command.CommandType = CommandType.Text;
-                        command.CommandText = @"SELECT c.ID,c.MAPHONG,c.TENPHONG,c.TANG,c.VITRI,c.TRANGTHAI_DATPHONG,c.MALOAIPHONG,c.NGAY_DATPHONG,c.THOIGIAN_DATPHONG,c.MA_DATPHONG,D.BACKGROUND,D.ICON FROM (SELECT a.ID,a.MAPHONG,a.TENPHONG,a.TANG,a.VITRI,B.TRANGTHAI AS TRANGTHAI_DATPHONG,A.MALOAIPHONG,b.NGAY_DATPHONG,b.THOIGIAN_DATPHONG,b.MA_DATPHONG,a.UNITCODE FROM PHONG a LEFT JOIN DATPHONG b ON A.MAPHONG = B.MAPHONG AND a.UNITCODE = b.UNITCODE) c INNER JOIN LOAIPHONG d ON c.MALOAIPHONG = d.MALOAIPHONG AND c.UNITCODE = d.UNITCODE AND c.UNITCODE = '" + unitCode + "'";
+                        command.CommandText = @"SELECT c.ID,c.MAPHONG,c.TENPHONG,c.TANG,c.VITRI,c.MAKHO,c.TRANGTHAI_DATPHONG,c.MALOAIPHONG,c.NGAY_DATPHONG,c.THOIGIAN_DATPHONG,c.MA_DATPHONG,D.BACKGROUND,D.ICON FROM (SELECT a.ID,a.MAPHONG,a.TENPHONG,a.TANG,a.VITRI,a.MAKHO, B.TRANGTHAI AS TRANGTHAI_DATPHONG,A.MALOAIPHONG,b.NGAY_DATPHONG,b.THOIGIAN_DATPHONG,b.MA_DATPHONG,a.UNITCODE FROM PHONG a LEFT JOIN DATPHONG b ON A.MAPHONG = B.MAPHONG AND a.UNITCODE = b.UNITCODE) c INNER JOIN LOAIPHONG d ON c.MALOAIPHONG = d.MALOAIPHONG AND c.UNITCODE = d.UNITCODE AND c.UNITCODE = '" + unitCode + "'";
                         OracleDataReader dataReader = command.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -131,6 +131,10 @@ namespace ERBus.Service.Catalog.Phong
                                 if (dataReader["VITRI"] != null)
                                 {
                                     ViewModel.VITRI = dataReader["VITRI"].ToString();
+                                }
+                                if (dataReader["MAKHO"] != null)
+                                {
+                                    ViewModel.MAKHO = dataReader["MAKHO"].ToString();
                                 }
                                 if (dataReader["TRANGTHAI_DATPHONG"] != DBNull.Value)
                                 {

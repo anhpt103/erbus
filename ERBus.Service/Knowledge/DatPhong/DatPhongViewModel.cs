@@ -81,6 +81,7 @@ namespace ERBus.Service.Knowledge.DatPhong
             public string TENPHONG { get; set; }
             public int? TANG { get; set; }
             public string VITRI { get; set; }
+            public string MAKHO { get; set; }
             public string MALOAIPHONG { get; set; }
             public string MABOHANG { get; set; }
             public string TENLOAIPHONG { get; set; }

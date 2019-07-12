@@ -35,6 +35,12 @@ namespace ERBus.Entity.Database.Catalog
         [StringLength(200)]
         public string VITRI { get; set; }
 
+        [Required]
+        [Column("MAKHO")]
+        [Description("MÃ KHO HÀNG")]
+        [StringLength(50)]
+        public string MAKHO { get; set; }
+
         [Column("TRANGTHAI")]
         [Description("TRẠNG THÁI DỮ LIỆU 0: CHƯA DUYỆT _ 10: ĐÃ DUYỆT _ 20: LƯU TẠM _ 30: TRẠNG THÁI MỞ RỘNG")]
         public Nullable<int> TRANGTHAI { get; set; }

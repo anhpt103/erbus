@@ -77,7 +77,6 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
                         connection.Dispose();
                     }
                 }
-                result = true;
             }
             return result;
         }
@@ -168,6 +167,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
                             }
                             thanhToanDto.MA_DATPHONG = data.MA_DATPHONG;
                             thanhToanDto.MAPHONG = data.MAPHONG;
+                            thanhToanDto.MAKHO = data.MAKHO;
                             thanhToanDto.NGAY_DATPHONG = data.NGAY_DATPHONG;
                             thanhToanDto.THOIGIAN_DATPHONG = data.THOIGIAN_DATPHONG;
                             thanhToanDto.TEN_KHACHHANG = data.TEN_KHACHHANG;

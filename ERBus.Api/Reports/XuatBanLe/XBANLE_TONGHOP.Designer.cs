@@ -38,6 +38,7 @@
             Telerik.Reporting.ReportParameter reportParameter10 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.ReportParameter reportParameter11 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.ReportParameter reportParameter12 = new Telerik.Reporting.ReportParameter();
+            Telerik.Reporting.ReportParameter reportParameter13 = new Telerik.Reporting.ReportParameter();
             Telerik.Reporting.Drawing.StyleRule styleRule1 = new Telerik.Reporting.Drawing.StyleRule();
             Telerik.Reporting.Drawing.StyleRule styleRule2 = new Telerik.Reporting.Drawing.StyleRule();
             Telerik.Reporting.Drawing.StyleRule styleRule3 = new Telerik.Reporting.Drawing.StyleRule();
@@ -412,16 +413,16 @@
             // 
             // crosstab1
             // 
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.79803735017776489D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811506509780884D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811506509780884D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81185001134872437D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81864231824874878D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.79803723096847534D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811500549316406D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.80811500549316406D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81184989213943481D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.81864219903945923D)));
             this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.79166680574417114D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.957004189491272D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.85578465461730957D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.82894784212112427D)));
-            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.87896794080734253D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.9570041298866272D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.85578459501266479D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.82894772291183472D)));
+            this.crosstab1.Body.Columns.Add(new Telerik.Reporting.TableBodyColumn(Telerik.Reporting.Drawing.Unit.Inch(0.878967821598053D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D)));
             this.crosstab1.Body.Rows.Add(new Telerik.Reporting.TableBodyRow(Telerik.Reporting.Drawing.Unit.Inch(0.36666667461395264D)));
             this.crosstab1.Body.SetCellContent(0, 0, this.textBox93);
@@ -881,6 +882,7 @@
             new Telerik.Reporting.SqlDataSourceParameter("MANHOM", System.Data.DbType.String, "= Parameters.MANHOM.Value"),
             new Telerik.Reporting.SqlDataSourceParameter("MAHANG", System.Data.DbType.String, "= Parameters.MAHANG.Value"),
             new Telerik.Reporting.SqlDataSourceParameter("MANHACUNGCAP", System.Data.DbType.String, "= Parameters.MANHACUNGCAP.Value"),
+            new Telerik.Reporting.SqlDataSourceParameter("MA_GIAODICH", System.Data.DbType.String, "= Parameters.MA_GIAODICH.Value"),
             new Telerik.Reporting.SqlDataSourceParameter("UNITCODE", System.Data.DbType.String, "= Parameters.UNITCODE.Value"),
             new Telerik.Reporting.SqlDataSourceParameter("TUNGAY", System.Data.DbType.Date, "= Parameters.TUNGAY.Value"),
             new Telerik.Reporting.SqlDataSourceParameter("DENNGAY", System.Data.DbType.Date, "= Parameters.DENNGAY.Value"),
@@ -979,6 +981,9 @@
             reportParameter12.Name = "FULLNAME";
             reportParameter12.Text = "FULLNAME";
             reportParameter12.Value = "Tuấn Anh";
+            reportParameter13.AllowNull = true;
+            reportParameter13.Name = "MA_GIAODICH";
+            reportParameter13.Text = "MA_GIAODICH";
             this.ReportParameters.Add(reportParameter1);
             this.ReportParameters.Add(reportParameter2);
             this.ReportParameters.Add(reportParameter3);
@@ -991,6 +996,7 @@
             this.ReportParameters.Add(reportParameter10);
             this.ReportParameters.Add(reportParameter11);
             this.ReportParameters.Add(reportParameter12);
+            this.ReportParameters.Add(reportParameter13);
             styleRule1.Selectors.AddRange(new Telerik.Reporting.Drawing.ISelector[] {
             new Telerik.Reporting.Drawing.TypeSelector(typeof(Telerik.Reporting.TextItemBase)),
             new Telerik.Reporting.Drawing.TypeSelector(typeof(Telerik.Reporting.HtmlTextBox))});

@@ -231,7 +231,7 @@ namespace ERBus.Service.Knowledge.DatPhong
                         OracleCommand command = new OracleCommand();
                         command.Connection = connection;
                         command.CommandType = CommandType.Text;
-                        command.CommandText = @"SELECT a.MA_DATPHONG,a.MAPHONG,B.TENPHONG,B.TANG,a.NGAY_DATPHONG,a.THOIGIAN_DATPHONG,a.TEN_KHACHHANG,a.DIENGIAI,a.CANCUOC_CONGDAN,C.MALOAIPHONG,C.TENLOAIPHONG,C.MABOHANG FROM DATPHONG a INNER JOIN PHONG b ON A.MAPHONG = B.MAPHONG INNER JOIN LOAIPHONG c ON B.MALOAIPHONG = C.MALOAIPHONG AND a.UNITCODE = b.UNITCODE AND b.UNITCODE = c.UNITCODE AND A.TRANGTHAI = "+ (int)TypeState.CLOSE + " AND A.UNITCODE = '" + unitCode + "' AND TO_DATE(A.NGAY_DATPHONG,'DD-MM-YY') < TO_DATE((SYSDATE + 1),'DD-MM-YY') ";
+                        command.CommandText = @"SELECT a.MA_DATPHONG,a.MAPHONG,B.TENPHONG,B.TANG, b.MAKHO, a.NGAY_DATPHONG,a.THOIGIAN_DATPHONG,a.TEN_KHACHHANG,a.DIENGIAI,a.CANCUOC_CONGDAN,C.MALOAIPHONG,C.TENLOAIPHONG,C.MABOHANG FROM DATPHONG a INNER JOIN PHONG b ON A.MAPHONG = B.MAPHONG INNER JOIN LOAIPHONG c ON B.MALOAIPHONG = C.MALOAIPHONG AND a.UNITCODE = b.UNITCODE AND b.UNITCODE = c.UNITCODE AND A.TRANGTHAI = "+ (int)TypeState.CLOSE + " AND A.UNITCODE = '" + unitCode + "' AND TO_DATE(A.NGAY_DATPHONG,'DD-MM-YY') < TO_DATE((SYSDATE + 1),'DD-MM-YY') ";
                         OracleDataReader dataReader = command.ExecuteReader();
                         if (dataReader.HasRows)
                         {
@@ -255,6 +255,10 @@ namespace ERBus.Service.Knowledge.DatPhong
                                     int TANG = 0;
                                     int.TryParse(dataReader["TANG"].ToString(), out TANG);
                                     ViewModel.TANG = TANG;
+                                }
+                                if (dataReader["MAKHO"] != null)
+                                {
+                                    ViewModel.MAKHO = dataReader["MAKHO"].ToString();
                                 }
                                 if (dataReader["NGAY_DATPHONG"] != null)
                                 {

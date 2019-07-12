@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.Designer.cs">
       <DependentUpon>201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.cs" />
+    <Compile Include="Migrations\201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.Designer.cs">
+      <DependentUpon>201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -321,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.resx">
       <DependentUpon>201907040218044_ADD_FIELD_UNITCODE_TO_AUTHORIZE_ANHPT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.resx">
+      <DependentUpon>201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
