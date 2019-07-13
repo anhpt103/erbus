@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/phongController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/phongController', 'controllers/knowledge/thanhToanDatPhongController'], function () {
     'use strict';
-    var app = angular.module('datPhongModule', ['ui.bootstrap', 'phongModule']);
+    var app = angular.module('datPhongModule', ['ui.bootstrap', 'phongModule', 'thanhToanDatPhongModule']);
     app.factory('datPhongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Knowledge/DatPhong';
         var selectedData = [];
@@ -20,6 +20,9 @@
             getListBookingRoom: function () {
                 return $http.get(serviceUrl + '/GetListBookingRoom');
             },
+            getBookingRoomByRoom: function (code) {
+                return $http.get(serviceUrl + '/GetBookingRoomByRoom/' + code);
+            },
             updateBooking: function (params) {
                 return $http.put(serviceUrl + '/' + params.ID, params);
             }
@@ -27,8 +30,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce','$timeout','userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce, $timeout, userService) {
+    app.controller('DatPhong_Ctrl', ['$scope', '$http', 'configService', 'datPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','$sce','$timeout','userService','closingService','getsetDataService','$rootScope',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, $sce, $timeout, userService, closingService, getsetDataService, $rootScope) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -112,6 +115,10 @@
                 setTimeout(caculateCountHour, 1000);
             };
             
+            $rootScope.$on("loadDataAfterPaySuccess", function () {
+                filterData();
+            });
+
             function filterData() {
                 if ($scope.accessList.XEM) {
                     phongService.getStatusAllRoom().then(function (successRes) {
@@ -157,6 +164,11 @@
                     });
                     $scope.accessList = null;
                 });
+                closingService.closingOutList().then(function (successRes) {
+                    if (successRes && successRes.status === 200 && successRes.data) {
+                        console.log('Khóa sổ thành công');
+                    }
+                });
             };
             //end function loadAccessList()
             loadAccessList();
@@ -184,20 +196,18 @@
             };
 
             $scope.dischargeRoom = function (item) {
+                getsetDataService.setJson(item);
                 if (item && item.ID) {
                     var modalInstance = $uibModal.open({
                         backdrop: 'static',
                         animation: true,
-                        windowClass: 'modal-booking',
-                        templateUrl: configService.buildUrl('knowledge/DatPhong', 'discharge'),
-                        controller: 'dischargeRoom_Ctrl',
-                        resolve: {
-                            targetData: function () {
-                                return item;
-                            }
-                        }
+                        windowClass: 'modal-thanhtoan',
+                        templateUrl: configService.buildUrl('knowledge/ThanhToanDatPhong', 'index'),
+                        controller: 'ThanhToanDatPhong_Ctrl',
+                        resolve: {}
                     });
                     modalInstance.result.then(function (refundedData) {
+                        console.log(refundedData);
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());
                     });

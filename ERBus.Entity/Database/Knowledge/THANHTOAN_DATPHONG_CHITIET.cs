@@ -50,6 +50,16 @@ namespace ERBus.Entity.Database.Knowledge
         [Description("TỶ LỆ CHIẾT KHẤU MẶT HÀNG TRONG BÓ")]
         public decimal? CHIETKHAU { get; set; }
 
+        [DefaultValue(0)]
+        [Column("TYLE_CHIETKHAU")]
+        [Description("TỶ LỆ CHIẾT KHẤU")]
+        public decimal TYLE_CHIETKHAU { get; set; }
+
+        [DefaultValue(0)]
+        [Column("TIEN_CHIETKHAU")]
+        [Description("TIỀN CHIẾT KHẤU")]
+        public decimal TIEN_CHIETKHAU { get; set; }
+
         [Column("SAPXEP")]
         public int? SAPXEP { get; set; }
 

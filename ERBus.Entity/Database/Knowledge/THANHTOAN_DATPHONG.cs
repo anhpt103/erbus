@@ -83,5 +83,15 @@ namespace ERBus.Entity.Database.Knowledge
         [Description("MÃ KHO HÀNG")]
         [StringLength(50)]
         public string MAKHO { get; set; }
+
+        [Required]
+        [Column("TIENKHACH_TRA")]
+        [Description("TIỀN KHÁCH TRẢ")]
+        public decimal TIENKHACH_TRA { get; set; }
+
+        [DefaultValue(0)]
+        [Column("TIEN_TRALAI_KHACH")]
+        [Description("TIỀN TRẢ LẠI KHÁCH")]
+        public decimal TIEN_TRALAI_KHACH { get; set; }
     }
 }

@@ -32,7 +32,7 @@
                                         <td class="text-title-report">Cửa hàng</td>
                                         <td></td>
                                         <td>
-                                            <select id="_maCuaHang" name="_maCuaHang" ng-model="target.MA_CUAHANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('cuaHang')" class="form-control"></select>
+                                            <select id="_maCuaHang" name="_maCuaHang" ng-model="target.MA_CUAHANG" required ng-options="opt.VALUE as opt.TEXT for opt in tempData('cuaHang')" class="form-control" ng-change="changeCuaHang(target.MA_CUAHANG);"></select>
                                         </td>
                                         <td>
                                         </td>

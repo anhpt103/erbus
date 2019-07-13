@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.Designer.cs">
       <DependentUpon>201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.cs" />
+    <Compile Include="Migrations\201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.Designer.cs">
+      <DependentUpon>201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -234,8 +238,8 @@
     <Content Include="Desciption\KeywordUsed.txt" />
     <Content Include="Script\BAOCAO_BANBUON_CHITIET.sql" />
     <Content Include="Script\BAOCAO_BANBUON_TONGHOP.sql" />
-    <Content Include="Script\GET_MENU.sql" />
     <Content Include="Script\ERBUS.sql" />
+    <Content Include="Script\GET_MENU.sql" />
     <Content Include="Script\MATHANG_TONKHO_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_KHACHHANG.sql" />
     <Content Include="Script\TIMKIEM_DATPHONG_PAGINATION.sql" />
@@ -328,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.resx">
       <DependentUpon>201907111620537_ADDCOLUMN_MAKHO_PHONG_THANHTOANPHONG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.resx">
+      <DependentUpon>201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

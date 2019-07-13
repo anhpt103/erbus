@@ -18,6 +18,7 @@ namespace ERBus.Service.Knowledge.DatPhong
         DateTime? GetNullableDateTime(OracleDataReader reader, string columnName);
         PagedObj<DatPhongViewModel.ViewModel> QueryBookingRoom(string stringConnect, PagedObj<DatPhongViewModel.ViewModel> page, string strKey, string maDonVi);
         List<DatPhongViewModel.DatPhongPayDto> GetListCloseBookingRoom(string unitCode, string stringConnect);
+        List<DatPhongViewModel.DatPhongPayDto> GetCloseBookingRoomByRoom(string unitCode, string stringConnect, string code);
     }
     public class DatPhongService : DataInfoServiceBase<DATPHONG>, IDatPhongService
     {
@@ -296,6 +297,103 @@ namespace ERBus.Service.Knowledge.DatPhong
                             }
                         }
                         dataReader.Close();
+                    }
+                }
+                catch
+                {
+                    ListDatPhong = null;
+                }
+                finally
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
+            }
+            return ListDatPhong;
+        }
+
+
+        public List<DatPhongViewModel.DatPhongPayDto> GetCloseBookingRoomByRoom(string unitCode, string stringConnect,string code)
+        {
+            List<DatPhongViewModel.DatPhongPayDto> ListDatPhong = new List<DatPhongViewModel.DatPhongPayDto>();
+            using (OracleConnection connection = new OracleConnection(stringConnect))
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(code))
+                    {
+                        connection.Open();
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            OracleCommand command = new OracleCommand();
+                            command.Connection = connection;
+                            command.CommandType = CommandType.Text;
+                            command.CommandText = @"SELECT a.MA_DATPHONG,a.MAPHONG,B.TENPHONG,B.TANG, b.MAKHO, a.NGAY_DATPHONG,a.THOIGIAN_DATPHONG,a.TEN_KHACHHANG,a.DIENGIAI,a.CANCUOC_CONGDAN,C.MALOAIPHONG,C.TENLOAIPHONG,C.MABOHANG FROM DATPHONG a INNER JOIN PHONG b ON A.MAPHONG = B.MAPHONG INNER JOIN LOAIPHONG c ON B.MALOAIPHONG = C.MALOAIPHONG AND a.UNITCODE = b.UNITCODE AND b.UNITCODE = c.UNITCODE AND A.TRANGTHAI = " + (int)TypeState.CLOSE + " AND A.UNITCODE = '" + unitCode + "' AND TO_DATE(A.NGAY_DATPHONG,'DD-MM-YY') < TO_DATE((SYSDATE + 1),'DD-MM-YY') AND a.MA_DATPHONG = '" + code + "' ";
+                            OracleDataReader dataReader = command.ExecuteReader();
+                            if (dataReader.HasRows)
+                            {
+                                while (dataReader.Read())
+                                {
+                                    DatPhongViewModel.DatPhongPayDto ViewModel = new DatPhongViewModel.DatPhongPayDto();
+                                    if (dataReader["MA_DATPHONG"] != null)
+                                    {
+                                        ViewModel.MA_DATPHONG = dataReader["MA_DATPHONG"].ToString();
+                                    }
+                                    if (dataReader["MAPHONG"] != null)
+                                    {
+                                        ViewModel.MAPHONG = dataReader["MAPHONG"].ToString();
+                                    }
+                                    if (dataReader["TENPHONG"] != null)
+                                    {
+                                        ViewModel.TENPHONG = dataReader["TENPHONG"].ToString();
+                                    }
+                                    if (dataReader["TANG"] != DBNull.Value)
+                                    {
+                                        int TANG = 0;
+                                        int.TryParse(dataReader["TANG"].ToString(), out TANG);
+                                        ViewModel.TANG = TANG;
+                                    }
+                                    if (dataReader["MAKHO"] != null)
+                                    {
+                                        ViewModel.MAKHO = dataReader["MAKHO"].ToString();
+                                    }
+                                    if (dataReader["NGAY_DATPHONG"] != null)
+                                    {
+                                        ViewModel.NGAY_DATPHONG = GetNullableDateTime(dataReader, "NGAY_DATPHONG");
+                                    }
+                                    if (dataReader["THOIGIAN_DATPHONG"] != null)
+                                    {
+                                        ViewModel.THOIGIAN_DATPHONG = dataReader["THOIGIAN_DATPHONG"].ToString();
+                                    }
+                                    if (dataReader["TEN_KHACHHANG"] != null)
+                                    {
+                                        ViewModel.TEN_KHACHHANG = dataReader["TEN_KHACHHANG"].ToString();
+                                    }
+                                    if (dataReader["DIENGIAI"] != null)
+                                    {
+                                        ViewModel.DIENGIAI = dataReader["DIENGIAI"].ToString();
+                                    }
+                                    if (dataReader["CANCUOC_CONGDAN"] != null)
+                                    {
+                                        ViewModel.CANCUOC_CONGDAN = dataReader["CANCUOC_CONGDAN"].ToString();
+                                    }
+                                    if (dataReader["MALOAIPHONG"] != null)
+                                    {
+                                        ViewModel.MALOAIPHONG = dataReader["MALOAIPHONG"].ToString();
+                                    }
+                                    if (dataReader["TENLOAIPHONG"] != null)
+                                    {
+                                        ViewModel.TENLOAIPHONG = dataReader["TENLOAIPHONG"].ToString();
+                                    }
+                                    if (dataReader["MABOHANG"] != null)
+                                    {
+                                        ViewModel.MABOHANG = dataReader["MABOHANG"].ToString();
+                                    }
+                                    ListDatPhong.Add(ViewModel);
+                                }
+                            }
+                            dataReader.Close();
+                        }
                     }
                 }
                 catch

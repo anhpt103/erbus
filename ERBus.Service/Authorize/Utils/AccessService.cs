@@ -6,12 +6,16 @@ using ERBus.Service.Service;
 using ERBus.Service;
 using ERBus.Entity.Database.Authorize;
 using ERBus.Entity;
+using ERBus.Service.Authorize.KyKeToan;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace BTS.API.SERVICE.Authorize
 {
     public interface IAccessService : IDataInfoService<MENU>
     {
         RoleState GetRoleStateByMaChucNang(string unitCode, string username, string machucnang);
+        bool ClosingOutMultiple();
     }
     public class AccessService : DataInfoServiceBase<MENU>, IAccessService
     {
@@ -22,6 +26,37 @@ namespace BTS.API.SERVICE.Authorize
         {
             return x => x.MA_MENU == instance.MA_MENU;
         }
+
+        public bool ClosingOutMultiple()
+        {
+            var result = false;
+            string unitCode = GetCurrentUnitCode();
+            string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
+            //danh sách kỳ chưa khóa
+            List<KyKeToanViewModel.ViewModel> listChuaKhoa = KyKeToanChuaKhoa(unitCode, connectString);
+            if (listChuaKhoa != null && listChuaKhoa.Count > 0)
+            {
+                try
+                {
+                    if (KhoaSoNhieuKyKeToan(listChuaKhoa, unitCode, connectString))
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        result = false;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    result = false;
+                }
+            }
+            return result;
+        }
+
+
         public RoleState GetRoleStateByMaChucNang(string unitCode, string username, string machucnang)
         {
             RoleState roleState = new RoleState();

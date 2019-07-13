@@ -50,7 +50,8 @@ namespace ERBus.Api.Controllers.Knowledge
             var mailTask = new SmtpMail("TryIt");
             mailTask.Sender = "erbus.notification@gmail.com";
             mailTask.From = "erbus.notification@gmail.com";
-            mailTask.To = "thuynguyentd11@gmail.com";
+            //mailTask.To = "hathigiangnam1988@gmail.com";
+            mailTask.To = "phamtuananh10394@gmail.com";
             mailTask.Subject = "THANH TOÁN " + obj.MAPHONG + " (" + obj.MA_DATPHONG + ")";
             mailTask.HtmlBody = obj.BODY.ToString();
             try

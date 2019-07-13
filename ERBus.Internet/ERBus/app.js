@@ -60,6 +60,18 @@ define([
         }
         return result;
     });
+    app.service('getsetDataService', function () {
+        var jsonObj = null;
+        //the object to hold our data
+        return {
+            getJson: function () {
+                return jsonObj;
+            },
+            setJson: function (value) {
+                jsonObj = value;
+            }
+        }
+    });
     app.directive('enter', function () {
         return function (scope, element, attrs) {
             element.bind("keydown keypress", function (event) {
@@ -85,7 +97,7 @@ define([
                 }, true);
             }
         }
-    })
+    });
 
     app.directive('dateCheck', [function () {
         return {
@@ -103,7 +115,6 @@ define([
                         }
                     });
                 });
-
             }
         }
     }]);
@@ -447,9 +458,9 @@ define([
         }
      );
 
-    app.config(['$compileProvider', function ($compileProvider) {
-        $compileProvider.debugInfoEnabled(false);
-    }]);
+    //app.config(['$compileProvider', function ($compileProvider) {
+    //    $compileProvider.debugInfoEnabled(false);
+    //}]);
 
     app.config(['$httpProvider', 'CacheFactoryProvider', 'cfpLoadingBarProvider', 'localStorageServiceProvider', function ($httpProvider, CacheFactoryProvider, cfpLoadingBarProvider, localStorageServiceProvider) {
         $httpProvider.interceptors.push('interceptorService');
@@ -548,6 +559,16 @@ define([
         var result = {
             getAccessList: function (machucnang, userName, unitCodeParam) {
                 return $http.get(configService.rootUrlWebApi + '/Authorize/Access/GetAccesslist/' + machucnang + '/' + userName + '/' + unitCodeParam);
+            }
+        };
+        return result;
+    }]);
+
+    //Auth - check closing
+    app.service('closingService', ['$http', 'configService', function ($http, configService) {
+        var result = {
+            closingOutList: function () {
+                return $http.post(configService.rootUrlWebApi + '/Authorize/Access/ClosingOutMultiplePeriod');
             }
         };
         return result;

@@ -1,14 +1,17 @@
 ﻿<style>
     .img-smile{
-        width: 400px;
+        width: 50px;
+    }
+    .modal-confirm .modal-content {
+        padding: 0 0 !important;
+    }
+    .modal-header {
+        padding: 5px 50px !important;
     }
 </style>
 <div role="document" keyboard="keys">
     <div class="modal-dialog modal-confirm">
         <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
-            <span aria-hidden="true">x</span>
-        </button>
         <div class="modal-content">
             <div class="modal-header">
                 <div class="img-smile">
@@ -17,10 +20,40 @@
                 <h4 class="modal-title customize">Xác nhận thanh toán?</h4>
             </div>
             <div class="modal-body">
+                <div class="row form-group">
+                    <div class="col col-md-12">
+                        <div class="form-group">
+                            <label for="text-input" class="form-control-label" style="color: #000000;">Tiền thanh toán</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-model="target.TONGTIEN_THANHTOAN" style="height: 45px;border-bottom: 1px solid #f5f5f5;background: #fff;font-size: 20px;color: #ff0000;padding-right: 10px;text-align: right;" awnum="number-utc" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-12">
+                        <div class="form-group">
+                            <label for="text-input" class="form-control-label" style="color: #000000;">Tiền khách trả</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="TIENKHACH_TRA" autofocus ng-model="target.TIENKHACH_TRA" style="height: 45px;border-bottom: 1px solid #f5f5f5;background: #fff;font-size: 20px;color: #ff0000;padding-right: 10px;text-align: right;" awnum="number-utc" ng-change="changeTienKhachTra(target.TIENKHACH_TRA);" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-12">
+                        <div class="form-group">
+                            <label for="text-input" class="form-control-label" style="color: #000000;">Tiền trả lại khách</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="TIEN_TRALAI_KHACH" ng-model="target.TIEN_TRALAI_KHACH" style="height: 45px;border-bottom: 1px solid #f5f5f5;background: #fff;font-size: 20px;color: #ff0000;padding-right: 10px;text-align: right;" awnum="number-utc" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <p style="font-size: 16px;">Cảm ơn quý khách</p>
             </div>
             <div class="modal-footer">
-                <button type="button" style="font-size: 16px;font-weight: bold;" prevent-default class="btn btn-success" ng-disabled="isValid" ng-click="save()"><i class="zmdi zmdi-paypal-alt"></i>&nbsp;&nbsp;Thanh toán (Enter)</button>
+                <button type="button" style="font-size: 16px;font-weight: bold;" prevent-default class="btn btn-success" ng-disabled="isValid || target.TIEN_TRALAI_KHACH < 0" ng-click="save()"><i class="zmdi zmdi-paypal-alt"></i>&nbsp;&nbsp;Thanh toán (Enter)</button>
                 <button type="button" style="font-size: 15px;font-weight: bold;" prevent-default class="btn btn-danger" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}} (Esc)</button>
             </div>
         </div>

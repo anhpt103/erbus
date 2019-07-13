@@ -21,5 +21,14 @@ namespace ERBus.Api.Controllers.Authorize
             RoleState roleState = _service.GetRoleStateByMaChucNang(unitCode, userName, machucnang);
             return roleState;
         }
+
+        [HttpPost]
+        [Route("ClosingOutMultiplePeriod")]
+        public bool ClosingOutMultiplePeriod()
+        {
+            bool closing = _service.ClosingOutMultiple();
+            return closing;
+        }
+        
     }
 }

@@ -184,6 +184,11 @@
                             $scope.cuaHang = successRes.data.Data;
                             if ($scope.cuaHang && $scope.cuaHang.length === 1) {
                                 $scope.target.TEN_CUAHANG = $scope.cuaHang[0].DESCRIPTION;
+                            } else {
+                                var filterStore = $filter('filter')($scope.cuaHang, { VALUE: $scope.target.MA_CUAHANG }, true);
+                                if (filterStore && filterStore.length === 1) {
+                                    $scope.target.TEN_CUAHANG = filterStore[0].DESCRIPTION;
+                                }
                             }
                         }
                     }, function (errorRes) {
@@ -193,11 +198,27 @@
                     $scope.cuaHang = tempDataService.tempData('cuaHang');
                     if ($scope.cuaHang && $scope.cuaHang.length === 1) {
                         $scope.target.TEN_CUAHANG = $scope.cuaHang[0].DESCRIPTION;
+                    } else {
+                        var filterStore = $filter('filter')($scope.cuaHang, { VALUE: $scope.target.MA_CUAHANG }, true);
+                        if (filterStore && filterStore.length === 1) {
+                            $scope.target.TEN_CUAHANG = filterStore[0].DESCRIPTION;
+                        }
                     }
                 }
 
             };
             loadDataCuaHang();
+            //end
+
+            //khởi tạo thông tin cửa hàng
+            $scope.changeCuaHang = function (maCuaHang) {
+                if (maCuaHang) {
+                    var filterStore = $filter('filter')($scope.cuaHang, { VALUE: maCuaHang }, true);
+                    if (filterStore && filterStore.length === 1) {
+                        $scope.target.TEN_CUAHANG = filterStore[0].DESCRIPTION;
+                    }
+                }
+            };
             //end
 
             //get lastest KyKeTona

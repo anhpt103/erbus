@@ -1464,7 +1464,7 @@
                         MAKHO_NHAP: $scope.target.MAKHO_NHAP,
                         UNITCODE: unitCode
                     }
-                    matHangService.getMatHangNhapMuaTheoMaKho(obj).then(function (successRes) {
+                    matHangService.getMatHangTheoDieuKien(obj).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
                             if (!kiemTraThueToanDon($scope.target.MATHUE_TOANDON, successRes.data.Data)) {
                                 $scope.addItem.BARCODE = successRes.data.Data.BARCODE;

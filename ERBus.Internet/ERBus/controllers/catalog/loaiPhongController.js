@@ -503,6 +503,23 @@
                 };
             };
 
+            $scope.fileIcon = {};
+            $scope.uploadIcon = function (input) {
+                $scope.inputIcon = input;
+                if (input.files && input.files.length > 0) {
+                    $timeout(function () {
+                        var fileReader = new FileReader();
+                        fileReader.readAsDataURL(input.files[0]);
+                        fileReader.onload = function (e) {
+                            $timeout(function () {
+                                $scope.fileIcon.SRC = e.target.result;
+                            });
+                        };
+                    });
+                    $scope.fileIcon.FILE = input.files[0];
+                }
+            };
+
             function UploadIcon() {
                 if ($scope.fileIcon && $scope.fileIcon.SRC) {
                     $scope.fileIcon.MALOAIPHONG = $scope.target.MALOAIPHONG;
@@ -529,6 +546,7 @@
                 }
             };
 
+           
             $scope.deleteIcon = function () {
                 if ($scope.target.ICON) {
                     $scope.target.ICON = null;
@@ -538,6 +556,7 @@
                     angular.element("#file-input-icon").val(null);
                 }
             };
+
 
             $scope.save = function () {
                 if ($scope.fileBackground && $scope.fileBackground.SRC) {

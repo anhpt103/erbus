@@ -67,6 +67,25 @@ namespace ERBus.Api.Controllers.Knowledge
             return Ok(result);
         }
 
+
+        [Route("GetBookingRoomByRoom/{code}")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "DatPhong")]
+        public IHttpActionResult GetBookingRoomByRoom(string code)
+        {
+            var result = new TransferObj<List<DatPhongViewModel.DatPhongPayDto>>();
+            result.Data = _service.GetCloseBookingRoomByRoom(_service.GetCurrentUnitCode(), _service.GetConnectionString(), code);
+            if (result.Data.Count > 0)
+            {
+                result.Status = true;
+            }
+            else
+            {
+                result.Status = false;
+            }
+            return Ok(result);
+        }
+
         [Route("BuildNewCode")]
         [HttpGet]
         public string BuildNewCode()

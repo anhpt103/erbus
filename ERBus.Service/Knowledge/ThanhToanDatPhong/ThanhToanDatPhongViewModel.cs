@@ -65,6 +65,8 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public string MABOHANG { get; set; }
             public string MAHANG { get; set; }
             public string MAHANG_DICHVU { get; set; }
+            public decimal TIENKHACH_TRA { get; set; }
+            public decimal TIEN_TRALAI_KHACH { get; set; }
             public string MAKHO { get; set; }
             public List<DtoDetail> DtoDetails { get; set; }
         }
@@ -77,6 +79,8 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public string DONVITINH { get; set; }
             public decimal SOLUONG { get; set; }
             public decimal CHIETKHAU { get; set; }
+            public decimal TYLE_CHIETKHAU { get; set; }
+            public decimal TIEN_CHIETKHAU { get; set; }
             public string MATHUE_RA { get; set; }
             public decimal GIABANLE_VAT { get; set; }
             public string UNITCODE { get; set; }
