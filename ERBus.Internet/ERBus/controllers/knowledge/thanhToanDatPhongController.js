@@ -16,6 +16,12 @@
             },
             senderGmail: function (body) {
                 return $http.post(serviceUrl + '/SenderGmail', body);
+            },
+            getHistoryPay: function () {
+                return $http.get(serviceUrl + '/GetHistoryPay');
+            },
+            getDetails: function (ID) {
+                return $http.get(serviceUrl + '/GetDetails/' + ID);
             }
         }
         return result;
@@ -385,6 +391,24 @@
                     });
                 }
             };
+            //lịch sử thanh toán đặt phòng
+            $scope.historyPay = function () {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    animation: true,
+                    windowClass: 'knowledge-historyPay',
+                    templateUrl: configService.buildUrl('knowledge/ThanhToanDatPhong', 'history'),
+                    controller: 'historyPay_Ctrl',
+                    resolve: {}
+                });
+                modalInstance.result.then(function (refundedData) {
+                    $scope.refresh();
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+            //end lịch sử thanh toán
+
             $scope.payRoom = function () {
                 clearTimeout(action);
                 if ($scope.data && $scope.data.MAPHONG && !$scope.modalOpen) {
@@ -464,6 +488,359 @@
                 $rootScope.$emit("loadDataAfterPaySuccess", {});
             });
         }]);
+    
+    app.controller('historyPay_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','userService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, userService) {
+            $scope.config = angular.copy(configService);
+            $scope.tempData = tempDataService.tempData;
+            $scope.title = function () { return 'Lịch sử thanh toán' };
+            $scope.sortType = 'NGAY_THANHTOAN';
+            $scope.sortReverse = true;
+            $scope.listThanhToan = [];
+            $scope.target = {};
+            var currentUser = userService.GetCurrentUser();
+            //check authorize
+            function loadAccessList() {
+                var userName = currentUser.userName;
+                var unitCodeParam = !currentUser.parentUnitCode ? currentUser.unitCode : currentUser.parentUnitCode;
+                securityService.getAccessList('ThanhToanDatPhong', userName, unitCodeParam).then(function (successRes) {
+                    if (successRes && successRes.status == 200 && successRes.data) {
+                        $scope.accessList = successRes.data;
+                        if (!$scope.accessList.XEM) {
+                            Lobibox.notify('error', {
+                                position: 'bottom left',
+                                msg: 'Không có quyền truy cập !'
+                            });
+                        } else {
+                            getHistory();
+                        }
+                    } else {
+                        Lobibox.notify('error', {
+                            position: 'bottom left',
+                            msg: 'Không có quyền truy cập !'
+                        });
+                    }
+                }, function (errorRes) {
+                    console.log(errorRes);
+                    Lobibox.notify('error', {
+                        position: 'bottom left',
+                        msg: 'Không có quyền truy cập !'
+                    });
+                    $scope.accessList = null;
+                });
+            };
+            //end function loadAccessList()
+            loadAccessList();
+            function getHistory() {
+                service.getHistoryPay().then(function (sucessRes) {
+                    if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data && sucessRes.data.Data.length > 0) {
+                        $scope.listThanhToan = sucessRes.data.Data;
+                    }
+                });
+            };
+
+            function commafy(num) {
+                var str = num.toString().split('.');
+                if (str[0].length >= 5) {
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                }
+                if (str[1] && str[1].length >= 5) {
+                    str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+                }
+                return str.join('.');
+            };
+
+
+            var default_numbers = ' hai ba bốn năm sáu bảy tám chín';
+            var units = ('1 một' + default_numbers).split(' ');
+            var ch = 'lẻ mười' + default_numbers;
+            var tr = 'không một' + default_numbers;
+            var tram = tr.split(' ');
+            var u = '2 nghìn triệu tỉ'.split(' ');
+            var chuc = ch.split(' ');
+            /**
+             * additional words 
+             * @param  {[type]} a [description]
+             * @return {[type]}   [description]
+             */
+
+            function tenth(a) {
+                var sl1 = units[a[1]];
+                var sl2 = chuc[a[0]];
+                var append = '';
+                if (a[0] > 0 && a[1] == 5)
+                    sl1 = 'lăm';
+                if (a[0] > 1) {
+                    append = ' mươi';
+                    if (a[1] == 1)
+                        sl1 = ' mốt';
+                }
+                var str = sl2 + '' + append + ' ' + sl1;
+                return str;
+            };
+
+            /**
+             * convert number in blocks of 3 
+             * @param  {[type]} d [description]
+             * @return {[type]}   [description]
+             */
+            function block_of_three(d) {
+                var _a = d + '';
+                if (d == '000') return '';
+                switch (_a.length) {
+                    case 0:
+                        return '';
+
+                    case 1:
+                        return units[_a];
+
+                    case 2:
+                        return tenth(_a);
+
+                    case 3:
+                        var sl12 = '';
+                        if (_a.slice(1, 3) != '00')
+                            sl12 = tenth(_a.slice(1, 3));
+                        var sl3 = tram[_a[0]] + ' trăm';
+                        return sl3 + ' ' + sl12;
+                }
+            };
+            /**
+             * Get number from unit, to string
+             * @param  {mixed} nStr input money
+             * @return {String}  money string, removed digits
+             */
+            function formatnumber(nStr) {
+                nStr += '';
+                var x = nStr.split('.');
+                var x1 = x[0];
+                var x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                return x1 + x2;
+            };
+
+            function to_vietnamese(str, currency) {
+                var str = parseInt(str) + '';
+                //str=fixCurrency(a,1000);
+                var i = 0;
+                var arr = [];
+                var index = str.length;
+                var result = []
+                if (index == 0 || str == 'NaN')
+                    return '';
+                var string = '';
+
+                //explode number string into blocks of 3numbers and push to queue
+                while (index >= 0) {
+                    arr.push(str.substring(index, Math.max(index - 3, 0)));
+                    index -= 3;
+                }
+
+                //loop though queue and convert each block 
+                for (i = arr.length - 1; i >= 0; i--) {
+                    if (arr[i] != '' && arr[i] != '000') {
+                        result.push(block_of_three(arr[i]))
+                        if (u[i])
+                            result.push(u[i]);
+                    }
+                }
+                if (currency)
+                    result.push(currency)
+                string = result.join(' ')
+                //remove unwanted white space
+                return string.replace(/[0-9]/g, '').replace(/  /g, ' ').replace(/ $/, '');
+            };
+
+            function SumQuanlity(list, field) {
+                var sum = 0;
+                if (list && list.length > 0) {
+                    angular.forEach(list, function (v, k) {
+                        sum += parseFloat(v[field]);
+                    });
+                    //if (field === 'THANHTIEN' && $scope.data.TIEN_GIOHAT > 0) sum = sum + $scope.data.TIEN_GIOHAT;
+                }
+                return sum;
+            };
+
+            function InHoaDon(data) {
+                var inVoice = '<html>';
+                //header
+                inVoice += '<head>';
+                inVoice += '<style>';
+                inVoice += '@media print {';
+                inVoice += '.page-break { display: block; page-break-before: always; }';
+                inVoice += '}';
+                // css invoice-POS
+                inVoice += '#invoice-POS {';
+                inVoice += 'box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);';
+                inVoice += 'padding: 2mm;';
+                inVoice += 'margin: 0 auto;';
+                inVoice += 'width: 90mm;';
+                inVoice += 'background: #FFF;';
+                inVoice += ' }';
+
+                inVoice += '#invoice-POS ::moz-selection {';
+                inVoice += 'background: #f31544;';
+                inVoice += 'color: #FFF;';
+                inVoice += ' }';
+
+                inVoice += '#invoice-POS ::selection {';
+                inVoice += 'background: #f31544;';
+                inVoice += 'color: #FFF;';
+                inVoice += ' }';
+                // end css invoice-POS
+                inVoice += 'table {';
+                inVoice += 'border-collapse: collapse;';
+                inVoice += ' }';
+                inVoice += '@media only screen and (max-width: 350px) {';
+                inVoice += 'body { font-family: "Times New Roman", Times, serif; }';
+                inVoice += '}';
+                inVoice += '</style>';
+                inVoice += '</head>';
+                //end header
+                //body
+                inVoice += '<body translate="no">';
+                //table
+                inVoice += '<div id="invoice-POS">';
+                inVoice += '<table>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="6" style="text-align: center;font-weight: bold; font-style: normal; font-size: 14px;">HÓA ĐƠN THANH TOÁN</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="6"><hr></td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Phục vụ:' + data.PHUCVU + '</td>';
+                inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">HĐ:' + data.MA_DATPHONG + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Số bàn: ' + data.TENPHONG + '</td>';
+                inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Ngày: ' + $scope.config.moment(new Date(data.NGAY_THANHTOAN)).format('DD-MM-YYYY') + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Giờ vào:' + data.THOIGIAN_DATPHONG + '</td>';
+                inVoice += '<td colspan="3" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Giờ ra: ' + data.THOIGIAN_THANHTOAN + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="6"><br/></td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<th style="text-align: center; font-style: normal; font-size: 13px; border: 1px solid black;">STT</th>';
+                inVoice += '<th style="text-align: center; font-style: normal; font-size: 13px; border: 1px solid black;">Thực đơn</th>';
+                inVoice += '<th style="text-align: center; font-style: normal; font-size: 13px; border: 1px solid black;">SLg</th>';
+                inVoice += '<th style="text-align: center; font-style: normal; font-size: 13px; border: 1px solid black;">ĐVT</th>';
+                inVoice += '<th style="text-align: center; font-style: normal; font-size: 13px; border: 1px solid black;">Đơn giá</th>';
+                inVoice += '<th style="text-align: center; font-style: normal; font-size: 13px; border: 1px solid black;">Thành tiền</th>';
+                inVoice += '</tr>';
+                //binding data
+                if (data.DtoDetails && data.DtoDetails.length > 0) {
+                    angular.forEach(data.DtoDetails, function (v, k) {
+                        inVoice += '<tr>';
+                        inVoice += '<td style="text-align: center;font-weight: bold; font-style: normal; font-size: 13px; border: 1px solid black;">' + (k + 1) + '</td>';
+                        inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.TENHANG + '</td>';
+                        if (v.MAHANG === data.MAHANG) {
+                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + data.THOIGIAN_SUDUNG + '</td>';
+                        } else {
+                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.SOLUONG) + '</td>';
+                        }
+                        if (v.MAHANG === data.MAHANG) {
+                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;"> phút</td>';
+                        } else {
+                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.DONVITINH + '</td>';
+                        }
+                        inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.GIABANLE_VAT) + '</td>';
+                        inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.THANHTIEN) + '</td>';
+                        inVoice += '</tr>';
+                    });
+                }
+
+                var sumTienMatHang = 0;
+                if (data.MAHANG && data.DtoDetails.length > 0) {
+                    angular.forEach(data.DtoDetails, function (v, k) {
+                        if (v.MAHANG !== data.MAHANG && v.MAHANG !== data.MAHANG_DICHVU) sumTienMatHang += parseFloat(v.THANHTIEN);
+                    });
+                }
+
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3">Bằng chữ: </td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Tiền hàng</td>';
+                inVoice += '<td colspan="1" style="text-align: right;">' + commafy(sumTienMatHang) + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                var tongTienThanhToan = SumQuanlity(data.DtoDetails, 'THANHTIEN');
+                inVoice += '<td colspan="3"><span style="font-style: italic;">' + to_vietnamese(tongTienThanhToan) + '</span></td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Tiền hát</td>';
+                inVoice += '<td colspan="1" style="text-align: right;">' + commafy(data.TIEN_GIOHAT) + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3"></td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Giảm giá</td>';
+                inVoice += '<td colspan="1" style="text-align: right;">0</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3"></td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Dịch vụ</td>';
+                var sumTienDichVu = 0;
+                if (data.MAHANG_DICHVU && data.DtoDetails.length > 0) {
+                    var tienDichVu = $filter('filter')(data.DtoDetails, { MAHANG: data.MAHANG_DICHVU }, true)
+                    if (tienDichVu && tienDichVu.length === 1) {
+                        sumTienDichVu = parseFloat(tienDichVu[0].THANHTIEN);
+                    }
+                }
+                inVoice += '<td colspan="1" style="text-align: right;">' + commafy(sumTienDichVu) + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3"></td>';
+                inVoice += '<td colspan="3" style="text-align: right;"><hr></td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3"></td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Tổng tiền</td>';
+                inVoice += '<td colspan="1" style="text-align: right;">' + commafy(tongTienThanhToan) + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3"></td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Khách đưa</td>';
+                inVoice += '<td colspan="1" style="text-align: right;">' + commafy(data.TIENKHACH_TRA) + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="3"></td>';
+                inVoice += '<td colspan="2" style="text-align: left;font-weight: bold; font-style: normal; font-size: 12px;">Trả lại</td>';
+                inVoice += '<td colspan="1" style="text-align: right;">' + commafy(data.TIEN_TRALAI_KHACH) + '</td>';
+                inVoice += '</tr>';
+                inVoice += '<tr>';
+                inVoice += '<td colspan="6" style="text-align: center; font-style: italic; font-weight: bold;">Cảm ơn quý khách và hẹn gặp lại!</td>';
+                inVoice += '</tr>';
+                //end binding data
+                inVoice += '</table>';
+                inVoice += '</div>';
+                //end table
+                inVoice += '</body>';
+                //end body
+                inVoice += '</html>';
+                return inVoice;
+            };
+            //chi tiết hóa đơn
+            $scope.detail = function (item) {
+                if (item) {
+                    service.getDetails(item.ID).then(function (sucessRes) {
+                        if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
+                            $scope.target = sucessRes.data.Data;
+                            console.log($scope.target);
+                            console.log(InHoaDon($scope.target));
+                        }
+                    });
+                }
+            };
+            //end
+            $scope.cancel = function () {
+                $uibModalInstance.close();
+            };
+        }]);
+
 
     app.controller('pay_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$uibModalInstance' , '$log', 'securityService', 'phongService', 'loaiPhongService', 'datPhongService', 'thamSoHeThongService', 'keyCodes', 'targetData','$sce','userService',
        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $uibModalInstance, $log, securityService, phongService, loaiPhongService, datPhongService, thamSoHeThongService, keyCodes, targetData, $sce, userService) {

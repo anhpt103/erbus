@@ -1,0 +1,91 @@
+﻿<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="thead-catalog-ordernumber">
+                                    <a class="title" href="" ng-click="sortType = 'SOTHUTU'; sortReverse = !sortReverse">
+                                        Thứ tự
+                                        <span ng-show="sortType == 'SOTHUTU' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'SOTHUTU' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th class="thead-catalog-ordernumber">
+                                    <a class="title" href="" ng-click="sortType = 'MA_DATPHONG'; sortReverse = !sortReverse">
+                                        Mã thanh toán
+                                        <span ng-show="sortType == 'MA_DATPHONG' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'MA_DATPHONG' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th class="thead-catalog-code">
+                                    <a class="title" href="" ng-click="sortType = 'MAPHONG'; sortReverse = !sortReverse">
+                                        Mã phòng
+                                        <span ng-show="sortType == 'MAPHONG' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'MAPHONG' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th class="thead-catalog-code">
+                                    <a class="title" href="" ng-click="sortType = 'NGAY_DATPHONG'; sortReverse = !sortReverse">
+                                        Ngày đặt phòng
+                                        <span ng-show="sortType == 'NGAY_DATPHONG' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'NGAY_DATPHONG' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th class="thead-catalog-supplier">
+                                    <a class="title" href="" ng-click="sortType = 'THOIGIAN_DATPHONG'; sortReverse = !sortReverse">
+                                        Thời gian đặt phòng
+                                        <span ng-show="sortType == 'THOIGIAN_DATPHONG' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'THOIGIAN_DATPHONG' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th class="thead-catalog-code">
+                                    <a class="title" href="" ng-click="sortType = 'TEN_KHACHHANG'; sortReverse = !sortReverse">
+                                       Tên khách hàng
+                                        <span ng-show="sortType == 'TEN_KHACHHANG' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'TEN_KHACHHANG' && sortReverse" class="fa fa-caret-up"></span>
+                                    </a>
+                                </th>
+                                <th class="thead-action-crud">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="listThanhToan == NULL || listThanhToan.length <= 0">
+                                <td colspan="6">
+                                    <p>Không có dữ liệu</p>
+                                </td>
+                            </tr>
+                            <tr ng-show="isLoading">
+                                <td colspan="6"><my-loading></my-loading></td>
+                            </tr>
+                            <tr ng-repeat="item in listThanhToan | orderBy:sortType:sortReverse track by $index">
+                                <td>{{$index + 1}}</td>
+                                <td>{{item.MA_DATPHONG}}</td>
+                                <td>{{item.MAPHONG}}</td>
+                                <td>{{config.moment(item.NGAY_DATPHONG).format('DD/MM/YYYY')}}</td>
+                                <td>{{item.THOIGIAN_DATPHONG}}</td>
+                                <td>{{item.TEN_KHACHHANG}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" ng-if="accessList.XEM" ng-click="detail(item);">
+                                        <i class="fa fa-info-circle"></i>&nbsp; {{config.label.btnDetail}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

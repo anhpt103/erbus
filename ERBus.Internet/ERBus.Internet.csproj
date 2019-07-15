@@ -452,6 +452,7 @@
     <Content Include="ERBus\views\knowledge\DatPhong\remove.html" />
     <Content Include="ERBus\views\knowledge\DatPhong\index.html" />
     <Content Include="ERBus\views\knowledge\KiemKe\index.html" />
+    <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\history.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\pay.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\index.html" />
     <Content Include="ERBus\views\knowledge\XuatBanLeThuNgan\detail.html" />

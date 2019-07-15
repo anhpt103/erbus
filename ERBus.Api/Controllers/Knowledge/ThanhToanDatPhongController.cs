@@ -1,10 +1,15 @@
-﻿using EASendMail;
+﻿using AutoMapper;
+using EASendMail;
+using ERBus.Entity.Database.Authorize;
+using ERBus.Entity.Database.Catalog;
 using ERBus.Entity.Database.Knowledge;
 using ERBus.Service;
 using ERBus.Service.Authorize.Utils;
 using ERBus.Service.Knowledge.DatPhong;
 using ERBus.Service.Knowledge.ThanhToanDatPhong;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -41,6 +46,108 @@ namespace ERBus.Api.Controllers.Knowledge
             return Ok(result);
         }
 
+        [Route("GetHistoryPay")]
+        [HttpGet]
+        [CustomAuthorize(Method = "XEM", State = "ThanhToanDatPhong")]
+        public IHttpActionResult GetHistoryPay()
+        {
+            var result = new TransferObj<List<ThanhToanDatPhongViewModel.ViewModelHistory>>();
+            result.Data = _service.GetHistory(_service.GetCurrentUnitCode(), _service.GetConnectionString());
+            if (result.Data.Count > 0)
+            {
+                result.Status = true;
+                result.Message = "Oke";
+            }
+            else
+            {
+                result.Status = false;
+                result.Message = "NoData";
+            }
+            return Ok(result);
+        }
+
+        [Route("GetDetails/{ID}")]
+        [HttpGet]
+        public IHttpActionResult GetDetails(string ID)
+        {
+            var result = new TransferObj<ThanhToanDatPhongViewModel.Dto>();
+            ThanhToanDatPhongViewModel.Dto dto = new ThanhToanDatPhongViewModel.Dto();
+            if (string.IsNullOrEmpty(ID))
+            {
+                return BadRequest("ID không chính xác");
+            }
+            else
+            {
+                var unitCode = _service.GetCurrentUnitCode();
+                var thanhToan = _service.Repository.DbSet.FirstOrDefault(x => x.UNITCODE.Equals(unitCode) && x.ID.Equals(ID));
+                if (thanhToan != null)
+                {
+                    string connectString = ConfigurationManager.ConnectionStrings["ERBusConnection"].ConnectionString;
+                    dto = Mapper.Map<THANHTOAN_DATPHONG, ThanhToanDatPhongViewModel.Dto>(thanhToan);
+                    var nguoiPhucVu = _service.UnitOfWork.Repository<NGUOIDUNG>().DbSet.FirstOrDefault(x => x.USERNAME.Equals(dto.I_CREATE_BY) && x.UNITCODE.Equals(unitCode));
+                    if (nguoiPhucVu != null) dto.PHUCVU = nguoiPhucVu.TENNHANVIEN;
+                    var phong = _service.UnitOfWork.Repository<PHONG>().DbSet.FirstOrDefault(x => x.MAPHONG.Equals(dto.MAPHONG) && x.UNITCODE.Equals(unitCode));
+                    if (phong != null)
+                    {
+                        dto.TENPHONG = phong.TENPHONG;
+                        //lấy thông tin cấu hình phòng
+                        var cauHinhPhong = _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG>().DbSet.FirstOrDefault(x => x.MALOAIPHONG.Equals(phong.MALOAIPHONG) && x.UNITCODE.Equals(unitCode));
+                        if(cauHinhPhong != null)
+                        {
+                            dto.MAHANG = cauHinhPhong.MAHANG;
+                            dto.MAHANG_DICHVU = cauHinhPhong.MAHANG_DICHVU;
+                        }
+                    }
+                    var thanhToanChiTiet = _service.UnitOfWork.Repository<THANHTOAN_DATPHONG_CHITIET>().DbSet.Where(x => x.MA_DATPHONG.Equals(thanhToan.MA_DATPHONG)).OrderByDescending(x => x.SAPXEP).ToList();
+                    dto.DtoDetails = Mapper.Map<List<THANHTOAN_DATPHONG_CHITIET>, List<ThanhToanDatPhongViewModel.DtoDetail>>(thanhToanChiTiet);
+                    if (dto.DtoDetails.Count > 0)
+                    {
+                        string listMatHang = "";
+                        foreach (var matHang in dto.DtoDetails)
+                        {
+                            listMatHang += matHang.MAHANG + ",";
+                        }
+                        listMatHang = listMatHang.Substring(0, listMatHang.Length - 1);
+                        var MatHangViewModel = _service.GetDataMatHang(_service.ConvertConditionStringToArray(listMatHang), unitCode, connectString);
+                        foreach (var row in dto.DtoDetails)
+                        {
+                            var hang = MatHangViewModel.FirstOrDefault(x => x.MAHANG.Equals(row.MAHANG));
+                            if (hang != null)
+                            {
+                                row.TENHANG = hang.TENHANG;
+                            }
+                            var donViTinh = _service.UnitOfWork.Repository<DONVITINH>().DbSet.FirstOrDefault(x => x.MADONVITINH.Equals(hang.MADONVITINH) && x.UNITCODE.Equals(unitCode));
+                            if (donViTinh != null) row.DONVITINH = donViTinh.TENDONVITINH;
+                            row.MATHUE_RA = hang.MATHUE_RA;
+                            if (row.MAHANG.Equals(dto.MAHANG))
+                            {
+                                decimal TIENGIOHAT = 0;
+                                int DONVI_THOIGIAN_TINHTIEN = 0;
+                                int.TryParse(dto.DONVI_THOIGIAN_TINHTIEN.Value.ToString(), out DONVI_THOIGIAN_TINHTIEN);
+                                if(DONVI_THOIGIAN_TINHTIEN != 0) decimal.TryParse(((row.GIABANLE_VAT / DONVI_THOIGIAN_TINHTIEN) * row.SOLUONG).ToString(), out TIENGIOHAT);
+                                row.THANHTIEN = TIENGIOHAT;
+                                dto.TIEN_GIOHAT = TIENGIOHAT;
+                            } 
+                            else row.THANHTIEN = row.SOLUONG * row.GIABANLE_VAT;
+                        }
+                    }
+                }
+                if (dto != null && !string.IsNullOrEmpty(dto.MA_DATPHONG))
+                {
+                    result.Data = dto;
+                    result.Status = true;
+                    result.Message = "Oke";
+                }
+                else
+                {
+                    result.Data = null;
+                    result.Status = false;
+                    result.Message = "NotFound";
+                }
+            }
+            return Ok(result);
+        }
+
         [Route("SenderGmail")]
         [ResponseType(typeof(THANHTOAN_DATPHONG))]
         [CustomAuthorize(Method = "THEM", State = "DatPhong")]
@@ -50,8 +157,8 @@ namespace ERBus.Api.Controllers.Knowledge
             var mailTask = new SmtpMail("TryIt");
             mailTask.Sender = "erbus.notification@gmail.com";
             mailTask.From = "erbus.notification@gmail.com";
-            //mailTask.To = "hathigiangnam1988@gmail.com";
-            mailTask.To = "phamtuananh10394@gmail.com";
+            mailTask.To = "hathigiangnam1988@gmail.com";
+            //mailTask.To = "phamtuananh10394@gmail.com";
             mailTask.Subject = "THANH TOÁN " + obj.MAPHONG + " (" + obj.MA_DATPHONG + ")";
             mailTask.HtmlBody = obj.BODY.ToString();
             try

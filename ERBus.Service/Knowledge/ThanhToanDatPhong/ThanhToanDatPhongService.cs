@@ -8,16 +8,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace ERBus.Service.Knowledge.ThanhToanDatPhong
 {
     public interface IThanhToanDatPhongService : IDataInfoService<THANHTOAN_DATPHONG>
     {
         ThanhToanDatPhongViewModel.Dto GetMerchandiseInBundleGoods(string unitCode, string stringConnect, DatPhongViewModel.DatPhongPayDto data);
+        List<ThanhToanDatPhongViewModel.ViewModelHistory> GetHistory(string unitCode, string stringConnect);
         THANHTOAN_DATPHONG InsertThanhToan(ThanhToanDatPhongViewModel.Dto instance);
         bool UpdateTrangThaiDatPhong(THANHTOAN_DATPHONG instance);
         bool Approval(string ID, string StringConnection, string UnitCode);
+        DateTime? GetNullableDateTime(OracleDataReader reader, string name);
     }
     public class ThanhToanDatPhongService : DataInfoServiceBase<THANHTOAN_DATPHONG>, IThanhToanDatPhongService
     {
@@ -191,6 +192,79 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
                 }
             }
             return thanhToanDto;
+        }
+
+        public DateTime? GetNullableDateTime(OracleDataReader reader, string name)
+        {
+            var col = reader.GetOrdinal(name);
+            return reader.IsDBNull(col) ?
+                        (DateTime?)null :
+                        (DateTime?)reader.GetDateTime(col);
+        }
+
+        public List<ThanhToanDatPhongViewModel.ViewModelHistory> GetHistory(string unitCode, string stringConnect)
+        {
+            List<ThanhToanDatPhongViewModel.ViewModelHistory> listThanhToan = new List<ThanhToanDatPhongViewModel.ViewModelHistory>();
+            using (OracleConnection connection = new OracleConnection(stringConnect))
+            {
+                try
+                {
+                    connection.Open();
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        OracleCommand command = new OracleCommand();
+                        command.Connection = connection;
+                        command.CommandType = CommandType.Text;
+                        command.CommandText = @"SELECT ID,MA_DATPHONG,MAPHONG,NGAY_DATPHONG,THOIGIAN_DATPHONG,NGAY_THANHTOAN,TEN_KHACHHANG,UNITCODE FROM THANHTOAN_DATPHONG WHERE UNITCODE = '" + unitCode + "' ORDER BY NGAY_THANHTOAN DESC, THOIGIAN_DATPHONG DESC, MA_DATPHONG DESC ";
+                        OracleDataReader dataReader = command.ExecuteReader();
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                ThanhToanDatPhongViewModel.ViewModelHistory record = new ThanhToanDatPhongViewModel.ViewModelHistory();
+                                if (dataReader["ID"] != null)
+                                {
+                                    record.ID = dataReader["ID"].ToString();
+                                }
+                                if (dataReader["MA_DATPHONG"] != null)
+                                {
+                                    record.MA_DATPHONG = dataReader["MA_DATPHONG"].ToString();
+                                }
+                                if (dataReader["MAPHONG"] != null)
+                                {
+                                    record.MAPHONG = dataReader["MAPHONG"].ToString();
+                                }
+                                record.NGAY_DATPHONG = GetNullableDateTime(dataReader, "NGAY_DATPHONG");
+                                if (dataReader["THOIGIAN_DATPHONG"] != null)
+                                {
+                                    record.THOIGIAN_DATPHONG = dataReader["THOIGIAN_DATPHONG"].ToString();
+                                }
+                                record.NGAY_THANHTOAN = GetNullableDateTime(dataReader, "NGAY_THANHTOAN");
+                                if (dataReader["TEN_KHACHHANG"] != null)
+                                {
+                                    record.TEN_KHACHHANG = dataReader["TEN_KHACHHANG"].ToString();
+                                }
+                                if (dataReader["UNITCODE"] != null)
+                                {
+                                    record.UNITCODE = dataReader["UNITCODE"].ToString();
+                                }
+                                listThanhToan.Add(record);
+                            }
+                        }
+                        dataReader.Close();
+                    }
+                }
+                catch
+                {
+                    listThanhToan = null;
+                }
+                finally
+                {
+                    connection.Close();
+                    connection.Dispose();
+                }
+            }
+            return listThanhToan;
         }
 
         public THANHTOAN_DATPHONG InsertThanhToan(ThanhToanDatPhongViewModel.Dto instance)

@@ -34,8 +34,10 @@
         $scope.rootUrlHome = configService.rootUrl;
         $scope.currentUser = userService.GetCurrentUser();
         //khởi tạo configService UNITCODE; PARENT_UNITCODE
-        configService.filterDefault.UNITCODE = $scope.currentUser.unitCode;
-        configService.filterDefault.PARENT_UNITCODE = $scope.currentUser.parentUnitCode;
+        if ($scope.currentUser) {
+            configService.filterDefault.UNITCODE = $scope.currentUser.unitCode;
+            configService.filterDefault.PARENT_UNITCODE = $scope.currentUser.parentUnitCode;
+        }
         //end
         function treeify(list, idAttr, parentAttr, childrenAttr) {
             if (!idAttr) idAttr = 'VALUE';

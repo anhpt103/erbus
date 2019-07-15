@@ -54,6 +54,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public string MA_DATPHONG { get; set; }
             public string MAPHONG { get; set; }
             public DateTime? NGAY_DATPHONG { get; set; }
+            public DateTime? NGAY_THANHTOAN { get; set; }
             public string THOIGIAN_DATPHONG { get; set; }
             public string THOIGIAN_THANHTOAN { get; set; }
             public string THOIGIAN_SUDUNG { get; set; }
@@ -68,6 +69,9 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public decimal TIENKHACH_TRA { get; set; }
             public decimal TIEN_TRALAI_KHACH { get; set; }
             public string MAKHO { get; set; }
+            public string PHUCVU { get; set; }
+            public string TENPHONG { get; set; }
+            public decimal TIEN_GIOHAT { get; set; }
             public List<DtoDetail> DtoDetails { get; set; }
         }
 
@@ -84,6 +88,7 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public string MATHUE_RA { get; set; }
             public decimal GIABANLE_VAT { get; set; }
             public string UNITCODE { get; set; }
+            public decimal THANHTIEN { get; set; }
             public int? SAPXEP { get; set; }
         }
 
@@ -101,6 +106,19 @@ namespace ERBus.Service.Knowledge.ThanhToanDatPhong
             public Nullable<int> TRANGTHAI { get; set; }
             public DateTime? I_CREATE_DATE { get; set; }
             public string I_CREATE_BY { get; set; }
+            public string UNITCODE { get; set; }
+        }
+
+
+        public class ViewModelHistory
+        {
+            public string ID { get; set; }
+            public string MA_DATPHONG { get; set; }
+            public string MAPHONG { get; set; }
+            public DateTime? NGAY_DATPHONG { get; set; }
+            public string THOIGIAN_DATPHONG { get; set; }
+            public DateTime? NGAY_THANHTOAN { get; set; }
+            public string TEN_KHACHHANG { get; set; }
             public string UNITCODE { get; set; }
         }
 

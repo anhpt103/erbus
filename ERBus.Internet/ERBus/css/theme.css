@@ -14930,6 +14930,12 @@ span.title {
     width: 1100px;
 }
 
+.knowledge-historyPay .modal-content {
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 1024px;
+}
+
 .modal-delete {
     left: 50%;
     transform: translate(-50%, 7%);
