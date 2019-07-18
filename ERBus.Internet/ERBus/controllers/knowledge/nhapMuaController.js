@@ -36,7 +36,7 @@
         return result;
     }]);
     /* controller list */
-    app.controller('NhapMua_Ctrl', ['$scope', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nhaCungCapService', 'thueService', 'khoHangService','userService',
+    app.controller('NhapMua_Ctrl', ['$scope', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nhaCungCapService', 'thueService', 'khoHangService', 'userService',
         function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nhaCungCapService, thueService, khoHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
@@ -404,6 +404,9 @@
         var currentUser = userService.GetCurrentUser();
         var unitCode = currentUser.unitCode;
         $scope.title = function () { return 'Thêm phiếu nhập hàng'; };
+        $scope.refresh = function () {
+            tempDataService.refreshData();
+        };
         $scope.target = {
             TONGTIEN_TRUOCTHUE: 0,
             TIEN_CHIETKHAU: 0,
@@ -591,9 +594,11 @@
             return result;
         };
         function errorFocusMaHang() {
-            focus('_maHangAddItem');
-            document.getElementById('_maHangAddItem').focus();
-            document.getElementById('_maHangAddItem').select();
+            if (document.getElementById('_maHangAddItem') != null) {
+                focus('_maHangAddItem');
+                document.getElementById('_maHangAddItem').focus();
+                document.getElementById('_maHangAddItem').select();
+            }
         };
         //sự kiện click ESC exit modal
         document.addEventListener('keyup', function (e) {
@@ -1350,6 +1355,9 @@
                 }
             };
             $scope.title = function () { return 'Chỉnh sửa phiếu nhập hàng'; };
+            $scope.refresh = function () {
+                tempDataService.refreshData();
+            };
             //Tính toán giá
             function getGiaTriVatVao(maThue) {
                 var giaTri = 0;
@@ -1398,9 +1406,11 @@
                 return result;
             };
             function errorFocusMaHang() {
-                focus('_maHangAddItem');
-                document.getElementById('_maHangAddItem').focus();
-                document.getElementById('_maHangAddItem').select();
+                if (document.getElementById('_maHangAddItem') != null) {
+                    focus('_maHangAddItem');
+                    document.getElementById('_maHangAddItem').focus();
+                    document.getElementById('_maHangAddItem').select();
+                }
             };
             //sự kiện click ESC exit modal
             document.addEventListener('keyup', function (e) {

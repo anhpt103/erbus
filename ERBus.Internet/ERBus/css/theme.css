@@ -48,7 +48,7 @@ Notes:	decreasing heading by 0.4em with every subsequent heading level
     box-sizing: border-box;
     font-family: "Times New Roman", Times, serif;
     font-style: normal;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 ul {
@@ -68,7 +68,7 @@ input[type='button'] {
 
 input, textarea {
     border: none;
-    font-family: 'Times New Roman', Times, serif !important; 
+    font-family: 'Times New Roman', Times, serif !important;
     font-style: normal !important;
 }
 
@@ -83,7 +83,11 @@ img {
 }
 
 p {
+    color: #000;
     margin: 0;
+    font-family: "Times New Roman", Times, serif;
+    font-style: normal;
+    font-size: 14px;
 }
 
 .table-responsive {
@@ -97,9 +101,17 @@ p {
 }
 
 .btn {
+    font-family: "Times New Roman", Times, serif;
+    font-style: normal;
+    font-size: 14px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+}
+
+.modal-header .close {
+    padding: 1rem 1.5rem;
+    margin: -1rem -1rem -1rem auto;
 }
 
 /* ----- Typography ----- */
@@ -192,6 +204,9 @@ element.style {
 
 [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
     cursor: pointer;
+    font-family: "Times New Roman", Times, serif;
+    font-style: normal;
+    font-size: 15px;
 }
 
 .btn {
@@ -763,7 +778,7 @@ section {
 .au-input {
     line-height: 43px;
     border: 1px solid #e5e5e5;
-    font-size: 13px;
+    font-size: 15px;
     color: #666;
     padding: 0 17px;
     -webkit-border-radius: 3px;
@@ -1660,14 +1675,14 @@ section {
         z-index: 3;
     }
 
-.menu-sidebar .navbar__list .navbar__sub-list {
-    display: none;
-    padding-left: 34px;
-}
+    .menu-sidebar .navbar__list .navbar__sub-list {
+        display: none;
+        padding-left: 34px;
+    }
 
-.menu-sidebar .navbar__list .navbar__sub-list li a {
-    padding: 11.5px 0;
-}
+        .menu-sidebar .navbar__list .navbar__sub-list li a {
+            padding: 11.5px 0;
+        }
 
 .menu-sidebar__content {
     position: relative;
@@ -4829,78 +4844,79 @@ span.title {
     color: #fa4251;
 }
 
-.table-data3
-{
-    table-layout: fixed; width:100%;
-}
-.table-data3 thead {
-    background: #333;
+.table-data3 {
+    table-layout: fixed;
+    width: 100%;
 }
 
-.table-data3 thead tr th {
-    font-size: 13px;
-    color: #fff;
-    font-weight: 400;
-    text-transform: capitalize;
-    padding: 18px 40px;
-    padding-right: 10px;
-}
+    .table-data3 thead {
+        background: #333;
+    }
 
-.table-data3 thead tr th:first-child {
-    -webkit-border-top-left-radius: 3px;
-    -moz-border-radius-topleft: 3px;
-    border-top-left-radius: 3px;
-}
+        .table-data3 thead tr th {
+            font-size: 13px;
+            color: #fff;
+            font-weight: 400;
+            text-transform: capitalize;
+            padding: 18px 40px;
+            padding-right: 10px;
+        }
 
-.table-data3 thead tr th:last-child {
-    -webkit-border-top-right-radius: 3px;
-    -moz-border-radius-topright: 3px;
-    border-top-right-radius: 3px;
-}
+            .table-data3 thead tr th:first-child {
+                -webkit-border-top-left-radius: 3px;
+                -moz-border-radius-topleft: 3px;
+                border-top-left-radius: 3px;
+            }
 
-.table-data3 thead tr th:last-child {
-    text-align: right;
-    padding-right: 50px;
-}
+            .table-data3 thead tr th:last-child {
+                -webkit-border-top-right-radius: 3px;
+                -moz-border-radius-topright: 3px;
+                border-top-right-radius: 3px;
+            }
 
-.table-data3 tbody tr td:last-child {
-    text-align: right;
-    padding-right: 50px;
-}
+            .table-data3 thead tr th:last-child {
+                text-align: right;
+                padding-right: 50px;
+            }
 
-.table-data3 tbody tr {
-    border-left: 1px solid #e5e5e5;
-    border-right: 1px solid #e5e5e5;
-}
+    .table-data3 tbody tr td:last-child {
+        text-align: right;
+        padding-right: 50px;
+    }
 
-.table-data3 tbody tr:last-child td:first-child {
-    -webkit-border-bottom-left-radius: 8px;
-    -moz-border-radius-bottomleft: 8px;
-    border-bottom-left-radius: 8px;
-}
+    .table-data3 tbody tr {
+        border-left: 1px solid #e5e5e5;
+        border-right: 1px solid #e5e5e5;
+    }
 
-.table-data3 tbody tr:last-child td:last-child {
-    -webkit-border-bottom-right-radius: 8px;
-    -moz-border-radius-bottomright: 8px;
-    border-bottom-right-radius: 8px;
-}
+        .table-data3 tbody tr:last-child td:first-child {
+            -webkit-border-bottom-left-radius: 8px;
+            -moz-border-radius-bottomleft: 8px;
+            border-bottom-left-radius: 8px;
+        }
 
-.table-data3 tbody td {
-    border-bottom: 1px solid #f5f5f5;
-    background: #fff;
-    font-size: 15px;
-    color: #000000;
-    padding: 12px 40px;
-    padding-right: 10px;
-}
+        .table-data3 tbody tr:last-child td:last-child {
+            -webkit-border-bottom-right-radius: 8px;
+            -moz-border-radius-bottomright: 8px;
+            border-bottom-right-radius: 8px;
+        }
 
-.table-data3 tbody td.process {
-    color: #00ad5f;
-}
+    .table-data3 tbody td {
+        border-bottom: 1px solid #f5f5f5;
+        background: #fff;
+        font-size: 15px;
+        color: #000000;
+        padding: 12px 40px;
+        padding-right: 10px;
+    }
 
-.table-data3 tbody td.denied {
-    color: #fa4251;
-}
+        .table-data3 tbody td.process {
+            color: #00ad5f;
+        }
+
+        .table-data3 tbody td.denied {
+            color: #fa4251;
+        }
 
 /* ----- Footer ----- */
 .copyright {
@@ -4909,13 +4925,13 @@ span.title {
     padding-top: 20px;
 }
 
-.copyright p {
-    font-size: 14px;
-    color: #666;
-    line-height: -webkit-calc(24/14);
-    line-height: -moz-calc(24/14);
-    line-height: calc(24/14);
-}
+    .copyright p {
+        font-size: 14px;
+        color: #666;
+        line-height: -webkit-calc(24/14);
+        line-height: -moz-calc(24/14);
+        line-height: calc(24/14);
+    }
 
 /* ----- Breadcrumb ----- */
 .au-breadcrumb {
@@ -14825,7 +14841,7 @@ span.title {
 }
 
 .au-input--xl.customize {
-    min-width: 400px;
+    min-width: 370px;
     margin-left: 10px;
 }
 
@@ -15111,17 +15127,20 @@ ul.pagination li {
         border: 3px solid #f15e5e;
     }
 
-        .modal-confirm .icon-box i {
-            color: #f15e5e;
-            font-size: 46px;
-            display: inline-block;
-            margin-top: 13px;
-        }
+    .modal-confirm .icon-box i {
+        color: #f15e5e;
+        font-size: 46px;
+        display: inline-block;
+        margin-top: 13px;
+    }
 
     .modal-confirm .btn {
+        font-family: "Times New Roman", Times, serif;
+        font-style: normal;
+        font-size: 18px;
         color: #fff;
         border-radius: 4px;
-        background: #60c7c1;
+        /*background: #60c7c1;*/
         text-decoration: none;
         transition: all 0.4s;
         line-height: normal;
@@ -15135,18 +15154,30 @@ ul.pagination li {
 
     .modal-confirm .btn-info {
         background: #c1c1c1;
+        font-family: "Times New Roman", Times, serif;
+        font-style: normal;
+        font-size: 14px;
     }
 
         .modal-confirm .btn-info:hover, .modal-confirm .btn-info:focus {
             background: #a8a8a8;
+            font-family: "Times New Roman", Times, serif;
+            font-style: normal;
+            font-size: 14px;
         }
 
     .modal-confirm .btn-danger {
         background: #f15e5e;
+        font-family: "Times New Roman", Times, serif;
+        font-style: normal;
+        font-size: 14px;
     }
 
         .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
             background: #ee3535;
+            font-family: "Times New Roman", Times, serif;
+            font-style: normal;
+            font-size: 14px;
         }
 
 .trigger-btn {
@@ -15267,6 +15298,9 @@ ul.pagination li {
 .btn-primary.button-change-report {
     width: 160px;
     text-align: justify;
+    font-family: "Times New Roman", Times, serif;
+    font-style: normal;
+    font-size: 14px;
 }
 
 .top-campaign.report-table {
@@ -15531,7 +15565,7 @@ Thanks :)*/
     width: 100%;
     height: 100%;
     color: #fff;
-    /*opacity: 0;*/  
+    /*opacity: 0;*/
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;

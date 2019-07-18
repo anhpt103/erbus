@@ -27,8 +27,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('LoaiHang_Ctrl', ['$scope', '$http', 'configService', 'loaiHangService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','$rootScope','userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, $rootScope, userService) {
+    app.controller('LoaiHang_Ctrl', ['$scope', '$http', 'configService', 'loaiHangService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','userService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -103,6 +103,7 @@
             };
             //end function loadAccessList()
             loadAccessList();
+            
             /* Function create new item */
             $scope.create = function () {
                 var modalInstance = $uibModal.open({

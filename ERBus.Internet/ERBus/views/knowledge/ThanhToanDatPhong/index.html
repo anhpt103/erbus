@@ -2,10 +2,12 @@
     .table-data3 thead tr th {
         padding: 15px 20px;
     }
-
     .selected {
         color: blue;
         background-color: #EEEEEE;
+    }
+    .highlightTd{
+        border: 3px solid red !important;
     }
 </style>
 <script>
@@ -87,11 +89,11 @@
                         <div class="col-md-12">
                             <section class="alert-wrap p-t-0 p-b-10">
                                 <form class="form-header form-header2">
-                                    <input class="au-input au-input--w250" type="text" name="search" placeholder="Tìm kiếm mặt hàng thanh toán..." style="border-color: #4272d7;" ng-model="search.MAHANG" ng-enter="changedMaHang(search.MAHANG);"/>
+                                    <input class="au-input au-input--w250" type="text" name="search" placeholder="Thêm sản phẩm thanh toán..." style="border-color: #4272d7;" ng-model="search.MAHANG" ng-enter="changedMaHang(search.MAHANG);" />
                                     <button class="au-btn--submit" type="submit">
-                                        <i class="zmdi zmdi-search"></i>
+                                        <i class="zmdi zmdi-collection-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-secondary" style="margin: 0 5px;font-size: 18px;" ng-click="historyPay();"><i class="zmdi zmdi-receipt">&nbsp;&nbsp;Lịch sử thanh toán</i></button>
+                                    <button type="button" class="btn btn-warning btn-lg" style="margin: 0 5px;font-size: 18px;" ng-click="historyPay();"><i class="zmdi zmdi-receipt">&nbsp;&nbsp;Lịch sử thanh toán</i></button>
                                     <button type="button" class="btn btn-success" style="margin: 0 5px;font-size: 18px;" ng-click="payRoom();"><i class="zmdi zmdi-paypal-alt">&nbsp;&nbsp;Thanh toán (F9)</i></button>
                                     <button type="button" class="btn btn-primary" style="margin: 0 5px;font-size: 18px;"><i class="zmdi zmdi-swap">&nbsp;&nbsp;Chuyển bàn</i></button>
                                     <button type="button" class="btn btn-primary" style="margin: 0 5px;font-size: 18px;"><i class="zmdi zmdi-arrow-merge">&nbsp;&nbsp;Ghép bàn</i></button>
@@ -106,18 +108,17 @@
                                     <thead style="background: #4272d7;">
                                         <tr>
                                             <th style="width: 5%;">STT</th>
-                                            <th style="width: 12%;">Mã hàng</th>
-                                            <th style="width: 26%;">Tên hàng</th>
-                                            <th style="width: 11%;text-align: center;">Đơn vị</th>
-                                            <th style="width: 17%;text-align: center;">Số lượng</th>
-                                            <th style="width: 10%;text-align: center;">Giá</th>
-                                            <th style="width: 18%;text-align: center;">Thành tiền</th>
+                                            <th style="width: 25%;">Tên hàng</th>
+                                            <th style="width: 10%;text-align: center;">Đơn vị</th>
+                                            <th style="width: 15%;text-align: center;">Số lượng</th>
+                                            <th style="width: 10%;text-align: center;">Đơn giá</th>
+                                            <th style="width: 15%;text-align: center;">Thành tiền</th>
+                                            <th style="width: 10%;text-align: right;">#</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in data.DtoDetails | orderBy:'MAHANG':true track by $index">
-                                            <td style="padding: 15px 10px;">{{$index + 1}}</td>
-                                            <td style="padding: 15px 10px;">{{item.MAHANG}}</td>
+                                            <td style="padding: 15px 10px;text-align:center;">{{$index + 1}}</td>
                                             <td style="padding: 15px 10px;">{{item.TENHANG}}</td>
                                             <td>{{item.DONVITINH}}</td>
                                             <td style="padding: 12px 20px;">
@@ -136,10 +137,15 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td><input type="text" ng-model="item.GIABANLE_VAT" ng-change="changeGiaBanLeVat(item);" ng-readonly="!item.IS_EDIT_VALUE" awnum="number-utc"></td>
+                                            <td ng-class="{highlightTd: item.MAHANG === data.MAHANG_DICHVU}"><input type="text" ng-model="item.GIABANLE_VAT" onfocus="this.select()" autofocus ng-change="changeGiaBanLeVat(item);" ng-readonly="!item.IS_EDIT_VALUE" awnum="number-utc" style="width: 100%; text-align: right;"></td>
                                             <td>
                                                 <input ng-if="!item.IS_HOUR_SINGLE_MERCHANDISE" awnum="number-utc" type="text" enter style="height: 30.5px;text-align: right;width: 100%;" ng-model="item.THANHTIEN" readonly>
                                                 <div ng-if="item.IS_HOUR_SINGLE_MERCHANDISE" ng-bind-html="item.textThanhTien" readonly></div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-warning" ng-click="removeItem(item);" title="Loại bỏ sản phẩm khỏi danh sách" ng-if="!item.IS_HOUR_SINGLE_MERCHANDISE">
+                                                    <i class="zmdi zmdi-close"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>

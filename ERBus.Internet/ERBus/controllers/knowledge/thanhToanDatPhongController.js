@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController', 'controllers/catalog/phongController', 'controllers/knowledge/datPhongController', 'controllers/authorize/thamSoHeThongController', 'controllers/catalog/matHangController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController', 'controllers/catalog/phongController', 'controllers/knowledge/datPhongController', 'controllers/authorize/thamSoHeThongController', 'controllers/catalog/matHangController', 'controllers/catalog/donViTinhController'], function () {
     'use strict';
-    var app = angular.module('thanhToanDatPhongModule', ['ui.bootstrap', 'loaiPhongModule', 'phongModule', 'datPhongModule', 'thamSoHeThongModule']);
+    var app = angular.module('thanhToanDatPhongModule', ['ui.bootstrap', 'loaiPhongModule', 'phongModule', 'datPhongModule', 'thamSoHeThongModule', 'donViTinhModule']);
     app.factory('thanhToanDatPhongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Knowledge/ThanhToanDatPhong';
         var selectedData = [];
@@ -27,8 +27,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService','$timeout','closingService','getsetDataService','matHangService','$rootScope',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService, $timeout, closingService, getsetDataService, matHangService, $rootScope) {
+    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService','$timeout','closingService','getsetDataService','matHangService','$rootScope','donViTinhService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService, $timeout, closingService, getsetDataService, matHangService, $rootScope, donViTinhService) {
             $scope.keys = keyCodes;
             var currentUser = userService.GetCurrentUser();
             $scope.modalOpen = false;
@@ -74,6 +74,25 @@
                     }
                 }
             };
+
+            //Function load data catalog DonViTinh
+            function loadDataDonViTinh() {
+                $scope.donViTinh = [];
+                if (!tempDataService.tempData('donViTinh')) {
+                    donViTinhService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('donViTinh', successRes.data.Data);
+                            $scope.donViTinh = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.donViTinh = tempDataService.tempData('donViTinh');
+                }
+            };
+            loadDataDonViTinh();
+            //end
 
             //Function load data catalog LoaiHang
             function loadDataLoaiPhong() {
@@ -365,8 +384,25 @@
                         }
                     });
                     modalInstance.result.then(function (refundedData) {
-                        if (refundedData) {
-                            console.log(refundedData);
+                        if (refundedData && refundedData.length > 0) {
+                            if (refundedData[0].MADONVITINH) var donViTinh = $filter('filter')($scope.donViTinh, { VALUE: refundedData[0].MADONVITINH }, true);
+                            var obj = {
+                                MAHANG: refundedData[0].MAHANG,
+                                TENHANG: refundedData[0].TENHANG,
+                                MADONVITINH: refundedData[0].MADONVITINH,
+                                DONVITINH: (donViTinh && donViTinh.length === 1) ? donViTinh[0].DESCRIPTION : '',
+                                SOLUONG: 1,
+                                GIABANLE_VAT: refundedData[0].GIABANLE_VAT,
+                                THANHTIEN: refundedData[0].GIABANLE_VAT,
+                            };
+                            var checkExist = $filter('filter')($scope.data.DtoDetails, { MAHANG: obj.MAHANG }, true);
+                            if (checkExist && checkExist.length === 1) {
+                                checkExist[0].SOLUONG += obj.SOLUONG;
+                                checkExist[0].THANHTIEN = checkExist[0].SOLUONG * checkExist[0].GIABANLE_VAT;
+                            } else {
+                                $scope.data.DtoDetails.push(obj);
+                            }
+                            $scope.search.MAHANG = '';
                         }
                     });
                 }
@@ -375,14 +411,31 @@
 
             //CHANGED MAHANG ADD ITEM
             $scope.changedMaHang = function (maHang) {
-                if (maHang) {
+                if (maHang && $scope.data.MA_DATPHONG) {
                     var obj = {
                         MAHANG: maHang,
                         UNITCODE: currentUser.unitCode
                     }
                     matHangService.getMatHangTheoDieuKien(obj).then(function (successRes) {
                         if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
-                            
+                            if (successRes.data.Data.MADONVITINH) var donViTinh = $filter('filter')($scope.donViTinh, {VALUE: successRes.data.Data.MADONVITINH}, true);
+                            var obj = {
+                                MAHANG: successRes.data.Data.MAHANG,
+                                TENHANG: successRes.data.Data.TENHANG,
+                                MADONVITINH: successRes.data.Data.MADONVITINH,
+                                DONVITINH: (donViTinh && donViTinh.length === 1) ? donViTinh[0].DESCRIPTION : '',
+                                SOLUONG: 1,
+                                GIABANLE_VAT: successRes.data.Data.GIABANLE_VAT,
+                                THANHTIEN: GIABANLE_VAT,
+                            };
+                            var checkExist = $filter('filter')($scope.data.DtoDetails, { MAHANG: obj.MAHANG }, true);
+                            if (checkExist && checkExist.length === 1) {
+                                checkExist[0].SOLUONG += obj.SOLUONG;
+                                checkExist[0].THANHTIEN = checkExist[0].SOLUONG * checkExist[0].GIABANLE_VAT;
+                            } else {
+                                $scope.data.DtoDetails.push(obj);
+                                $scope.search.MAHANG = '';
+                            }
                         }
                         else {
                             //bật lên modal tìm kiếm mặt hàng
@@ -487,6 +540,17 @@
                 getsetDataService.setJson({});
                 $rootScope.$emit("loadDataAfterPaySuccess", {});
             });
+
+            //xóa item
+            $scope.removeItem = function (item) {
+                if (item && item.MAHANG) {
+                    var cfm = confirm("Bạn muốn xóa thanh toán sản phẩm này?");
+                    if (cfm == true) {
+                        var index = $scope.data.DtoDetails.findIndex(x => x.MAHANG === item.MAHANG);
+                        if (index !== -1) $scope.data.DtoDetails.splice(index, 1);
+                    }
+                }
+            };
         }]);
     
     app.controller('historyPay_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','userService',
@@ -549,7 +613,6 @@
                 }
                 return str.join('.');
             };
-
 
             var default_numbers = ' hai ba bốn năm sáu bảy tám chín';
             var units = ('1 một' + default_numbers).split(' ');
@@ -828,9 +891,18 @@
                 if (item) {
                     service.getDetails(item.ID).then(function (sucessRes) {
                         if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
-                            $scope.target = sucessRes.data.Data;
-                            console.log($scope.target);
-                            console.log(InHoaDon($scope.target));
+                            var modalInstance = $uibModal.open({
+                                backdrop: 'static',
+                                animation: true,
+                                windowClass: 'knowledge-window',
+                                templateUrl: configService.buildUrl('knowledge/ThanhToanDatPhong', 'viewReceipt'),
+                                controller: 'viewReceiptController',
+                                resolve: {
+                                    htmlBinding: function () {
+                                        return InHoaDon(sucessRes.data.Data);
+                                    }
+                                }
+                            });
                         }
                     });
                 }
@@ -841,6 +913,17 @@
             };
         }]);
 
+    
+
+    app.controller('viewReceiptController', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', '$sce','htmlBinding','$uibModalInstance',
+       function ($scope, $http, configService, service, $sce, htmlBinding, $uibModalInstance) {
+           $scope.config = angular.copy(configService);
+           $scope.title = function () { return 'Thông tin hóa đơn' };
+           $scope.viewReceipt = $sce.trustAsHtml(htmlBinding);
+           $scope.cancel = function () {
+               $uibModalInstance.close();
+           };
+       }]);
 
     app.controller('pay_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$uibModalInstance' , '$log', 'securityService', 'phongService', 'loaiPhongService', 'datPhongService', 'thamSoHeThongService', 'keyCodes', 'targetData','$sce','userService',
        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $uibModalInstance, $log, securityService, phongService, loaiPhongService, datPhongService, thamSoHeThongService, keyCodes, targetData, $sce, userService) {

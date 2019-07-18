@@ -222,6 +222,9 @@
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.title = function () { return 'Thêm nhóm sản phẩm'; };
+            $scope.refresh = function () {
+                tempDataService.refreshData();
+            };
             $scope.target = {};
             //Tạo mới mã nhóm hàng
             var currentUser = userService.GetCurrentUser();
@@ -284,6 +287,9 @@
             $scope.target = {};
             $scope.target = angular.copy(targetData);
             $scope.title = function () { return 'Chỉnh sửa nhóm sản phẩm'; };
+            $scope.refresh = function () {
+                tempDataService.refreshData();
+            };
             $scope.save = function () {
                 if (!$scope.target.MALOAI || !$scope.target.MANHOM || !$scope.target.TENNHOM ) {
                     Lobibox.notify('warning', {

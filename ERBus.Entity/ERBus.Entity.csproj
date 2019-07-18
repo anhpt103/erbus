@@ -239,6 +239,7 @@
     <Content Include="Script\BAOCAO_BANBUON_CHITIET.sql" />
     <Content Include="Script\BAOCAO_BANBUON_TONGHOP.sql" />
     <Content Include="Script\ERBUS.sql" />
+    <Content Include="Script\ERBUS_UPDATE_REGEX.sql" />
     <Content Include="Script\GET_MENU.sql" />
     <Content Include="Script\MATHANG_TONKHO_PAGINATION.sql" />
     <Content Include="Script\TIMKIEM_KHACHHANG.sql" />

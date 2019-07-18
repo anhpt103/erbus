@@ -5,7 +5,7 @@
         var hostname = window.location.hostname;
         var port = window.location.port;
         var rootUrl = 'http://' + hostname + ':' + port;
-        var rootUrlApi = 'http://localhost:55296';
+        var rootUrlApi = 'http://14.160.26.174:5596';
         if (!port) {
             rootUrl = 'http://' + hostname;
         }

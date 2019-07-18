@@ -426,8 +426,8 @@
             //end read data from Excel file
         }]);
 
-    app.controller('matHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'matHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'nhomHangService', 'thueService', '$timeout', 'Upload', 'thamSoHeThongService','userService',
-        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, nhomHangService, thueService, $timeout, upload, thamSoHeThongService, userService) {
+    app.controller('matHangCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'matHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'nhomHangService', 'thueService', '$timeout', 'Upload', 'thamSoHeThongService','userService','loaiHangService',
+        function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, nhomHangService, thueService, $timeout, upload, thamSoHeThongService, userService, loaiHangService) {
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             var currentUser = userService.GetCurrentUser();
@@ -441,6 +441,9 @@
             $scope.target.GIABANBUON_VAT = 0;
             $scope.target.TYLE_LAILE = 0;
             $scope.target.TYLE_LAIBUON = 0;
+            $scope.refresh = function () {
+                tempDataService.refreshData();
+            };
             //Tham số cấu hình sử dụng chức năng thêm mới nhanh
             $scope.IS_QUICK_ADD_CATALOG = false;
             thamSoHeThongService.getDataByMaThamSo().then(function (successRes) {
@@ -468,6 +471,7 @@
                     }
                 }
             };
+
             //Change mã loại gender to MaHang
             $scope.changeMaLoai = function (maLoaiSelected) {
                 $scope.listMaNhom = [];
@@ -1069,6 +1073,9 @@
             $scope.target = {};
             $scope.target = angular.copy(targetData);
             $scope.title = function () { return 'Chỉnh sửa mặt hàng'; };
+            $scope.refresh = function () {
+                tempDataService.refreshData();
+            };
             //Tham số cấu hình sử dụng chức năng thêm mới nhanh
             $scope.IS_QUICK_ADD_CATALOG = false;
             thamSoHeThongService.getDataByMaThamSo().then(function (successRes) {

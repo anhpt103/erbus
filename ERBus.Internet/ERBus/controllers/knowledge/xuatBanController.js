@@ -301,6 +301,9 @@
         var currentUser = userService.GetCurrentUser();
         var unitCode = currentUser.unitCode;
         $scope.title = function () { return 'Thêm phiếu xuất bán buôn'; };
+        $scope.refresh = function () {
+            tempDataService.refreshData();
+        };
         $scope.target = {
             TONGTIEN_TRUOCTHUE: 0,
             TIEN_CHIETKHAU: 0,
@@ -492,9 +495,11 @@
         };
        
         function errorFocusMaHang() {
-            focus('_maHangAddItem');
-            document.getElementById('_maHangAddItem').focus();
-            document.getElementById('_maHangAddItem').select();
+            if (document.getElementById('_maHangAddItem') != null) {
+                focus('_maHangAddItem');
+                document.getElementById('_maHangAddItem').focus();
+                document.getElementById('_maHangAddItem').select();
+            }
         };
         //sự kiện click ESC exit modal
         document.addEventListener('keyup', function (e) {
@@ -1290,7 +1295,9 @@
                 }
             };
             $scope.title = function () { return 'Chỉnh sửa phiếu xuất bán buôn'; };
-            //Tính toán giá
+            $scope.refresh = function () {
+                tempDataService.refreshData();
+            };
 
             //Tính toán giá
             function getGiaTriVatRa(maThue) {
