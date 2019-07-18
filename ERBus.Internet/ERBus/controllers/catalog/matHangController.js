@@ -793,13 +793,6 @@
             $scope.changedGiaBanLe = function (giaBanLe) {
                 if (giaBanLe) {
                     $scope.target.TYLE_LAILE = Math.round(100 * ((100 * (giaBanLe - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAILE) <= -100 || parseInt($scope.target.TYLE_LAILE) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi lẻ (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                     $scope.target.GIABANLE_VAT = Math.round(100 * (giaBanLe * (getGiaTriVatVao($scope.target.MATHUE_RA) / 100) + giaBanLe)) / 100;
                 }
             };
@@ -814,13 +807,6 @@
             $scope.changedGiaBanBuon = function (giaBanBuon) {
                 if (giaBanBuon) {
                     $scope.target.TYLE_LAIBUON = Math.round(100 * ((100 * (giaBanBuon - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAIBUON) <= -100 || parseInt($scope.target.TYLE_LAIBUON) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi buôn (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                     $scope.target.GIABANBUON_VAT = Math.round(100 * (giaBanBuon * (getGiaTriVatVao($scope.target.MATHUE_RA) / 100) + giaBanBuon)) / 100;
                 }
             };
@@ -829,13 +815,6 @@
                 if (giaBanLeCoVat) {
                     $scope.target.GIABANLE = Math.round(100 * (giaBanLeCoVat / (1 + (getGiaTriVatVao($scope.target.MATHUE_RA) / 100)))) / 100;
                     $scope.target.TYLE_LAILE = Math.round(100 * ((100 * ($scope.target.GIABANLE - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAILE) <= -100 || parseInt($scope.target.TYLE_LAILE) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi lẻ (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                 }
             };
 
@@ -843,13 +822,6 @@
                 if (giaBanBuonCoVat) {
                     $scope.target.GIABANBUON = Math.round(100 * (giaBanBuonCoVat / (1 + (getGiaTriVatVao($scope.target.MATHUE_RA) / 100)))) / 100;
                     $scope.target.TYLE_LAIBUON = Math.round(100 * ((100 * ($scope.target.GIABANBUON - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAIBUON) <= -100 || parseInt($scope.target.TYLE_LAIBUON) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi buôn (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                 }
             };
             //end tính toán giá
@@ -1440,13 +1412,6 @@
             $scope.changedGiaBanLe = function (giaBanLe) {
                 if (giaBanLe) {
                     $scope.target.TYLE_LAILE = Math.round(100 * ((100 * (giaBanLe - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAILE) <= -100 || parseInt($scope.target.TYLE_LAILE) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi lẻ (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                     $scope.target.GIABANLE_VAT = Math.round(100 * (giaBanLe * (getGiaTriVatVao($scope.target.MATHUE_RA) / 100) + giaBanLe)) / 100;
                 }
             };
@@ -1461,13 +1426,6 @@
             $scope.changedGiaBanBuon = function (giaBanBuon) {
                 if (giaBanBuon) {
                     $scope.target.TYLE_LAIBUON = Math.round(100 * ((100 * (giaBanBuon - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAIBUON) <= -100 || parseInt($scope.target.TYLE_LAIBUON) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi buôn (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                     $scope.target.GIABANBUON_VAT = Math.round(100 * (giaBanBuon * (getGiaTriVatVao($scope.target.MATHUE_RA) / 100) + giaBanBuon)) / 100;
                 }
             };
@@ -1476,13 +1434,6 @@
                 if (giaBanLeCoVat) {
                     $scope.target.GIABANLE = Math.round(100 * (giaBanLeCoVat / (1 + (getGiaTriVatVao($scope.target.MATHUE_RA) / 100)))) / 100;
                     $scope.target.TYLE_LAILE = Math.round(100 * ((100 * ($scope.target.GIABANLE - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAILE) <= -100 || parseInt($scope.target.TYLE_LAILE) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi lẻ (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                 }
             };
 
@@ -1490,13 +1441,6 @@
                 if (giaBanBuonCoVat) {
                     $scope.target.GIABANBUON = Math.round(100 * (giaBanBuonCoVat / (1 + (getGiaTriVatVao($scope.target.MATHUE_RA) / 100)))) / 100;
                     $scope.target.TYLE_LAIBUON = Math.round(100 * ((100 * ($scope.target.GIABANBUON - $scope.target.GIAMUA)) / $scope.target.GIAMUA)) / 100;
-                    if (parseInt($scope.target.TYLE_LAIBUON) <= -100 || parseInt($scope.target.TYLE_LAIBUON) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi buôn (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                 }
             };
             //end tính toán giá
@@ -2203,13 +2147,6 @@
             $scope.changedGiaBanLe = function (item) {
                 if (item.GIABANLE) {
                     item.TYLE_LAILE = Math.round(100 * ((100 * (item.GIABANLE - item.GIAMUA)) / item.GIAMUA)) / 100;
-                    if (parseInt(item.TYLE_LAILE) <= -100 || parseInt(item.TYLE_LAILE) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi lẻ (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                     item.GIABANLE_VAT = Math.round(100 * (item.GIABANLE * (getGiaTriVatVao(item.MATHUE_RA) / 100) + item.GIABANLE)) / 100;
                 }
             };
@@ -2224,13 +2161,6 @@
             $scope.changedGiaBanBuon = function (item) {
                 if (item.GIABANBUON) {
                     item.TYLE_LAIBUON = Math.round(100 * ((100 * (item.GIABANBUON - item.GIAMUA)) / item.GIAMUA)) / 100;
-                    if (parseInt(item.TYLE_LAIBUON) <= -100 || parseInt(item.TYLE_LAIBUON) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi buôn (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                     item.GIABANBUON_VAT = Math.round(100 * (item.GIABANBUON * (getGiaTriVatVao(item.MATHUE_RA) / 100) + item.GIABANBUON)) / 100;
                 }
             };
@@ -2239,13 +2169,6 @@
                 if (item.GIABANLE_VAT) {
                     item.GIABANLE = Math.round(100 * (item.GIABANLE_VAT / (1 + (getGiaTriVatVao(item.MATHUE_RA) / 100)))) / 100;
                     item.TYLE_LAILE = Math.round(100 * ((100 * (item.GIABANLE - item.GIAMUA)) / item.GIAMUA)) / 100;
-                    if (parseInt(item.TYLE_LAILE) <= -100 || parseInt(item.TYLE_LAILE) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi lẻ (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                 }
             };
 
@@ -2253,13 +2176,6 @@
                 if (item.GIABANBUON_VAT) {
                     item.GIABANBUON = Math.round(100 * (item.GIABANBUON_VAT / (1 + (getGiaTriVatVao(item.MATHUE_RA) / 100)))) / 100;
                     item.TYLE_LAIBUON = Math.round(100 * ((100 * (item.GIABANBUON - item.GIAMUA)) / item.GIAMUA)) / 100;
-                    if (parseInt(item.TYLE_LAIBUON) <= -100 || parseInt(item.TYLE_LAIBUON) > 1000) {
-                        Lobibox.notify('warning', {
-                            title: 'Kiểm tra thông tin',
-                            msg: 'Kiểm tra lại tỷ lệ lãi buôn (quá lớn hoặc quá nhỏ)',
-                            delay: 4000
-                        });
-                    }
                 }
             };
 

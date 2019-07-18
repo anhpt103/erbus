@@ -46,18 +46,26 @@ define(['angular'], function (angular) {
         return result;
     }]);
 
-    app.controller('login_Ctrl', ['$scope', '$location', '$http', 'localStorageService', 'accountService', '$state', function ($scope, $location, $http, localStorageService, accountService, $state) {
+    app.controller('login_Ctrl', ['$scope', '$location', '$http', 'localStorageService', 'accountService', '$state', 'closingService', function ($scope, $location, $http, localStorageService, accountService, $state, closingService) {
         $scope.user = { username: '', password: '', cookie: false, grant_type: 'password' };
         var config = {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         };
         $scope.returnMessage = "";
+        function closing() {
+            closingService.closingOutList().then(function (successRes) {
+                if (successRes && successRes.status === 200 && successRes.data) {
+                    console.log('Khóa sổ thành công');
+                }
+            });
+        };
         $scope.login = function () {
             $scope.msg = null;
             accountService.login($scope.user).then(function (response) {
-            if(response && response.status === 200 && response.data){
-                console.log("Đăng nhập thành công!");
-            }
+                if (response && response.status === 200 && response.data) {
+                    closing();
+                    console.log("Đăng nhập thành công!");
+                }
             }, function (response) {
                 if (response && response.data) {
                     $scope.returnMessage = response.data.error_description;
