@@ -66,6 +66,8 @@ namespace ERBus.Api.Controllers.Catalog
                         data.MAHANG = cauHinhLoaiPhong.MAHANG;
                         data.SOPHUT = cauHinhLoaiPhong.SOPHUT;
                         data.MAHANG_DICHVU = cauHinhLoaiPhong.MAHANG_DICHVU;
+                        var matHangGiaCa = _service.UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(data.MAHANG) && x.UNITCODE.Equals(unitCode));
+                        if (matHangGiaCa != null) data.GIABANLE_VAT = matHangGiaCa.GIABANLE_VAT;
                     }
                     result.Data = data;
                     result.Status = true;
@@ -137,6 +139,7 @@ namespace ERBus.Api.Controllers.Catalog
             return _service.BuildCode();
         }
 
+        [Route("Post")]
         [ResponseType(typeof(LOAIPHONG))]
         [CustomAuthorize(Method = "THEM", State = "LoaiPhong")]
         public async Task<IHttpActionResult> Post(LoaiPhongViewModel.Dto instance)
@@ -204,7 +207,6 @@ namespace ERBus.Api.Controllers.Catalog
             }
             return Ok(result);
         }
-
 
         [ResponseType(typeof(void))]
         [CustomAuthorize(Method = "SUA", State = "LoaiPhong")]

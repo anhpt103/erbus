@@ -49,6 +49,7 @@ namespace ERBus.Entity
         public virtual DbSet<PHONG> PHONGs { get; set; }
         public virtual DbSet<LOAIPHONG> LOAIPHONGs { get; set; }
         public virtual DbSet<CAUHINH_LOAIPHONG> CAUHINH_LOAIPHONGs { get; set; }
+        public virtual DbSet<CAUHINH_LOAIPHONG_GIACA> CAUHINH_LOAIPHONG_GIACAs { get; set; }
 
         /// <summary>
         /// Knowledge

@@ -36,8 +36,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('NhapMua_Ctrl', ['$scope', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nhaCungCapService', 'thueService', 'khoHangService', 'userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nhaCungCapService, thueService, khoHangService, userService) {
+    app.controller('NhapMua_Ctrl', ['$scope', '$http', 'configService', 'nhapMuaService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'nhaCungCapService', 'thueService', 'khoHangService', 'userService','closingService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, nhaCungCapService, thueService, khoHangService, userService, closingService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
             $scope.filtered = angular.copy(configService.filterDefault);
@@ -173,6 +173,11 @@
                         msg: 'Không có quyền truy cập !'
                     });
                     $scope.accessList = null;
+                });
+                closingService.closingOutList().then(function (successRes) {
+                    if (successRes && successRes.status === 200 && successRes.data) {
+                        console.log('Khóa sổ thành công');
+                    }
                 });
             };
             //end function loadAccessList()

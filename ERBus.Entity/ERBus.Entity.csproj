@@ -99,6 +99,7 @@
     <Compile Include="Database\Authorize\THAMSOHETHONG.cs" />
     <Compile Include="Database\Authorize\NGUOIDUNG.cs" />
     <Compile Include="Database\Catalog\CAPMA_THEONGAY.cs" />
+    <Compile Include="Database\Catalog\CAUHINH_LOAIPHONG_GIACA.cs" />
     <Compile Include="Database\Catalog\LICHSU_TANGHANG.cs" />
     <Compile Include="Database\Catalog\HANGKHACHHANG.cs" />
     <Compile Include="Database\Catalog\CAUHINH_LOAIPHONG.cs" />
@@ -219,6 +220,10 @@
     <Compile Include="Migrations\201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.Designer.cs">
       <DependentUpon>201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.cs" />
+    <Compile Include="Migrations\201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.Designer.cs">
+      <DependentUpon>201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -272,6 +277,18 @@
     <Content Include="Script\XUATNHAPTON_TONKHO_CHITIET.sql" />
     <Content Include="Script\XUATNHAPTON_TONKHO_TONGHOP.sql" />
     <Content Include="Script\TruncateDB.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201904120831166_InitializerDatabase.resx">
@@ -337,18 +354,9 @@
     <EmbeddedResource Include="Migrations\201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.resx">
       <DependentUpon>201907131718568_ADDCOLUMN_TIENTRALAI_CHIETKHAU_THANHTOANPHONG.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
+    <EmbeddedResource Include="Migrations\201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.resx">
+      <DependentUpon>201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

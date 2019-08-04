@@ -58,7 +58,6 @@
             this.btnCheckConnectSql = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnCapNhatDuLieuScript = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -226,7 +225,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnCapNhatDuLieuScript);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.txtHostnameSql);
             this.groupBox2.Controls.Add(this.label14);
@@ -434,6 +432,5 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtHostnameSql;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button btnCapNhatDuLieuScript;
     }
 }

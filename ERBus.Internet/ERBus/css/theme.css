@@ -4858,7 +4858,7 @@ span.title {
             color: #fff;
             font-weight: 400;
             text-transform: capitalize;
-            padding: 18px 40px;
+            padding: 18px 15px;
             padding-right: 10px;
         }
 
@@ -14964,6 +14964,12 @@ span.title {
     width: 1280px;
 }
 
+.modal-chuyenBan .modal-content {
+    left: 50%;
+    transform: translate(-50%, 5%);
+    width: 860px;
+}
+
 .modal-checkImport .modal-content {
     left: 50%;
     transform: translate(-50%, 0%);
@@ -14984,7 +14990,7 @@ span.title {
 
 .modal-thanhtoan .modal-content {
     left: 50%;
-    transform: translate(-50%, 5%);
+    transform: translate(-50%, 0%);
     width: 1300px;
 }
 

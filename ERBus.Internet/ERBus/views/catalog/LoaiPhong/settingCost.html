@@ -41,21 +41,6 @@
             </div>
             <div class="row form-group">
                 <div class="col col-md-12">
-                    <label for="text-input" class="form-control-label">Cài đặt mã hàng dịch vụ (Mã này sẽ tự động cài đặt giá khi thanh toán)</label>
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-3">
-                    <label for="text-input" class="form-control-label">Mã hàng dịch vụ</label>
-                </div>
-                <div class="col-12 col-md-9">
-                    <input enter type="text" id="_maHangDichVu" name="_maHangDichVu" ng-model="target.MAHANG_DICHVU" placeholder="Nhập mã hàng dịch vụ" typeahead-editable="false"
-                           uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('matHangTrongBo') | filter:$viewValue | limitTo:5" typeahead-on-select=""
-                           typeahead-input-formatter="convertCodeToName($model, 'matHangTrongBo')" class="form-control" required />
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-12">
                     <label for="text-input" class="form-control-label">Cài đặt mã hàng được tính theo thời gian sử dụng (Mã hàng trong danh mục hàng hóa thuộc bó hàng [{{target.MABOHANG}}])</label>
                 </div>
             </div>
@@ -66,20 +51,29 @@
                 <div class="col-12 col-md-9">
                     <input enter type="text" id="_maHang" name="_maHang" ng-model="target.MAHANG" placeholder="Nhập mã hàng" typeahead-editable="false"
                            uib-typeahead="opt.VALUE as opt.TEXT for opt in tempData('matHangTrongBo') | filter:$viewValue | limitTo:5" typeahead-on-select=""
-                           typeahead-input-formatter="convertCodeToName($model, 'matHangTrongBo')" class="form-control" required />
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-12">
-                    <label for="text-input" class="form-control-label">Cài đặt thời gian tính tiền (Đơn vị được tính bằng phút)</label>
+                           typeahead-input-formatter="convertCodeToName($model, 'matHangTrongBo')" class="form-control" required disabled />
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col col-md-3">
-                    <label for="text-input" class="form-control-label">Thời gian (phút)</label>
+                    <label for="text-input" class="form-control-label">Thêm giá tiền</label>
                 </div>
-                <div class="col-12 col-md-9">
-                    <input enter type="number" id="_soPhut" name="_soPhut" value="0" min="0" ng-model="target.SOPHUT" placeholder="Nhập thời gian tính tiền" class="form-control" required />
+                <div class="col-12 col-md-3">
+                    <button type="button" class="btn btn-success" ng-click="addCost(target);">
+                        <i class="zmdi zmdi-paypal-alt">&nbsp;&nbsp;Thêm giá tiền</i>
+                    </button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <input enter type="text" id="_giaTien" name="_giaTien" ng-model="target.GIABANLE_VAT" class="form-control" style="text-align: right;" awnum="number-utc" disabled />
+                </div>
+            </div>
+            <div class="row form-group" ng-repeat="item in target.LISTCOST">
+                <div class="col col-md-3">
+                </div>
+                <div class="col-12 col-md-3">
+                </div>
+                <div class="col-12 col-md-6">
+                    <input enter type="text" id="_giaTienBanLeVat" name="_giaTienBanLeVat" onfocus="this.select()" ng-model="item.GIABANLE_VAT" class="form-control" style="text-align: right;" awnum="number-utc" />
                 </div>
             </div>
         </form>

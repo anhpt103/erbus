@@ -3,9 +3,13 @@ using ERBus.Entity;
 using ERBus.Entity.Database.Catalog;
 using ERBus.Service;
 using ERBus.Service.Catalog.CauHinhLoaiPhong;
+using ERBus.Service.Catalog.LoaiPhong;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -22,6 +26,8 @@ namespace ERBus.Api.Controllers.Catalog
             _service = service;
         }
 
+        [Route("Post")]
+        [HttpPost]
         [ResponseType(typeof(CAUHINH_LOAIPHONG))]
         public async Task<IHttpActionResult> Post(CauHinhLoaiPhongViewModel.Dto instance)
         {
@@ -64,6 +70,111 @@ namespace ERBus.Api.Controllers.Catalog
                     result.Data = null;
                     result.Message = "Thao tác không thành công";
                 }
+            }
+            return Ok(result);
+        }
+
+        [Route("PostCost")]
+        [HttpPost]
+        [ResponseType(typeof(CAUHINH_LOAIPHONG))]
+        public async Task<IHttpActionResult> PostCost(List<LoaiPhongViewModel.DtoCauHinh> listData)
+        {
+            var result = new TransferObj<List<CAUHINH_LOAIPHONG_GIACA>>();
+            var curentUnitCode = _service.GetCurrentUnitCode();
+            if (listData.Count > 0)
+            {
+                try
+                {
+                    var data = Mapper.Map<List<LoaiPhongViewModel.DtoCauHinh>, List<CAUHINH_LOAIPHONG_GIACA>>(listData);
+                    data.ForEach(x =>
+                    {
+                        x.ID = Guid.NewGuid().ToString();
+                        x.UNITCODE = curentUnitCode;
+                        x.I_CREATE_DATE = DateTime.Now;
+                        var currentUser = (HttpContext.Current.User as ClaimsPrincipal);
+                        x.I_CREATE_BY = currentUser.Identity.Name;
+                        var listCauHinh_GiaCa = _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG_GIACA>().DbSet.Where(y => y.MALOAIPHONG == x.MALOAIPHONG && y.MAHANG == x.MAHANG && y.UNITCODE == x.UNITCODE).ToList();
+                        if (listCauHinh_GiaCa.Count > 0)
+                        {
+                            foreach (var row in listCauHinh_GiaCa)
+                            {
+                                row.ObjectState = ObjectState.Deleted;
+                                _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG_GIACA>().Delete(row.ID);
+                            }
+                        }
+                    });
+                    _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG_GIACA>().InsertRange(data);
+                    int inst = await _service.UnitOfWork.SaveAsync();
+                    if (inst > 0)
+                    {
+                        result.Status = true;
+                        result.Data = data;
+                        result.Message = "Thêm mới thành công";
+                    }
+                    else
+                    {
+                        result.Status = false;
+                        result.Data = null;
+                        result.Message = "Thao tác không thành công";
+                    }
+                }
+                catch (Exception e)
+                {
+                    result.Status = false;
+                    result.Message = e.Message;
+
+                }
+            }
+            return Ok(result);
+        }
+
+        [Route("GetCostByLoaiPhong/{maLoaiPhong}/{maHang}")]
+        [HttpGet]
+        public IHttpActionResult GetCostByLoaiPhong(string maLoaiPhong, string maHang)
+        {
+            var result = new TransferObj<List<CAUHINH_LOAIPHONG_GIACA>>();
+            var curentUnitCode = _service.GetCurrentUnitCode();
+            if (!string.IsNullOrEmpty(maLoaiPhong) && !string.IsNullOrEmpty(maHang))
+            {
+                try
+                {
+                    var data = _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG_GIACA>().DbSet.Where(x => x.MALOAIPHONG.Equals(maLoaiPhong) && x.MAHANG.Equals(maHang) && x.UNITCODE.Equals(curentUnitCode)).ToList();
+                    if (data.Count > 0)
+                    {
+                        result.Status = true;
+                        result.Data = data;
+                        result.Message = "Oke";
+                    }
+                    else
+                    {
+                        result.Status = false;
+                        result.Data = null;
+                        result.Message = "NotFound";
+                    }
+                }
+                catch (Exception e)
+                {
+                    result.Status = false;
+                    result.Message = e.Message;
+                }
+            }
+            return Ok(result);
+        }
+
+        [Route("GetAllData")]
+        [HttpGet]
+        public IHttpActionResult GetAllData()
+        {
+            var result = new TransferObj<List<ChoiceObject>>();
+            var unitCode = _service.GetCurrentUnitCode();
+            result.Data = _service.UnitOfWork.Repository<CAUHINH_LOAIPHONG_GIACA>().DbSet.Where(x => x.UNITCODE.Equals(unitCode)).Select(x => new ChoiceObject { VALUE = x.MAHANG, TEXT = x.MALOAIPHONG, DESCRIPTION = x.MALOAIPHONG, GIATRI = x.GIABANLE_VAT, ID = x.ID }).ToList();
+            if (result.Data.Count > 0)
+            {
+                result.Status = true;
+            }
+            else
+            {
+                result.Status = false;
             }
             return Ok(result);
         }

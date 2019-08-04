@@ -30,7 +30,7 @@
         return result;
     }]);
     /* controller list */
-    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'boHangService','userService',
+    app.controller('LoaiPhong_Ctrl', ['$scope', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'boHangService', 'userService',
         function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, boHangService, userService) {
             $scope.config = angular.copy(configService);
             $scope.paged = angular.copy(configService.pageDefault);
@@ -218,6 +218,26 @@
                 });
             };
 
+            $scope.settingCost = function (target) {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    animation: true,
+                    size: 'lg',
+                    templateUrl: configService.buildUrl('catalog/LoaiPhong', 'settingCost'),
+                    controller: 'loaiPhongSettingCost_Ctrl',
+                    resolve: {
+                        targetData: function () {
+                            return target;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (refundedData) {
+                    $scope.refresh();
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
             /* Function delete item */
             $scope.delete = function (event, target) {
                 var modalInstance = $uibModal.open({
@@ -241,7 +261,7 @@
 
         }]);
 
-    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload','userService',
+    app.controller('loaiPhongCreate_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload', 'userService',
         function ($scope, $uibModalInstance, $http, configService, service, tempDataService, $filter, $uibModal, $log, $timeout, upload, userService) {
             $scope.config = angular.copy(configService);
             var currentUser = userService.GetCurrentUser();
@@ -427,7 +447,7 @@
             };
         }]);
 
-    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload','userService',
+    app.controller('loaiPhongEdit_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', '$timeout', 'Upload', 'userService',
         function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, $timeout, upload, userService) {
             var currentUser = userService.GetCurrentUser();
             $scope.config = angular.copy(configService);
@@ -546,7 +566,7 @@
                 }
             };
 
-           
+
             $scope.deleteIcon = function () {
                 if ($scope.target.ICON) {
                     $scope.target.ICON = null;
@@ -668,6 +688,123 @@
                function (errorRes) {
                    console.log('errorRes', errorRes);
                });
+           };
+
+           $scope.cancel = function () {
+               $uibModalInstance.close();
+           };
+       }]);
+
+    app.controller('loaiPhongSettingCost_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'loaiPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal', '$log', 'boHangService', 'cauHinhLoaiPhongService',
+       function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $log, boHangService, cauHinhLoaiPhongService) {
+           $scope.config = angular.copy(configService);
+           $scope.tempData = tempDataService.tempData;
+           $scope.target = {};
+           $scope.title = function () { return 'Cài đặt giá tiền loại phòng [' + targetData.MALOAIPHONG + ']'; };
+
+           $scope.convertCodeToNameBoHang = function (paraValue, moduleName) {
+               if (paraValue) {
+                   var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                   if (tempCache && tempCache.length === 1) {
+                       return tempCache[0].TEXT;
+                   } else {
+                       return paraValue;
+                   }
+               }
+           };
+
+           $scope.convertCodeToName = function (paraValue, moduleName) {
+               if (paraValue) {
+                   var tempCache = $filter('filter')($scope.tempData(moduleName), { VALUE: paraValue }, true);
+                   if (tempCache && tempCache.length === 1) {
+                       return tempCache[0].VALUE + ' | ' + tempCache[0].TEXT;
+                   } else {
+                       return paraValue;
+                   }
+               }
+           };
+
+           //Function load data catalog LoaiHang
+           function loadDataMatHangTrongBoHang() {
+               $scope.matHangTrongBo = [];
+               if (!tempDataService.tempData('matHangTrongBo')) {
+                   boHangService.getMatHangTrongBo($scope.target.MABOHANG).then(function (successRes) {
+                       if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                           tempDataService.putTempData('matHangTrongBo', successRes.data.Data);
+                           $scope.matHangTrongBo = successRes.data.Data;
+                       }
+                   }, function (errorRes) {
+                       console.log('errorRes', errorRes);
+                   });
+               } else {
+                   $scope.matHangTrongBo = tempDataService.tempData('matHangTrongBo');
+               }
+           };
+           loadDataMatHangTrongBoHang();
+           //end
+
+           function filterData() {
+               service.getDetails(targetData.MALOAIPHONG).then(function (sucessRes) {
+                   if (sucessRes && sucessRes.status === 200 && sucessRes.data && sucessRes.data.Status && sucessRes.data.Data) {
+                       $scope.target = sucessRes.data.Data;
+                       $scope.target.LISTCOST = [];
+                       cauHinhLoaiPhongService.getCostByLoaiPhong(targetData.MALOAIPHONG, $scope.target.MAHANG).then(function (response) {
+                           if (response && response.status === 200 && response.data && response.data.Status && response.data.Data) {
+                               $scope.target.LISTCOST = response.data.Data;
+                           }
+                       });
+                   }
+               });
+           };
+           filterData();
+
+           $scope.addCost = function (item) {
+               if (item) {
+                   var obj = {
+                       MAHANG: item.MAHANG,
+                       MALOAIPHONG: item.MALOAIPHONG,
+                       GIABANLE_VAT: 0,
+                       UNITCODE: item.UNITCODE
+                   };
+                   $scope.target.LISTCOST.push(obj);
+               }
+           };
+
+           $scope.save = function () {
+               if ($scope.target && $scope.target.LISTCOST.length === 0) {
+                   Lobibox.notify('error', {
+                       title: 'Chưa cài đặt giá',
+                       msg: 'Chưa cài đặt giá cho mã phòng',
+                       delay: 2000
+                   });
+               } else {
+                   var listCost = [];
+                   angular.forEach($scope.target.LISTCOST, function (v, k) {
+                       if (v.GIABANLE_VAT > 0) {
+                           listCost.push(v);
+                       }
+                   });
+                   cauHinhLoaiPhongService.postCost(listCost).then(function (successRes) {
+                       if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data) {
+                           Lobibox.notify('success', {
+                               title: 'Thông báo',
+                               width: 400,
+                               msg: successRes.data.Message,
+                               delay: 1500
+                           });
+                           $uibModalInstance.close($scope.target);
+                       } else {
+                           Lobibox.notify('error', {
+                               title: 'Xảy ra lỗi',
+                               msg: 'Đã xảy ra lỗi! Thao tác không thành công',
+                               delay: 3000
+                           });
+                       }
+                   },
+                   function (errorRes) {
+                       console.log('errorRes', errorRes);
+                   });
+               }
            };
 
            $scope.cancel = function () {

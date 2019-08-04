@@ -96,6 +96,9 @@ namespace ERBus.Service
                 cfg.CreateMap<CAUHINH_LOAIPHONG, CauHinhLoaiPhongViewModel.Dto>();
                 cfg.CreateMap<CauHinhLoaiPhongViewModel.Dto, CAUHINH_LOAIPHONG>();
 
+                cfg.CreateMap<CAUHINH_LOAIPHONG_GIACA, LoaiPhongViewModel.DtoCauHinh>();
+                cfg.CreateMap<LoaiPhongViewModel.DtoCauHinh, CAUHINH_LOAIPHONG_GIACA>();
+
                 cfg.CreateMap<MATHANG, MatHangViewModel.Dto>();
                 cfg.CreateMap<MatHangViewModel.Dto, MATHANG>();
                 cfg.CreateMap<MATHANG_GIA, MatHangViewModel.Dto>();

@@ -80,6 +80,7 @@ namespace ERBus.Service.Catalog.LoaiPhong
             public string MAHANG_DICHVU { get; set; }
             public int SOPHUT { get; set; }
             public string UNITCODE { get; set; }
+            public decimal GIABANLE_VAT { get; set; }
         }
 
         public class InfoUpload

@@ -1,0 +1,93 @@
+﻿<style>
+    .IS_CLOSE {
+        background-color: red;
+    }
+
+    .IS_OPEN {
+        background-color: lightgreen;
+    }
+
+    div.pointer {
+        cursor: pointer;
+    }
+</style>
+<div role="document">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">{{title();}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+            <i class="zmdi zmdi-close"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="_form">
+            <div class="row form-group">
+                <div class="col col-md-12">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="text-align: center;">Từ phòng</th>
+                                <th scope="col"></th>
+                                <th scope="col" style="text-align: center;">Đến phòng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3"></div>
+                                        <div class="col col-md-6 pointer" ng-class="{IS_CLOSE: roomBooking.TRANGTHAI_DATPHONG == '10', IS_OPEN: !roomBooking.TRANGTHAI_DATPHONG }" style="height: 35px; text-align: center;">
+                                            <h4 style="line-height: 2;">{{roomBooking.TENPHONG}}</h4>
+                                        </div>
+                                        <div class="col col-md-3"></div>
+                                    </div>
+                                </th>
+                                <td>
+                                    <img src="../ERBus/img/icon/transfer.svg" style="text-align:center;display: inline-block;" />
+                                </td>
+                                <td>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3"></div>
+                                        <div class="col col-md-6 pointer" ng-class="{IS_CLOSE: roomEmpty.TRANGTHAI_DATPHONG == '10', IS_OPEN: !roomEmpty.TRANGTHAI_DATPHONG }" style="height: 35px; text-align: center;">
+                                            <h4 style="line-height: 2;">{{roomEmpty.TENPHONG}}</h4>
+                                        </div>
+                                        <div class="col col-md-3"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">Danh sách phòng đã đặt</th>
+                                <td></td>
+                                <th style="text-align: center;">Danh sách phòng còn trống</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div class="row form-group" ng-repeat="item in listRoomBooking | orderBy:'TENPHONG':false track by $index" ng-click="changeRoomBooking(item);">
+                                        <div class="col col-md-3"></div>
+                                        <div class="col col-md-6 pointer" ng-class="{IS_CLOSE: item.TRANGTHAI_DATPHONG == '10', IS_OPEN: !item.TRANGTHAI_DATPHONG }" style="height: 35px; text-align: center;">
+                                            <h4 style="line-height: 2;">{{item.TENPHONG}}</h4>
+                                        </div>
+                                        <div class="col col-md-3"></div>
+                                    </div>
+                                </th>
+                                <td></td>
+                                <th>
+                                    <div class="row form-group" ng-repeat="item in listRoomEmpty | orderBy:'TENPHONG':false track by $index" ng-click="changeRoomEmpty(item);">
+                                        <div class="col col-md-3"></div>
+                                        <div class="col col-md-6 pointer" ng-class="{IS_CLOSE: item.TRANGTHAI_DATPHONG == '10', IS_OPEN: !item.TRANGTHAI_DATPHONG }" style="height: 35px; text-align: center;">
+                                            <h4 style="line-height: 2;">{{item.TENPHONG}}</h4>
+                                        </div>
+                                        <div class="col col-md-3"></div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" prevent-default class="btn btn-success" data-dismiss="modal" ng-click="confirmTransfer()" ng-disabled="!roomBooking || !roomEmpty || !listRoomEmpty.length"><i class="zmdi zmdi-favorite"></i>&nbsp;&nbsp;Chuyển phòng ngay</button>
+        <button type="button" prevent-default class="btn btn-warning" data-dismiss="modal" ng-click="cancel()"><i class="fa fa-window-close"></i>&nbsp;&nbsp;{{config.label.btnCancel}}</button>
+    </div>
+</div>

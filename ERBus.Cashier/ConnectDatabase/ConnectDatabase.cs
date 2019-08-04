@@ -8,6 +8,7 @@ using System.Xml;
 using ERBus.Cashier.Common;
 using Oracle.ManagedDataAccess.Client;
 using System.IO;
+using DevExpress.XtraSplashScreen;
 
 namespace ERBus.Cashier.ConnectDatabase
 {
@@ -109,6 +110,7 @@ namespace ERBus.Cashier.ConnectDatabase
 
         private void btnCheckConnect_Click(object sender, EventArgs e)
         {
+            SplashScreenManager.ShowForm(typeof(WaitForm1));
             OracleConnection connection = new OracleConnection();
             try
             {
@@ -136,6 +138,7 @@ namespace ERBus.Cashier.ConnectDatabase
             {
                 connection.Close();
                 connection.Dispose();
+                SplashScreenManager.CloseForm();
             }
         }
       
@@ -211,7 +214,7 @@ namespace ERBus.Cashier.ConnectDatabase
                 }
                 catch
                 {
-                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có khả năn kết nối tới HostName ! Kiểm tra thông tin kết nối", 1,
+                    NotificationLauncher.ShowNotificationError("Thông báo", "Không có khả năng kết nối tới HostName ! Kiểm tra thông tin kết nối", 1,
                             "0x1", "0x8", "normal");
                 }
                 finally
@@ -224,6 +227,7 @@ namespace ERBus.Cashier.ConnectDatabase
 
         private void btnCheckConnectSql_Click(object sender, EventArgs e)
         {
+            SplashScreenManager.ShowForm(typeof(WaitForm1));
             SqlConnection connection = new SqlConnection();
             try
             {
@@ -251,6 +255,7 @@ namespace ERBus.Cashier.ConnectDatabase
             {
                 connection.Close();
                 connection.Dispose();
+                SplashScreenManager.CloseForm();
             }
         }
     }

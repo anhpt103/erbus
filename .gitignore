@@ -241,3 +241,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /ERBus.Api/Upload/ImageLoaiPhong
+/ERBus.Api/Upload

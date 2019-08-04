@@ -216,10 +216,15 @@
             $scope.$on('$destroy', function () {
                 $timeout.cancel();
             });
+
+            $rootScope.$on("escForm", function () {
+                filterData();
+            });
         }]);
 
-    app.controller('bookingRoom_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal','$sce','$timeout',
-        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $sce, $timeout) {
+    app.controller('bookingRoom_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'datPhongService', 'targetData', 'tempDataService', '$filter', '$uibModal','$sce','$timeout','keyCodes','$rootScope',
+        function ($scope, $uibModalInstance, $http, configService, service, targetData, tempDataService, $filter, $uibModal, $sce, $timeout, keyCodes, $rootScope) {
+            $scope.keys = keyCodes;
             $scope.config = angular.copy(configService);
             $scope.tempData = tempDataService.tempData;
             $scope.target = {};
@@ -430,6 +435,12 @@
                 clearTimeout(action);
                 $timeout.cancel();
             });
+
+            $scope.keys = {
+                ESC: function (name, code) {
+                    $rootScope.$emit("escForm", {});
+                }
+            };
 
             $scope.cancel = function () {
                 $uibModalInstance.close();

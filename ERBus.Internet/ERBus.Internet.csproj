@@ -307,6 +307,7 @@
     <Content Include="ERBus\img\icon\logo-mini.png" />
     <Content Include="ERBus\img\icon\logo-white.png" />
     <Content Include="ERBus\img\icon\logo.png" />
+    <Content Include="ERBus\img\icon\transfer.svg" />
     <Content Include="ERBus\img\icon\Untitled-1.jpg" />
     <Content Include="ERBus\js\kendo\kendo.all.min.js" />
     <Content Include="ERBus\js\moment\moment.js" />
@@ -374,6 +375,7 @@
     <Content Include="ERBus\views\catalog\LoaiPhong\create.html" />
     <Content Include="ERBus\views\catalog\LoaiPhong\delete.html" />
     <Content Include="ERBus\views\catalog\LoaiPhong\detail.html" />
+    <Content Include="ERBus\views\catalog\LoaiPhong\settingCost.html" />
     <Content Include="ERBus\views\catalog\LoaiPhong\setting.html" />
     <Content Include="ERBus\views\catalog\LoaiPhong\edit.html" />
     <Content Include="ERBus\views\catalog\LoaiPhong\index.html" />
@@ -452,6 +454,7 @@
     <Content Include="ERBus\views\knowledge\DatPhong\remove.html" />
     <Content Include="ERBus\views\knowledge\DatPhong\index.html" />
     <Content Include="ERBus\views\knowledge\KiemKe\index.html" />
+    <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\transfer.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\viewReceipt.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\history.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\pay.html" />

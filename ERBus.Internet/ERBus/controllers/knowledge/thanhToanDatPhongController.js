@@ -1,6 +1,6 @@
-﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController', 'controllers/catalog/phongController', 'controllers/knowledge/datPhongController', 'controllers/authorize/thamSoHeThongController', 'controllers/catalog/matHangController', 'controllers/catalog/donViTinhController'], function () {
+﻿define(['ui-bootstrap', 'controllers/catalog/loaiPhongController', 'controllers/catalog/phongController', 'controllers/knowledge/datPhongController', 'controllers/authorize/thamSoHeThongController', 'controllers/catalog/matHangController', 'controllers/catalog/donViTinhController', 'controllers/catalog/cauHinhLoaiPhongController'], function () {
     'use strict';
-    var app = angular.module('thanhToanDatPhongModule', ['ui.bootstrap', 'loaiPhongModule', 'phongModule', 'datPhongModule', 'thamSoHeThongModule', 'donViTinhModule']);
+    var app = angular.module('thanhToanDatPhongModule', ['ui.bootstrap', 'loaiPhongModule', 'phongModule', 'datPhongModule', 'thamSoHeThongModule', 'donViTinhModule', 'cauHinhLoaiPhongModule']);
     app.factory('thanhToanDatPhongService', ['$http', 'configService', function ($http, configService) {
         var serviceUrl = configService.rootUrlWebApi + '/Knowledge/ThanhToanDatPhong';
         var selectedData = [];
@@ -27,8 +27,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService','$timeout','closingService','getsetDataService','matHangService','$rootScope','donViTinhService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService, $timeout, closingService, getsetDataService, matHangService, $rootScope, donViTinhService) {
+    app.controller('ThanhToanDatPhong_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService','phongService','datPhongService','thamSoHeThongService','keyCodes','$sce','loaiPhongService','userService','$timeout','closingService','getsetDataService','matHangService','$rootScope','donViTinhService','cauHinhLoaiPhongService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, phongService, datPhongService, thamSoHeThongService, keyCodes, $sce, loaiPhongService, userService, $timeout, closingService, getsetDataService, matHangService, $rootScope, donViTinhService, cauHinhLoaiPhongService) {
             $scope.keys = keyCodes;
             var currentUser = userService.GetCurrentUser();
             $scope.modalOpen = false;
@@ -130,6 +130,26 @@
                 }
             };
             loadDataPhong();
+            //end
+
+
+            //Function load data catalog LoaiPhong GiaCa
+            function loadDataCauHinhLoaiPhongGiaCa() {
+                $scope.loaiPhongGiaCa = [];
+                if (!tempDataService.tempData('loaiPhongGiaCa')) {
+                    cauHinhLoaiPhongService.getAllData().then(function (successRes) {
+                        if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status && successRes.data.Data && successRes.data.Data.length > 0) {
+                            tempDataService.putTempData('loaiPhongGiaCa', successRes.data.Data);
+                            $scope.loaiPhongGiaCa = successRes.data.Data;
+                        }
+                    }, function (errorRes) {
+                        console.log('errorRes', errorRes);
+                    });
+                } else {
+                    $scope.loaiPhongGiaCa = tempDataService.tempData('loaiPhongGiaCa');
+                }
+            };
+            loadDataCauHinhLoaiPhongGiaCa();
             //end
 
             function filterData() {
@@ -318,6 +338,29 @@
                 action = setTimeout(caculateCountHour, 1000);
             };
 
+            function getListCost(maHang, maLoaiPhong) {
+                $scope.listCost = [];
+                var index = -1;
+                angular.forEach($scope.loaiPhongGiaCa, function (v, k) {
+                    if (v.VALUE === maHang && v.TEXT === maLoaiPhong) {
+                        index = $scope.data.DtoDetails.findIndex(x => x.MAHANG === maHang);
+                        if (index !== -1) {
+                            v.DESCRIPTION = commafy(v.GIATRI);
+                            $scope.listCost.push(v);
+                        }
+                    }
+                });
+                var obj = {
+                    VALUE: $scope.data.MAHANG,
+                    TEXT: $scope.data.MALOAIPHONG,
+                    GIATRI: $scope.data.DtoDetails[index].GIABANLE_VAT,
+                    DESCRIPTION: commafy($scope.data.DtoDetails[index].GIABANLE_VAT)
+                }
+                $scope.listCost.push(obj);
+                $scope.data.DtoDetails[index].LISTCOST = [];
+                $scope.data.DtoDetails[index].LISTCOST = $scope.listCost;
+            };
+
             $scope.dischargeRoom = function (item) {
                 if (item) {
                     $scope.selectedMaDatPhong = item.MA_DATPHONG;
@@ -332,13 +375,14 @@
                             $scope.data.TONGTIEN_THANHTOAN = 0;
                             if ($scope.data && $scope.data.DtoDetails.length > 0) {
                                 angular.forEach($scope.data.DtoDetails, function (v, k) {
-                                    //mặc định số lượng ban đầu là 0 để người sử dụng đánh
+                                    //mặc định số lượng ban đầu là 0 để người sử dụng đánh số tiền
                                     v.SOLUONG = 0;
                                     v.THANHTIEN = v.SOLUONG * v.GIABANLE_VAT;
                                     v.SAPXEP = k;
-                                    if (v.MAHANG === $scope.data.MAHANG_DICHVU) v.IS_EDIT_VALUE = true
+                                    if (v.MAHANG === $scope.data.MAHANG_DICHVU) v.IS_EDIT_VALUE = true;
                                     if (v.MAHANG === $scope.data.MAHANG) {
                                         v.IS_HOUR_SINGLE_MERCHANDISE = true;
+                                        getListCost(v.MAHANG, $scope.data.MALOAIPHONG);
                                         caculateCountHour();
                                     }
                                 });
@@ -551,6 +595,26 @@
                     }
                 }
             };
+
+            $scope.transferTable = function () {
+                var modalInstance = $uibModal.open({
+                    backdrop: 'static',
+                    animation: true,
+                    windowClass: 'modal-chuyenBan',
+                    templateUrl: configService.buildUrl('knowledge/ThanhToanDatPhong', 'transfer'),
+                    controller: 'transferTable_Ctrl',
+                    resolve: {}
+                });
+                modalInstance.result.then(function (refundedData) {
+                    $scope.refresh();
+                }, function () {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            };
+
+            $scope.cancel = function () {
+                
+            };
         }]);
     
     app.controller('historyPay_Ctrl', ['$scope', '$uibModalInstance', '$http', 'configService', 'thanhToanDatPhongService', 'tempDataService', '$filter', '$uibModal', '$log','securityService','userService',
@@ -728,6 +792,14 @@
                 return sum;
             };
 
+            function minuteToHour(minutes) {
+                var h = Math.floor(minutes / 60);
+                var m = minutes % 60;
+                h = h < 10 ? '0' + h : h;
+                m = m < 10 ? '0' + m : m;
+                return h + ':' + m;
+            };
+
             function InHoaDon(data) {
                 var inVoice = '<html>';
                 //header
@@ -805,12 +877,12 @@
                         inVoice += '<td style="text-align: center;font-weight: bold; font-style: normal; font-size: 13px; border: 1px solid black;">' + (k + 1) + '</td>';
                         inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.TENHANG + '</td>';
                         if (v.MAHANG === data.MAHANG) {
-                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + data.THOIGIAN_SUDUNG + '</td>';
+                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + minuteToHour(data.THOIGIAN_SUDUNG) + '</td>';
                         } else {
                             inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.SOLUONG) + '</td>';
                         }
                         if (v.MAHANG === data.MAHANG) {
-                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;"> phút</td>';
+                            inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;"> giờ</td>';
                         } else {
                             inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.DONVITINH + '</td>';
                         }
@@ -1079,6 +1151,14 @@
                return str.join('.');
            };
 
+           function minuteToHour(minutes) {
+               var h = Math.floor(minutes / 60);
+               var m = minutes % 60;
+               h = h < 10 ? '0' + h : h;
+               m = m < 10 ? '0' + m : m;
+               return h + ':' + m;
+           };
+
            var inVoice = '<html>';
            //header
            inVoice += '<head>';
@@ -1155,12 +1235,12 @@
                    inVoice += '<td style="text-align: center;font-weight: bold; font-style: normal; font-size: 13px; border: 1px solid black;">' + (k + 1) + '</td>';
                    inVoice += '<td style="text-align: left; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.TENHANG + '</td>';
                    if (v.MAHANG === $scope.target.MAHANG) {
-                       inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + $scope.target.THOIGIAN_SUDUNG + '</td>';
+                       inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + minuteToHour($scope.target.THOIGIAN_SUDUNG) + '</td>';
                    } else {
                        inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + commafy(v.SOLUONG) + '</td>';
                    }
                    if (v.MAHANG === $scope.target.MAHANG) {
-                       inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;"> phút</td>';
+                       inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;"> giờ</td>';
                    } else {
                        inVoice += '<td style="text-align: right; font-style: normal; font-size: 13px; border: 1px solid black;">' + v.DONVITINH + '</td>';
                    }
@@ -1300,5 +1380,38 @@
                $uibModalInstance.close(isPayed);
            };
        }]);
+
+    app.controller('transferTable_Ctrl', ['$scope', '$http', 'configService', 'thanhToanDatPhongService', '$sce', '$uibModalInstance','phongService','$filter',
+       function ($scope, $http, configService, service, $sce, $uibModalInstance, phongService, $filter) {
+           $scope.config = angular.copy(configService);
+           $scope.title = function () { return 'Chuyển phòng hát' };
+           $scope.roomBooking = {};
+           $scope.roomEmpty = {};
+           $scope.listRoomBooking = [];
+           $scope.listRoomEmpty = [];
+           phongService.getStatusAllRoom().then(function (successRes) {
+               if (successRes && successRes.status === 200 && successRes.data && successRes.data.Status) {
+                   $scope.listRoomEmpty = $filter('filter')(successRes.data.Data, { TRANGTHAI_DATPHONG: null }, true);
+                   $scope.listRoomBooking = $filter('filter')(successRes.data.Data, { TRANGTHAI_DATPHONG: 10 }, true);
+               }
+           });
+
+           $scope.changeRoomBooking = function (item) {
+               if (item) {
+                   $scope.roomBooking = item;
+               }
+           };
+
+           $scope.changeRoomEmpty = function (item) {
+               if (item) {
+                   $scope.roomEmpty = item;
+               }
+           };
+
+           $scope.cancel = function () {
+               $uibModalInstance.close();
+           };
+       }]);
+    
     return app;
 });

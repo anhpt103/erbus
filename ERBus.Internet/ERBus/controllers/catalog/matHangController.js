@@ -68,8 +68,8 @@
         return result;
     }]);
     /* controller list */
-    app.controller('MatHang_Ctrl', ['$scope', '$http', 'configService', 'matHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'loaiHangService', 'nhomHangService', 'nhaCungCapService', 'donViTinhService', 'keHangService', 'thueService', 'userService',
-        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiHangService, nhomHangService, nhaCungCapService, donViTinhService, keHangService, thueService, userService) {
+    app.controller('MatHang_Ctrl', ['$scope', '$http', 'configService', 'matHangService', 'tempDataService', '$filter', '$uibModal', '$log', 'securityService', 'loaiHangService', 'nhomHangService', 'nhaCungCapService', 'donViTinhService', 'keHangService', 'thueService', 'userService','closingService',
+        function ($scope, $http, configService, service, tempDataService, $filter, $uibModal, $log, securityService, loaiHangService, nhomHangService, nhaCungCapService, donViTinhService, keHangService, thueService, userService, closingService) {
             var currentUser = userService.GetCurrentUser();
             var unitCode = currentUser.unitCode;
             $scope.config = angular.copy(configService);
@@ -284,6 +284,11 @@
                         msg: 'Không có quyền truy cập !'
                     });
                     $scope.accessList = null;
+                });
+                closingService.closingOutList().then(function (successRes) {
+                    if (successRes && successRes.status === 200 && successRes.data) {
+                        console.log('Khóa sổ thành công');
+                    }
                 });
             };
             //end function loadAccessList()

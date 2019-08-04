@@ -405,7 +405,8 @@
             };
             //end add row
 
-            $scope.removeItem = function (index) {
+            $scope.removeItem = function (item) {
+                var index = $scope.target.DataDetails.findIndex(x => x.MAHANG === item.MAHANG);
                 var currentPage = $scope.paged.CurrentPage;
                 var itemsPerPage = 10;
                 var currentPageIndex = (currentPage - 1) * itemsPerPage + index;
@@ -732,7 +733,8 @@
             };
             //end add row
 
-            $scope.removeItem = function (index) {
+            $scope.removeItem = function (item) {
+                var index = $scope.target.DataDetails.findIndex(x => x.MAHANG === item.MAHANG);
                 var currentPage = $scope.paged.CurrentPage;
                 var itemsPerPage = 10;
                 var currentPageIndex = (currentPage - 1) * itemsPerPage + index;

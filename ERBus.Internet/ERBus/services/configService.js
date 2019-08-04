@@ -92,7 +92,7 @@
             btnRefresh: 'Làm mới',
             btnBack: 'Quay lại',
             btnClear: 'Xóa tất cả',
-            btnCancel: 'Hủy',
+            btnCancel: 'Thoát',
 
             btnSave: 'Lưu lại',
             btnSubmit: 'Lưu',

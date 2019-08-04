@@ -67,7 +67,9 @@ namespace ERBus.Api.Controllers.Catalog
                         obj.PARENT = dongHang.MABOHANG;
                         obj.VALUE = dongHang.MAHANG;
                         var matHang = _service.UnitOfWork.Repository<MATHANG>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(dongHang.MAHANG) && x.UNITCODE.Equals(unitCode));
+                        var matHangGia = _service.UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(dongHang.MAHANG) && x.UNITCODE.Equals(unitCode));
                         obj.TEXT = matHang != null ? matHang.TENHANG : "";
+                        obj.GIATRI = matHang != null ? matHangGia.GIABANLE_VAT : 0;
                         listResult.Add(obj);
                     }
                 }

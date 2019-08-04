@@ -59,12 +59,12 @@
                         </thead>
                         <tbody>
                             <tr ng-show="listThanhToan == NULL || listThanhToan.length <= 0">
-                                <td colspan="6">
+                                <td colspan="7">
                                     <p>Không có dữ liệu</p>
                                 </td>
                             </tr>
                             <tr ng-show="isLoading">
-                                <td colspan="6"><my-loading></my-loading></td>
+                                <td colspan="7"><my-loading></my-loading></td>
                             </tr>
                             <tr ng-repeat="item in listThanhToan | orderBy:sortType:sortReverse track by $index">
                                 <td>{{$index + 1}}</td>
