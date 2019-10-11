@@ -5,7 +5,7 @@
         var hostname = window.location.hostname;
         var port = window.location.port;
         var rootUrl = 'http://' + hostname + ':' + port;
-        var rootUrlApi = 'http://14.160.26.174:5596';
+        var rootUrlApi = 'http://anhpt:9989';
         if (!port) {
             rootUrl = 'http://' + hostname;
         }
@@ -122,7 +122,8 @@
             btnApproval: 'Duyệt',
             btnUnApproval: 'Bỏ duyệt',
             btnComplete: 'Hoàn thành',
-            btnAddInfo: 'Bổ sung'
+            btnAddInfo: 'Bổ sung',
+            btnOrder: 'Sắp xếp'
         };
         result.label = label;
         return result;

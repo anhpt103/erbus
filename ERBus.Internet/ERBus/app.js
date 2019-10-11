@@ -40,10 +40,11 @@ define([
     'ngAria',
     'ng-tags-input',
     'moment',
-    'jp.ng-bs-animated-button'
+    'jp.ng-bs-animated-button',
+    'dndLists'
 ], function (jquery, jqueryui, angular, stateCatalog, stateAuthorize, stateKnowledge, statePromotion, stateReport) {
     'use strict';
-    var app = angular.module('myApp', ['oc.lazyLoad', 'ui.router', 'InterceptorModule', 'LocalStorageModule', 'ui.bootstrap', 'configModule', 'tempDataModule', 'angular-loading-bar', 'ngAnimate', 'ngSanitize', 'common-filter', 'ngResource', 'smart-table', 'angular.filter', 'ngTable', 'angular-cache', 'ui.tree', 'dynamicNumber', 'ui.grid', 'angularFileUpload', 'ngFileUpload', 'ngCkeditor', 'ngMaterial', 'ngAria', 'ngTagsInput', 'jp.ng-bs-animated-button', 'kendo.directives']);
+    var app = angular.module('myApp', ['oc.lazyLoad', 'ui.router', 'InterceptorModule', 'LocalStorageModule', 'ui.bootstrap', 'configModule', 'tempDataModule', 'angular-loading-bar', 'ngAnimate', 'ngSanitize', 'common-filter', 'ngResource', 'smart-table', 'angular.filter', 'ngTable', 'angular-cache', 'ui.tree', 'dynamicNumber', 'ui.grid', 'angularFileUpload', 'ngFileUpload', 'ngCkeditor', 'ngMaterial', 'ngAria', 'ngTagsInput', 'jp.ng-bs-animated-button', 'kendo.directives', 'dndLists']);
     var urlInternet = '';
     app.run(['ngTableDefaults', 'configService', function (ngTableDefaults, configService) {
         ngTableDefaults.params.count = 5;
@@ -86,7 +87,7 @@ define([
             });
         };
     });
-    
+
     app.directive('dir', function ($compile, $parse) {
         return {
             restrict: 'E',

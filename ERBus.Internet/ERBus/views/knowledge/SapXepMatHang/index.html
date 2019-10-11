@@ -1,0 +1,56 @@
+﻿<div class="section__content section__content--p30 customize">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="mr-2 fa fa-align-justify"></i>
+                        <strong class="card-title" v-if="headerText">{{title();}}</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select enter id="_maBoHang" name="_maBoHang" ng-model="target.MABOHANG" required ng-options="opt.VALUE as opt.TEXT for opt in boHang" class="form-control" ng-change="selectionBoHang(target.MABOHANG);"></select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" ng-if="accessList.XEM" class="btn btn-primary customize" ng-click="orderBy();"><i class="zmdi zmdi-menu"></i>&ensp;{{config.label.btnOrder}}</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <ul style="list-style-type: none;">
+                                            <li disabled style="text-align: left;">
+                                                <span>Nhấp chuột giữ vào mặt hàng, kéo và thả tới vị trí muốn sắp xếp</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <ul dnd-list="listOrder.listData">
+                                            <li disabled ng-repeat="item in listOrder.listData">
+                                                <span>Vị trí {{$index + 1}}</span>&nbsp;&nbsp;<i class="zmdi zmdi-arrow-right"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <ul dnd-list="listOrder.listData">
+                                            <li ng-repeat="item in listOrder.listData" dnd-draggable="item" dnd-moved="listOrder.listData.splice($index, 1); editData($index);"
+                                                dnd-effect-allowed="move" dnd-selected="listOrder.selected = item" ng-class="{'selected': listOrder.selected === item}">
+                                                <i class="zmdi zmdi-arrow-left"></i>&nbsp;&nbsp;<span>{{item.TEXT}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -89,6 +89,21 @@
             },
             moduleUrl: controlUrl + "thanhToanDatPhongController.js"
         }
+        ,
+         /*Knowledge sắp xếp mặt hàng thanh toán*/
+        {
+            name: 'SapXepMatHang',
+            url: '/orderMerchandise',
+            parent: 'layout',
+            abstract: false,
+            views: {
+                'viewMain@root': {
+                    templateUrl: layoutUrl + "SapXepMatHang/index.html",
+                    controller: "SapXepMatHang_Ctrl as ctrl"
+                }
+            },
+            moduleUrl: controlUrl + "sapXepMatHangController.js"
+        }
     ];
     return states;
 });

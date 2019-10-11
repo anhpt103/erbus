@@ -6,6 +6,7 @@ using ERBus.Service.Authorize.Utils;
 using ERBus.Service.BuildQuery;
 using ERBus.Service.BuildQuery.Query.Types;
 using ERBus.Service.Catalog.BoHang;
+using ERBus.Service.ModelExtend.BoHang;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace ERBus.Api.Controllers.Catalog
         {
             _service = service;
         }
-        
+
         [Route("GetAllData")]
         [HttpGet]
         [CustomAuthorize(Method = "XEM", State = "BoHang")]
@@ -36,7 +37,7 @@ namespace ERBus.Api.Controllers.Catalog
             var result = new TransferObj<List<ChoiceObject>>();
             var unitCode = _service.GetCurrentUnitCode();
             result.Data = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MABOHANG).Select(x => new ChoiceObject { VALUE = x.MABOHANG, TEXT = x.MABOHANG + "|" + x.TENBOHANG, DESCRIPTION = x.TENBOHANG, EXTEND_VALUE = x.UNITCODE, ID = x.ID }).ToList();
-            if(result.Data.Count > 0)
+            if (result.Data.Count > 0)
             {
                 result.Status = true;
             }
@@ -52,24 +53,25 @@ namespace ERBus.Api.Controllers.Catalog
         [CustomAuthorize(Method = "XEM", State = "BoHang")]
         public IHttpActionResult GetMatHangTrongBo(string maBoHang)
         {
-            var result = new TransferObj<List<ChoiceObject>>();
-            List<ChoiceObject> listResult = new List<ChoiceObject>();
+            var result = new TransferObj<List<BoHangExtend>>();
+            List<BoHangExtend> listResult = new List<BoHangExtend>();
             if (!string.IsNullOrEmpty(maBoHang))
             {
                 var unitCode = _service.GetCurrentUnitCode();
 
-                var boHangChiTiet = _service.UnitOfWork.Repository<BOHANG_CHITIET>().DbSet.Where(x => x.MABOHANG.Equals(maBoHang) && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.MAHANG).ToList();
+                var boHangChiTiet = _service.UnitOfWork.Repository<BOHANG_CHITIET>().DbSet.Where(x => x.MABOHANG.Equals(maBoHang) && x.UNITCODE.Equals(unitCode)).OrderBy(x => x.SAPXEP).ToList();
                 if (boHangChiTiet.Count > 0)
                 {
                     foreach (var dongHang in boHangChiTiet)
                     {
-                        ChoiceObject obj = new ChoiceObject();
+                        BoHangExtend obj = new BoHangExtend();
                         obj.PARENT = dongHang.MABOHANG;
                         obj.VALUE = dongHang.MAHANG;
                         var matHang = _service.UnitOfWork.Repository<MATHANG>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(dongHang.MAHANG) && x.UNITCODE.Equals(unitCode));
                         var matHangGia = _service.UnitOfWork.Repository<MATHANG_GIA>().DbSet.FirstOrDefault(x => x.MAHANG.Equals(dongHang.MAHANG) && x.UNITCODE.Equals(unitCode));
                         obj.TEXT = matHang != null ? matHang.TENHANG : "";
                         obj.GIATRI = matHang != null ? matHangGia.GIABANLE_VAT : 0;
+                        obj.SAPXEP = dongHang.SAPXEP;
                         listResult.Add(obj);
                     }
                 }
@@ -92,7 +94,7 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
-        
+
 
         [Route("PostQuery")]
         [HttpPost]
@@ -149,7 +151,7 @@ namespace ERBus.Api.Controllers.Catalog
 
         [ResponseType(typeof(BOHANG))]
         [CustomAuthorize(Method = "THEM", State = "BoHang")]
-        public async Task<IHttpActionResult> Post (BoHangViewModel.Dto instance)
+        public async Task<IHttpActionResult> Post(BoHangViewModel.Dto instance)
         {
             var result = new TransferObj<BOHANG>();
             var curentUnitCode = _service.GetCurrentUnitCode();
@@ -191,7 +193,7 @@ namespace ERBus.Api.Controllers.Catalog
             {
                 result.Status = false;
                 result.Message = e.Message;
-                
+
             }
             return Ok(result);
         }
@@ -199,7 +201,7 @@ namespace ERBus.Api.Controllers.Catalog
 
         [ResponseType(typeof(void))]
         [CustomAuthorize(Method = "SUA", State = "BoHang")]
-        public async Task<IHttpActionResult> Put (string id, BoHangViewModel.Dto instance)
+        public async Task<IHttpActionResult> Put(string id, BoHangViewModel.Dto instance)
         {
             if (!ModelState.IsValid)
             {
@@ -301,6 +303,44 @@ namespace ERBus.Api.Controllers.Catalog
             return Ok(result);
         }
 
+
+        [Route("OrderByMerchandise")]
+        [HttpPost]
+        public async Task<IHttpActionResult> OrderByMerchandise(List<BoHangExtend> listInstance)
+        {
+            var result = new TransferObj();
+            if (listInstance.Count > 0)
+            {
+                var repository = _service.UnitOfWork.Repository<BOHANG_CHITIET>();
+                foreach (BoHangExtend record in listInstance)
+                {
+                    var rowDetail = repository.DbSet.FirstOrDefault(x => x.MABOHANG.Equals(record.PARENT) && x.MAHANG.Equals(record.VALUE));
+                    if (rowDetail != null)
+                    {
+                        rowDetail.SAPXEP = record.SAPXEP;
+                        repository.Update(rowDetail);
+                    }
+                }
+                int upd = await _service.UnitOfWork.SaveAsync();
+                if (upd > 0)
+                {
+                    result.Status = true;
+                    result.Message = "Sắp xếp thành công";
+                }
+                else
+                {
+                    result.Status = false;
+                    result.Message = "Đã xảy ra lỗi khi sắp xếp";
+                }
+            }
+            else
+            {
+                result.Status = false;
+                result.Message = "Không có dòng dữ liệu sắp xếp";
+            }
+            return Ok(result);
+        }
+
         [ResponseType(typeof(BOHANG))]
         [CustomAuthorize(Method = "XOA", State = "BoHang")]
         public async Task<IHttpActionResult> Delete(string id)
@@ -313,9 +353,9 @@ namespace ERBus.Api.Controllers.Catalog
             }
             try
             {
-                 _service.Delete(instance.ID);
+                _service.Delete(instance.ID);
                 int del = await _service.UnitOfWork.SaveAsync();
-                if(del > 0)
+                if (del > 0)
                 {
                     result.Data = true;
                     result.Status = true;

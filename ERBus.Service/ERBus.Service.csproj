@@ -192,6 +192,7 @@
     <Compile Include="Knowledge\NhapMua\NhapMuaViewModel.cs" />
     <Compile Include="MD5Encrypt.cs" />
     <Compile Include="MemoryCacheHelper.cs" />
+    <Compile Include="ModelExtend\BoHang\BoHangExtend.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Promotion\GiamGiaLoaiHang\GiamGiaLoaiHangService.cs" />
     <Compile Include="Promotion\GiamGiaLoaiHang\GiamGiaLoaiHangViewModel.cs" />

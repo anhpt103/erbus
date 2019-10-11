@@ -33,7 +33,8 @@ require.config({
         'angular-chart': 'utils/angular-chart/angular-chart.min',
         'ng-tags-input': 'js/ngTagInput/ng-tags-input.min',
         'moment': 'js/moment/moment',
-        'jp.ng-bs-animated-button': 'js/ng-bs-animated-button/ng-bs-animated-button'
+        'jp.ng-bs-animated-button': 'js/ng-bs-animated-button/ng-bs-animated-button',
+        'dndLists': 'lib/angular-drag-and-drop-lists'
     },
     shim: {
         'jquery': {
@@ -74,7 +75,8 @@ require.config({
         'angular-chart': ['chart-js'],
         'ng-tags-input': ['angular'],
         'moment': ['angular'],
-        'jp.ng-bs-animated-button': ['angular']
+        'jp.ng-bs-animated-button': ['angular'],
+        'dndLists': ['angular']
     },
     waitSeconds: 0,
     //urlArgs: 'bust=' + new Date().getTime()

@@ -235,6 +235,7 @@
     <Content Include="ERBus\controllers\catalog\baoBiController.js" />
     <Content Include="ERBus\controllers\catalog\nhomHangController.js" />
     <Content Include="ERBus\controllers\catalog\loaiHangController.js" />
+    <Content Include="ERBus\controllers\knowledge\sapXepMatHangController.js" />
     <Content Include="ERBus\controllers\knowledge\thanhToanDatPhongController.js" />
     <Content Include="ERBus\controllers\knowledge\datPhongController.js" />
     <Content Include="ERBus\controllers\knowledge\kiemKeController.js" />
@@ -322,6 +323,7 @@
     <Content Include="ERBus\js\xlsx\xlsx.full.min.js" />
     <Content Include="ERBus\js\xlsx\xlsx.js" />
     <Content Include="ERBus\lib\angular-aria.min.js" />
+    <Content Include="ERBus\lib\angular-drag-and-drop-lists.js" />
     <Content Include="ERBus\lib\angular-material.min.js" />
     <Content Include="ERBus\lib\jquery-3.3.1.slim.js" />
     <Content Include="ERBus\lib\jquery-3.3.1.min.js" />
@@ -454,6 +456,7 @@
     <Content Include="ERBus\views\knowledge\DatPhong\remove.html" />
     <Content Include="ERBus\views\knowledge\DatPhong\index.html" />
     <Content Include="ERBus\views\knowledge\KiemKe\index.html" />
+    <Content Include="ERBus\views\knowledge\SapXepMatHang\index.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\transfer.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\viewReceipt.html" />
     <Content Include="ERBus\views\knowledge\ThanhToanDatPhong\history.html" />

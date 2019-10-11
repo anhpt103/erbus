@@ -38,5 +38,9 @@ namespace ERBus.Entity.Database.Catalog
         [Column("TRANGTHAI")]
         [Description("TRẠNG THÁI DỮ LIỆU 0: CHƯA DUYỆT _ 10: ĐÃ DUYỆT _ 20: LƯU TẠM _ 30: TRẠNG THÁI MỞ RỘNG")]
         public Nullable<int> TRANGTHAI { get; set; }
+
+        [Column("SAPXEP")]
+        [Description("SẮP XẾP THỨ TỰ HÀNG HÓA TRONG BÓ")]
+        public Nullable<int> SAPXEP { get; set; }
     }
 }

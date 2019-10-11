@@ -58,7 +58,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.Designer.cs">
       <DependentUpon>201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910101642575_ADD_COLUMN_SAPXEP_BOHANG_CHITIET.cs" />
+    <Compile Include="Migrations\201910101642575_ADD_COLUMN_SAPXEP_BOHANG_CHITIET.Designer.cs">
+      <DependentUpon>201910101642575_ADD_COLUMN_SAPXEP_BOHANG_CHITIET.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObjectState.cs" />
     <Compile Include="Program.cs" />
@@ -356,6 +360,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.resx">
       <DependentUpon>201907230229141_CREATE_TABLE_CAUHINH_LOAIPHONG_GIACA_ANHPT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910101642575_ADD_COLUMN_SAPXEP_BOHANG_CHITIET.resx">
+      <DependentUpon>201910101642575_ADD_COLUMN_SAPXEP_BOHANG_CHITIET.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
