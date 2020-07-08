@@ -1,9 +1,5 @@
-﻿/**
- * loads sub modules and wraps them up into the main module
- * this should be used for top-level module definitions only
- */
-define([
-	'jquery',
+﻿define([
+    'jquery',
     'jquery-ui',
     'angular',
     'states/catalog',
@@ -12,21 +8,21 @@ define([
     'states/promotion',
     'states/report',
     'config/config',
-	'ocLazyLoad',
-	'uiRouter',
-	'angularStorage',
+    'ocLazyLoad',
+    'uiRouter',
+    'angularStorage',
     'angular-animate',
     'angular-resource',
     'angular-filter',
     'angular-sanitize',
     'angular-cache',
-	'ui-bootstrap',
+    'ui-bootstrap',
     'loading-bar',
     'smartTable',
     'ngTable',
     'ui.tree',
     'dynamic-number',
-	'services/interceptorService',
+    'services/interceptorService',
     'services/configService',
     'services/tempDataService',
     'filters/common',
@@ -46,11 +42,10 @@ define([
     'use strict';
     var app = angular.module('myApp', ['oc.lazyLoad', 'ui.router', 'InterceptorModule', 'LocalStorageModule', 'ui.bootstrap', 'configModule', 'tempDataModule', 'angular-loading-bar', 'ngAnimate', 'ngSanitize', 'common-filter', 'ngResource', 'smart-table', 'angular.filter', 'ngTable', 'angular-cache', 'ui.tree', 'dynamicNumber', 'ui.grid', 'angularFileUpload', 'ngFileUpload', 'ngCkeditor', 'ngMaterial', 'ngAria', 'ngTagsInput', 'jp.ng-bs-animated-button', 'kendo.directives', 'dndLists']);
     var urlInternet = '';
-    app.run(['ngTableDefaults', 'configService', function (ngTableDefaults, configService) {
-        ngTableDefaults.params.count = 5;
-        ngTableDefaults.settings.counts = [];
+    app.run(['configService', function (configService) {
         urlInternet = configService.rootUrlWeb;
     }]);
+
     app.service('blockModalService', function () {
         var result = this;
         result.isBlocked = false;
@@ -457,7 +452,7 @@ define([
                 }
             };
         }
-     );
+    );
 
     //app.config(['$compileProvider', function ($compileProvider) {
     //    $compileProvider.debugInfoEnabled(false);
@@ -495,13 +490,13 @@ define([
 
     app.config(['$urlMatcherFactoryProvider', function ($urlMatcherFactory) {
         $urlMatcherFactory.type('configParams',
-      {
-          name: 'configParams',
-          decode: function (val) { return typeof (val) === "string" ? JSON.parse(val) : val; },
-          encode: function (val) { return JSON.stringify(val); },
-          equals: function (a, b) { return this.is(a) && this.is(b) && a.ID === b.ID && a.TUNGAY == b.TUNGAY && a.DENNGAY == b.DENNGAY },
-          is: function (val) { return angular.isObject(val) && "ID" in val && "TUNGAY" in val && "DENNGAY" in val },
-      })
+            {
+                name: 'configParams',
+                decode: function (val) { return typeof (val) === "string" ? JSON.parse(val) : val; },
+                encode: function (val) { return JSON.stringify(val); },
+                equals: function (a, b) { return this.is(a) && this.is(b) && a.ID === b.ID && a.TUNGAY == b.TUNGAY && a.DENNGAY == b.DENNGAY },
+                is: function (val) { return angular.isObject(val) && "ID" in val && "TUNGAY" in val && "DENNGAY" in val },
+            })
     }]);
 
 
@@ -576,47 +571,47 @@ define([
     }]);
 
     app.config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$locationProvider',
-		function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $locationProvider) {
-		    $ocLazyLoadProvider.config({
-		        jsLoader: requirejs,
-		        loadedModules: ['app'],
-		        asyncLoader: require
-		    });
-		    var layoutUrl = urlInternet + "/ERBus/";
-		    $urlRouterProvider.otherwise("/home");
+        function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $locationProvider) {
+            $ocLazyLoadProvider.config({
+                jsLoader: requirejs,
+                loadedModules: ['app'],
+                asyncLoader: require
+            });
+            var layoutUrl = urlInternet + "/ERBus/";
+            $urlRouterProvider.otherwise("/home");
 
-		    $stateProvider.state('root', {
-		        abstract: true,
-		        views: {
-		            'viewRoot': {
-		                templateUrl: layoutUrl + "views/layouts/layout.html",
-		                controller: "layout_Crtl as ctrl"
-		            }
-		        },
-		        resolve: {
-		            loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
-		                var deferred = $q.defer();
-		                require([urlInternet + '/ERBus/controllers/layouts/layout-controller.js'],
+            $stateProvider.state('root', {
+                abstract: true,
+                views: {
+                    'viewRoot': {
+                        templateUrl: layoutUrl + "views/layouts/layout.html",
+                        controller: "layout_Crtl as ctrl"
+                    }
+                },
+                resolve: {
+                    loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
+                        var deferred = $q.defer();
+                        require([urlInternet + '/ERBus/controllers/layouts/layout-controller.js'],
                             function (layoutModule) {
                                 deferred.resolve();
                                 $ocLazyLoad.inject(layoutModule.name);
                             });
-		                return deferred.promise;
-		            }]
-		        }
-		    });
+                        return deferred.promise;
+                    }]
+                }
+            });
 
-		    $stateProvider.state('layout', {
-		        parent: 'root',
-		        abstract: true,
-		        views: {
-		            'viewHeader': {
-		                templateUrl: layoutUrl + "views/layouts/header.html",
-		                controller: "Header_Ctrl as ctrl"
-		            }
-		        },
-		        resolve: {
-		            loadModule: [
+            $stateProvider.state('layout', {
+                parent: 'root',
+                abstract: true,
+                views: {
+                    'viewHeader': {
+                        templateUrl: layoutUrl + "views/layouts/header.html",
+                        controller: "Header_Ctrl as ctrl"
+                    }
+                },
+                resolve: {
+                    loadModule: [
                         '$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
                             var deferred = $q.defer();
                             require([urlInternet + '/ERBus/controllers/layouts/header-controller.js'],
@@ -626,73 +621,73 @@ define([
                                 });
                             return deferred.promise;
                         }
-		            ]
+                    ]
 
-		        }
-		    });
-		    $stateProvider.state('login', {
-		        url: "/login",
-		        abstract: false,
-		        views: {
-		            'viewRoot': {
-		                templateUrl: layoutUrl + "views/layouts/login.html",
-		                controller: "login_Ctrl as ctrl"
-		            }
-		        },
-		        resolve: {
-		            loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
-		                var deferred = $q.defer();
-		                require([urlInternet + '/ERBus/controllers/authorize/authController.js'],
+                }
+            });
+            $stateProvider.state('login', {
+                url: "/login",
+                abstract: false,
+                views: {
+                    'viewRoot': {
+                        templateUrl: layoutUrl + "views/layouts/login.html",
+                        controller: "login_Ctrl as ctrl"
+                    }
+                },
+                resolve: {
+                    loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
+                        var deferred = $q.defer();
+                        require([urlInternet + '/ERBus/controllers/authorize/authController.js'],
                             function (layoutModule) {
                                 deferred.resolve();
                                 $ocLazyLoad.inject(layoutModule.name);
                             });
-		                return deferred.promise;
-		            }]
-		        }
-		    });
-		    $stateProvider.state('home', {
-		        url: "/home",
-		        parent: 'layout',
-		        abstract: false,
-		        views: {
-		            'viewMain@root': {
-		                templateUrl: layoutUrl + "views/layouts/home.html",
-		                controller: "home_Ctrl as ctrl"
-		            }
-		        },
-		        resolve: {
-		            loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
-		                var deferred = $q.defer();
-		                require([urlInternet + '/ERBus/controllers/layouts/home-controller.js'],
+                        return deferred.promise;
+                    }]
+                }
+            });
+            $stateProvider.state('home', {
+                url: "/home",
+                parent: 'layout',
+                abstract: false,
+                views: {
+                    'viewMain@root': {
+                        templateUrl: layoutUrl + "views/layouts/home.html",
+                        controller: "home_Ctrl as ctrl"
+                    }
+                },
+                resolve: {
+                    loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
+                        var deferred = $q.defer();
+                        require([urlInternet + '/ERBus/controllers/layouts/home-controller.js'],
                             function (homeModule) {
                                 deferred.resolve();
                                 $ocLazyLoad.inject(homeModule.name);
                             });
-		                return deferred.promise;
-		            }]
-		        }
-		    });
-		    var lststate = [];
-		    lststate = lststate.concat(stateCatalog).concat(stateAuthorize).concat(stateKnowledge).concat(statePromotion).concat(stateReport);
-		    angular.forEach(lststate, function (state) {
-		        $stateProvider.state(state.name, {
-		            url: state.url,
-		            parent: state.parent,
-		            abstract: state.abstract,
-		            views: state.views,
-		            resolve: {
-		                loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
-		                    var deferred = $q.defer();
-		                    require([state.moduleUrl], function (module) {
-		                        deferred.resolve();
-		                        if (module) $ocLazyLoad.inject(module.name);
-		                    });
-		                    return deferred.promise;
-		                }]
-		            }
-		        });
-		    });
-		}]);
+                        return deferred.promise;
+                    }]
+                }
+            });
+            var lststate = [];
+            lststate = lststate.concat(stateCatalog).concat(stateAuthorize).concat(stateKnowledge).concat(statePromotion).concat(stateReport);
+            angular.forEach(lststate, function (state) {
+                $stateProvider.state(state.name, {
+                    url: state.url,
+                    parent: state.parent,
+                    abstract: state.abstract,
+                    views: state.views,
+                    resolve: {
+                        loadModule: ['$ocLazyLoad', '$q', function ($ocLazyLoad, $q) {
+                            var deferred = $q.defer();
+                            require([state.moduleUrl], function (module) {
+                                deferred.resolve();
+                                if (module) $ocLazyLoad.inject(module.name);
+                            });
+                            return deferred.promise;
+                        }]
+                    }
+                });
+            });
+        }]);
     return app;
 });

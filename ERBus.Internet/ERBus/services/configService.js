@@ -5,7 +5,7 @@
         var hostname = window.location.hostname;
         var port = window.location.port;
         var rootUrl = 'http://' + hostname + ':' + port;
-        var rootUrlApi = 'http://anhpt:9989';
+        var rootUrlApi = 'http://tuananh:6868';
         if (!port) {
             rootUrl = 'http://' + hostname;
         }

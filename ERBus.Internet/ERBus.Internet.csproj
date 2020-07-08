@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -288,28 +289,13 @@
     <Content Include="ERBus\fonts\poppins\poppins-v5-latin-900italic.svg" />
     <Content Include="ERBus\fonts\poppins\poppins-v5-latin-italic.svg" />
     <Content Include="ERBus\fonts\poppins\poppins-v5-latin-regular.svg" />
-    <Content Include="ERBus\img\bg-title-01.jpg" />
-    <Content Include="ERBus\img\bg-title-02.jpg" />
     <Content Include="ERBus\img\icon\funny_smile.jpg" />
     <Content Include="ERBus\img\icon\hotel-image.jpg" />
     <Content Include="ERBus\img\icon\avartar-female.png" />
     <Content Include="ERBus\img\icon\avartar-male.png" />
-    <Content Include="ERBus\img\icon\avatar-01.jpg" />
-    <Content Include="ERBus\img\icon\avatar-02.jpg" />
-    <Content Include="ERBus\img\icon\avatar-03.jpg" />
-    <Content Include="ERBus\img\icon\avatar-04.jpg" />
-    <Content Include="ERBus\img\icon\avatar-05.jpg" />
-    <Content Include="ERBus\img\icon\avatar-06.jpg" />
-    <Content Include="ERBus\img\icon\avatar-big-01.jpg" />
     <Content Include="ERBus\img\icon\erbus_logo_mono.png" />
     <Content Include="ERBus\img\icon\favicon.ico" />
     <Content Include="ERBus\img\icon\karaoke-image.png" />
-    <Content Include="ERBus\img\icon\logo-blue.png" />
-    <Content Include="ERBus\img\icon\logo-mini.png" />
-    <Content Include="ERBus\img\icon\logo-white.png" />
-    <Content Include="ERBus\img\icon\logo.png" />
-    <Content Include="ERBus\img\icon\transfer.svg" />
-    <Content Include="ERBus\img\icon\Untitled-1.jpg" />
     <Content Include="ERBus\js\kendo\kendo.all.min.js" />
     <Content Include="ERBus\js\moment\moment.js" />
     <Content Include="ERBus\js\ng-bs-animated-button\ng-bs-animated-button.js" />

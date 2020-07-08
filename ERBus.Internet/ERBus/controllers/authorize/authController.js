@@ -18,7 +18,7 @@ define(['angular'], function (angular) {
     app.service('accountService', ['configService', '$http', '$q', 'localStorageService', '$state', 'userService', function (configService, $http, $q, localStorageService, $state, userService) {
         var result = {
             login: function (user) {
-                var obj = { 'username': user.username, 'password': user.password, 'grant_type': 'password' };
+                let obj = { 'username': user.username, 'password': user.password, 'grant_type': 'password' };
                 Object.toparams = function ObjectsToParams(obj) {
                     var p = [];
                     for (var key in obj) {
@@ -27,16 +27,20 @@ define(['angular'], function (angular) {
                     return p.join('&');
                 }
                 var defer = $q.defer();
-                $http({ method: 'post', url: configService.apiServiceBaseUri + "/token", data: Object.toparams(obj), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function (response) {
-                    if (response && response.status === 200 && response.data && response.data.access_token) {
-                        userService.SetCurrentUser(response.data);
-                        $state.go('home');
-                    }
-                    defer.resolve(response);
-                }, function (response) {
-                    defer.reject(response);
-                });
-                return defer.promise;
+                try {
+                    $http({ method: 'post', url: configService.apiServiceBaseUri + "/token", data: Object.toparams(obj), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function (response) {
+                        if (response && response.status === 200 && response.data && response.data.access_token) {
+                            userService.SetCurrentUser(response.data);
+                            $state.go('home');
+                        }
+                        defer.resolve(response);
+                    }, function (response) {
+                        defer.reject(response);
+                    });
+                    return defer.promise;
+                } catch (error) {
+                    console.log(error);
+                }
             },
             logout: function () {
                 localStorageService.cookie.clearAll();
@@ -48,28 +52,20 @@ define(['angular'], function (angular) {
 
     app.controller('login_Ctrl', ['$scope', '$location', '$http', 'localStorageService', 'accountService', '$state', 'closingService', function ($scope, $location, $http, localStorageService, accountService, $state, closingService) {
         $scope.user = { username: '', password: '', cookie: false, grant_type: 'password' };
-        var config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        };
-        $scope.returnMessage = "";
-        function closing() {
-            closingService.closingOutList().then(function (successRes) {
-                if (successRes && successRes.status === 200 && successRes.data) {
-                    console.log('Khóa sổ thành công');
-                }
-            });
-        };
+        $scope.msg = "";
+
         $scope.login = function () {
-            $scope.msg = null;
             accountService.login($scope.user).then(function (response) {
                 if (response && response.status === 200 && response.data) {
-                    closing();
-                    console.log("Đăng nhập thành công!");
+                    closingService.closingOutList();
                 }
             }, function (response) {
-                if (response && response.data) {
-                    $scope.returnMessage = response.data.error_description;
+                if (response && response.status !== 200 && response.data && response.data.error_description.length > 0) {
+                    $scope.msg = 'Không thể kết nối tới Cơ sở dữ liệu! Kiểm tra kết nối Internet hoặc liên hệ Quản trị';
+                    console.log(response);
+                    return;
                 }
+
                 $scope.user = { username: '', password: '', cookie: false, grant_type: 'password' };
                 $scope.focusUsername = true;
             });

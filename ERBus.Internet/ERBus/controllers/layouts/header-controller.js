@@ -29,76 +29,84 @@
             }
         };
     });
-    app.controller('Header_Ctrl', ['$scope', '$uibModal', 'configService', '$state', 'accountService', '$log', 'userService', 'menuService', 'nguoiDungService',
-    function ($scope, $uibModal, configService, $state, accountService, $log, userService, menuService, nguoiDungService) {
-        $scope.rootUrlHome = configService.rootUrl;
-        $scope.currentUser = userService.GetCurrentUser();
-        //khởi tạo configService UNITCODE; PARENT_UNITCODE
-        if ($scope.currentUser) {
-            configService.filterDefault.UNITCODE = $scope.currentUser.unitCode;
-            configService.filterDefault.PARENT_UNITCODE = $scope.currentUser.parentUnitCode;
-        }
-        //end
-        function treeify(list, idAttr, parentAttr, childrenAttr) {
-            if (!idAttr) idAttr = 'VALUE';
-            if (!parentAttr) parentAttr = 'PARENT';
-            if (!childrenAttr) childrenAttr = 'CHILDREN';
-            var lookup = {};
-            var result = {};
-            result[childrenAttr] = [];
-            list.forEach(function (obj) {
-                lookup[obj[idAttr]] = obj;
-                obj[childrenAttr] = [];
-            });
-            list.forEach(function (obj) {
-                if (obj[parentAttr] != null) {
-                    try { lookup[obj[parentAttr]][childrenAttr].push(obj); }
-                    catch (err) {
+    app.controller('Header_Ctrl', ['$scope', 'configService', '$state', 'accountService', '$log', 'userService', 'menuService', 'nguoiDungService',
+        function ($scope, configService, $state, accountService, $log, userService, menuService, nguoiDungService) {
+            $scope.rootUrlHome = configService.rootUrl;
+            $scope.currentUser = userService.GetCurrentUser();
+            //khởi tạo configService UNITCODE; PARENT_UNITCODE
+            if ($scope.currentUser) {
+                configService.filterDefault.UNITCODE = $scope.currentUser.unitCode;
+                configService.filterDefault.PARENT_UNITCODE = $scope.currentUser.parentUnitCode;
+            }
+            //end
+            function treeify(list, idAttr, parentAttr, childrenAttr) {
+                if (!idAttr) idAttr = 'VALUE';
+                if (!parentAttr) parentAttr = 'PARENT';
+                if (!childrenAttr) childrenAttr = 'CHILDREN';
+                var lookup = {};
+                var result = {};
+                result[childrenAttr] = [];
+                list.forEach(function (obj) {
+                    lookup[obj[idAttr]] = obj;
+                    obj[childrenAttr] = [];
+                });
+                list.forEach(function (obj) {
+                    if (obj[parentAttr] != null) {
+                        try { lookup[obj[parentAttr]][childrenAttr].push(obj); }
+                        catch (err) {
+                            result[childrenAttr].push(obj);
+                        }
+
+                    } else {
                         result[childrenAttr].push(obj);
                     }
-
+                });
+                return result;
+            };
+            $scope.linkHref = function () {
+                $state.go('home');
+            };
+            function loadUser() {
+                if (!$scope.currentUser) {
+                    $state.go('login');
                 } else {
-                    result[childrenAttr].push(obj);
+                    var unitCodeParam = !$scope.currentUser.parentUnitCode ? $scope.currentUser.unitCode : $scope.currentUser.parentUnitCode;
+                    menuService.getMenu($scope.currentUser.userName, unitCodeParam).then(function (response) {
+                        if (response && response.status === 200 && response.data && response.data.Data && response.data.Data.length > 0) {
+                            let ignoreMenu = ['BaoBi', 'KhoHang', 'KhachHang', 'HangKhachHang',
+                                'KeHang', 'Thue', 'LoaiHang', 'NhomHang', 'NhapMua',
+                                'KhuyenMai', 'TienTyLe', 'GiamGiaLoaiHang', 'GiamGiaNhomHang',
+                                'GiamGiaNhaCungCap', 'XuatBan', 'XuatBanLeThuNgan', 'KiemKeHangHoa',
+                                'Menu', 'ThamSoHeThong', 'KyKeToan'];
+                            ignoreMenu.forEach(function (val) {
+                                let index = response.data.Data.findIndex(x => x.VALUE == val);
+                                if (index != -1) response.data.Data.splice(index, 1);
+                            })
+                            $scope.treeMenu = treeify(response.data.Data);
+                        }
+                    });
                 }
-            });
-            return result;
-        };
-        $scope.linkHref = function () {
-            $state.go('home');
-        };
-        function loadUser() {
-            
-            if (!$scope.currentUser) {
-                $state.go('login');
-            } else {
-                var unitCodeParam = !$scope.currentUser.parentUnitCode ? $scope.currentUser.unitCode : $scope.currentUser.parentUnitCode;
-                menuService.getMenu($scope.currentUser.userName, unitCodeParam).then(function (response) {
-                    if (response && response.status === 200 && response.data && response.data.Data && response.data.Data.length > 0) {
-                        $scope.treeMenu = treeify(response.data.Data);
+            };
+            loadUser();
+
+            $scope.showInfoUser = false;
+            $scope.detailInfoUser = function () {
+                if ($scope.showInfoUser) $scope.showInfoUser = false;
+                else $scope.showInfoUser = true;
+            }
+
+            $scope.detailAccount = function (currentUser) {
+                nguoiDungService.getDetails(currentUser.id).then(function (response) {
+                    if (response && response.status === 200 && response.data) {
+                        $scope.detailCurrentUser = response.data;
                     }
                 });
-            }
-        };
-        loadUser();
+            };
 
-        $scope.showInfoUser = false;
-        $scope.detailInfoUser = function () {
-            if ($scope.showInfoUser) $scope.showInfoUser = false;
-            else $scope.showInfoUser = true;
-        }
+            $scope.logOut = function () {
+                accountService.logout();
+            };
 
-        $scope.detailAccount = function (currentUser) {
-            nguoiDungService.getDetails(currentUser.id).then(function (response) {
-                if (response && response.status === 200 && response.data) {
-                    $scope.detailCurrentUser = response.data;
-                }
-            });
-        };
-
-        $scope.logOut = function () {
-            accountService.logout();
-        };
-        
-    }]);
+        }]);
     return app;
 });

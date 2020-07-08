@@ -79,9 +79,7 @@ require.config({
         'dndLists': ['angular']
     },
     waitSeconds: 0,
-    //urlArgs: 'bust=' + new Date().getTime()
 });
-// Start the main app logic.
 require(['app'], function () {
     angular.bootstrap(document.body, ['myApp']);
 });
