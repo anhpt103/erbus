@@ -831,7 +831,7 @@
                 inVoice += 'border-collapse: collapse;';
                 inVoice += ' }';
                 inVoice += '@media only screen and (max-width: 350px) {';
-                inVoice += 'body { font-family: "Times New Roman", Times, serif; }';
+                inVoice += 'body { font-family: Arial, Helvetica, sans-serif; }';
                 inVoice += '}';
                 inVoice += '</style>';
                 inVoice += '</head>';
@@ -1189,7 +1189,7 @@
            inVoice += 'border-collapse: collapse;';
            inVoice += ' }';
            inVoice += '@media only screen and (max-width: 350px) {';
-           inVoice += 'body { font-family: "Times New Roman", Times, serif; }';
+           inVoice += 'body { font-family: Arial, Helvetica, sans-serif; }';
            inVoice += '}';
            inVoice += '</style>';
            inVoice += '</head>';

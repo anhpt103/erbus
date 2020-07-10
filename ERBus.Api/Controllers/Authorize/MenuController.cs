@@ -1,13 +1,10 @@
-﻿using ERBus.Entity;
-using ERBus.Entity.Database.Authorize;
-using ERBus.Service;
+﻿using ERBus.Service;
 using ERBus.Service.Authorize.Menu;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
 using System.Web.Http;
 
 namespace ERBus.Api.Controllers.Authorize
@@ -21,58 +18,6 @@ namespace ERBus.Api.Controllers.Authorize
         public MenuController(IMenuService service)
         {
             _service = service;
-        }
-
-        [HttpGet]
-        [Route("GetMenu/{username}/{unitCode}")]
-        public IHttpActionResult GetMenu(string username, string unitCode)
-        {
-            var result = new TransferObj<List<ChoiceObject>>();
-            try
-            {
-                List<MENU> lstMenu = new List<MENU>();
-                if (username.Equals("admin"))
-                {
-                    lstMenu = _service.Repository.DbSet.Where(x => x.TRANGTHAI == (int)TypeState.USED && x.UNITCODE == unitCode).OrderBy(x => x.SAPXEP).ToList();
-                }
-                else
-                {
-                    lstMenu = _service.GetAllForStarting(username, unitCode);
-                }
-                result.Data = new List<ChoiceObject>();
-                if (lstMenu != null)
-                {
-                    lstMenu.ForEach(x =>
-                    {
-                        ChoiceObject obj = new ChoiceObject()
-                        {
-                            ID = x.ID,
-                            TEXT = x.TIEUDE,
-                            PARENT = x.MENU_CHA,
-                            VALUE = x.MA_MENU,
-                            EXTEND_VALUE = x.ICON
-                        };
-                        result.Data.Add(obj);
-                    });
-                }
-                if (result.Data.Count > 0)
-                {
-                    result.Status = true;
-                    result.Message = "Success";
-                }
-                else
-                {
-                    result.Status = false;
-                    result.Message = "NoData";
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Status = false;
-                result.Message = ex.Message;
-                result.Data = null;
-            }
-            return Ok(result);
         }
 
         [HttpGet]

@@ -12,7 +12,7 @@
                     <table class="table table-bordered">
                         <tbody>
                             <tr ng-repeat="item in listMenu | orderBy:'SAPXEP' track by item.MA_MENU" ng-dblclick="selectChucNang(item)">
-                                <td>{{item.TIEUDE}}<i class="fa fa-arrow-circle-right" aria-hidden="true" style="float: right; font-size: 15px;" ng-click="selectChucNang(item)"></i></td>
+                                <td>{{item.TIEUDE}}<i class="fa fa-arrow-circle-right" aria-hidden="true" style="float: right; font-size: 13px;" ng-click="selectChucNang(item)"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in lstAdd | orderBy:'SAPXEP' track by item.MA_MENU" ng-dblclick="deSelectChucNangAdd(item)">
-                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 15px;" ng-click="deSelectChucNangAdd(item)"></i>&nbsp;&nbsp;&nbsp;{{item.TIEUDE}}</td>
+                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 13px;" ng-click="deSelectChucNangAdd(item)"></i>&nbsp;&nbsp;&nbsp;{{item.TIEUDE}}</td>
                                 <td><input type="checkbox" ng-model="item.XEM" />Xem</td>
                                 <td><input type="checkbox" ng-model="item.THEM" />Thêm</td>
                                 <td><input type="checkbox" ng-model="item.SUA" />Sửa</td>
@@ -75,7 +75,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in data | orderBy:'SAPXEP' track by item.MA_MENU" ng-dblclick="deSelectChucNang(item)">
-                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 15px;" ng-click="deSelectChucNang(item)"></i>&nbsp;&nbsp;&nbsp;{{item.TIEUDE}}</td>
+                                <td><i class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 13px;" ng-click="deSelectChucNang(item)"></i>&nbsp;&nbsp;&nbsp;{{item.TIEUDE}}</td>
                                 <td><input type="checkbox" ng-model="item.XEM" ng-change="modified(item)" />Xem</td>
                                 <td><input type="checkbox" ng-model="item.THEM" ng-change="modified(item)" />Thêm</td>
                                 <td><input type="checkbox" ng-model="item.SUA" ng-change="modified(item)" />Sửa</td>

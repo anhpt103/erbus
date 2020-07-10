@@ -24,10 +24,10 @@
                             <div class="tree">
                                 <ul>
                                     <li>
-                                        <a style="font-size: 16px;">Tòa nhà</a>
+                                        <a style="font-size: 13px;">Tòa nhà</a>
                                         <ul>
                                             <li ng-repeat="parent in treeFloor track by $index">
-                                                <a style="font-size: 15px;" ng-bind="parent.TENPHONG"></a>
+                                                <a style="font-size: 13px;" ng-bind="parent.TENPHONG"></a>
                                                 <ul>
                                                     <li ng-repeat="children in parent.CHILDREN track by $index">
                                                         <a style="font-size: 14px;" ng-click="edit(children);" ng-dblclick="detail(children)" ng-bind="children.TENPHONG"></a>

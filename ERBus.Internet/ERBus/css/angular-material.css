@@ -203,7 +203,7 @@ html, body {
   letter-spacing: 0.005em; }
 
 .md-subhead {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.010em;
   line-height: 24px; }
@@ -1231,7 +1231,7 @@ md-checkbox {
 .md-chips {
   display: block;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   padding: 0 0 8px 3px;
   vertical-align: middle; }
   .md-chips:after {
@@ -2511,7 +2511,7 @@ md-list-item {
           margin-left: initial;
           margin-right: 56px; }
       md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > ._md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > ._md-no-style .md-list-item-text h3 {
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 400;
         letter-spacing: 0.010em;
         margin: 0 0 0px 0;
@@ -3032,7 +3032,7 @@ md-menu-item {
   md-menu-item > .md-button {
     border-radius: 0;
     margin: auto 0;
-    font-size: 15px;
+    font-size: 13px;
     text-transform: none;
     font-weight: 400;
     height: 100%;
@@ -3870,7 +3870,7 @@ md-option {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 16px; }
+    font-size: 13px; }
 
 md-optgroup {
   display: block; }
@@ -4669,7 +4669,7 @@ md-tabs-wrapper {
     line-height: 1em;
     z-index: 2;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 13px;
     background: transparent no-repeat center center;
     transition: all 0.5s cubic-bezier(0.35, 0, 0.25, 1); }
     md-tabs-wrapper md-prev-button:focus, md-tabs-wrapper md-next-button:focus {
